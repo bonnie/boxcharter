@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Box Charter: Edit Chart</title>
+    <script type="text/javascript" src="static/js/charteditor.js"></script>
+{% endblock %}
+
+
+{% block content %}
+<div ng-app="boxcharts" ng-controller="ChartEditController" id="content">
+    <h1>Edit Chart</h1>
+
+    <div id="sections_div">
+
+    <span ng-repeat="section in sections">
+        <div class="row" id="{{ section.section_name|angular }}_metadata">
+            Section Name: {{ section.section_name|angular }}<br>
+            Section Instructions: {{ section.section_instructions|angular }}
+        </div>
+        <div class="row" id="{{ section.section_name|angular }}_measures">
+            <span ng-repeat="measure in section.measures">
+                <div 
+                    id="meas_{{ section.section_id|angular }}.{{ measure.measure_id|angular }}" 
+                    class="measure col-xs-3">
+                    Measure chords: 
+                        <span ng-repeat="(beat_num, chord) in measure.chords">
+                            {{ beat_num|angular }}: {{ chord|angular }}
+                        </span><br>
+                    Measure lyrics: 
+                        <span ng-repeat="lyric in measure.lyrics">
+                            {{ lyric|angular }}<br>
+                        </span>
+                </div>
+            </span>
+        </div>
+    </span>
+
+        <div class="row" id="new_section_button">
+            <button id="new_section" ng-click="makeNewSection()">+</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
