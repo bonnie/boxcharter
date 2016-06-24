@@ -1,7 +1,0 @@
-.measure {
-    border:1px black solid;
-    padding:5px;
-}
-
-/* for angular ui.bootstrap */
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
