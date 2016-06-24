@@ -103,3 +103,7 @@ ngApp.controller('newSectionModalCtrl', function ($scope, $uibModalInstance) {
     };
 });
 
+// for chord editing popover
+ngApp.controller('ChordPopoverCtrl', function ($scope) {
+
+});

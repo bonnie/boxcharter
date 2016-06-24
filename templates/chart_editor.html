@@ -31,9 +31,12 @@
                     <div class="row chords-row">
                         <span ng-repeat="i in getNumber(section.beat_count) track by $index">
                             <div 
-                                class="chord col-xs-{{ 12 / section.beat_count }} col-centered chart-editable"
-                                ng-click="editChord(section.section_index, measure.measure_index, $index)">
+                                class="chord col-xs-{{ 12 / section.beat_count }} text-center chart-editable"
+                                uib-popover-template="chordEdit.html" 
+                                popover-title="Edit Chord"
+                                >
                                 {{ measure.chords[$index] }}
+
                             </div>
                         </span>
                     </div>
@@ -92,6 +95,16 @@
             <button type="button" class="btn btn-primary" ng-click="ok()">Create section</button>
         </div>
     </script>
+
+<!-- chord edit popover -->
+    <script type="text/ng-template" id="chordEdit.html">
+        <div class="form-group">
+            <label>section Title:</label>
+            <input type="text" ng-model="sections[0].section_name" class="form-control">
+        </div>
+    </script>
+
+
 </div>
 
 {% endraw %}
