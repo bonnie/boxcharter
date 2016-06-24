@@ -1,5 +1,5 @@
 .chart-active {
-    border: 2px gray solid;
+    background-color: #ddd;
 }
 
 .chords-row {
@@ -13,10 +13,16 @@
 
 .lyric {
     min-height: 1em;
+    margin: 2px 0;
 }
 
 .lyrics-row {
     margin-bottom: 2em;
+}
+
+/* hide until angular has loaded; reveal using js after */
+.hide-on-load {
+    display: none;
 }
 
 /* for angular ui.bootstrap */

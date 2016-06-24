@@ -9,8 +9,12 @@
 
 {% block content %}
 {% raw %}
-<div ng-app="boxcharts" ng-controller="ChartEditController" id="chart_content">
-    <h1>Edit Chart</h1>
+<div ng-app="boxcharts" ng-controller="ChartEditController" id="chart_content" class="hide-on-load">
+    <h1>
+        <a href="#" editable-text="chart.title">
+            {{ chart.title || 'chart title' }}
+        </a>
+    </h1>
 
     Chart saved? {{ chart_saved }}
 
@@ -19,8 +23,16 @@
     <span ng-repeat="section in sections">
         <div class="row" id="{{ section.section_name }}_metadata">
             <div class="col-xs-12">
-                <h2 class="section_title">{{ section.section_name }}</h2>
-                <p class="section_desc">{{ section.section_desc }}</p>
+                <h2 class="section_title">
+                    <a href="#" editable-text="section.section_name">
+                        {{ section.section_name || 'section name' }}
+                    </a>
+                </h2>
+                <p class="section_desc">
+                    <a href="#" editable-text="section.section_desc">
+                        {{ section.section_desc || 'section description' }}
+                    </a>
+                </p>
             </div>
          </div>
         <div class="row" id="{{ section.section_name }}_measures">
@@ -32,7 +44,7 @@
                         <span ng-repeat="i in getNumber(section.beat_count) track by $index">
                             <div 
                                 class="chord col-xs-{{ 12 / section.beat_count }} text-center chart-editable"
-                                uib-popover-template="chordEdit.html" 
+                                uib-popover="hi"
                                 popover-title="Edit Chord"
                                 >
                                 {{ measure.chords[$index] }}
@@ -77,10 +89,6 @@
         <div class="modal-body">
 
             <form id="section-create-form" novalidate class="simple-form">
-                Section name: 
-                    <input type="text" class="form-control-label" ng-model="newSection.section_name"><br>
-                Section description: 
-                    <input type="text" class="form-control-label" ng-model="newSection.section_desc"><br>
                 Number of measures:
                     <input type="number" ng-model="newSection.measure_count">
                 Measures per line:
@@ -99,7 +107,6 @@
 <!-- chord edit popover -->
     <script type="text/ng-template" id="chordEdit.html">
         <div class="form-group">
-            <label>section Title:</label>
             <input type="text" ng-model="sections[0].section_name" class="form-control">
         </div>
     </script>

@@ -1,9 +1,9 @@
 // Boxchart code for editing charts
 
 // create angular module with ui.bootstrap extension
-ngApp = angular.module('boxcharts', ['ui.bootstrap']);
+app = angular.module('boxcharts', ['ui.bootstrap', 'xeditable']);
     
-ngApp.controller('ChartEditController', function ($scope, $uibModal, $http, $log) {
+app.controller('ChartEditController', function ($scope, $uibModal, $http, $log) {
 
     // somehow get a chart ID here...
     var chart_id = false;
@@ -68,6 +68,9 @@ ngApp.controller('ChartEditController', function ($scope, $uibModal, $http, $log
 
     };
 
+    // for chord popover
+    $scope.chordEditTemplate = "chordEdit.html";
+
     $scope.editChord = function(section_index, measure_index, chord_index) {
 
         $scope.sections[section_index].measures[measure_index].chords[chord_index] = 'A';
@@ -84,12 +87,10 @@ ngApp.controller('ChartEditController', function ($scope, $uibModal, $http, $log
 });
 
 // for new selection modal
-ngApp.controller('newSectionModalCtrl', function ($scope, $uibModalInstance) {
+app.controller('newSectionModalCtrl', function ($scope, $uibModalInstance) {
 
     // easy new-section-making for debugging
-    $scope.newSection = {section_name: 'section the first',
-                         section_desc: 'there shall be no other sections before me',
-                         beat_count: 4,
+    $scope.newSection = {beat_count: 4,
                          verse_count: 4,
                          measure_count: 20,
                          measure_width: 4};
@@ -103,7 +104,11 @@ ngApp.controller('newSectionModalCtrl', function ($scope, $uibModalInstance) {
     };
 });
 
-// for chord editing popover
-ngApp.controller('ChordPopoverCtrl', function ($scope) {
-
+// set app appearance
+app.run(function(editableOptions) {
+  editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 });
+
+// once all the angular has loaded, un-hide the angular content
+$(".hide-on-load").removeClass("hide-on-load");
+

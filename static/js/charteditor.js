@@ -1,11 +1,11 @@
 // non-angular javascript for chart editor
 
-function addHoverEffect(selector) {
+// function addHoverEffect(selector) {
 
-    $(selector).hover(function() {
-        $(this).toggleClass('chart-active');
-    });
-}
+//     $(selector).hover(function() {
+//         $(this).toggleClass('chart-active');
+//     });
+// }
 
 
 $(document).ready(function() {
