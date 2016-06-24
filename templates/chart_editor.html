@@ -2,6 +2,8 @@
 
 {% block head %}
     <title>Box Charter: Edit Chart</title>
+    <link rel="stylesheet" href="../static/css/charteditor.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-xeditable/0.1.12/css/xeditable.css">
 {% endblock %}
 
 
@@ -10,44 +12,57 @@
 <div ng-app="boxcharts" ng-controller="ChartEditController" id="content">
     <h1>Edit Chart</h1>
 
+    Chart saved? {{ chart_saved }}
+
     <div id="sections_div">
 
     <span ng-repeat="section in sections">
         <div class="row" id="{{ section.section_name }}_metadata">
-            <h2 class="section_title">{{ section.section_name }}</h2>
-            <p class="section_desc">{{ section.section_desc }}</p>
-            <button id="add_measure_{{ section.section_id }}" 
-                    ng-click="makeNewMeasure()">New Measure</button>
-        </div>
+            <div class="col-xs-12">
+                <h2 class="section_title">{{ section.section_name }}</h2>
+                <p class="section_desc">{{ section.section_desc }}</p>
+            </div>
+         </div>
         <div class="row" id="{{ section.section_name }}_measures">
             <span ng-repeat="measure in section.measures">
                 <div 
                     id="meas_{{ section.section_id }}.{{ measure.measure_id }}" 
-                    class="measure col-xs-3">
-                    Measure chords: 
-                        <span ng-repeat="(beat_num, chord) in measure.chords">
-                            {{ beat_num }}: {{ chord }}
-                        </span><br>
-                    Measure lyrics: 
-                        <span ng-repeat="lyric in measure.lyrics">
-                            {{ lyric }}<br>
+                    class="measure col-xs-{{ 12 / section.measure_width }}">
+                    <div class="row chords-row">
+                        <span ng-repeat="i in getNumber(section.beat_count) track by $index">
+                            <div class="chord col-xs-{{ 12 / section.beat_count }} col-centered">
+                                {{ measure.chords[$index] }}
+                            </div>
                         </span>
+                    </div>
+                    <div class="row lyrics-row">
+                        <span ng-repeat="i in getNumber(section.verse_count) track by $index">
+                            <div class="lyric col-xs-12">
+                                {{ measure.lyrics[$index] }}
+                            </div>
+                        </span>
+                    </div>
                 </div>
             </span>
         </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button id="add_measure_{{ section.section_id }}" 
+                    class="btn default-btn"
+                    ng-click="createNewMeasure(section.section_index)">New Measure</button>
+            </div>
+        </div>
+
     </span>
 
         <div class="row" id="new_section">
             <div class="col-xs-12">
-                <button type="button" class="btn btn-default" id="new_section_button" ng-click="open()">
+                <button type="button" class="btn btn-default" id="new_section_button" ng-click="openNewSectionModal()">
                   New Section
                 </button>
             </div>
         </div>
     </div>
-</div>
-
-
 
 <!-- New Section Modal -->
     <script type="text/ng-template" id="newSectionModal.html">
@@ -55,20 +70,24 @@
             <h3 class="modal-title">Create New Section</h3>
         </div>
         <div class="modal-body">
-            <!-- TODO: accessibleize -->
 
             <form id="section-create-form" novalidate class="simple-form">
                 Section name: 
-                    <input type="text" class="form-control-label" ng-model="new_section.name" /><br />
+                    <input type="text" class="form-control-label" ng-model="newSection.section_name"><br>
                 Section description: 
-                    <input type="text" class="form-control-label" ng-model="new_section.desc" /><br />
-                Measure width:
-                    <input type="number" default=4 ng-model="new_section.measure_count">
-                <input type="button" class="btn" ng-click="reset()" value="Reset" />
+                    <input type="text" class="form-control-label" ng-model="newSection.section_desc"><br>
+                Number of measures:
+                    <input type="number" ng-model="newSection.measure_count">
+                Measures per line:
+                    <input type="number" ng-model="newSection.measure_width">
+                Beats per measure:
+                    <input type="number" ng-model="newSection.beat_count">
+                Number of verses:
+                    <input type="number" ng-model="newSection.verse_count">
             </form>
          <div class="modal-footer">
             <button type="button" class="btn btn-secondary" ng-click="cancel()">Cancel</button>
-            <button type="button" class="btn btn-primary" ng-click="sectionCreate()">Create section</button>
+            <button type="button" class="btn btn-primary" ng-click="ok()">Create section</button>
         </div>
     </script>
 </div>
@@ -76,6 +95,8 @@
 {% endraw %}
 {% endblock %}
 
-{% block js %}
-    <script type="text/javascript" src="static/js/charteditor.js"></script>
+{% block js %}    
+    <script src="
+https://cdnjs.cloudflare.com/ajax/libs/angular-xeditable/0.1.12/js/xeditable.js"></script>
+   <script type="text/javascript" src="static/js/charteditor.js"></script>
 {% endblock %}
