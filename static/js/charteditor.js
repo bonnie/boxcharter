@@ -3,11 +3,12 @@
 // create angular module with ui.bootstrap extension
 ngApp = angular.module('boxcharts', ['ui.bootstrap']);
     
-ngApp.controller('ChartEditController', function ($scope, $uibModal, $http) {
+ngApp.controller('ChartEditController', function ($scope, $uibModal, $http, $log) {
 
     // somehow get a chart ID here...
-
     var chart_id = false;
+
+    $scope.chart_saved = false;
 
     if (chart_id) {
         $http.get("getchart/" . chart_id)
@@ -18,88 +19,61 @@ ngApp.controller('ChartEditController', function ($scope, $uibModal, $http) {
         $scope.sections = [];
     }
 
-    $scope.makeNewSection = function () {
-        // var new_section = {section_name:'',
-        //                     section_instructions:'',
-        //                     measure_width:4,
-        //                     measures:[]};
 
-        var newSectionModal = $uibModal.open({
+     // new section modal window
+   $scope.openNewSectionModal = function() {
+       var newSectionModal = $uibModal.open({
           // animation: $scope.animationsEnabled,
           templateUrl: 'newSectionModal.html',
           controller: 'newSectionModalCtrl',
           // size: size,
-          resolve: {
-            new_section: function () {
-              return $scope.new_section;
+        });
+
+        newSectionModal.result.then(function (newSectionData)  {
+            // give a temp ID until the chart is saved
+            newSectionData.section_id = 'temp' + String($scope.sections.length);
+            newSectionData.section_index = $scope.sections.length;
+
+            // measures
+            newSectionData.measures = Array();
+            for (i=0; i<newSectionData.measure_count; i++) {
+                    measure = {measure_index: i}
+                    measure.measure_id = newSectionData.section_id + '.' + String(i);
+                    measure.chords = {};
+                    measure.lyrics = {};
+                    newSectionData.measures.push(measure)
+                ;
             }
-          }
+
+            // finally, add section to the scope sections array
+            $scope.sections.push(newSectionData);
         });
 
-        newSectionModal.result.then(function () {
-            $scope.new_section.measures = [];
-            $scope.new_section.sect_num = $scope.sections.length();
-            $scope.new_section.section_id = 'temp' + str(sections.length());
-            $scope.sections.append(new_section);
-        });
-
-// ************
-
-    //     // close modal window
-    //     $("#newSectionModal").modal('hide');
-
-    //     // debugging
-    //     console.log(modal_data);
-
-    //     // assign temporary section ID; 
-    //     // will transform into actual section ID when chart is saved
-
-    //     var new_section = {section_name:'My New Section',
-    //                         section_instructions:'Sing with feeling',
-    //                         section_id:0,
-    //                         measure_width:4,
-    //                         measures:[
-    //                             {measure_id:1,
-    //                              chords:{
-    //                                 1:'A',
-    //                                 3:'D'
-    //                             },
-    //                             lyrics:[
-    //                                 'Say you love me']}
-    //                         ]
-
-    //                         };
-    //     $scope.sections.push(new_section);
     };
 
-    $scope.makeNewMeasure = function(section_id) {
-        section = $scope.sections[section_id];
+    $scope.createNewMeasure = function(section_index) {
+        section = $scope.sections[section_index];
+        newMeasure = {};
 
-        // add the new measure to the chart on the server, to get a mesaure_id
-        // var new_measure_post = $.post( "", function() {
-        //   alert( "success" );
-        // })
-        //   .done(function() {
-        //     alert( "second success" );
-        //   })
-        //   .fail(function() {
-        //     alert( "error" );
-        //   })
-        //   .always(function() {
-        //     alert( "finished" );
-        // });
-         
-        // // Perform other work here ...
-         
-        // // Set another completion function for the request above
-        // new_measure_post.always(function() {
-        //   alert( "second finished" );
-        // });
+        // give a temp ID until the chart is saved
+        newMeasure.measure_id = section.section_id + '.' + String(section.measures.length);
 
-        // assign temporary measure ID; 
-        // will transform into actual measure ID when chart is saved
-        //var new_measure = {measure_id = null}
+        newMeasure.measure_index = section.measures.length;
 
+        // newMeasure.chords = {};
+        newMeasure.chords = {0:'A', 2:'E'};
+
+        // newMeasure.lyrics = {}
+        newMeasure.lyrics = {0:'on the valley', 1:'in a manger', 3:'holy holy'};
+
+        $scope.sections[section_index].measures.push(newMeasure);
+
+    };
+
+    // for iterating through chords and lyrics without having to pad the arrays
+    // from http://stackoverflow.com/questions/16824853/way-to-ng-repeat-defined-number-of-times-instead-of-repeating-over-array
+    $scope.getNumber = function(num) {
+        return new Array(num);
     };
 
 });
@@ -107,18 +81,20 @@ ngApp.controller('ChartEditController', function ($scope, $uibModal, $http) {
 // for new selection modal
 ngApp.controller('newSectionModalCtrl', function ($scope, $uibModalInstance) {
 
-  // $scope.items = items;
-  // $scope.selected = {
-  //   item: $scope.items[0]
-  // };
+    // easy new-section-making for debugging
+    $scope.newSection = {section_name: 'section the first',
+                         section_desc: 'there shall be no other sections before me',
+                         beat_count: 4,
+                         verse_count: 4,
+                         measure_count: 20,
+                         measure_width: 4};
 
-  $scope.ok = function () {
-    $uibModalInstance.close();
-  };
+    $scope.ok = function () {
+        $uibModalInstance.close($scope.newSection);
+    };
 
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
 });
-
 
