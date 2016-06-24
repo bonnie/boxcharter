@@ -1,16 +1,23 @@
+.chart-active {
+    border: 2px gray solid;
+}
+
 .chords-row {
     border: 2px black solid;
 }
 
 .chord {
     font-weight: bolder;
-    border-right: 1px #999 dotted;
-    border-left: 1px #999 dotted;
     min-height: 3em;
+}
+
+.lyric {
+    min-height: 1em;
 }
 
 .lyrics-row {
     margin-bottom: 2em;
 }
+
 /* for angular ui.bootstrap */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }

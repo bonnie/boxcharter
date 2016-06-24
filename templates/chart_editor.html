@@ -9,12 +9,12 @@
 
 {% block content %}
 {% raw %}
-<div ng-app="boxcharts" ng-controller="ChartEditController" id="content">
+<div ng-app="boxcharts" ng-controller="ChartEditController" id="chart_content">
     <h1>Edit Chart</h1>
 
     Chart saved? {{ chart_saved }}
 
-    <div id="sections_div">
+    <div id="chart_body">
 
     <span ng-repeat="section in sections">
         <div class="row" id="{{ section.section_name }}_metadata">
@@ -30,14 +30,16 @@
                     class="measure col-xs-{{ 12 / section.measure_width }}">
                     <div class="row chords-row">
                         <span ng-repeat="i in getNumber(section.beat_count) track by $index">
-                            <div class="chord col-xs-{{ 12 / section.beat_count }} col-centered">
+                            <div 
+                                class="chord col-xs-{{ 12 / section.beat_count }} col-centered chart-editable"
+                                ng-click="editChord(section.section_index, measure.measure_index, $index)">
                                 {{ measure.chords[$index] }}
                             </div>
                         </span>
                     </div>
                     <div class="row lyrics-row">
                         <span ng-repeat="i in getNumber(section.verse_count) track by $index">
-                            <div class="lyric col-xs-12">
+                            <div class="lyric col-xs-12 chart-editable">
                                 {{ measure.lyrics[$index] }}
                             </div>
                         </span>
@@ -98,5 +100,6 @@
 {% block js %}    
     <script src="
 https://cdnjs.cloudflare.com/ajax/libs/angular-xeditable/0.1.12/js/xeditable.js"></script>
+   <script type="text/javascript" src="static/js/chart_angular.js"></script>
    <script type="text/javascript" src="static/js/charteditor.js"></script>
 {% endblock %}

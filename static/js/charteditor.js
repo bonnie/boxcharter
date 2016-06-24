@@ -1,100 +1,19 @@
-// Boxchart code for editing charts
+// non-angular javascript for chart editor
 
-// create angular module with ui.bootstrap extension
-ngApp = angular.module('boxcharts', ['ui.bootstrap']);
-    
-ngApp.controller('ChartEditController', function ($scope, $uibModal, $http, $log) {
+function addHoverEffect(selector) {
 
-    // somehow get a chart ID here...
-    var chart_id = false;
-
-    $scope.chart_saved = false;
-
-    if (chart_id) {
-        $http.get("getchart/" . chart_id)
-        .then(function(response) {
-            $scope.sections = response.data;
-        });
-    } else {
-        $scope.sections = [];
-    }
+    $(selector).hover(function() {
+        $(this).toggleClass('chart-active');
+    });
+}
 
 
-     // new section modal window
-   $scope.openNewSectionModal = function() {
-       var newSectionModal = $uibModal.open({
-          // animation: $scope.animationsEnabled,
-          templateUrl: 'newSectionModal.html',
-          controller: 'newSectionModalCtrl',
-          // size: size,
-        });
+$(document).ready(function() {
 
-        newSectionModal.result.then(function (newSectionData)  {
-            // give a temp ID until the chart is saved
-            newSectionData.section_id = 'temp' + String($scope.sections.length);
-            newSectionData.section_index = $scope.sections.length;
-
-            // measures
-            newSectionData.measures = Array();
-            for (i=0; i<newSectionData.measure_count; i++) {
-                    measure = {measure_index: i}
-                    measure.measure_id = newSectionData.section_id + '.' + String(i);
-                    measure.chords = {};
-                    measure.lyrics = {};
-                    newSectionData.measures.push(measure)
-                ;
-            }
-
-            // finally, add section to the scope sections array
-            $scope.sections.push(newSectionData);
-        });
-
-    };
-
-    $scope.createNewMeasure = function(section_index) {
-        section = $scope.sections[section_index];
-        newMeasure = {};
-
-        // give a temp ID until the chart is saved
-        newMeasure.measure_id = section.section_id + '.' + String(section.measures.length);
-
-        newMeasure.measure_index = section.measures.length;
-
-        // newMeasure.chords = {};
-        newMeasure.chords = {0:'A', 2:'E'};
-
-        // newMeasure.lyrics = {}
-        newMeasure.lyrics = {0:'on the valley', 1:'in a manger', 3:'holy holy'};
-
-        $scope.sections[section_index].measures.push(newMeasure);
-
-    };
-
-    // for iterating through chords and lyrics without having to pad the arrays
-    // from http://stackoverflow.com/questions/16824853/way-to-ng-repeat-defined-number-of-times-instead-of-repeating-over-array
-    $scope.getNumber = function(num) {
-        return new Array(num);
-    };
+    // mouseover to indicate editable sections of the chart
+    $("#chart_content").on({
+        mouseenter:function(){ $(this).addClass('chart-active'); },
+        mouseleave:function(){ $(this).removeClass('chart-active'); }
+    }, '.chart-editable');
 
 });
-
-// for new selection modal
-ngApp.controller('newSectionModalCtrl', function ($scope, $uibModalInstance) {
-
-    // easy new-section-making for debugging
-    $scope.newSection = {section_name: 'section the first',
-                         section_desc: 'there shall be no other sections before me',
-                         beat_count: 4,
-                         verse_count: 4,
-                         measure_count: 20,
-                         measure_width: 4};
-
-    $scope.ok = function () {
-        $uibModalInstance.close($scope.newSection);
-    };
-
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
-});
-
