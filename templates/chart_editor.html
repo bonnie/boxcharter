@@ -2,44 +2,80 @@
 
 {% block head %}
     <title>Box Charter: Edit Chart</title>
-    <script type="text/javascript" src="static/js/charteditor.js"></script>
 {% endblock %}
 
 
 {% block content %}
+{% raw %}
 <div ng-app="boxcharts" ng-controller="ChartEditController" id="content">
     <h1>Edit Chart</h1>
 
     <div id="sections_div">
 
     <span ng-repeat="section in sections">
-        <div class="row" id="{{ section.section_name|angular }}_metadata">
-            Section Name: {{ section.section_name|angular }}<br>
-            Section Instructions: {{ section.section_instructions|angular }}
+        <div class="row" id="{{ section.section_name }}_metadata">
+            <h2 class="section_title">{{ section.section_name }}</h2>
+            <p class="section_desc">{{ section.section_desc }}</p>
+            <button id="add_measure_{{ section.section_id }}" 
+                    ng-click="makeNewMeasure()">New Measure</button>
         </div>
-        <div class="row" id="{{ section.section_name|angular }}_measures">
+        <div class="row" id="{{ section.section_name }}_measures">
             <span ng-repeat="measure in section.measures">
                 <div 
-                    id="meas_{{ section.section_id|angular }}.{{ measure.measure_id|angular }}" 
+                    id="meas_{{ section.section_id }}.{{ measure.measure_id }}" 
                     class="measure col-xs-3">
                     Measure chords: 
                         <span ng-repeat="(beat_num, chord) in measure.chords">
-                            {{ beat_num|angular }}: {{ chord|angular }}
+                            {{ beat_num }}: {{ chord }}
                         </span><br>
                     Measure lyrics: 
                         <span ng-repeat="lyric in measure.lyrics">
-                            {{ lyric|angular }}<br>
+                            {{ lyric }}<br>
                         </span>
                 </div>
             </span>
         </div>
     </span>
 
-        <div class="row" id="new_section_button">
-            <button id="new_section" ng-click="makeNewSection()">+</button>
+        <div class="row" id="new_section">
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-default" id="new_section_button" ng-click="open()">
+                  New Section
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
+
+
+<!-- New Section Modal -->
+    <script type="text/ng-template" id="newSectionModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Create New Section</h3>
+        </div>
+        <div class="modal-body">
+            <!-- TODO: accessibleize -->
+
+            <form id="section-create-form" novalidate class="simple-form">
+                Section name: 
+                    <input type="text" class="form-control-label" ng-model="new_section.name" /><br />
+                Section description: 
+                    <input type="text" class="form-control-label" ng-model="new_section.desc" /><br />
+                Measure width:
+                    <input type="number" default=4 ng-model="new_section.measure_count">
+                <input type="button" class="btn" ng-click="reset()" value="Reset" />
+            </form>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" ng-click="cancel()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-click="sectionCreate()">Create section</button>
+        </div>
+    </script>
+</div>
+
+{% endraw %}
 {% endblock %}
 
+{% block js %}
+    <script type="text/javascript" src="static/js/charteditor.js"></script>
+{% endblock %}

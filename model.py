@@ -78,7 +78,7 @@ class Section(db.Model):
 
     # metadata
     section_name = db.Column(db.String(256))
-    section_instructions = db.Column(db.String(256))
+    section_desc = db.Column(db.String(256))
 
     # layout
     measure_width = db.Column(db.Integer, default=4)

@@ -9,7 +9,7 @@ from flask import Flask, render_template, request, flash, redirect, session, \
                   jsonify
 
 # so jinja and angular can coexist peacably
-from flask.ext.triangle import Triangle
+# from flask.ext.triangle import Triangle
 
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -25,7 +25,7 @@ import os
 app = Flask(__name__)
 
 # for jinja / angular support
-Triangle(app)
+# Triangle(app)
 
 # for Flask session and debug DebugToolbar
 app.secret_key = os.environ.get('FLASK_SECRET_KEY')
@@ -65,9 +65,9 @@ def return_chart_json(chart_id):
     chart = Chart.query.filter_by(chart_id=chart_id)
 
     # TODO: big-ass list/dictionary comprehension here to make object
-    sections = [section.section_name for section in chart.sections]
+    sections = [section.section_name for section in enumerate(chart.sections)]
 
-    return jsonify({'sections': sections})
+    return jsonify({"sections": sections})
 
 
 @app.route('/save_chart')
