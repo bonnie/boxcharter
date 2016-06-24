@@ -16,16 +16,16 @@ class Chord(db.Model):
 
     chord_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     measure_id = db.Column(db.Integer, db.ForeignKey("measures.measure_id"))
-    beat_num = db.Column(db.Integer)
+    beat_index = db.Column(db.Integer)
     chord_name = db.Column(db.String(8))
 
     # TODO verify valid chord names
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Chord chord_id={} beat_num={} chord_name={}".format(
+        return "<Chord chord_id={} beat_index={} chord_name={}".format(
                                                                 self.chord_id,
-                                                                self.beat_num,
+                                                                self.beat_index,
                                                                 self.chord_name)
 
 
@@ -36,14 +36,14 @@ class Lyric(db.Model):
 
     lyric_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     measure_id = db.Column(db.Integer, db.ForeignKey("measures.measure_id"))
-    verse_num = db.Column(db.Integer)
+    verse_index = db.Column(db.Integer)
     lyric_text = db.Column(db.String(128))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Lyric lyric_id={} verse_num={}, lyric_text={}".format(
+        return "<Lyric lyric_id={} verse_index={}, lyric_text={}".format(
                                                                 self.lyric_id,
-                                                                self.verse_num,
+                                                                self.verse_index,
                                                                 self.lyric_text)
 
 
@@ -54,17 +54,19 @@ class Measure(db.Model):
 
     measure_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     section_id = db.Column(db.Integer, db.ForeignKey("sections.section_id"))
-    measure_num = db.Column(db.Integer)
-    beat_count = db.Column(db.Integer, default=4)
+    measure_index = db.Column(db.Integer)
+
+    # this will inherit parent's beat count if null
+    beat_count = db.Column(db.Integer)
 
     # relationships
-    chords = db.relationship("Chord", order_by=Chord.beat_num)
-    lyrics = db.relationship("Lyric", order_by=Lyric.verse_num)
+    chords = db.relationship("Chord", order_by=Chord.beat_index)
+    lyrics = db.relationship("Lyric", order_by=Lyric.verse_index)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Measure measure_id={} measure_num={}".format(self.measure_id,
-                                                              self.measure_num)
+        return "<Measure measure_id={} measure_index={}".format(self.measure_id,
+                                                              self.measure_index)
 
 
 class Section(db.Model):
@@ -74,11 +76,13 @@ class Section(db.Model):
 
     section_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     chart_id = db.Column(db.Integer, db.ForeignKey("charts.chart_id"))
-    section_num = db.Column(db.Integer)
+    section_index = db.Column(db.Integer)
 
     # metadata
     section_name = db.Column(db.String(256))
     section_desc = db.Column(db.String(256))
+    beat_count = db.Column(db.Integer, default=4)
+    verse_count = db.Column(db.Integer, default=1)
 
     # layout
     measure_width = db.Column(db.Integer, default=4)
@@ -86,14 +90,14 @@ class Section(db.Model):
     # TODO: first and second ending
 
     # relationships
-    measures = db.relationship("Measure", order_by=Measure.measure_num)
+    measures = db.relationship("Measure", order_by=Measure.measure_index)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        repr_str = "<Section section_id={} section_name={} section_num={}"
+        repr_str = "<Section section_id={} section_name={} section_index={}"
         return repr_str.format(self.section_id,
                                self.section_name,
-                               self.section_num)
+                               self.section_index)
 
 
 class Chart(db.Model):
@@ -124,7 +128,7 @@ class Chart(db.Model):
 
     # relationships
     user = db.relationship("User")
-    sections = db.relationship("Section", order_by=Section.section_num)
+    sections = db.relationship("Section", order_by=Section.section_index)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
