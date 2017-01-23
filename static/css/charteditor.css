@@ -20,9 +20,10 @@
     margin-bottom: 2em;
 }
 
-/* hide until angular has loaded; reveal using js after */
-.hide-on-load {
-    display: none;
+/* hide angular sections until angular has loaded */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], 
+    .ng-cloak, .x-ng-cloak {
+    display: none !important;
 }
 
 /* for angular ui.bootstrap */
