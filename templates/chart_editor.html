@@ -35,13 +35,13 @@
                 </p>
             </div>
          </div>
-        <div class="row" id="{{ section.section_name }}_measures">
+        <div class="row measure-row" id="{{ section.section_name }}_measures">
             <span ng-repeat="measure in section.measures">
                 <div 
                     id="meas_{{ section.section_id }}.{{ measure.measure_id }}" 
                     class="measure col-xs-{{ 12 / section.measure_width }}">
                     <div class="row chords-row">
-                        <span ng-repeat="i in getNumber(section.beat_count) track by $index">
+                        <span ng-repeat="i in section.beat_count track by $index">
                             <div editable-text="measure.chords[$index]" 
                                 class="chord col-xs-{{ 12 / section.beat_count }} text-center chart-editable">
                                 {{ measure.chords[$index] }}

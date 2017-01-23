@@ -23,6 +23,8 @@ import os
 # Flask / Jinja setup
 
 app = Flask(__name__)
+app.jinja_env.auto_reload = True
+
 
 # for jinja / angular support
 # Triangle(app)

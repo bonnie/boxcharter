@@ -2,12 +2,25 @@
     background-color: #ddd;
 }
 
-.chords-row {
-    border: 2px black solid;
+.measure-row {
+    /*border: 2px black solid;*/
+    min-height: 5em;
+    margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.measure {
+    min-height: 5em;
+    margin-bottom: 5px;
 }
 
 .chord {
     font-weight: bolder;
+    border: 1px black solid;
     min-height: 3em;
 }
 

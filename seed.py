@@ -58,7 +58,7 @@ def load_user():
 def load_sample_song(user):
     """load a sample song from file, and attach it to passed-in user object"""
 
-    
+    pass
 
 
 if __name__ == "__main__":
