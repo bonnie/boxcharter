@@ -14,14 +14,20 @@
 }
 
 .measure {
-    min-height: 5em;
-    margin-bottom: 5px;
+    margin: 5px 0;
+    border: 1px black solid;
+}
+
+.chord-row {
+    border: 2px black solid;
 }
 
 .chord {
     font-weight: bolder;
-    border: 1px black solid;
     min-height: 3em;
+    border-left: 1px lightgray solid;
+    border-right: 1px lightgray solid;
+    border-collapse: collapse;
 }
 
 .lyric {

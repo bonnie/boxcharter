@@ -35,29 +35,30 @@
                 </p>
             </div>
          </div>
-        <div class="row measure-row" id="{{ section.section_name }}_measures">
-            <span ng-repeat="measure in section.measures">
-                <div 
-                    id="meas_{{ section.section_id }}.{{ measure.measure_id }}" 
-                    class="measure col-xs-{{ 12 / section.measure_width }}">
-                    <div class="row chords-row">
-                        <span ng-repeat="i in section.beat_count track by $index">
-                            <div editable-text="measure.chords[$index]" 
-                                class="chord col-xs-{{ 12 / section.beat_count }} text-center chart-editable">
-                                {{ measure.chords[$index] }}
-                            </div>
-                        </span>
-                    </div>
-                    <div class="row lyrics-row">
-                        <span ng-repeat="i in getNumber(section.verse_count) track by $index">
-                            <div class="lyric col-xs-12 chart-editable">
-                                {{ measure.lyrics[$index] }}
-                            </div>
-                        </span>
-                    </div>
-                </div>
-            </span>
-        </div>
+
+        <table class="table section-table">        
+          <tr ng-repeat="measureRow in section.measureRows" class="measure-row">
+            <td ng-repeat="measure in measureRow" class="measure-cell">
+              <table class="table measure">
+                <tr class="chord-row">
+                  <td ng-repeat="chord in measure.chords" class="chord text-center chart-editable">
+                    <a href="#" editable-text="chord.note">
+                      {{ chord.note || '&#9834;' }}
+                    </a>
+                  </td>
+                </tr>
+                <tr ng-repeat="lyric in measure.lyrics" class="lyrics-row">
+                  <td colspan="{{ section.beat_count }}" class="lyric">
+                    <a href="#" editable-text="lyric.lyric_text">
+                      {{ lyric.lyric_text || 'lyric'}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
         <div class="row">
             <div class="col-xs-12">
                 <button id="add_measure_{{ section.section_id }}" 
@@ -93,7 +94,7 @@
                 Number of measures:
                     <input type="number" ng-model="newSection.measure_count">
                 Measures per line:
-                    <input type="number" ng-model="newSection.measure_width">
+                    <input type="number" ng-model="newSection.measures_per_line">
                 Beats per measure:
                     <input type="number" ng-model="newSection.beat_count">
                 Number of verses:
