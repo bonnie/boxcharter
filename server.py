@@ -72,12 +72,19 @@ def return_chart_json(chart_id):
     return jsonify({"sections": sections})
 
 
-@app.route('/save_chart')
+@app.route('/save_chart', methods=['POST'])
 def save_chart():
-    """Save a new or modified box chart"""
+    """Save a new or modified box chart
 
-    # this will probably be ajax-y
-    pass
+    note: angular sends posted data as JSON, so the data is found in
+    request.json (not request.form)"""
+
+    print "*******posted data******"
+    print request.json
+    print "********session*********"
+    print session
+
+    return ''
 
 
 # no caching for testing purposes!!

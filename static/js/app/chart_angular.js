@@ -89,16 +89,40 @@ app = angular.module('boxcharts', ['ui.bootstrap', 'xeditable'])
     };
 
     // for chord popover
-    self.chordEditPopover = {
-        templateUrl: 'chordEdit.html',
+    // self.chordEditPopover = {
+    //     templateUrl: 'chordEdit.html',
+    // };
+
+    // self.editChord = function(section_index, measure_index, chord_index) {
+
+    //     self.sections[section_index].measures[measure_index].chords[chord_index] = 'A';
+
+    // };
+
+    // for saving the chart back to the server
+    self.saveChart = function() {
+
+        // TODO: account for unnamed chart or section
+
+        // TODO: account for non-logged-in user
+
+
+        var payload = {'chart': self.chart,
+                       'sections': self.sections,
+                        };
+
+        $http.post('/save_chart', payload).then(
+            function successCallback(response) {
+
+                console.log('success!');
+
+            },
+            function errorCallback(response) {
+
+                console.log('whomp whomp');
+
+            });
     };
-
-    self.editChord = function(section_index, measure_index, chord_index) {
-
-        self.sections[section_index].measures[measure_index].chords[chord_index] = 'A';
-
-    };
-
 
     // for iterating through chords and lyrics without having to pad the arrays
     // from http://stackoverflow.com/questions/16824853/way-to-ng-repeat-defined-number-of-times-instead-of-repeating-over-array

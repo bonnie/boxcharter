@@ -16,6 +16,7 @@
         </a>
     </h1>
 
+    <button class='btn default-btn' ng-click="ce.saveChart()">Save Chart</button>
     Chart saved? {{ chart_saved }}
 
     <div id="chart_body">
@@ -107,15 +108,15 @@
     </script>
 
 <!-- chord edit popover -->
-    <script type="text/ng-template" id="chordEdit.html">
+<!--    <script type="text/ng-template" id="chordEdit.html">
         <div class="form-group">
             <input type="text" ng-model="sections[0].section_name" class="form-control">
             <button type="button" class="btn btn-primary btn-sm"  ng-click='toggle()'>
                 OK
             </button>
         </div>
-    </script>
-
+   </script>
+-->
 
 </div>
 
