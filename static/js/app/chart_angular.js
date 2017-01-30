@@ -16,10 +16,11 @@ app = angular.module('boxcharts', ['ui.bootstrap', 'xeditable'])
     if (chart_id) {
         $http.get("getchart/" . chart_id)
         .then(function(response) {
-            self.sections = response.data;
+            self.chart.sections = response.data;
         });
     } else {
-        self.sections = [];
+        self.chart = {};
+        self.chart.sections = [];
     }
 
     // new section modal window
@@ -33,7 +34,7 @@ app = angular.module('boxcharts', ['ui.bootstrap', 'xeditable'])
 
         newSectionModal.result.then(function (newSectionData)  {
             // give a temp ID until the chart is saved
-            newSectionData.section_id = 'temp' + String(self.sections.length);
+            newSectionData.section_id = 'temp' + String(self.chart.sections.length);
 
             // measures
             newSectionData.measures = Array();
@@ -64,13 +65,13 @@ app = angular.module('boxcharts', ['ui.bootstrap', 'xeditable'])
             newSectionData = addRowData(newSectionData);
 
             // finally, add section to the scope sections array
-            self.sections.push(newSectionData);
+            self.chart.sections.push(newSectionData);
         });
 
     };
 
     self.createNewMeasure = function(section_index) {
-        this_section = self.sections[section_index];
+        this_section = self.chart.sections[section_index];
         newMeasure = {};
 
         // give a temp ID until the chart is saved
@@ -84,7 +85,7 @@ app = angular.module('boxcharts', ['ui.bootstrap', 'xeditable'])
         newMeasure.lyrics = {};
         // newMeasure.lyrics = {0:'on the valley', 1:'in a manger', 3:'holy holy'};
 
-        self.sections[section_index].measures.push(newMeasure);
+        self.chart.sections[section_index].measures.push(newMeasure);
 
     };
 
@@ -95,7 +96,7 @@ app = angular.module('boxcharts', ['ui.bootstrap', 'xeditable'])
 
     // self.editChord = function(section_index, measure_index, chord_index) {
 
-    //     self.sections[section_index].measures[measure_index].chords[chord_index] = 'A';
+    //     self.chart.sections[section_index].measures[measure_index].chords[chord_index] = 'A';
 
     // };
 
@@ -107,9 +108,7 @@ app = angular.module('boxcharts', ['ui.bootstrap', 'xeditable'])
         // TODO: account for non-logged-in user
 
 
-        var payload = {'chart': self.chart,
-                       'sections': self.sections,
-                        };
+        var payload = {'chart': self.chart};
 
         $http.post('/save_chart', payload).then(
             function successCallback(response) {

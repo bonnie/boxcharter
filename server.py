@@ -69,7 +69,7 @@ def return_chart_json(chart_id):
     # TODO: big-ass list/dictionary comprehension here to make object
     sections = [section.section_name for section in enumerate(chart.sections)]
 
-    return jsonify({"sections": sections})
+    return jsonify({'chart': {'sections': sections}})
 
 
 @app.route('/save_chart', methods=['POST'])
