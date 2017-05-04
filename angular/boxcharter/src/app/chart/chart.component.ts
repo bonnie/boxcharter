@@ -19,9 +19,10 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { ChartService } from "../chart.service";
 
 @Component({
-  selector: 'app-chart',
+  selector: 'app-chart', // what's this?? bds 5/3
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css']
 })
