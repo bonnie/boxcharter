@@ -9,6 +9,18 @@ db = SQLAlchemy()
 #######################################################################
 # Model definitions: Chart, Section, Measure, Chord, Lyric
 
+class DataMixin(object):
+    """A mixin for classes that need to return all of their data in a dict."""
+
+    def get_basic_data(self):
+        """Return a dict of all attributes for this object."""
+
+        return { key: value 
+                    for key, value 
+                    in self.__dict__.items() 
+                    if not (key.startswith("_")) and value is not None }
+
+
 class Chord(db.Model):
     """measure chord"""
 
@@ -24,11 +36,22 @@ class Chord(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Chord chord_id={} beat_index={} chord_name={}".format(
+        return "<Chord chord_id={} beat_index={} note_code={} chord_suffix>".format(
                                                                 self.chord_id,
                                                                 self.beat_index,
-                                                                self.chord_name)
+                                                                self.note_code,
+                                                                self.chord_suffix)
 
+    def get_data(self):
+        """Return all data for a chord in a JSON-friendly format."""
+
+        chord_data = {'index': self.beat_index,
+                      'note': self.note_code}
+                
+        if self.chord_suffix:
+            chord_data['suffix'] = self.chord_suffix
+
+        return chord_data
 
 class Lyric(db.Model):
     """measure lyric"""
@@ -42,13 +65,19 @@ class Lyric(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Lyric lyric_id={} verse_index={}, lyric_text={}".format(
+        return "<Lyric lyric_id={} verse_index={}, lyric_text={}>".format(
                                                                 self.lyric_id,
                                                                 self.verse_index,
                                                                 self.lyric_text)
 
+    def get_data(self):
+        """Return all data for a chord in a JSON-friendly format."""
 
-class Measure(db.Model):
+        return {'index': self.verse_index,
+                'lyric': self.lyric_text}
+
+
+class Measure(db.Model, DataMixin):
     """section measure"""
 
     __tablename__ = "measures"
@@ -69,11 +98,25 @@ class Measure(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Measure measure_id={} measure_index={}".format(self.measure_id,
+        return "<Measure measure_id={} measure_index={}>".format(self.measure_id,
                                                               self.measure_index)
 
 
-class Section(db.Model):
+    def get_data(self):
+        """Return all data for a measure in a JSON-friendly format."""
+
+        measure_data = self.get_basic_data()
+
+        measure_data['chords'] = [chord.get_data() for chord in self.chords]
+        measure_data['lyrics'] = [lyric.get_data() for lyric in self.lyrics]
+
+        if not measure_data['lyrics']:
+            del measure_data['lyrics']
+
+        return measure_data
+
+
+class Section(db.Model, DataMixin):
     """chart section"""
 
     __tablename__ = "sections"
@@ -105,13 +148,22 @@ class Section(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        repr_str = "<Section section_id={} section_name={} section_index={}"
+        repr_str = "<Section section_id={} section_name={} section_index={}>"
         return repr_str.format(self.section_id,
                                self.section_name,
                                self.section_index)
 
+    def get_data(self):
+        """Return all data for a section in a JSON-friendly format."""
 
-class Chart(db.Model):
+        section_data = self.get_basic_data()
+
+        # clear out measures so we can create non-object list
+        section_data['measures'] = [measure.get_data() for measure in self.measures]
+        return section_data
+
+
+class Chart(db.Model, DataMixin):
     """boxcharter chart"""
 
     __tablename__ = "charts"
@@ -143,8 +195,23 @@ class Chart(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Chart chart_id={} title={}".format(self.chart_id, self.title)
+        return "<Chart chart_id={} title={}>".format(self.chart_id, self.title)
 
+
+    def get_data(self):
+        """Return all data for a chart in a JSON-friendly format."""
+
+        # basic data
+        chart_data = self.get_basic_data()
+
+        # remove user
+        if 'user_id' in chart_data:
+            del chart_data['user_id']
+
+        # gather data in sections individually
+        chart_data['sections'] = [section.get_data() for section in self.sections]
+
+        return chart_data
 
 #######################################################################
 # Model definitions: Key, Note
@@ -174,7 +241,7 @@ class ScaleNote(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Key note_code={} key_code={} scale_degree={}".format(
+        return "<Key note_code={} key_code={} scale_degree={}>".format(
                                                             self.note_code,
                                                             self.key_code,
                                                             self.scale_degree)
@@ -193,7 +260,7 @@ class Key(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Key key_code={} key_name={}".format(self.key_code, self.key_name)
+        return "<Key key_code={} key_name={}>".format(self.key_code, self.key_name)
 
 
 #######################################################################
@@ -228,7 +295,7 @@ def connect_to_db(app):
 
     # configure to use our PostgreSQL db
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///boxcharts'
-    app.config['SQLALCHEMY_ECHO'] = True
+    # app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 

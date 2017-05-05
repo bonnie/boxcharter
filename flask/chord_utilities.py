@@ -60,7 +60,7 @@ def lower_note(chord_string):
              'G': 'F'}
 
     if chord_string not in lower:
-        raise Exception('Chord not found')
+        raise Exception('Chord not found: {}'.format(chord_string))
 
     return lower[chord_string]
 

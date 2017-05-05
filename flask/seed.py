@@ -7,6 +7,8 @@ from chord_utilities import parse_chord, lower_note
 from model import Chart, Section, Measure, Key, Note, Chord, Lyric, ScaleNote, \
                   User, connect_to_db, db
 
+DEBUG=True
+
 def add_scale_note(scale_degree, note_string, key):
     """Create a scale note for this note string and key, and add to db. 
 
@@ -34,7 +36,8 @@ def add_scale_note(scale_degree, note_string, key):
 def load_keys_and_notes():
     """Read lines from csv and add to database."""
 
-    print "Loading keys"
+    if DEBUG:
+        print "Loading keys"
 
     for row in open("seed_data/keys.csv"):
         # example row: A,B,C#,D,E,F#,G#
@@ -81,10 +84,13 @@ def load_keys_and_notes():
 def load_user():
     """Create a sample user and return its user object."""
 
-    email = 'bonnie.commerce@gmail.com'
+    if DEBUG:
+        print "Loading user"
+
+    email = 'example@example.com'
     password = 'abc123'
-    fname = 'Bonnie'
-    lname = 'Schulkin'
+    fname = 'Sampy'
+    lname = 'Sample'
 
     newuser = User(email=email,
                    password=password,
@@ -136,15 +142,8 @@ def load_sample_song(filepath, user):
 
     """
 
-    # chart = Chart(title='Blackbird',
-    #               composer='Paul McCartney'
-    #               original_key=Key.query.get('G')
-    #               created_at=datetime.now(),
-    #               modified_at=datetime.now())
-
-    # chart.user = user
-
-    # a_section = Section()
+    if DEBUG:
+        print "Loading sample song"
 
     chartfile = open(filepath)
     chartlines = chartfile.read().split('\n');
@@ -164,12 +163,13 @@ def load_sample_song(filepath, user):
             # we've got ourselves a new section
             section_metadata = parse_metadata(line[1:])
             section = Section(**section_metadata)
+            chart.sections.append(section)
             measure_count = 0
 
         elif line:
             # add a measure to the section
             measure = Measure(measure_index=measure_count)
-            measure.section = section
+            section.measures.append(measure)
 
             # add chords and lyrics to the measure
             tokens = line.split('|')
@@ -178,18 +178,24 @@ def load_sample_song(filepath, user):
             chords = tokens[0].split()
             for i, chord_string in enumerate(chords):
                 chord_code, chord_suffix = parse_chord(chord_string)
-                beat_index = (len(chords) - len(chords) / (i + 1)) + 1
+                
+                ### NOTE: this is assuming a 4 beat measure with either one or
+                ### two chords. Since this is just seed, I'm not making a
+                ### general parsing algorithm!
+
+                beat_index = 0 if i == 0 else 2
+                
                 chord = Chord(note_code=chord_code, 
                               chord_suffix=chord_suffix,
                               beat_index=beat_index)
-                chord.measure = measure
+                measure.chords.append(chord)
 
             # lyrics
             lyrics = tokens[1:]
             for verse_index, lyric_string in enumerate(lyrics):
-                lyric = Lyric(verse_index=verse_index, lyric_text=lyric_string)
-
-            lyric.measure = measure
+                if lyric_string:
+                    lyric = Lyric(verse_index=verse_index, lyric_text=lyric_string)
+                    measure.lyrics.append(lyric)
 
             # increment measure count in anticipation of the next measure
             measure_count += 1
