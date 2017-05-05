@@ -283,8 +283,18 @@ class User(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<User user_id={} email ={}".format(self.user_id, self.email)
+        return "<User user_id={} email ={}>".format(self.user_id, self.email)
 
+    def get_charts(self):
+        """Return a dict of chart details."""
+
+        return {'charts': [
+                { 'title': chart.title,
+                  'id': chart.chart_id,
+                  'created_at': chart.created_at,
+                  'modified_at': chart.modified_at }
+                for chart in self.charts
+               ]}
 
 #######################################################################
 # Helper functions
