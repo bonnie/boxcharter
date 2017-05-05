@@ -9,7 +9,7 @@ export class ChartService {
 
   getChart(id: number): Observable<any> {
 
-    return this.http.get(localhost/chart)
+    return this.http.get('localhost/chart/id');
 
   }
 
