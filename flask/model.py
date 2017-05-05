@@ -17,7 +17,8 @@ class Chord(db.Model):
     chord_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     measure_id = db.Column(db.Integer, db.ForeignKey("measures.measure_id"))
     beat_index = db.Column(db.Integer)
-    chord_name = db.Column(db.String(8))
+    note_code = db.Column(db.String(2), db.ForeignKey('notes.note_code'))
+    chord_suffix = db.Column(db.String(8))
 
     # TODO verify valid chord names
 
@@ -56,12 +57,15 @@ class Measure(db.Model):
     section_id = db.Column(db.Integer, db.ForeignKey("sections.section_id"))
     measure_index = db.Column(db.Integer)
 
-    # this will inherit parent's beat count if null
+    # this will inherit parent measure's beat count if null
     beat_count = db.Column(db.Integer)
 
     # relationships
     chords = db.relationship("Chord", order_by=Chord.beat_index)
     lyrics = db.relationship("Lyric", order_by=Lyric.verse_index)
+    section = db.relationship("Section", 
+                              foreign_keys=section_id,
+                              backref='measures')
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -87,10 +91,17 @@ class Section(db.Model):
     # layout
     measure_width = db.Column(db.Integer, default=4)
     repeat = db.Column(db.Boolean, default=False)
-    # TODO: first and second ending
+
+    pickup_measure_start = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+    pickup_measure_end = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+    first_ending_start = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+    first_ending_end = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+    second_ending_start = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+    second_ending_end = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
 
     # relationships
-    measures = db.relationship("Measure", order_by=Measure.measure_index)
+    # because of many measure foreign keys here, relationship to measure is
+    # defined by backref under measure relationship
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -119,9 +130,9 @@ class Chart(db.Model):
     modified_at = db.Column(db.DateTime)
 
     # chart properties
-    original_key = db.Column(db.Integer, db.ForeignKey('keys.key_id'))
-    print_key = db.Column(db.Integer,
-                          db.ForeignKey('keys.key_id'),
+    original_key = db.Column(db.String(2), db.ForeignKey('keys.key_code'))
+    print_key = db.Column(db.String(2),
+                          db.ForeignKey('keys.key_code'),
                           nullable=True)
     max_pages = db.Column(db.Integer, default=1)
     min_fontsize = db.Column(db.Integer, default=10)
@@ -138,41 +149,51 @@ class Chart(db.Model):
 #######################################################################
 # Model definitions: Key, Note
 
+class Note(db.Model):
+    """A note that can be the first part of a chord."""
+
+    __tablename__ = 'notes'
+    note_code = db.Column(db.String(2), primary_key=True)
+
+
 class ScaleNote(db.Model):
-    """scale notes and their degree"""
+    """Associating notes with a particular scale."""
 
-    __tablename__ = "notes"
+    __tablename__ = 'scale_notes'
 
-    note_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    note_name = db.Column(db.String(2))
-    key_id = db.Column(db.Integer, db.ForeignKey("keys.key_id"))
+    scalenote_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    note_code = db.Column(db.String(2), db.ForeignKey('notes.note_code'))
+    key_code = db.Column(db.String(3), db.ForeignKey('keys.key_code'))
     scale_degree = db.Column(db.Integer)
+
+    # relationships
+    note = db.relationship('Note')
 
     # no need to relate to keys here;
     # never need to know what keys a note belongs to
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Key note_id={} key_id={} scale_degree={}".format(
-                                                            self.note_id,
-                                                            self.key_id,
+        return "<Key note_code={} key_code={} scale_degree={}".format(
+                                                            self.note_code,
+                                                            self.key_code,
                                                             self.scale_degree)
 
 
 class Key(db.Model):
-    """musical key for a chart"""
+    """Musical key for a chart."""
 
     __tablename__ = "keys"
 
-    key_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    key_name = db.Column(db.String(2))
+    # key_code needs three characters because it can be minor (Abm)
+    key_code = db.Column(db.String(3), primary_key=True)
 
     # relationships
     notes = db.relationship("ScaleNote", order_by=ScaleNote.scale_degree)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Key key_id={} key_name={}".format(self.key_id, self.key_name)
+        return "<Key key_code={} key_name={}".format(self.key_code, self.key_name)
 
 
 #######################################################################

@@ -1,38 +1,41 @@
-^Does My Ring Burn Your Finger
->Buddy and Julie Miller
+title=Does My Ring Burn Your Finger;composer=Buddy and Julie Miller;original_key=Gm
 
-+~width=5~lyrics=3
-:Gm|%|C Bb|Gm|%
-||||1. When I
-||||2. Well I re-
-||||3. Now it's just
++measure_width=5;verse_count=3
+Gm|
+%|
+C Bb|
+Gm|
+%|When I|Well I re-|Now it's just
+Gm|gave you my|member your|me and the
+%|heart, it was|words and I|night, and I'm
+C Bb|not what you|can't keep from|so broken
+Gm|wanted|crying|hearted
+%|now the|I could|I just
+Gm|walls say your|never believe|wait in the
+%|name and the|that your|dark here for my
+C Bb|pictures are|kisses were|dearly
+Gm|haunted|lying|departed
+%|Does my|Was there|Does my
+C Bb|ring burn your|something from the|ring burn your
+Gm|finger, did my|past buried|finger, did my
+C Bb|love weigh you|in a shallow|love weigh you
+Gm|down was a|grave did you|down was a
+C Bb|promise too|think it was|promise too
+Gm|much to keep a-|too far gone to|much to keep a-|
+D7|round|save|round
+%|
+Gm|(to bridge)
 
-Gm|%|C Bb|Gm|%
-gave you my|heart, it was|not what you|wanted|now the
-member your|words and I|can't keep from|crying|I could
-me and the|night, and I'm|so broken|hearted|I just
-
-Gm|%|C Bb|Gm|%
-walls say your|name and the|pictures are|haunted|Does my
-never believe|that your|kisses were|lying|Was there
-wait in the|dark here for my|dearly|departed|Does my
-
-C Bb|Gm|C Bb|Gm|C Bb
-ring burn your|finger, did my|love weigh you|down was a|promise too
-something from the|past buried|in a shallow|grave did you|think it was
-ring burn your|finger, did my|love weigh you|down was a|promise too
-
-Gm|D7|%:
-much to keep a-|round
-too far gone to|save|(to bridge)
-much to keep a-|round
-
-+Bridge, play between 2nd and 3rd verse~width=4~lyrics=1
-Gm|%|D|%|%|%
-Please tell me|baby|please tell me|now, you
-
-C|%|%|C Bb
-say that I should|just go on|now please tell me|how
-
++section_name=Bridge;section_desc=play between 2nd and 3rd verse;measure_width=4;verse_count=1
+D|Please tell me
+%|baby
+%|please tell me
+%|now, you
+C|say that I should
+%|just go on
+%|now please tell me
+C Bb|how
 Gm
-(to verse 3)
+%
+%
+%|(to verse 3)

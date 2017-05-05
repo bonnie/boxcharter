@@ -1,11 +1,38 @@
 """Adding scales and notes for initial database"""
 
-from model import Key, ScaleNote, User, connect_to_db, db
+from datetime import datetime
+
 from server import app
+from chord_utilities import parse_chord, lower_note
+from model import Chart, Section, Measure, Key, Note, Chord, Lyric, ScaleNote, \
+                  User, connect_to_db, db
 
+def add_scale_note(scale_degree, note_string, key):
+    """Create a scale note for this note string and key, and add to db. 
 
-def load_keys():
-    """read lines from csv and add to database"""
+    If note doesn't exist in the db, create that too. 
+
+    Globals:
+        db (db instance)
+    Inputs: 
+        scale_degree: integer from 0 to 7
+        note_string: string for note (examples: 'G', 'Bb')
+        key: Key object
+    """
+
+    note = Note.query.get(note_string)
+    if not note:
+        note = Note(note_code=note_string)
+        db.session.add(note)
+
+    scale_note = ScaleNote(scale_degree=scale_degree)
+    scale_note.note = note
+    scale_note.key = key
+
+    db.session.add(scale_note)
+
+def load_keys_and_notes():
+    """Read lines from csv and add to database."""
 
     print "Loading keys"
 
@@ -15,31 +42,44 @@ def load_keys():
         notes = row.split(',')
 
         # first make the key
-        key = Key(key_name=notes[0])
-        db.session.add(key)
-        db.session.flush()
-        db.session.refresh(key)
+        major_key = Key(key_code=notes[0])
+        minor_key = Key(key_code=notes[0] + 'm')
+        db.session.add_all([major_key, minor_key])
 
         # then make the notes
-        for i, note in enumerate(notes):
+        for i, note_string in enumerate(notes):
 
-            print "adding note [" + note + "]"
-            print "scale degree [" + str(i) + "]"
-            print "key_id [" + str(key.key_id) + "]"
-            print
+            add_scale_note(i, note_string, major_key)
 
-            newnote = ScaleNote(key_id=key.key_id,
-                                note_name=note,
-                                scale_degree=i)
+            # minor key has the same scale degrees except for 3 and 7, 
+            # which are a half step down
+            if i == 3 or i == 7:
+                if len(note_string) == 2:
+                    # this note is an accidental
+                    if note_string[1] == '#':
+                        note_string = note_string[0]
+                    else: 
+                        # it's a flat -- we need the next lower note to go a 
+                        # half step down
+                        note_string = lower_note(note_string[0])
+                else:
+                    # this note is not an accidental
+                    # the way the keys work, this will always be a flat
+                    note_string = note_string + 'b'
 
-            db.session.add(newnote)
+            add_scale_note(i, note_string, minor_key)
+
+
+    # add a percentage "note" for chord referential integrity
+    percent_note = Note(note_code='%')
+    db.session.add(percent_note)
 
     # commit work once done
     db.session.commit()
 
 
 def load_user():
-    """create a sample user and return its user object"""
+    """Create a sample user and return its user object."""
 
     email = 'bonnie.commerce@gmail.com'
     password = 'abc123'
@@ -54,18 +94,114 @@ def load_user():
     db.session.commit()
     return newuser
 
+def parse_metadata(line):
+    """Return a dict of metadata from a specially formated line.
 
-def load_sample_song(user):
-    """load a sample song from file, and attach it to passed-in user object"""
+    the line will have key/value pairs separated by ';'
+    For example: 
 
-    pass
+    chart_title=Does My Ring Burn Your Finger;composer=Buddy and Julie Miller;original_key=Gm
 
+    """
+
+    md = {}
+    md_tokens = line.split(';')
+    for item in md_tokens:
+        key, value = item.split('=')
+        md[key] = value
+
+    return md
+
+
+def load_sample_song(filepath, user):
+    """Load sample chart info from filepath, and attach to user parameter. 
+
+    The first line of the file should be chart metadata (see parse_metadata for
+    format. 
+
+    The subsequent lines:
+
+        '+' as the first character denotes a new section, with metadata following
+        For example: 
+
+            +measure_width=5;verse_count=3
+
+        all other lines denote a new measure, with chord and lyrics separated by
+        pipes '|'
+        For example: 
+
+            %|When I|Well I re-|Now it's just
+
+    As this is not a function expecting user input, there is no error checking.
+
+    """
+
+    # chart = Chart(title='Blackbird',
+    #               composer='Paul McCartney'
+    #               original_key=Key.query.get('G')
+    #               created_at=datetime.now(),
+    #               modified_at=datetime.now())
+
+    # chart.user = user
+
+    # a_section = Section()
+
+    chartfile = open(filepath)
+    chartlines = chartfile.read().split('\n');
+    chartfile.close()
+
+    chart_metadata = parse_metadata(chartlines[0])
+    chart = Chart(**chart_metadata)
+    chart.user = user
+
+    for line in chartlines[2:]:
+
+        # skip blank lines
+        if len(line) == 0:
+            continue
+
+        if line[0] == '+':
+            # we've got ourselves a new section
+            section_metadata = parse_metadata(line[1:])
+            section = Section(**section_metadata)
+            measure_count = 0
+
+        elif line:
+            # add a measure to the section
+            measure = Measure(measure_index=measure_count)
+            measure.section = section
+
+            # add chords and lyrics to the measure
+            tokens = line.split('|')
+            
+            # chords
+            chords = tokens[0].split()
+            for i, chord_string in enumerate(chords):
+                chord_code, chord_suffix = parse_chord(chord_string)
+                beat_index = (len(chords) - len(chords) / (i + 1)) + 1
+                chord = Chord(note_code=chord_code, 
+                              chord_suffix=chord_suffix,
+                              beat_index=beat_index)
+                chord.measure = measure
+
+            # lyrics
+            lyrics = tokens[1:]
+            for verse_index, lyric_string in enumerate(lyrics):
+                lyric = Lyric(verse_index=verse_index, lyric_text=lyric_string)
+
+            lyric.measure = measure
+
+            # increment measure count in anticipation of the next measure
+            measure_count += 1
+
+    db.session.add(chart)
+    db.session.commit()
 
 if __name__ == "__main__":
     connect_to_db(app)
     db.drop_all()
     db.create_all()
 
-    load_keys()
+    load_keys_and_notes()
     user = load_user()
-    load_sample_song(user)
+    load_sample_song('seed_data/ring.txt', user)

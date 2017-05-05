@@ -26,3 +26,8 @@ def get_chart_data(chart_id):
 
     # chart = Chart.query.filter_by(chart_id=chart_id)
 
+    # TODO: big-ass list/dictionary comprehension here to make object
+    # sections = [section.section_name for section in enumerate(chart.sections)]
+
+    # FOR NOW: return a dict for a fake chart
+
