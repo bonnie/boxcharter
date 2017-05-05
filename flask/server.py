@@ -40,12 +40,12 @@ def return_chart_data(chart_id):
     return jsonify(chart.get_data())
 
 
-@app.route('/user/<int:user_id>/charts')
-def return_user_charts(user_id):
+@app.route('/user/<int:user_id>')
+def return_user_data(user_id):
     """Return JSON containing list of user charts."""
 
     user = User.query.get(user_id)
-    return jsonify(user.get_charts())
+    return jsonify(user.get_data())
 
 
 @app.route('/save_chart', methods=['POST'])

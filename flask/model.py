@@ -272,6 +272,8 @@ class User(db.Model):
 
     __tablename__ = "users"
 
+    # TODO: save password encrypted!!
+
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     email = db.Column(db.String(64))
     password = db.Column(db.String(64))
@@ -285,16 +287,22 @@ class User(db.Model):
         """Provide helpful representation when printed."""
         return "<User user_id={} email ={}>".format(self.user_id, self.email)
 
-    def get_charts(self):
-        """Return a dict of chart details."""
+    def get_data(self):
+        """Return a dict of user details."""
 
-        return {'charts': [
+        charts = [
                 { 'title': chart.title,
                   'id': chart.chart_id,
                   'created_at': chart.created_at,
                   'modified_at': chart.modified_at }
                 for chart in self.charts
-               ]}
+               ]
+
+        return {'charts': charts,
+                'id': self.user_id,
+                'email': self.email,
+                'firstName': self.first_name,
+                'lastName': self.last_name}
 
 #######################################################################
 # Helper functions
