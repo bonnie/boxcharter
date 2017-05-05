@@ -22,8 +22,7 @@
 # import
 
 from flask import Flask, jsonify
-
-from chart_data import get_chart_data
+from model import connect_to_db, Chart
 
 ######################################################
 # Flask / setup
@@ -35,10 +34,10 @@ app = Flask(__name__)
 
 @app.route('/chart/<int:chart_id>')
 def return_chart_json(chart_id):
-    """Return JSON object containing chart data"""
+    """Return JSON containing chart data"""
 
-    chart_data = get_chart_data(chart_id)
-    return jsonify(chart_data)
+    chart = Chart.query.get(chart_id)
+    return jsonify(chart.get_data())
 
 
 @app.route('/save_chart', methods=['POST'])
@@ -62,4 +61,4 @@ if __name__ == "__main__":
 
     # DebugToolbarExtension(app)
 
-    app.run()
+    app.run(port=5050)
