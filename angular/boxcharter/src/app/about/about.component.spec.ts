@@ -5,12 +5,12 @@
  */
 import { async, TestBed, ComponentFixture } from "@angular/core/testing";
 import { ClarityModule } from 'clarity-angular';
-import { HomeComponent } from './home.component';
+import { AboutComponent } from './about.component';
 
 
-describe('HomeComponent', () => {
+describe('AboutComponent', () => {
 
-    let expectedMsg: string = 'This is a Clarity seed application. This is the default page that loads for the application.';
+    let expectedMsg: string = 'This is a page to help demonstrate routing.';
 
     let fixture: ComponentFixture<any>;
     let compiled: any;
@@ -18,14 +18,14 @@ describe('HomeComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
-                HomeComponent
+                AboutComponent
             ],
             imports: [
                 ClarityModule.forRoot()
             ]
         });
 
-        fixture = TestBed.createComponent(HomeComponent);
+        fixture = TestBed.createComponent(AboutComponent);
         fixture.detectChanges();
         compiled = fixture.nativeElement;
 
@@ -35,7 +35,7 @@ describe('HomeComponent', () => {
         fixture.destroy();
     });
 
-    it('should create the home page', async(() => {
+    it('should create the about page', async(() => {
         expect(compiled).toBeTruthy();
     }));
 

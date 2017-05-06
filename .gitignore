@@ -6,12 +6,12 @@ env/
 ##### angular #####
 
 # compiled output
-/dist
-/tmp
-/out-tsc
+angular/boxcharter/dist
+angular/boxcharter/tmp
+angular/boxcharter/out-tsc
 
 # dependencies
-/node_modules
+angular/boxcharter/node_modules
 
 # IDEs and editors
 /.idea

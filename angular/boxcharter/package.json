@@ -1,14 +1,14 @@
 {
-  "name": "boxcharter",
-  "version": "0.0.0",
-  "license": "MIT",
+  "name": "clarity-seed",
+  "version": "0.9.0",
+  "description": "Angular-CLI starter for a Clarity project",
+  "angular-cli": {},
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "tslint \"src/**/*.ts\"",
+    "test": "ng test --single-run",
+    "pree2e": "webdriver-manager update",
+    "e2e": "protractor protractor.config.js"
   },
   "private": true,
   "dependencies": {

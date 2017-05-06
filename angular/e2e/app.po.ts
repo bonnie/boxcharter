@@ -1,11 +1,13 @@
 import { browser, element, by } from 'protractor';
 
-export class BoxcharterPage {
+
+export class ClaritySeedAppHome {
+
   navigateTo() {
     return browser.get('/');
   }
 
   getParagraphText() {
-    return element(by.css('app-root h1')).getText();
+    return element(by.css('my-app p')).getText();
   }
 }
