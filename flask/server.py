@@ -24,10 +24,23 @@
 from flask import Flask, jsonify
 from model import connect_to_db, Chart, User
 
+# for cross origin
+ANGULAR_SERVER_URL = 'http://localhost:4202'
+
 ######################################################
 # Flask / setup
 
 app = Flask(__name__)
+
+######################################################
+# Cross origin helper, to allow access by angular server
+
+def add_cors_header(response):
+    """Add a cross origin header for the angular server to a response."""
+
+    response.headers.add('Access-Control-Allow-Origin', ANGULAR_SERVER_URL)
+    return response
+
 
 #########################################################
 # routes
@@ -37,7 +50,8 @@ def return_chart_data(chart_id):
     """Return JSON containing chart data"""
 
     chart = Chart.query.get(chart_id)
-    return jsonify(chart.get_data())
+    json_response = jsonify(chart.get_data())
+    return add_cors_header(json_response)
 
 
 @app.route('/user/<int:user_id>')
@@ -45,7 +59,8 @@ def return_user_data(user_id):
     """Return JSON containing list of user charts."""
 
     user = User.query.get(user_id)
-    return jsonify(user.get_data())
+    json_response = jsonify(user.get_data())
+    return add_cors_header(json_response)
 
 
 @app.route('/save_chart', methods=['POST'])
