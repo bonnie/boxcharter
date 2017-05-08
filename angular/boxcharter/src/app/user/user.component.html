@@ -1,0 +1,6 @@
+<h2>My Charts</h2>
+<ul class="user-charts">
+  <li *ngFor="let chart of charts" (click)="onSelect(chart)">
+        <span>{{chart.title}}</span>
+  </li>
+</ul>
