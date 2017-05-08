@@ -10,9 +10,11 @@ export class ChartService {
   constructor(private http: Http) { }
 
   getChart(id: number): Promise<Chart> {
-    return this.http.get(`http://localhost:5050/chart/${id}`)
+    // console.log(`id: ${id}`);
+    const url = `http://localhost:5050/chart/${id}`
+    return this.http.get(url)
                     .toPromise()
-                    .then(response => response.json().data as Chart)
+                    .then(response => response.json() as Chart)
                     .catch(this.handleError);
   }
 
