@@ -1,6 +1,6 @@
 title=Does My Ring Burn Your Finger;composer=Buddy and Julie Miller;original_key=Gm
 
-+measure_width=5;verse_count=3
++measures_per_row=5;verse_count=3
 Gm|
 %|
 C Bb|
@@ -26,7 +26,7 @@ D7|round|save|round
 %|
 Gm|(to bridge)
 
-+section_name=Bridge;section_desc=play between 2nd and 3rd verse;measure_width=4;verse_count=1
++section_name=Bridge;section_desc=play between 2nd and 3rd verse;measures_per_row=4;verse_count=1
 D|Please tell me
 %|baby
 %|please tell me

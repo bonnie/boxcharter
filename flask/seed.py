@@ -130,7 +130,7 @@ def load_sample_song(filepath, user):
         '+' as the first character denotes a new section, with metadata following
         For example: 
 
-            +measure_width=5;verse_count=3
+            +measures_per_row=5;verse_count=3
 
         all other lines denote a new measure, with chord and lyrics separated by
         pipes '|'
@@ -184,7 +184,7 @@ def load_sample_song(filepath, user):
                 ### general parsing algorithm!
 
                 beat_index = 0 if i == 0 else 2
-                
+
                 chord = Chord(note_code=chord_code, 
                               chord_suffix=chord_suffix,
                               beat_index=beat_index)

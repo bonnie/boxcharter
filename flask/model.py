@@ -9,18 +9,6 @@ db = SQLAlchemy()
 #######################################################################
 # Model definitions: Chart, Section, Measure, Chord, Lyric
 
-class DataMixin(object):
-    """A mixin for classes that need to return all of their data in a dict."""
-
-    def get_basic_data(self):
-        """Return a dict of all attributes for this object."""
-
-        return { key: value 
-                    for key, value 
-                    in self.__dict__.items() 
-                    if not (key.startswith("_")) and value is not None }
-
-
 class Chord(db.Model):
     """measure chord"""
 
@@ -53,6 +41,7 @@ class Chord(db.Model):
 
         return chord_data
 
+
 class Lyric(db.Model):
     """measure lyric"""
 
@@ -77,7 +66,7 @@ class Lyric(db.Model):
                 'lyric': self.lyric_text}
 
 
-class Measure(db.Model, DataMixin):
+class Measure(db.Model):
     """section measure"""
 
     __tablename__ = "measures"
@@ -105,7 +94,7 @@ class Measure(db.Model, DataMixin):
     def get_data(self):
         """Return all data for a measure in a JSON-friendly format."""
 
-        measure_data = self.get_basic_data()
+        measure_data = {'beatCount': self.beat_count}
 
         measure_data['chords'] = [chord.get_data() for chord in self.chords]
         measure_data['lyrics'] = [lyric.get_data() for lyric in self.lyrics]
@@ -116,7 +105,7 @@ class Measure(db.Model, DataMixin):
         return measure_data
 
 
-class Section(db.Model, DataMixin):
+class Section(db.Model):
     """chart section"""
 
     __tablename__ = "sections"
@@ -132,14 +121,15 @@ class Section(db.Model, DataMixin):
     verse_count = db.Column(db.Integer, default=1)
 
     # layout
-    measure_width = db.Column(db.Integer, default=4)
+    measures_per_row = db.Column(db.Integer, default=4)
     repeat = db.Column(db.Boolean, default=False)
+    pickup_measure = db.Column(db.Boolean)
 
-    pickup_measure_start = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
-    pickup_measure_end = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
     first_ending_start = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
     first_ending_end = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
-    second_ending_start = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+
+    # don't need a second ending start; it will be the measure after the 
+    # first ending end
     second_ending_end = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
 
     # relationships
@@ -154,16 +144,30 @@ class Section(db.Model, DataMixin):
                                self.section_index)
 
     def get_data(self):
-        """Return all data for a section in a JSON-friendly format."""
+        """Return data for a section in a JSON-friendly format."""
 
-        section_data = self.get_basic_data()
+        section_data = {}
 
-        # clear out measures so we can create non-object list
+        # metadata
+        md = {}
+        md['name'] = self.section_name
+        md['description'] = self.section_desc;
+        md['beatCount'] = self.beat_count;
+        md['verseCount'] = self.verse_count;
+        md['measuresPerRow'] = self.measures_per_row
+        md['pickupMeasure'] = self.pickup_measure;
+        md['repeat'] = self.repeat;
+        md['firstEndingStart'] = self.first_ending_start;
+        md['firstEndingEnd'] = self.first_ending_start;
+        md['secondEndingEnd'] = self.second_ending_end;
+        section_data['metaData'] = md
+
+        # sections
         section_data['measures'] = [measure.get_data() for measure in self.measures]
         return section_data
 
 
-class Chart(db.Model, DataMixin):
+class Chart(db.Model):
     """boxcharter chart"""
 
     __tablename__ = "charts"
@@ -202,11 +206,25 @@ class Chart(db.Model, DataMixin):
         """Return all data for a chart in a JSON-friendly format."""
 
         # basic data
-        chart_data = self.get_basic_data()
+        chart_data = {}
 
-        # remove user
-        if 'user_id' in chart_data:
-            del chart_data['user_id']
+        # gather the metadata
+        md = {
+            'id': self.chart_id,
+            'userId': self.user_id,
+            'title': self.title,
+            'author': self.author,
+            'composer': self.composer,
+            'lyricist': self.lyricist,
+            'createdAt': self.created_at,
+            'modifiedAt': self.modified_at,
+            'originalKey': self.original_key,
+            'printKey': self.print_key,
+            'maxPages': self.max_pages,
+            'minFontSize': self.min_fontsize
+        }
+
+        chart_data['metadata'] = md
 
         # gather data in sections individually
         chart_data['sections'] = [section.get_data() for section in self.sections]
@@ -293,16 +311,19 @@ class User(db.Model):
         charts = [
                 { 'title': chart.title,
                   'id': chart.chart_id,
-                  'created_at': chart.created_at,
-                  'modified_at': chart.modified_at }
+                  'createdAt': chart.created_at,
+                  'modifiedAt': chart.modified_at }
                 for chart in self.charts
                ]
 
         return {'charts': charts,
-                'id': self.user_id,
-                'email': self.email,
-                'firstName': self.first_name,
-                'lastName': self.last_name}
+                'userData': {
+                    'id': self.user_id,
+                    'email': self.email,
+                    'firstName': self.first_name,
+                    'lastName': self.last_name
+                    }
+                }
 
 #######################################################################
 # Helper functions
