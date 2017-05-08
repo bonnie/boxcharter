@@ -224,7 +224,7 @@ class Chart(db.Model):
             'minFontSize': self.min_fontsize
         }
 
-        chart_data['metadata'] = md
+        chart_data['metaData'] = md
 
         # gather data in sections individually
         chart_data['sections'] = [section.get_data() for section in self.sections]
