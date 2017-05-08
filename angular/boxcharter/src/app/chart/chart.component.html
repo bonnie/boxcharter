@@ -1,3 +1,14 @@
 <div *ngIf="chart">
   <h1>{{ chart.metaData.title }}</h1>
+
+  <div *ngFor="let section of chart.sections">
+    <h2>{{ section.metaData.name }}</h2>
+    <h5>{{ section.metaData.description }}</h5>
+    <table class="table">
+      <tr *ngFor="let i of 12 | fill">
+        <td *ngFor="let i of 4 | fill">Yippee</td>
+      </tr>
+    </table>
+  </div>
+
 </div>

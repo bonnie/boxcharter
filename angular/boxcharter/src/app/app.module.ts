@@ -10,6 +10,7 @@ import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
 import { UserComponent } from './user/user.component';
 import { ChartComponent } from './chart/chart.component';
+import { FillPipe } from './fill.pipe';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { ChartComponent } from './chart/chart.component';
         AboutComponent,
         HomeComponent,
         UserComponent,
-        ChartComponent
+        ChartComponent,
+        FillPipe
     ],
     imports: [
         BrowserAnimationsModule,
@@ -28,7 +30,7 @@ import { ChartComponent } from './chart/chart.component';
         ROUTING
     ],
     providers: [],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule {
 }
