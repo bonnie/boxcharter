@@ -38,6 +38,8 @@ app = Flask(__name__)
 def add_cors_header(response):
     """Add a cross origin header for the angular server to a response."""
 
+    # TODO: make a decorator like (or using) http://flask.pocoo.org/snippets/56/
+
     response.headers.add('Access-Control-Allow-Origin', ANGULAR_SERVER_URL)
     return response
 
