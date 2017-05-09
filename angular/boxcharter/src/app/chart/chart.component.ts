@@ -57,14 +57,6 @@ export class ChartComponent implements OnInit {
         // get chart data    
         this.chart = chart;
       
-        // calculate number of rows per section
-        for(let i=0; i < chart['sections'].length; i++) {
-          let section = chart['sections'][i];
-          let measureCount = section.measures.length;
-          let rowWidth = section.metaData['measuresPerRow'];
-          this.chart['sections'][i].rows = Math.ceil(measureCount / rowWidth);
-        }
-
         console.log(this.chart);
 
     });
