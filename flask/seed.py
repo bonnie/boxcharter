@@ -181,7 +181,9 @@ def load_sample_song(filepath, user):
             section_metadata = parse_metadata(line[1:])
             section = Section(**section_metadata)
             chart.sections.append(section)
-            measure_count = 0
+
+            # it's easier in angular if the measure count starts at 1
+            measure_count = 1
 
         elif line:
             # add a measure to the section

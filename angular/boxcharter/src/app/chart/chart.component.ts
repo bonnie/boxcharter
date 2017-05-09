@@ -65,6 +65,8 @@ export class ChartComponent implements OnInit {
           this.chart['sections'][i].rows = Math.ceil(measureCount / rowWidth);
         }
 
+        console.log(this.chart);
+
     });
 
   }

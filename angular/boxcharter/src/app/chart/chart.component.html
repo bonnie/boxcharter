@@ -28,14 +28,14 @@
       <!-- measures -->
       <tr *ngFor="let i of section.rows | fill">
         <td *ngFor="let j of section.metaData.measuresPerRow | fill">
-          <span *ngIf="i * j < section.measures.length">
+          <span *ngIf="i * j <= section.measures.length">
             <!-- chords -->
             <table class="table">
               <tr>
                 <td *ngFor="let k of section.metaData.beatsPerMeasure | fill">
                   <!-- only fill with text if there's a chord for this beat -->
-                  <span *ngIf="section.measures[(i * j)].chords.hasOwnProperty(k - 1)">
-                    {{ section.measures[(i * j)].chords[k - 1].note }}
+                  <span *ngIf="section.measures[(i * j) - 1].chords.hasOwnProperty(k - 1)">
+                    {{ section.measures[(i * j) - 1].chords[k - 1].note }}
                   </span>
                 </td>
               </tr>

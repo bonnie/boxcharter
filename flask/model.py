@@ -93,7 +93,7 @@ class Measure(db.Model):
     measure_index = db.Column(db.Integer)
 
     # this will inherit parent measure's beat count if null
-    beat_count = db.Column(db.Integer)
+    beats_per_measure = db.Column(db.Integer)
 
     # relationships
     chords = db.relationship("Chord", order_by=Chord.beat_index)
@@ -111,7 +111,7 @@ class Measure(db.Model):
     def get_data(self):
         """Return all data for a measure in a JSON-friendly format."""
 
-        measure_data = {'beatsPerMeasure': self.beat_count}
+        measure_data = {'beatsPerMeasure': self.beats_per_measure}
 
         measure_data['chords'] = { chord.beat_index: chord.get_data() for chord in self.chords }
         measure_data['lyrics'] = { lyric.verse_index: lyric.lyric_text for lyric in self.lyrics }
@@ -134,7 +134,7 @@ class Section(db.Model):
     # metadata
     section_name = db.Column(db.String(256))
     section_desc = db.Column(db.String(256))
-    beat_count = db.Column(db.Integer, default=4)
+    beats_per_measure = db.Column(db.Integer, default=4)
     verse_count = db.Column(db.Integer, default=1)
 
     # layout
@@ -169,7 +169,7 @@ class Section(db.Model):
         md = {}
         md['name'] = self.section_name
         md['description'] = self.section_desc;
-        md['beatsPerMeasure'] = self.beat_count;
+        md['beatsPerMeasure'] = self.beats_per_measure;
         md['verseCount'] = self.verse_count;
         md['measuresPerRow'] = self.measures_per_row
         md['pickupMeasure'] = self.pickup_measure;
