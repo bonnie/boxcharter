@@ -60,7 +60,15 @@ export class ChartComponent implements OnInit {
         console.log(this.chart);
 
     });
+  }
+  
+  saveChart() {
+    console.log(this.chart);
+
+    this.chartService.update(this.chart)
+          .then();
 
   }
-
 }
+
+

@@ -19,7 +19,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Http } from "@angular/http";
+import { Headers, Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/toPromise';
 import { Chart } from './data-model';
@@ -27,15 +27,30 @@ import { Chart } from './data-model';
 @Injectable()
 export class ChartService {
 
+  private baseURL = "http://localhost:5050/chart"
+  private jsonHeaders = new Headers({'Content-Type': 'application/json'});
+
   constructor(private http: Http) { }
 
   getChart(id: number): Promise<Chart> {
     // console.log(`id: ${id}`);
-    const url = `http://localhost:5050/chart/${id}`
+    const url = `${this.baseURL}/${id}`
     return this.http.get(url)
                     .toPromise()
                     .then(response => response.json() as Chart)
                     .catch(this.handleError);
+  }
+
+  update(chart: Chart): Promise<Chart> {
+
+    const id = chart.metaData['id'];
+    const url = `${this.baseURL}/${id}`
+
+    return this.http  
+          .put(url, JSON.stringify(chart), {headers: this.jsonHeaders})
+          .toPromise()
+          .then(response => response.json() as Chart)
+          .catch(this.handleError)
   }
 
   private handleError(error: any): Promise<any> {

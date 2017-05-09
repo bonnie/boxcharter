@@ -20,13 +20,38 @@ td.chord {
   min-width: 40px;
 }
 
+span.save-btn {
+    margin-top: 0;
+    margin-right: 0;
+}
+
+input.title {
+    /* h2 */
+    // @include clr-getTypePropertiesForDomElement(h2, (font-weight, font-size));
+    font-weight: 200;
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+div.chart-md {
+    display: block;
+    margin: 12px 0;
+}
+
+.chart-md {
+    /* h4 */
+    font-weight: 200;
+    font-size: 18px;
+}
+
 input.chord {
     min-width: 40px;
     max-width: 40px;
     padding: 0;
+    font-weight: 800;
 }
 
 input.boxchart::placeholder {
     color: #007cbb;
-    font-weight: 800;
 }
