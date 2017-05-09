@@ -29,7 +29,7 @@ export class FillPipe implements PipeTransform {
   transform(value) {
     // create an array of 1 through value
     let numArr: Array<number> = new Array();
-    for (let i = 1; i <= value; i++) {
+    for (let i = 0; i < value; i++) {
       numArr.push(i);
     }
     return numArr;
