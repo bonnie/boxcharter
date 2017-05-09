@@ -22,7 +22,7 @@ import { Injectable } from '@angular/core';
 import { Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/toPromise';
-import { Chart } from './chart';
+import { Chart } from './data-model';
 
 @Injectable()
 export class ChartService {

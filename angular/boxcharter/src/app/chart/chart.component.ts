@@ -22,9 +22,9 @@ import 'rxjs/add/operator/switchMap';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
-import { Chart } from '../chart';
+import { Chart } from '../data-model';
 import { ChartService } from '../chart.service';
-import { Measure } from '../measure';
+import { Measure } from '../data-model';
 
 @Component({
   templateUrl: './chart.component.html',
