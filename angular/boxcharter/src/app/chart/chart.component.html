@@ -36,27 +36,26 @@
           <table class="table table-compact">
             <tr>
               <!-- one chord box per beat -->
-              <td *ngFor="let j of s.beatsPerMeasure | fill">
-                <input type="text" 
+              <td class="chord" *ngFor="let j of s.beatsPerMeasure | fill">
+                <input class="chord boxchart"
+                       type="text" 
                        id="chord-{{j}}" 
                        value="{{ measure.chords.hasOwnProperty(j) ? 
-                                measure.chords[j].note + 
-                                  (measure.chords[j].suffix ? measure.chords[j].suffix : '') :
-                                null }}" 
+                                 measure.chords[j] : null }}" 
                        size="4" 
                        placeholder="/">
                 </td>
               </tr>
             <!-- lyrics -->
-            <tr *ngFor="let k of s.verseCount | fill">
-              <td [attr.colspan]="s.beatsPerMeasure">
-                <ng-container *ngIf="measure.lyrics.hasOwnProperty(k)">
-                  <ng-container *ngIf="measure.lyrics[k] as lyric">
-                    {{ lyric }}
-                  </ng-container>
-                </ng-container>
-              </td>
-            </tr>
+              <tr *ngFor="let k of s.verseCount | fill">
+                <td [attr.colspan]="s.beatsPerMeasure">
+                  <input type="text" 
+                        id="lyric-{{k}}" 
+                        value="{{ measure.lyrics.hasOwnProperty(k) ? 
+                                  measure.lyrics[k] : null }}" 
+                        size="30">
+                </td>
+              </tr>
             </table>
           </td>
         <ng-container *ngIf="i % s.measuresPerRow == s.measuresPerRow">

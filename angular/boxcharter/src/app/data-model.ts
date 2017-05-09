@@ -18,19 +18,10 @@
  *
  */
 
-export class Chord {
-    note: string;
-    suffix: string;
-};
-
-export class Lyric {
-    lyric: string;
-};
-
 export class Measure {
     beatCount: number;
-    chords: Chord[];
-    lyrics: Lyric[];
+    chords: string[];
+    lyrics: string[];
 };
 
 export class Section {

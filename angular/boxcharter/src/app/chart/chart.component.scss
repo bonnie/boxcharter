@@ -15,3 +15,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 
+td.chord {
+  padding: 4px 0;
+  min-width: 40px;
+}
+
+input.chord {
+    min-width: 40px;
+    max-width: 40px;
+    padding: 0;
+}
+
+input::placeholder.boxchart {
+    color: #cce6ff;
+}

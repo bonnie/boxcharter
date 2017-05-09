@@ -48,15 +48,14 @@ class Chord(db.Model):
                                                                 self.note_code,
                                                                 self.chord_suffix)
 
-    def get_data(self):
-        """Return all data for a chord in a JSON-friendly format."""
+    def get_chordstring(self):
+        """Return a string representing the chord."""
 
-        chord_data = {'note': self.note_code}
-                
+        chordstring = self.note_code
         if self.chord_suffix:
-            chord_data['suffix'] = self.chord_suffix
+            chordstring += self.chord_suffix
 
-        return chord_data
+        return chordstring
 
 
 class Lyric(db.Model):
@@ -75,12 +74,6 @@ class Lyric(db.Model):
                                                                 self.lyric_id,
                                                                 self.verse_index,
                                                                 self.lyric_text)
-
-    def get_data(self):
-        """Return all data for a chord in a JSON-friendly format."""
-
-        return {'index': self.verse_index,
-                'lyric': self.lyric_text}
 
 
 class Measure(db.Model):
@@ -113,7 +106,7 @@ class Measure(db.Model):
 
         measure_data = {'beatsPerMeasure': self.beats_per_measure}
 
-        measure_data['chords'] = { chord.beat_index: chord.get_data() for chord in self.chords }
+        measure_data['chords'] = { chord.beat_index: chord.get_chordstring() for chord in self.chords }
         measure_data['lyrics'] = { lyric.verse_index: lyric.lyric_text for lyric in self.lyrics }
 
         return measure_data

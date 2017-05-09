@@ -19,7 +19,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Chart } from '../chart';
+import { Chart } from '../data-model';
 
 const CHARTS: Chart[] = [
 ];
