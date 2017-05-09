@@ -33,10 +33,15 @@
             <table class="table">
               <tr>
                 <td *ngFor="let k of section.metaData.beatsPerMeasure | fill">
-                  {{ section.measures[(i * j)].chords[0].note }}
+                  <!-- only fill with text if there's a chord for this beat -->
+                  <span *ngIf="section.measures[(i * j)].chords.hasOwnProperty(k - 1)">
+                    {{ section.measures[(i * j)].chords[k - 1].note }}
+                  </span>
                 </td>
               </tr>
             <!-- lyrics -->
+            <tr *ngFor="">
+            </tr>
             </table>
           </span>
         </td>
