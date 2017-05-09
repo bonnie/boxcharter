@@ -24,6 +24,7 @@ import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
 import { Chart } from '../chart';
 import { ChartService } from '../chart.service';
+import { Measure } from '../measure';
 
 @Component({
   templateUrl: './chart.component.html',
@@ -34,7 +35,7 @@ export class ChartComponent implements OnInit {
   
   // chart object for this page
   chart: Chart;
-  
+
   constructor(
     // for getting chart data from flask
     private chartService: ChartService,
@@ -51,7 +52,20 @@ export class ChartComponent implements OnInit {
       .switchMap((params: Params) => this.chartService.getChart(+params['id']))
 
       // bind the response to the chart object for this page
-      .subscribe(chart => this.chart = chart);
+      .subscribe(chart => {
+
+        // get chart data    
+        this.chart = chart;
+      
+        // calculate number of rows per section
+        for(let i=0; i < chart['sections'].length; i++) {
+          let section = chart['sections'][i];
+          let measureCount = section.measures.length;
+          let rowWidth = section.metaData['measuresPerRow'];
+          this.chart['sections'][i].rows = Math.ceil(measureCount / rowWidth);
+        }
+
+    });
 
   }
 

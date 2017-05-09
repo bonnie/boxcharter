@@ -21,11 +21,25 @@
   <h1>{{ chart.metaData.title }}</h1>
 
   <div *ngFor="let section of chart.sections">
+    <!-- sections -->
     <h2>{{ section.metaData.name }}</h2>
     <h5>{{ section.metaData.description }}</h5>
     <table class="table">
-      <tr *ngFor="let i of 12 | fill">
-        <td *ngFor="let i of 4 | fill">Yippee</td>
+      <!-- measures -->
+      <tr *ngFor="let i of section.rows | fill">
+        <td *ngFor="let j of section.metaData.measuresPerRow | fill">
+          <span *ngIf="i * j < section.measures.length">
+            <!-- chords -->
+            <table class="table">
+              <tr>
+                <td *ngFor="let k of section.metaData.beatsPerMeasure | fill">
+                  {{ section.measures[(i * j)].chords[0].note }}
+                </td>
+              </tr>
+            <!-- lyrics -->
+            </table>
+          </span>
+        </td>
       </tr>
     </table>
   </div>

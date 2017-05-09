@@ -27,6 +27,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FillPipe implements PipeTransform {
   transform(value) {
-    return (new Array(value)).fill(1);
+    // create an array of 1 through value
+    let numArr: Array<number> = new Array();
+    for (let i = 1; i <= value; i++) {
+      numArr.push(i);
+    }
+    return numArr;
   }
 }

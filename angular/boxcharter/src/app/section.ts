@@ -22,5 +22,6 @@ import { Measure } from './measure';
 
 export class Section {
     metaData: object;
+    rows: number;
     measures: Measure[];
 };
