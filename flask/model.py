@@ -116,9 +116,6 @@ class Measure(db.Model):
         measure_data['chords'] = { chord.beat_index: chord.get_data() for chord in self.chords }
         measure_data['lyrics'] = { lyric.verse_index: lyric.lyric_text for lyric in self.lyrics }
 
-        if not measure_data['lyrics']:
-            del measure_data['lyrics']
-
         return measure_data
 
 
