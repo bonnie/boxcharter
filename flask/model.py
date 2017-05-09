@@ -51,8 +51,7 @@ class Chord(db.Model):
     def get_data(self):
         """Return all data for a chord in a JSON-friendly format."""
 
-        chord_data = {'index': self.beat_index,
-                      'note': self.note_code}
+        chord_data = {'note': self.note_code}
                 
         if self.chord_suffix:
             chord_data['suffix'] = self.chord_suffix
@@ -114,8 +113,8 @@ class Measure(db.Model):
 
         measure_data = {'beatsPerMeasure': self.beat_count}
 
-        measure_data['chords'] = [chord.get_data() for chord in self.chords]
-        measure_data['lyrics'] = [lyric.get_data() for lyric in self.lyrics]
+        measure_data['chords'] = { chord.beat_index: chord.get_data() for chord in self.chords }
+        measure_data['lyrics'] = { lyric.verse_index: lyric.lyric_text for lyric in self.lyrics }
 
         if not measure_data['lyrics']:
             del measure_data['lyrics']
