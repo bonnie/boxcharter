@@ -26,6 +26,7 @@ input.chord {
     padding: 0;
 }
 
-input::placeholder.boxchart {
-    color: #cce6ff;
+input.boxchart::placeholder {
+    color: #007cbb;
+    font-weight: 800;
 }
