@@ -112,7 +112,7 @@ class Measure(db.Model):
     def get_data(self):
         """Return all data for a measure in a JSON-friendly format."""
 
-        measure_data = {'beatCount': self.beat_count}
+        measure_data = {'beatsPerMeasure': self.beat_count}
 
         measure_data['chords'] = [chord.get_data() for chord in self.chords]
         measure_data['lyrics'] = [lyric.get_data() for lyric in self.lyrics]
@@ -170,7 +170,7 @@ class Section(db.Model):
         md = {}
         md['name'] = self.section_name
         md['description'] = self.section_desc;
-        md['beatCount'] = self.beat_count;
+        md['beatsPerMeasure'] = self.beat_count;
         md['verseCount'] = self.verse_count;
         md['measuresPerRow'] = self.measures_per_row
         md['pickupMeasure'] = self.pickup_measure;
