@@ -20,46 +20,48 @@
 <div *ngIf="chart">
   <h1>{{ chart.metaData.title }}</h1>
 
+  <!-- sections -->
   <div *ngFor="let section of chart.sections">
-    <!-- sections -->
-    <h2>{{ section.metaData.name }}</h2>
-    <h5>{{ section.metaData.description }}</h5>
-    <table class="table table-compact">
+    <ng-container *ngIf="section.metaData as s">
+      <h2>{{ s.name }}</h2>
+      <h5>{{ s.description }}</h5>
+      <table class="table table-compact">
       <!-- measures -->
-      <tr *ngFor="let i of section.rows | fill">
-        <ng-container *ngIf="section.metaData as s">
-          <td *ngFor="let j of s.measuresPerRow | fill">
-            <ng-container *ngIf="i * j <= section.measures.length">
-              <ng-container *ngIf="section.measures[(i * j) - 1] as measure">
-                <!-- chords -->
-                <table class="table table-compact">
-                  <tr>
-                    <td *ngFor="let k of s.beatsPerMeasure | fill">
-                      <!-- only fill with text if there's a chord for this beat -->
-                      <ng-container *ngIf="measure.chords.hasOwnProperty(k - 1)">
-                        <ng-container *ngIf="measure.chords[k - 1] as chord">
-                          {{ chord.note }}{{ chord.suffix }}
-                        </ng-container>
-                      </ng-container>
-                    </td>
-                  </tr>
-                <!-- lyrics -->
-                <tr *ngFor="let h of s.verseCount | fill">
-                  <td [attr.colspan]="s.beatsPerMeasure">
-                    <ng-container *ngIf="measure.lyrics.hasOwnProperty(h - 1)">
-                      <ng-container *ngIf="measure.lyrics[h - 1] as lyric">
-                        {{ lyric }}
-                      </ng-container>
-                    </ng-container>
-                  </td>
-                </tr>
-                </table>
-              </ng-container>
-            </ng-container>
-          </td>
+      <ng-container *ngFor="let measure of section.measures; let i=index">
+        <ng-container *ngIf="i % s.measuresPerRow == 0">
+          <tr>
         </ng-container>
-      </tr>
+        <td>
+          <!-- chords -->
+          <table class="table table-compact">
+            <tr>
+              <td *ngFor="let k of s.beatsPerMeasure | fill">
+                <!-- only fill with text if there's a chord for this beat -->
+                  <ng-container *ngIf="measure.chords.hasOwnProperty(k - 1)">
+                    <ng-container *ngIf="measure.chords[k - 1] as chord">
+                      {{ chord.note }}{{ chord.suffix }}
+                    </ng-container>
+                  </ng-container>
+                </td>
+              </tr>
+            <!-- lyrics -->
+            <tr *ngFor="let h of s.verseCount | fill">
+              <td [attr.colspan]="s.beatsPerMeasure">
+                <ng-container *ngIf="measure.lyrics.hasOwnProperty(h - 1)">
+                  <ng-container *ngIf="measure.lyrics[h - 1] as lyric">
+                    {{ lyric }}
+                  </ng-container>
+                </ng-container>
+              </td>
+            </tr>
+            </table>
+          </td>
+        <ng-container *ngIf="i % s.measuresPerRow == s.measuresPerRow">
+          <tr>
+        </ng-container>
+      </ng-container>
     </table>
+    </ng-container>
   </div>
 
 </div>
