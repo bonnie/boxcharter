@@ -18,17 +18,8 @@
  *
  */
 
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-
-@Component({
-    selector: 'my-app',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-})
-export class AppComponent {
-    constructor(private router: Router) {
-    }
+export class Status {
+    text: string;
+    clrAlertClosed: boolean;
+    alertType: string;
 }
-
-export const flaskServer = 'http://localhost:5050';

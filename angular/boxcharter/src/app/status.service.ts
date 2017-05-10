@@ -18,17 +18,28 @@
  *
  */
 
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+/* This service maintains a common Status object among components. */
 
-@Component({
-    selector: 'my-app',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
-})
-export class AppComponent {
-    constructor(private router: Router) {
-    }
+import { Injectable } from '@angular/core';
+import { Status } from './status'
+
+
+@Injectable()
+export class StatusService {
+
+  public status: Status;
+
+  constructor() { }
+
+  setStatus(statusResponse: object): void {
+    // set the status based on response from Flask
+    this.status = new Status();
+    this.status.alertType = 'alert-' + statusResponse['type'];
+    this.status.text = statusResponse['text'];
+  }
+  
+  clearStatus(): void {
+    // clear the status data
+    this.status = null;
+  }
 }
-
-export const flaskServer = 'http://localhost:5050';

@@ -75,7 +75,7 @@ def update_chart_data(chart_id):
     chart = Chart.query.get(chart_id)
     chart.update(chart_data, chart_sections)
 
-    json_response = jsonify({'message': {'type': 'success', 'text': 'Chart saved.'}})
+    json_response = jsonify({'status': {'type': 'success', 'text': 'Chart saved.'}})
     return json_response
 
 

@@ -18,17 +18,31 @@
  *
  */
 
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { StatusService } from '../status.service';
+import { Status } from '../status';
 
 @Component({
-    selector: 'my-app',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+  selector: 'app-status',
+  templateUrl: './status.component.html',
+  styleUrls: ['./status.component.scss'],
+  
+  // don't put statusService here -- we want to use the global app statusService, not our own
+  providers: [ ] 
 })
-export class AppComponent {
-    constructor(private router: Router) {
-    }
-}
 
-export const flaskServer = 'http://localhost:5050';
+export class StatusComponent implements OnInit {
+
+  status: Status;
+
+  constructor(private statusService: StatusService) { }
+
+  ngOnInit() { 
+    this.status = this.statusService.status;
+  }
+
+  onAlertClose() {
+    // reset status
+    this.statusService.clearStatus();
+  }
+}

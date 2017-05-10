@@ -31,6 +31,8 @@ import { AboutComponent } from "./about/about.component";
 import { UserComponent } from './user/user.component';
 import { ChartComponent } from './chart/chart.component';
 import { FillPipe } from './fill.pipe';
+import { StatusComponent } from './status/status.component';
+import { StatusService } from './status.service';
 
 @NgModule({
     declarations: [
@@ -39,7 +41,8 @@ import { FillPipe } from './fill.pipe';
         HomeComponent,
         UserComponent,
         ChartComponent,
-        FillPipe
+        FillPipe,
+        StatusComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -49,8 +52,10 @@ import { FillPipe } from './fill.pipe';
         ClarityModule.forRoot(),
         ROUTING
     ],
-    providers: [],
-    bootstrap: [AppComponent],
+    
+    // injecting StatusService here, so there's a global service shared by the whole app
+    providers: [ StatusService ],
+    bootstrap: [ AppComponent ],
 })
 export class AppModule {
 }

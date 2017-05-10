@@ -24,33 +24,31 @@ import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
 import { Chart } from '../data-model';
 import { ChartService } from '../chart.service';
+import { StatusService } from '../status.service';
 import { Measure } from '../data-model';
+import { Status } from '../status';
 
 @Component({
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
+
+  // don't put statusService here -- we want to use the global app statusService, not our own
   providers: [ ChartService ],
 })
 export class ChartComponent implements OnInit {
   
-  // chart object for this page
   chart: Chart;
-
-  // information about success or failure
-  message: object;
-
-  // alert vars
-  clrAlertClosed: boolean;
-  alertType: string;
+  status: Status;
 
   constructor(
     // for getting chart data from flask
     private chartService: ChartService,
+    private statusService: StatusService,
 
     // for getting chart ID from url
     private route: ActivatedRoute,
     private location: Location
-  ) { }
+  ) {  }
 
   ngOnInit() {
     this.route.params
@@ -64,32 +62,18 @@ export class ChartComponent implements OnInit {
         // get chart data    
         this.chart = chart;
       
-        console.log(this.chart);
+        // console.log(this.chart);
 
     });
   }
   
   saveChart() {
-    console.log(this.chart);
-
+    // save the chart and display a status alert
     this.chartService.updateChart(this.chart)
           .then(response => {
             console.log(response);
-            this.message = response['message'];
-
-            // set alert class
-            this.alertType = 'alert-' + this.message['type'];
+            this.statusService.setStatus(response);
           });
-  }
-
-  onAlertClose() {
-    
-    // reset message
-    this.message = null;
-
-    // reset alert closed state
-    this.clrAlertClosed = false;
-
   }
 }
 

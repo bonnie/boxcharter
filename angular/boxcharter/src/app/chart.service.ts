@@ -23,12 +23,13 @@ import { Headers, Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/toPromise';
 import { Chart } from './data-model';
+import { Status } from './status'
 import { flaskServer } from './app.component'
 
 @Injectable()
 export class ChartService {
 
-  private baseURL = `${flaskServer}/chart`
+  private baseURL = `${flaskServer}/chart`;
   private jsonHeaders = new Headers(
     {'Content-Type': 'application/json'});
 
@@ -36,23 +37,23 @@ export class ChartService {
 
   getChart(id: number): Promise<Chart> {
     // console.log(`id: ${id}`);
-    const url = `${this.baseURL}/${id}`
+    const url = `${this.baseURL}/${id}`;
     return this.http.get(url)
                     .toPromise()
                     .then(response => response.json() as Chart)
                     .catch(this.handleError);
   }
 
-  updateChart(chart: Chart): Promise<object> {
+  updateChart(chart: Chart): Promise<Status> {
 
     const id = chart.metaData['id'];
-    const url = `${this.baseURL}/${id}`
+    const url = `${this.baseURL}/${id}`;
 
     return this.http  
           .put(url, JSON.stringify(chart), {headers: this.jsonHeaders})
           .toPromise()
-          .then(response => response.json() as object)
-          .catch(this.handleError)
+          .then(response => response.json()['status'] as Status)
+          .catch(this.handleError);
   }
 
   private handleError(error: any): Promise<any> {

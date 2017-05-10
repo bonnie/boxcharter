@@ -17,14 +17,12 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-
-  <!--<clr-alert *ngIf="message" [clrAlertType]="'alert-{{ message.type }}'">-->
- <clr-alert *ngIf="message" 
+ <clr-alert *ngIf="status" 
     [clrAlertType]="alertType" 
     (clrAlertClosedChange)="onAlertClose()">
    <div class="alert-item">
         <span class="alert-text">
-          {{ message.text }}
+          {{ status.text }}
         </span>
     </div>
   </clr-alert>
