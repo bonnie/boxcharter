@@ -17,6 +17,15 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
+
+  <!--<clr-alert *ngIf="message" [clrAlertType]="'alert-{{ message.type }}'">-->
+ <clr-alert *ngIf="message" [clrAlertType]="'alert-' + message.type">
+   <div class="alert-item">
+        <span class="alert-text">
+          {{ message.text }}
+        </span>
+    </div>
+  </clr-alert>
 <div *ngIf="chart">
   <span class="btn btn-primary save-btn" (click)="saveChart()">Save</span>
   <input id="chart-title"

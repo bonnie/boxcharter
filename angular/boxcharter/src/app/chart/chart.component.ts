@@ -36,6 +36,9 @@ export class ChartComponent implements OnInit {
   // chart object for this page
   chart: Chart;
 
+  // information about success or failure
+  message: object;
+
   constructor(
     // for getting chart data from flask
     private chartService: ChartService,
@@ -65,8 +68,11 @@ export class ChartComponent implements OnInit {
   saveChart() {
     console.log(this.chart);
 
-    this.chartService.update(this.chart)
-          .then();
+    this.chartService.updateChart(this.chart)
+          .then(response => {
+            console.log(response);
+            this.message = response['message'];
+          });
 
   }
 }

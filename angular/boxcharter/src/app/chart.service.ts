@@ -43,7 +43,7 @@ export class ChartService {
                     .catch(this.handleError);
   }
 
-  update(chart: Chart): Promise<Chart> {
+  updateChart(chart: Chart): Promise<object> {
 
     const id = chart.metaData['id'];
     const url = `${this.baseURL}/${id}`
@@ -51,7 +51,7 @@ export class ChartService {
     return this.http  
           .put(url, JSON.stringify(chart), {headers: this.jsonHeaders})
           .toPromise()
-          .then(response => response.json() as Chart)
+          .then(response => response.json() as object)
           .catch(this.handleError)
   }
 
