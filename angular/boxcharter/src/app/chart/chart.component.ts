@@ -39,6 +39,10 @@ export class ChartComponent implements OnInit {
   // information about success or failure
   message: object;
 
+  // alert vars
+  clrAlertClosed: boolean;
+  alertType: string;
+
   constructor(
     // for getting chart data from flask
     private chartService: ChartService,
@@ -72,7 +76,19 @@ export class ChartComponent implements OnInit {
           .then(response => {
             console.log(response);
             this.message = response['message'];
+
+            // set alert class
+            this.alertType = 'alert-' + this.message['type'];
           });
+  }
+
+  onAlertClose() {
+    
+    // reset message
+    this.message = null;
+
+    // reset alert closed state
+    this.clrAlertClosed = false;
 
   }
 }

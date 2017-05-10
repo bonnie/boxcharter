@@ -19,7 +19,9 @@
 
 
   <!--<clr-alert *ngIf="message" [clrAlertType]="'alert-{{ message.type }}'">-->
- <clr-alert *ngIf="message" [clrAlertType]="'alert-' + message.type">
+ <clr-alert *ngIf="message" 
+    [clrAlertType]="alertType" 
+    (clrAlertClosedChange)="onAlertClose()">
    <div class="alert-item">
         <span class="alert-text">
           {{ message.text }}
