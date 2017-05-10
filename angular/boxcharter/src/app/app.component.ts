@@ -30,3 +30,5 @@ export class AppComponent {
     constructor(private router: Router) {
     }
 }
+
+export const flaskServer = 'http://localhost:5050'

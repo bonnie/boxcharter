@@ -23,12 +23,14 @@ import { Headers, Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/toPromise';
 import { Chart } from './data-model';
+import { flaskServer } from './app.component'
 
 @Injectable()
 export class ChartService {
 
-  private baseURL = "http://localhost:5050/chart"
-  private jsonHeaders = new Headers({'Content-Type': 'application/json'});
+  private baseURL = `${flaskServer}/chart`
+  private jsonHeaders = new Headers(
+    {'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
 

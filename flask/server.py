@@ -21,16 +21,22 @@
 ######################################################
 # import
 
-from flask import Flask, jsonify
+import json
+from flask import Flask, jsonify, request
+from flask.ext.cors import CORS, cross_origin
 from model import connect_to_db, Chart, User
 
 # for cross origin
-ANGULAR_SERVER_URL = 'http://localhost:4202'
+ANGULAR_SERVER_NAME = 'localhost'
+ANGULAR_SERVER_URL = 'http://{}:4202'.format(ANGULAR_SERVER_NAME)
 
 ######################################################
-# Flask / setup
+# Flask / CORS setup
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'shhhh.....secret'
+app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app)
 
 ######################################################
 # Cross origin helper, to allow access by angular server
@@ -47,11 +53,28 @@ def add_cors_header(response):
 #########################################################
 # routes
 
-@app.route('/chart/<int:chart_id>')
+@app.route('/chart/<int:chart_id>', methods=['GET'])
 def return_chart_data(chart_id):
-    """Return JSON containing chart data"""
+    """Return JSON containing chart data."""
 
     chart = Chart.query.get(chart_id)
+    json_response = jsonify(chart.get_data())
+    return add_cors_header(json_response)
+
+
+@app.route('/chart/<int:chart_id>', methods=['PUT'])
+@cross_origin(origin=ANGULAR_SERVER_NAME, headers=['Content-Type','Authorization'])
+def update_chart_data(chart_id):
+    """Update chart data and return JSON of (updated) chart."""
+
+    data = request.json
+
+    chart_data = data.get('metaData')
+    chart_sections = data.get('sections')
+
+    chart = Chart.query.get(chart_id)
+    chart.update(chart_data, chart_sections)
+
     json_response = jsonify(chart.get_data())
     return add_cors_header(json_response)
 

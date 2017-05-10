@@ -238,6 +238,14 @@ class Chart(db.Model):
 
         return chart_data
 
+    def update(self, chart_data, sections):
+        """Update chart with the supplied data and sections."""
+
+        # for now: 
+        self.author = chart_data['author']
+        db.session.add(self)
+        db.session.commit()
+
 #######################################################################
 # Model definitions: Key, Note
 
