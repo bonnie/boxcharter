@@ -30,7 +30,7 @@ NO_ACTION = 'Chart not {}.'
 NEW_CHART = 'Would you like to {} a new chart with these chords and lyrics?'
 SUCCESS_TEXT = 'Chart successfully {}'
 
-def get_chart(chart_id):
+def get_chart_by_id(chart_id):
     """Check to see whether a chart_id exists; return chart object or None.
 
     inputs:
@@ -43,7 +43,30 @@ def get_chart(chart_id):
     return Chart.query.get(chart_id)
 
 
-def save_chart(chart_id, data):
+def get_chart_data(chart_id):
+    """Return dict of data for chart corresponding to the chart_id."""
+
+    err_status = deepcopy(ERROR_STATUS) 
+    err_status['status']['text'] = NO_CHART
+
+    chart = get_chart_by_id(chart_id)
+    if not chart:
+        err = deepcopy(ERROR_STATUS)
+        return err_status 
+
+    try:
+        data = chart.get_data()
+    except Exception as e:
+        log_error(e, 1, error_kwargs)
+        return err_status 
+    else:
+        response = {}
+        response['chart'] = data
+        response['status'] = SUCCESS_STATUS['status']
+        return response
+
+
+def update_chart(chart_id, data):
     """Save chart_data to chart for chart_id, and return a response status dict.
 
     inputs: 
@@ -60,14 +83,14 @@ def save_chart(chart_id, data):
     err_status['status']['text'] = '{} {}'.format(BAD_DATA_TEXT, NO_ACTION.format('saved'))
 
     # does this chart id exist in the db?
-    chart = get_chart(chart_id)
+    chart = get_chart_by_id(chart_id)
     if not chart:
         err = deepcopy(ERROR_STATUS)
         err['status']['text'] = '{} {}'.format(NO_CHART, NEW_CHART.format('create'))
         err['status']['closeable'] = False
 
         # TODO: attach actions to these on the angular end
-        err['status']['actions'] = ['Create new chart', 'Discard data']
+        err['status']['actions'] = ['Create new chart', 'Discard chart']
 
         return err
 
@@ -85,7 +108,7 @@ def save_chart(chart_id, data):
     except Exception as e:
         log_error(e, 1, error_kwargs)
         return err_status
-
-    succ = SUCCESS_STATUS
-    succ['status']['text'] = SUCCESS_TEXT.format('saved')
-    return succ
+    else:
+        succ = SUCCESS_STATUS
+        succ['status']['text'] = SUCCESS_TEXT.format('saved')
+        return succ

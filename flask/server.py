@@ -28,7 +28,7 @@ from flask.ext.cors import CORS, cross_origin
 
 from model import connect_to_db, Chart, User
 from utilities import init_logging
-from chart_processing import save_chart
+from chart_processing import get_chart_data, update_chart
 
 
 # for cross origin
@@ -62,8 +62,8 @@ def add_cors_header(response):
 def return_chart_data(chart_id):
     """Return JSON containing chart data."""
 
-    chart = Chart.query.get(chart_id)
-    json_response = jsonify(chart.get_data())
+    response = get_chart_data(chart_id)
+    json_response = jsonify(response)
     return add_cors_header(json_response)
 
 
@@ -73,7 +73,7 @@ def update_chart_data(chart_id):
     """Update chart data and return JSON of (updated) chart."""
 
     data = request.json
-    response = save_chart(chart_id, data)
+    response = update_chart(chart_id, data)
     return jsonify(response)
 
 

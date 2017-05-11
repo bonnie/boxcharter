@@ -57,12 +57,16 @@ export class ChartComponent implements OnInit {
       .switchMap((params: Params) => this.chartService.getChart(+params['id']))
 
       // bind the response to the chart object for this page
-      .subscribe(chart => {
+      .subscribe(response => {
 
-        // get chart data    
-        this.chart = chart;
-      
-        // console.log(this.chart);
+        if (response['status']['type'] != 'success') {
+          this.statusService.setStatus(response['status']); 
+        } else {
+          // get chart data    
+          this.chart = response['chart'];
+
+          // console.log(this.chart);
+        }
 
     });
   }

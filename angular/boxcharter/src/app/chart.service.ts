@@ -35,12 +35,12 @@ export class ChartService {
 
   constructor(private http: Http) { }
 
-  getChart(id: number): Promise<Chart> {
+  getChart(id: number): Promise<object> {
     // console.log(`id: ${id}`);
     const url = `${this.baseURL}/${id}`;
     return this.http.get(url)
                     .toPromise()
-                    .then(response => response.json() as Chart)
+                    .then(response => response.json())
                     .catch(this.handleError);
   }
 
