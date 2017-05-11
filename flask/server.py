@@ -22,9 +22,14 @@
 # import
 
 import json
+import logging
 from flask import Flask, jsonify, request
 from flask.ext.cors import CORS, cross_origin
+
 from model import connect_to_db, Chart, User
+from utilities import init_logging
+from chart_processing import save_chart
+
 
 # for cross origin
 ANGULAR_SERVER_NAME = 'localhost'
@@ -68,15 +73,8 @@ def update_chart_data(chart_id):
     """Update chart data and return JSON of (updated) chart."""
 
     data = request.json
-
-    chart_data = data.get('metaData')
-    chart_sections = data.get('sections')
-
-    chart = Chart.query.get(chart_id)
-    chart.update(chart_data, chart_sections)
-
-    json_response = jsonify({'status': {'type': 'success', 'text': 'Chart saved.'}})
-    return json_response
+    response = save_chart(chart_id, data)
+    return jsonify(response)
 
 
 @app.route('/user/<int:user_id>')
@@ -88,25 +86,8 @@ def return_user_data(user_id):
     return add_cors_header(json_response)
 
 
-@app.route('/save_chart', methods=['POST'])
-def save_chart():
-    """Save a new or modified box chart
-
-    note: angular sends posted data as JSON, so the data is found in
-    request.json (not request.form)"""
-
-    print "*******posted data******"
-    print request.json
-    print "********session*********"
-    print session
-
-    return ''
-
-
 if __name__ == "__main__":
 
+    init_logging()
     connect_to_db(app)
-
-    # DebugToolbarExtension(app)
-
     app.run(port=5050, debug=True)
