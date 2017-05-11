@@ -8,8 +8,7 @@
             "root": "src",
             "outDir": "dist",
             "assets": [
-                "images",
-                "favicon.png"
+                "images"
             ],
             "index": "index.html",
             "main": "main.ts",
