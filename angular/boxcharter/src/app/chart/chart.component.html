@@ -51,6 +51,13 @@
         placeholder="chart author"
         [(ngModel)]="chart.metaData.author">
   </div>
+  <div class="chart-md">
+    Chart created: {{ chart.metaData.createdAt }}
+  </div>
+  <div class="chart-md">
+    Chart updated: {{ chart.metaData.modifiedAt }}
+  </div>
+
 
   <!-- sections -->
   <div *ngFor="let section of chart.sections">
