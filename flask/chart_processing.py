@@ -25,7 +25,7 @@ from status import SUCCESS_STATUS, ERROR_STATUS, BAD_DATA_TEXT
 from utilities import log_error
 
 # phrasing for when chart isn't found
-NO_CHART = 'ERROR: No chart found with that ID.'
+NO_CHART = 'No chart found with that ID.'
 NO_ACTION = 'Chart not {}.'
 NEW_CHART = 'Would you like to {} a new chart with these chords and lyrics?'
 SUCCESS_TEXT = 'Chart successfully {}'

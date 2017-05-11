@@ -19,7 +19,7 @@
 
 SUCCESS_STATUS = {'status': {'type': 'success'}}
 WARNING_STATUS = {'status': {'type': 'warning'}}
-ERROR_STATUS = {'status': {'type': 'error'}}
+ERROR_STATUS = {'status': {'type': 'danger'}}
 
 ERROR_EMAIL = 'admin@boxcharter.com'
 BAD_DATA_TEXT = 'The server did not understand this request. Please report this error to {}'.format(ERROR_EMAIL)
