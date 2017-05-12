@@ -56,7 +56,7 @@ def log_error(e, error_level, **kwargs):
 
     # TODO: rotate log when it becomes large... does logging mod offer that?
 
-    err_string = '{} {}: {}\n'.format(get_date(), e.type, str(e))
+    err_string = '{}: {}\n'.format(type(e), str(e))
     for key, value in kwargs.items():
         err_string += '\t{}: {}\n'.format(key, value)
 
