@@ -53,8 +53,8 @@
   <!-- sections -->
   <div *ngFor="let section of chart.sections">
     <ng-container *ngIf="section.metaData as s">
-      <h2>{{ s.name }}</h2>
-      <h5>{{ s.description }}</h5>
+      <h2>{{ s.sectionName }}</h2>
+      <h5>{{ s.sectionDesc }}</h5>
       <table class="table table-compact">
       <!-- measures -->
       <ng-container *ngFor="let measure of section.measures; let i=index">
