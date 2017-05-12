@@ -51,13 +51,15 @@ def get_chart_data(chart_id):
 
     chart = get_chart_by_id(chart_id)
     if not chart:
+        # TODO: get user here!!
+        # logging.error(BAD_CHART_ID_ACCESS.format(user, chart_id))
         err = deepcopy(ERROR_STATUS)
         return err_status 
 
     try:
         data = chart.get_data()
     except Exception as e:
-        log_error(e, 1, error_kwargs)
+        log_error(e, 1, **error_kwargs)
         return err_status 
     else:
         response = {}
@@ -99,14 +101,14 @@ def update_chart(chart_id, data):
         chart_data = data.get('metaData')
         chart_sections = data.get('sections')
     except KeyError as e:
-        log_error(e, 1, error_kwargs)
+        log_error(e, 1, **error_kwargs)
         return err_status
 
     # otherwise, proceed to save chart data
     try:
         chart.update(chart_data, chart_sections)
     except Exception as e:
-        log_error(e, 1, error_kwargs)
+        log_error(e, 1, **error_kwargs)
         return err_status
     else:
         succ = SUCCESS_STATUS

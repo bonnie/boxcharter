@@ -17,8 +17,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 
-
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from inflection import camelize, underscore
 
 # create a db object to work with
 db = SQLAlchemy()
@@ -26,6 +27,59 @@ db = SQLAlchemy()
 
 #######################################################################
 # Model definitions: Chart, Section, Measure, Chord, Lyric
+
+class DataMixin(object):
+    """A mixin for classes that need to return all of their data in a dict."""
+
+    def get_data(self):
+        """Return a dict of all attributes for this object.
+
+        returned dict will have one or more keys: 
+
+            metaData: dict of all scalar values
+            <non-scalar>: list
+
+            for example, chords will return 
+                {'metaData': {...}, 'sections': [...]}
+        """
+
+        # initialize return dict
+        data = {'metaData': {}}
+
+        # first the columns
+        for key, value in self.__dict__.items():
+            
+            # skip under and dunder attributes
+            if key.startswith('_'):
+                continue
+
+            # skip attributes with no value
+            if value is None:
+                continue
+
+            # skip private fields
+            if key in self.private_fields:
+                continue
+
+            # camel-ify key
+            key = camelize(key, False)
+
+            # otherwise, we have a simple field
+            data['metaData'][key] = value
+
+        # then the relationships
+        for rel in self.multi_fields:
+            data[rel] = []
+            for item in self.__getattribute__(rel):
+                data[rel].append(item.get_data())
+
+        return data
+
+
+    def set_data(self, data):
+        """Set obj data based on supplied data dict."""
+
+
 
 class Chord(db.Model):
     """measure chord"""
@@ -38,7 +92,7 @@ class Chord(db.Model):
     note_code = db.Column(db.String(2), db.ForeignKey('notes.note_code'))
     chord_suffix = db.Column(db.String(8))
 
-    # TODO verify valid chord names
+    # TODO validate chord names
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -112,11 +166,18 @@ class Measure(db.Model):
         return measure_data
 
 
-class Section(db.Model):
+class Section(db.Model, DataMixin):
     """chart section"""
 
-    __tablename__ = "sections"
+    __tablename__ = 'sections'
 
+    # special fields
+    multi_fields = ['measures']
+    private_fields = ['section_id', 'chart_id', 'section_index']
+    # end: special fields
+
+
+    ##### columns #####
     section_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     chart_id = db.Column(db.Integer, db.ForeignKey("charts.chart_id"))
     section_index = db.Column(db.Integer)
@@ -138,6 +199,8 @@ class Section(db.Model):
     # don't need a second ending start; it will be the measure after the 
     # first ending end
     second_ending_end = db.Column(db.Integer, db.ForeignKey('measures.measure_id'))
+    ##### end: columns #####
+
 
     # relationships
     # because of many measure foreign keys here, relationship to measure is
@@ -150,34 +213,39 @@ class Section(db.Model):
                                self.section_name,
                                self.section_index)
 
-    def get_data(self):
-        """Return data for a section in a JSON-friendly format."""
+    # def get_data(self):
+    #     """Return data for a section in a JSON-friendly format."""
 
-        section_data = {}
+    #     section_data = {}
 
-        # metadata
-        md = {}
-        md['name'] = self.section_name
-        md['description'] = self.section_desc;
-        md['beatsPerMeasure'] = self.beats_per_measure;
-        md['verseCount'] = self.verse_count;
-        md['measuresPerRow'] = self.measures_per_row
-        md['pickupMeasure'] = self.pickup_measure;
-        md['repeat'] = self.repeat;
-        md['firstEndingStart'] = self.first_ending_start;
-        md['firstEndingEnd'] = self.first_ending_start;
-        md['secondEndingEnd'] = self.second_ending_end;
-        section_data['metaData'] = md
+    #     # metadata
+    #     md = {}
+    #     md['name'] = self.section_name
+    #     md['description'] = self.section_desc;
+    #     md['beatsPerMeasure'] = self.beats_per_measure;
+    #     md['verseCount'] = self.verse_count;
+    #     md['measuresPerRow'] = self.measures_per_row
+    #     md['pickupMeasure'] = self.pickup_measure;
+    #     md['repeat'] = self.repeat;
+    #     md['firstEndingStart'] = self.first_ending_start;
+    #     md['firstEndingEnd'] = self.first_ending_start;
+    #     md['secondEndingEnd'] = self.second_ending_end;
+    #     section_data['metaData'] = md
 
-        # sections
-        section_data['measures'] = [measure.get_data() for measure in self.measures]
-        return section_data
+    #     # sections
+    #     section_data['measures'] = [measure.get_data() for measure in self.measures]
+    #     return section_data
 
 
-class Chart(db.Model):
+class Chart(db.Model, DataMixin):
     """boxcharter chart"""
 
     __tablename__ = "charts"
+
+    # special fields
+    multi_fields = ['sections']
+    private_fields = []
+    # end: special fields
 
     chart_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
@@ -209,42 +277,63 @@ class Chart(db.Model):
         return "<Chart chart_id={} title={}>".format(self.chart_id, self.title)
 
 
-    def get_data(self):
-        """Return all data for a chart in a JSON-friendly format."""
+    def clear(self):
+        """Clear out chart data to prepare for re-save."""
 
-        # basic data
-        chart_data = {}
+        self.title = None
+        self.author = None
+        self.composer = None
+        self.lyricist = None
+        self.originalKey = None
+        self.printKey = None
+        self.maxPages = None
+        self.minFontSize = None
+        self.sections = []
 
-        # gather the metadata
-        md = {
-            'id': self.chart_id,
-            'userId': self.user_id,
-            'title': self.title,
-            'author': self.author,
-            'composer': self.composer,
-            'lyricist': self.lyricist,
-            'createdAt': self.created_at,
-            'modifiedAt': self.modified_at,
-            'originalKey': self.original_key,
-            'printKey': self.print_key,
-            'maxPages': self.max_pages,
-            'minFontSize': self.min_fontsize
-        }
+    # def update(self, data, sections):
+    #     """Update chart with the supplied data and sections."""
 
-        chart_data['metaData'] = md
+    #     # clear out the former data
+    #     self.clear()
 
-        # gather data in sections individually
-        chart_data['sections'] = [section.get_data() for section in self.sections]
+    #     # fields not to reset upon saving chart
+    #     no_reset = ['chart_id', 'user_id', 'created_at']
 
-        return chart_data
+    #     self.title = data['title']
+    #     self.author = data['author']
+    #     self.composer = data['composer']
+    #     self.lyricist = data['lyricist']
+    #     self.original_key = data['originalKey']
+    #     self.print_key = data['printKey']
+    #     self.max_pages = data['maxPages']
+    #     self.min_fontsize = data['minFontSize']
 
-    def update(self, chart_data, sections):
-        """Update chart with the supplied data and sections."""
+    #     # sections
+    #     for sect_data in sections:
+    #         section = Section()
 
-        # for now: 
-        self.author = chart_data['author']
-        db.session.add(self)
-        db.session.commit()
+    #         section.sections.append(section)
+    #         section.section_name = sect_data['name']
+    #         section.section_desc = sect_data['description']
+    #         section.beats_per_measure = sect_data['beatsPerMeasure']
+    #         section.verse_count = sect_data['verseCount']
+    #         section.measures_per_row = sect_data['measuresPerRow']
+    #         section.pickup_measure = sect_data['pickupMeasure']
+    #         section.repeat = sect_data['repeat']
+    #         section.first_ending_start = sect_data['firstEndingStart']
+    #         section.first_ending_start = sect_data['firstEndingEnd']
+    #         section.second_ending_end = sect_data['secondEndingEnd']
+
+    #         for meas_data in sect_data['measures']:
+
+
+    #         chart.sections.append(section)
+
+    #     # finally, update the modified time
+    #     self.modified_at = datetime.now()
+
+    #     db.session.add(self)
+    #     db.session.commit()
 
 #######################################################################
 # Model definitions: Key, Note
