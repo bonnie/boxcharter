@@ -1,4 +1,4 @@
-"""General utilities for Flask server and supporting files."""
+"""Logging utilities for Flask server and supporting files."""
 
 # Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
 #

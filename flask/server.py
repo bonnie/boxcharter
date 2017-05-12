@@ -27,7 +27,7 @@ from flask import Flask, jsonify, request
 from flask.ext.cors import CORS, cross_origin
 
 from model import connect_to_db, Chart, User
-from utilities import init_logging
+from log_utilities import init_logging
 from chart_processing import get_chart_data, update_chart
 
 

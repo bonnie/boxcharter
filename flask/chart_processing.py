@@ -22,7 +22,7 @@ import logging
 
 from model import Chart
 from status import SUCCESS_STATUS, ERROR_STATUS, BAD_DATA_TEXT
-from utilities import log_error
+from log_utilities import log_error
 
 # phrasing for when chart isn't found
 NO_CHART = 'No chart found with that ID.'
