@@ -17,15 +17,6 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
- <clr-alert *ngIf="status" 
-    [clrAlertType]="alertType" 
-    (clrAlertClosedChange)="onAlertClose()">
-   <div class="alert-item">
-        <span class="alert-text">
-          {{ status.text }}
-        </span>
-    </div>
-  </clr-alert>
 <div *ngIf="chart">
   <span class="btn btn-primary save-btn" (click)="saveChart()">Save</span>
   <input id="chart-title"
@@ -52,10 +43,10 @@
         [(ngModel)]="chart.metaData.author">
   </div>
   <div class="chart-md">
-    Chart created: {{ chart.metaData.createdAt }}
+    Chart created: {{ chart.metaData.createdAt | date:'medium' }}
   </div>
   <div class="chart-md">
-    Chart updated: {{ chart.metaData.modifiedAt }}
+    Chart updated: {{ chart.metaData.modifiedAt | date:'medium' }}
   </div>
 
 
