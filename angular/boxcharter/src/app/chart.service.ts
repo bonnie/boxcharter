@@ -46,8 +46,10 @@ export class ChartService {
 
   updateChart(chart: Chart): Promise<Status> {
 
-    const id = chart.metaData['id'];
+    const id = chart.metaData['chartId'];
     const url = `${this.baseURL}/${id}`;
+
+    // console.log(url);
 
     return this.http  
           .put(url, JSON.stringify(chart), {headers: this.jsonHeaders})

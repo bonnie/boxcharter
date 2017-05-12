@@ -33,13 +33,9 @@ import { Status } from '../status';
 
 export class StatusComponent implements OnInit {
 
-  status: Status;
-
   constructor(private statusService: StatusService) { }
 
-  ngOnInit() { 
-    this.status = this.statusService.status;
-  }
+  ngOnInit() { }
 
   onAlertClose() {
     // reset status
