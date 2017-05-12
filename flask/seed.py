@@ -169,6 +169,8 @@ def load_sample_song(filepath, user):
     chart_metadata = parse_metadata(chartlines[0])
     chart = Chart(**chart_metadata)
     chart.user = user
+    chart.created_at = datetime.now()
+    chart.modified_at = datetime.now()
 
     for line in chartlines[2:]:
 
