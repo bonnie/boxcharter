@@ -24,7 +24,7 @@
         type="text" 
         size="64"
         placeholder="chart title"
-        [(ngModel)]="chart.metaData.title">
+        [(ngModel)]="chart.basicData.title">
   <div class="form-group chart-md">
     <label class="chart-md" for="chart-composer">Music by</label>
       <input id="chart-composer"
@@ -32,7 +32,7 @@
          type="text"
          size="48"
          placeholder="composer"
-         [(ngModel)]="chart.metaData.composer">
+         [(ngModel)]="chart.basicData.composer">
   </div>
   <div class="form-group chart-md">
     <label class="chart-md" for="chart-author">Chart by</label>
@@ -40,19 +40,19 @@
         type="text"
         size="48"
         placeholder="chart author"
-        [(ngModel)]="chart.metaData.author">
+        [(ngModel)]="chart.basicData.author">
   </div>
   <div class="chart-md">
-    Chart created: {{ chart.metaData.createdAt | date:'medium' }}
+    Chart created: {{ chart.basicData.createdAt | date:'medium' }}
   </div>
   <div class="chart-md">
-    Chart updated: {{ chart.metaData.modifiedAt | date:'medium' }}
+    Chart updated: {{ chart.basicData.modifiedAt | date:'medium' }}
   </div>
 
 
   <!-- sections -->
   <div *ngFor="let section of chart.sections">
-    <ng-container *ngIf="section.metaData as s">
+    <ng-container *ngIf="section.basicData as s">
       <h2>{{ s.sectionName }}</h2>
       <h5>{{ s.sectionDesc }}</h5>
       <table class="table table-compact">
