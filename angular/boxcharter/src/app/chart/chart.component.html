@@ -30,7 +30,7 @@
   <clr-tree-node [clrTreeNodeExpanded]="true">
     Chart Authors
     <clr-tree-node class="form-group chart-md">
-      <label class="chart-md" for="chart-composer">Music by</label>
+      <label class="chart-md chart-author" for="chart-composer">Music by</label>
       <input id="chart-composer"
           class="chart-md boxchart"
           type="text"
@@ -39,7 +39,7 @@
           [(ngModel)]="chart.basicData.composer">
     </clr-tree-node>
     <clr-tree-node class="form-group chart-md">
-      <label class="chart-md" for="chart-lyricist">Lyrics by (</label>
+      <label class="chart-md chart-author" for="chart-lyricist">Lyrics by (</label>
       <input id="chart-lyricist-same" 
           type="checkbox" 
           [(ngModel)]="chart.basicData.lyricistSame">
@@ -54,7 +54,7 @@
       </span>
     </clr-tree-node>
     <clr-tree-node class="form-group chart-md">
-      <label class="chart-md" for="chart-author">Chart by</label>
+      <label class="chart-md chart-author" for="chart-author">Chart by</label>
         <input id="chart-author"
           class="chart-md boxchart"
           type="text"
@@ -83,12 +83,12 @@
     </clr-tree-node>
   </clr-tree-node>
   <clr-tree-node [clrTreeNodeExpanded]="true">
-    Chart Print Options
+    Chart PDF Options
     <clr-tree-node class="form-group chart-md">
       <label class="chart-md" for="max-pages">Maximum chart pages</label>
       <input id="max-pages"
           class="chart-md boxchart"
-          type="text"
+          type="number"
           size="4"
           [(ngModel)]="chart.basicData.maxPages">
     </clr-tree-node>
@@ -96,9 +96,29 @@
       <label class="chart-md" for="min-fontsize">Minimum chart font size</label>
       <input id="min-fontsize"
           class="chart-md boxchart"
-          type="text"
+          type="number"
           size="4"
           [(ngModel)]="chart.basicData.minFontsize">
+    </clr-tree-node>
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="page-width">Page width</label>
+      <input id="page-width"
+          class="chart-md boxchart"
+          type="number"
+          size="4"
+          min="0"
+          step="any"
+          [(ngModel)]="chart.basicData.pageWidth">
+    </clr-tree-node>
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="page-width">Page Height</label>
+      <input id="page-width"
+          class="chart-md boxchart"
+          type="number"
+          size="4"
+          min="0"
+          step="any"
+          [(ngModel)]="chart.basicData.pageHeight">
     </clr-tree-node>
   </clr-tree-node>
   <clr-tree-node [clrTreeNodeExpanded]="true">

@@ -52,6 +52,10 @@ export class ChartComponent implements OnInit {
   ) {  }
 
   ngOnInit() {
+    // clear the status
+    this.statusService.clearStatus();
+
+    // load the data
     this.route.params
 
       // get chart ID from url and pass it to the chart service getChart method
@@ -65,9 +69,10 @@ export class ChartComponent implements OnInit {
           this.statusService.setStatus(response['status']); 
         } else {
           // get chart data    
+
+          console.log(response['chart']);
           this.chart = response['chart'];
 
-          // console.log(this.chart);
         }
         (err) => {
           // this.statusService.displayError(err);

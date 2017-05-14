@@ -33,15 +33,14 @@ input.title {
     display: block;
 }
 
-div.chart-md {
-    display: block;
-    margin: 12px 0;
-}
-
 .chart-md {
     /* h4 */
     font-weight: 200;
     font-size: 18px;
+}
+
+label.chart-author {
+    width: 70px;
 }
 
 input.chord {

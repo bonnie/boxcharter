@@ -305,13 +305,19 @@ class Chart(db.Model, DataMixin):
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
 
-    # chart properties
+    # chart key
     original_key = db.Column(db.String(2), db.ForeignKey('keys.key_code'))
     print_key = db.Column(db.String(2),
                           db.ForeignKey('keys.key_code'),
                           nullable=True)
+
+    # chart pdf properties
     max_pages = db.Column(db.Integer, default=1)
     min_fontsize = db.Column(db.Integer, default=10)
+    page_width = db.Column(db.Numeric(4, 2, asdecimal=False), default=8.5)
+    page_width_units = db.Column(db.String(10), default='inches')
+    page_height = db.Column(db.Numeric(4, 2, asdecimal=False), default=11)
+    page_height_units = db.Column(db.String(10), default='inches')
 
     # relationships
     user = db.relationship("User")
