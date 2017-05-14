@@ -39,6 +39,7 @@ export class ChartComponent implements OnInit {
   
   chart: Chart;
   status: Status;
+  lyricistSame: boolean = false; // lyricist same as composer?
 
   constructor(
     // for getting chart data from flask

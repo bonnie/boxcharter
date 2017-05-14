@@ -27,7 +27,7 @@
         [(ngModel)]="chart.basicData.title">
   <div class="form-group chart-md">
     <label class="chart-md" for="chart-composer">Music by</label>
-      <input id="chart-composer"
+    <input id="chart-composer"
          class="chart-md boxchart"
          type="text"
          size="48"
@@ -35,8 +35,24 @@
          [(ngModel)]="chart.basicData.composer">
   </div>
   <div class="form-group chart-md">
+    <label class="chart-md" for="chart-lyricist">Lyrics by (</label>
+    <input id="chart-lyricist-same" 
+        type="checkbox" 
+        [(ngModel)]="chart.basicData.lyricistSame">
+      <label class="chart-md" for="chart-lyricist-same">Same as composer )</label>
+    <span *ngIf="chart.basicData.lyricistSame == false">
+      <input id="chart-lyricist"
+          class="chart-md boxchart"
+          type="text"
+          size="48"
+          placeholder="chart lyricist"
+          [(ngModel)]="chart.basicData.lyricist">
+    </span>
+  </div>
+  <div class="form-group chart-md">
     <label class="chart-md" for="chart-author">Chart by</label>
-    <input class="chart-md boxchart"
+      <input id="chart-author"
+        class="chart-md boxchart"
         type="text"
         size="48"
         placeholder="chart author"

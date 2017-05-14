@@ -298,6 +298,9 @@ class Chart(db.Model, DataMixin):
     composer = db.Column(db.String(128))
     lyricist = db.Column(db.String(128))
 
+    # is the lyricist the same as the composer? 
+    lyricist_same = db.Column(db.Boolean, default=False)
+
     # date metadata
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
