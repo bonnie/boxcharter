@@ -22,4 +22,5 @@ WARNING_STATUS = {'status': {'type': 'warning'}}
 ERROR_STATUS = {'status': {'type': 'danger'}}
 
 ERROR_EMAIL = 'admin@boxcharter.com'
-BAD_DATA_TEXT = 'The server did not understand this request. Please report this error to {}'.format(ERROR_EMAIL)
+CONTACT_ADMIN =  'Please report this error to {}'.format(ERROR_EMAIL)
+BAD_REQUEST = 'The server did not understand this request. {}'.format(CONTACT_ADMIN)
