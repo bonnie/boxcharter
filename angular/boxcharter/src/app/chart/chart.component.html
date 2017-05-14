@@ -18,53 +18,98 @@
 -->
 
 <div *ngIf="chart" (click)="statusService.clearSuccess()">
-  <span class="btn btn-primary save-btn" (click)="saveChart()">Save</span>
+  <div class="save-btn">
+    <span class="btn btn-primary" (click)="saveChart()">Save</span>
+  </div>
   <input id="chart-title"
         class="title boxchart" 
         type="text" 
         size="64"
         placeholder="chart title"
         [(ngModel)]="chart.basicData.title">
-  <div class="form-group chart-md">
-    <label class="chart-md" for="chart-composer">Music by</label>
-    <input id="chart-composer"
-         class="chart-md boxchart"
-         type="text"
-         size="48"
-         placeholder="composer"
-         [(ngModel)]="chart.basicData.composer">
-  </div>
-  <div class="form-group chart-md">
-    <label class="chart-md" for="chart-lyricist">Lyrics by (</label>
-    <input id="chart-lyricist-same" 
-        type="checkbox" 
-        [(ngModel)]="chart.basicData.lyricistSame">
-      <label class="chart-md" for="chart-lyricist-same">Same as composer )</label>
-    <span *ngIf="chart.basicData.lyricistSame == false">
-      <input id="chart-lyricist"
+  <clr-tree-node [clrTreeNodeExpanded]="true">
+    Chart Authors
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="chart-composer">Music by</label>
+      <input id="chart-composer"
           class="chart-md boxchart"
           type="text"
           size="48"
-          placeholder="chart lyricist"
-          [(ngModel)]="chart.basicData.lyricist">
-    </span>
-  </div>
-  <div class="form-group chart-md">
-    <label class="chart-md" for="chart-author">Chart by</label>
-      <input id="chart-author"
-        class="chart-md boxchart"
-        type="text"
-        size="48"
-        placeholder="chart author"
-        [(ngModel)]="chart.basicData.author">
-  </div>
-  <div class="chart-md">
-    Chart created: {{ chart.basicData.createdAt | date:'medium' }}
-  </div>
-  <div class="chart-md">
-    Chart updated: {{ chart.basicData.modifiedAt | date:'medium' }}
-  </div>
-
+          placeholder="composer"
+          [(ngModel)]="chart.basicData.composer">
+    </clr-tree-node>
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="chart-lyricist">Lyrics by (</label>
+      <input id="chart-lyricist-same" 
+          type="checkbox" 
+          [(ngModel)]="chart.basicData.lyricistSame">
+        <label class="chart-md" for="chart-lyricist-same">Same as composer )</label>
+      <span *ngIf="chart.basicData.lyricistSame == false">
+        <input id="chart-lyricist"
+            class="chart-md boxchart"
+            type="text"
+            size="48"
+            placeholder="chart lyricist"
+            [(ngModel)]="chart.basicData.lyricist">
+      </span>
+    </clr-tree-node>
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="chart-author">Chart by</label>
+        <input id="chart-author"
+          class="chart-md boxchart"
+          type="text"
+          size="48"
+          placeholder="chart author"
+          [(ngModel)]="chart.basicData.author">
+    </clr-tree-node>
+  </clr-tree-node>
+  <clr-tree-node [clrTreeNodeExpanded]="true">
+    Chart Keys
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="original-key">Original Key</label>
+      <input id="original-key"
+          class="chart-md boxchart"
+          type="text"
+          size="4"
+          [(ngModel)]="chart.basicData.originalKey">
+    </clr-tree-node>
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="transposed-key">Transposed Key</label>
+      <input id="transposed-key"
+          class="chart-md boxchart"
+          type="text"
+          size="4"
+          [(ngModel)]="chart.basicData.printKey">
+    </clr-tree-node>
+  </clr-tree-node>
+  <clr-tree-node [clrTreeNodeExpanded]="true">
+    Chart Print Options
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="max-pages">Maximum chart pages</label>
+      <input id="max-pages"
+          class="chart-md boxchart"
+          type="text"
+          size="4"
+          [(ngModel)]="chart.basicData.maxPages">
+    </clr-tree-node>
+    <clr-tree-node class="form-group chart-md">
+      <label class="chart-md" for="min-fontsize">Minimum chart font size</label>
+      <input id="min-fontsize"
+          class="chart-md boxchart"
+          type="text"
+          size="4"
+          [(ngModel)]="chart.basicData.minFontsize">
+    </clr-tree-node>
+  </clr-tree-node>
+  <clr-tree-node [clrTreeNodeExpanded]="true">
+    Chart Dates
+    <clr-tree-node class="chart-md">
+      Chart created: {{ chart.basicData.createdAt | date:'medium' }}
+    </clr-tree-node>
+    <clr-tree-node class="chart-md">
+      Chart updated: {{ chart.basicData.modifiedAt | date:'medium' }}
+    </clr-tree-node>
+  </clr-tree-node>
 
   <!-- sections -->
   <div *ngFor="let section of chart.sections">
