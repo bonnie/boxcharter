@@ -42,4 +42,11 @@ export class StatusService {
     // clear the status data
     this.status = null;
   }
+
+  clearSuccess(): void {
+    // clear the status only if it's a success status
+    if (this.status && this.status.alertType == 'alert-success') {
+      this.status = null;
+    }
+  }
 }
