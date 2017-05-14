@@ -21,7 +21,7 @@ from copy import deepcopy
 import logging
 
 from model import Chart
-from status import SUCCESS_STATUS, ERROR_STATUS, BAD_DATA_TEXT
+from status import SUCCESS_STATUS, ERROR_STATUS, BAD_REQUEST, CONTACT_ADMIN
 from log_utilities import log_error
 
 # phrasing for when chart isn't found
@@ -48,6 +48,7 @@ def get_chart_data(chart_id):
 
     err_status = deepcopy(ERROR_STATUS) 
     err_status['status']['text'] = NO_CHART
+    error_kwargs = {'chart_id': chart_id}
 
     chart = get_chart_by_id(chart_id)
     if not chart:
@@ -60,7 +61,9 @@ def get_chart_data(chart_id):
         data = chart.get_data()
     except Exception as e:
         log_error(e, 1, **error_kwargs)
-        return err_status 
+        err_status['status']['text'] = '{} {}'.format(
+            'Could not get data.', CONTACT_ADMIN)
+        return err_status
     else:
         response = {}
         response['chart'] = data
@@ -82,7 +85,7 @@ def update_chart(chart_id, data):
     # for errors
     error_kwargs = {'chart_id': chart_id, 'data': data}
     err_status = deepcopy(ERROR_STATUS) 
-    err_status['status']['text'] = '{} {}'.format(BAD_DATA_TEXT, NO_ACTION.format('saved'))
+    err_status['status']['text'] = '{} {}'.format(BAD_REQUEST, NO_ACTION.format('saved'))
 
     # does this chart id exist in the db?
     chart = get_chart_by_id(chart_id)
@@ -96,17 +99,10 @@ def update_chart(chart_id, data):
 
         return err
 
-    # did we get the data we needed? 
-    try:
-        chart_data = data.get('metaData')
-        chart_sections = data.get('sections')
-    except KeyError as e:
-        log_error(e, 1, **error_kwargs)
-        return err_status
-
     # otherwise, proceed to save chart data
     try:
-        chart.update(chart_data, chart_sections)
+        chart.clear()
+        chart.update(data)
     except Exception as e:
         log_error(e, 1, **error_kwargs)
         return err_status
