@@ -17,7 +17,7 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<div *ngIf="chart">
+<div *ngIf="chart" (click)="statusService.clearSuccess()">
   <span class="btn btn-primary save-btn" (click)="saveChart()">Save</span>
   <input id="chart-title"
         class="title boxchart" 
