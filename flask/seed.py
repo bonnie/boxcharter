@@ -172,6 +172,8 @@ def load_sample_song(filepath, user):
     chart.created_at = datetime.now()
     chart.modified_at = datetime.now()
 
+    section_count = 0
+
     for line in chartlines[2:]:
 
         # skip blank lines
@@ -182,14 +184,15 @@ def load_sample_song(filepath, user):
             # we've got ourselves a new section
             section_metadata = parse_metadata(line[1:])
             section = Section(**section_metadata)
+            section.index = section_count
             chart.sections.append(section)
 
-            # it's easier in angular if the measure count starts at 1
-            measure_count = 1
+            section_count += 1
+            measure_count = 0
 
         elif line:
             # add a measure to the section
-            measure = Measure(measure_index=measure_count)
+            measure = Measure(index=measure_count)
             section.measures.append(measure)
 
             # add chords and lyrics to the measure
