@@ -64,7 +64,7 @@ class DataMixin(object):
             # camel-ify key
             key = camelize(key, False)
 
-            # otherwise, we have a simple field
+            # add to basic data
             data[BASICDATA_KEY][key] = value
 
         # then the relationships

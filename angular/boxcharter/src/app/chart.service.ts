@@ -53,7 +53,7 @@ export class ChartService {
     return this.http  
           .put(url, JSON.stringify(chart), {headers: this.jsonHeaders})
           .toPromise()
-          .then(response => response.json()['status'] as Status)
+          .then(response => response.json())
           .catch(err => this.handleError(err, this.statusService));
   }
 

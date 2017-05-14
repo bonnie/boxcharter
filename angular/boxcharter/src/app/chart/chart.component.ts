@@ -78,8 +78,10 @@ export class ChartComponent implements OnInit {
     // save the chart and display a status alert
     this.chartService.updateChart(this.chart)
           .then(response => {
-            console.log(response);
-            this.statusService.setStatus(response);
+            this.statusService.setStatus(response['status'] as Status);
+            if (response['status']['type'] == 'success') {
+              this.chart.basicData['modifiedAt'] = response['modifiedAt'];
+            }
           });
   }
 }

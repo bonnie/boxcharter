@@ -79,7 +79,7 @@ def update_chart(chart_id, data):
         chart_data: dict
 
     outputs: 
-        response status dict
+        response dict with 'status' and 'chart' keys
     """
 
     # for errors
@@ -107,6 +107,7 @@ def update_chart(chart_id, data):
         log_error(e, 1, **error_kwargs)
         return err_status
     else:
-        succ = SUCCESS_STATUS
-        succ['status']['text'] = SUCCESS_TEXT.format('saved')
-        return succ
+        response = deepcopy(SUCCESS_STATUS)
+        response['status']['text'] = SUCCESS_TEXT.format('saved')
+        response['modifiedAt'] = chart.modified_at
+        return response
