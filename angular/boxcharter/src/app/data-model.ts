@@ -25,12 +25,12 @@ export class Measure {
 };
 
 export class Section {
-    metaData: object;
+    basicData: object;
     rows: number;
     measures: Measure[];
 };
 
 export class Chart {
-  metaData: object;
+  basicData: object;
   sections: Section[];
 }
