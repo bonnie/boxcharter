@@ -43,6 +43,23 @@ label.chart-author {
     width: 70px;
 }
 
+div.section {
+    margin: 24px 0;
+    padding: 12px;
+    border: 2px solid black;
+}
+
+input.section-title {
+    /* h3 */
+    font-weight: 200px;
+    font-size: 22px;
+}
+
+td.measure {
+    padding: 0 2px;
+    margin: 0 2px;
+}
+
 input.chord {
     min-width: 40px;
     max-width: 40px;

@@ -135,46 +135,54 @@
   <!-- END: header tree -->
 
   <!-- START: sections -->
-  <div *ngFor="let section of chart.sections">
-    <h2>{{ section.sectionName }}</h2>
-    <h5>{{ section.sectionDesc }}</h5>
-    <table class="table table-compact">
-    <!-- START: measures -->
-    <ng-container *ngFor="let measure of section.measures; let i=index">
-      <ng-container *ngIf="i % section.measuresPerRow == 0">
-        <tr>
-      </ng-container>
-      <td>
-        <!-- START: chords -->
-        <table class="table table-compact">
+  <div class="sections" *ngFor="let section of chart.sections">
+    <div class="section">
+      <input class="chart-md section-title" 
+            type="text"
+            size="64"
+            placeholder="section title"
+            [(ngModel)]="section.sectionName">
+      <input class="chart-md section-desc" 
+            type="text"
+            size="64"
+            placeholder="section description"
+            [(ngModel)]="section.sectionDesc">
+      <table class="table table-compact">
+      <!-- START: measures -->
+      <ng-container *ngFor="let measure of section.measures; let i=index">
+        <ng-container *ngIf="i % section.measuresPerRow == 0">
           <tr>
-            <!-- one chord box per beat -->
-            <td class="chord" *ngFor="let j of section.beatsPerMeasure | fill">
-              <input class="chord boxchart"
-                      type="text" 
-                      [(ngModel)]="measure.chords[j]" 
-                      size="4" 
-                      placeholder="/">
-              </td>
-            </tr>
-          <!-- END: chords -->
-          <!-- START: lyrics -->
-            <tr *ngFor="let k of section.verseCount | fill">
-              <td [attr.colspan]="section.beatsPerMeasure">
-                <input type="text" 
-                      [(ngModel)]="measure.lyrics[k]" 
-                      size="30">
-              </td>
-            </tr>
-            <!-- END: lyrics -->
-          </table>
-        </td>
-      <ng-container *ngIf="i % section.measuresPerRow == section.measuresPerRow">
-        <tr>
+        </ng-container>
+        <td class="measure">
+          <!-- START: chords -->
+          <table class="table table-compact">
+            <tr>
+              <!-- one chord box per beat -->
+              <td class="chord" *ngFor="let j of section.beatsPerMeasure | fill">
+                <input class="chord boxchart"
+                        type="text" 
+                        [(ngModel)]="measure.chords[j]" 
+                        size="4" 
+                        placeholder="/">
+                </td>
+              </tr>
+            <!-- END: chords -->
+            <!-- START: lyrics -->
+              <tr *ngFor="let k of section.verseCount | fill">
+                <td [attr.colspan]="section.beatsPerMeasure">
+                  <input type="text" size="30" [(ngModel)]="measure.lyrics[k]">
+                </td>
+              </tr>
+              <!-- END: lyrics -->
+            </table>
+          </td>
+        <ng-container *ngIf="i % section.measuresPerRow == section.measuresPerRow">
+          <tr>
+        </ng-container>
       </ng-container>
-    </ng-container>
-    <!-- END: measures -->
-  </table>
+      <!-- END: measures -->
+    </table>
+    </div>
   </div>
   <!-- END: sections -->
 </div>
