@@ -71,7 +71,7 @@ export class ChartComponent implements OnInit {
           // get chart data    
 
           console.log(response['chart']);
-          this.chart = response['chart'];
+          this.chart = response['chart'] as Chart;
 
         }
         (err) => {
@@ -86,7 +86,7 @@ export class ChartComponent implements OnInit {
           .then(response => {
             this.statusService.setStatus(response['status'] as Status);
             if (response['status']['type'] == 'success') {
-              this.chart.basicData['modifiedAt'] = response['modifiedAt'];
+              this.chart.modifiedAt = response['modifiedAt'];
             }
           });
   }

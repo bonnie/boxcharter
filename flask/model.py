@@ -22,8 +22,6 @@ from flask_sqlalchemy import SQLAlchemy
 from inflection import camelize, underscore
 from chord_utilities import parse_chord
 
-BASICDATA_KEY = 'basicData'
-
 # create a db object to work with
 db = SQLAlchemy()
 
@@ -44,7 +42,7 @@ class DataMixin(object):
         """
 
         # initialize return dict
-        data = {BASICDATA_KEY: {}}
+        data = {}
 
         # first the columns
         for key, value in self.__dict__.items():
@@ -65,7 +63,7 @@ class DataMixin(object):
             key = camelize(key, False)
 
             # add to basic data
-            data[BASICDATA_KEY][key] = value
+            data[key] = value
 
         # then the relationships
         for rel in self.multi_fields:
@@ -80,13 +78,13 @@ class DataMixin(object):
         """Set obj data based on supplied data dict."""
 
         # basic data first
-        for key, value in data[BASICDATA_KEY].items():
+        for key, value in data.items():
 
             # skip keys with no value
             if value is None:
                 continue
 
-            if key in self.no_reset:
+            if key in (self.no_reset | self.multi_fields):
                 continue
 
             # snake-ify key
@@ -101,7 +99,8 @@ class DataMixin(object):
             item_list = []
             for i, sub_data in enumerate(multi_data):
                 item = obj.__call__()
-                item.index = i
+                if obj not in [Chord, Lyric]:
+                    item.index = i
                 item.set_data(sub_data)
                 item_list.append(item)
 
@@ -147,8 +146,31 @@ class Chord(db.Model):
 
         return chordstring
 
+    # def get_data(self):
+    #     """Get data in a JSON friendly way. 
 
-class Lyric(db.Model):
+    #     Can't use data mixin since the chord data is synthesized into a
+    #     string of note and suffix combined.
+    #     """
+
+    #     return {'beatIndex': self.beat_index,
+    #             'chordString': self.get_chordstring()}
+
+    # def set_data(self, data):
+    #     """Set data in a JSON friendly way. 
+
+    #     Can't use data mixin since the chord data is synthesized into a
+    #     string of note and suffix combined.
+    #     """        
+
+    #     # TODO: deal with unparseable chords
+    #     note, suffix = parse_chord(data['chordString'])
+    #     self.note_code = note
+    #     self.chord_suffix = suffix
+    #     self.beat_index = data['beatIndex']
+
+
+class Lyric(db.Model, DataMixin):
     """measure lyric"""
 
     __tablename__ = "lyrics"
@@ -165,10 +187,8 @@ class Lyric(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Lyric lyric_id={} verse_index={}, lyric_text={}>".format(
-                                                                self.lyric_id,
-                                                                self.verse_index,
-                                                                self.lyric_text)
+        repr_str = "<Lyric lyric_id={} verse_index={}, lyric_text={}>"
+        return repr_str.format(self.lyric_id, self.verse_index, self.lyric_text)
 
 
 class Measure(db.Model):

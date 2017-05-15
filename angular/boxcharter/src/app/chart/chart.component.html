@@ -26,7 +26,9 @@
         type="text" 
         size="64"
         placeholder="chart title"
-        [(ngModel)]="chart.basicData.title">
+        [(ngModel)]="chart.title">
+      
+  <!-- START: header tree -->
   <clr-tree-node [clrTreeNodeExpanded]="true">
     Chart Authors
     <clr-tree-node class="form-group chart-md">
@@ -36,21 +38,21 @@
           type="text"
           size="48"
           placeholder="composer"
-          [(ngModel)]="chart.basicData.composer">
+          [(ngModel)]="chart.composer">
     </clr-tree-node>
     <clr-tree-node class="form-group chart-md">
       <label class="chart-md chart-author" for="chart-lyricist">Lyrics by (</label>
       <input id="chart-lyricist-same" 
           type="checkbox" 
-          [(ngModel)]="chart.basicData.lyricistSame">
+          [(ngModel)]="chart.lyricistSame">
         <label class="chart-md" for="chart-lyricist-same">Same as composer )</label>
-      <span *ngIf="chart.basicData.lyricistSame == false">
+      <span *ngIf="chart.lyricistSame == false">
         <input id="chart-lyricist"
             class="chart-md boxchart"
             type="text"
             size="48"
             placeholder="chart lyricist"
-            [(ngModel)]="chart.basicData.lyricist">
+            [(ngModel)]="chart.lyricist">
       </span>
     </clr-tree-node>
     <clr-tree-node class="form-group chart-md">
@@ -60,7 +62,7 @@
           type="text"
           size="48"
           placeholder="chart author"
-          [(ngModel)]="chart.basicData.author">
+          [(ngModel)]="chart.author">
     </clr-tree-node>
   </clr-tree-node>
   <clr-tree-node [clrTreeNodeExpanded]="true">
@@ -71,7 +73,7 @@
           class="chart-md boxchart"
           type="text"
           size="4"
-          [(ngModel)]="chart.basicData.originalKey">
+          [(ngModel)]="chart.originalKey">
     </clr-tree-node>
     <clr-tree-node class="form-group chart-md">
       <label class="chart-md" for="transposed-key">Transposed Key</label>
@@ -79,7 +81,7 @@
           class="chart-md boxchart"
           type="text"
           size="4"
-          [(ngModel)]="chart.basicData.printKey">
+          [(ngModel)]="chart.printKey">
     </clr-tree-node>
   </clr-tree-node>
   <clr-tree-node [clrTreeNodeExpanded]="true">
@@ -90,7 +92,7 @@
           class="chart-md boxchart"
           type="number"
           size="4"
-          [(ngModel)]="chart.basicData.maxPages">
+          [(ngModel)]="chart.maxPages">
     </clr-tree-node>
     <clr-tree-node class="form-group chart-md">
       <label class="chart-md" for="min-fontsize">Minimum chart font size</label>
@@ -98,7 +100,7 @@
           class="chart-md boxchart"
           type="number"
           size="4"
-          [(ngModel)]="chart.basicData.minFontsize">
+          [(ngModel)]="chart.minFontsize">
     </clr-tree-node>
     <clr-tree-node class="form-group chart-md">
       <label class="chart-md" for="page-width">Page width</label>
@@ -108,72 +110,71 @@
           size="4"
           min="0"
           step="any"
-          [(ngModel)]="chart.basicData.pageWidth">
+          [(ngModel)]="chart.pageWidth">
     </clr-tree-node>
     <clr-tree-node class="form-group chart-md">
-      <label class="chart-md" for="page-width">Page Height</label>
+      <label class="chart-md" for="page-width">Page height</label>
       <input id="page-width"
           class="chart-md boxchart"
           type="number"
           size="4"
           min="0"
           step="any"
-          [(ngModel)]="chart.basicData.pageHeight">
+          [(ngModel)]="chart.pageHeight">
     </clr-tree-node>
   </clr-tree-node>
   <clr-tree-node [clrTreeNodeExpanded]="true">
     Chart Dates
     <clr-tree-node class="chart-md">
-      Chart created: {{ chart.basicData.createdAt | date:'medium' }}
+      Chart created: {{ chart.createdAt | date:'medium' }}
     </clr-tree-node>
     <clr-tree-node class="chart-md">
-      Chart updated: {{ chart.basicData.modifiedAt | date:'medium' }}
+      Chart updated: {{ chart.modifiedAt | date:'medium' }}
     </clr-tree-node>
   </clr-tree-node>
+  <!-- END: header tree -->
 
-  <!-- sections -->
+  <!-- START: sections -->
   <div *ngFor="let section of chart.sections">
-    <ng-container *ngIf="section.basicData as s">
-      <h2>{{ s.sectionName }}</h2>
-      <h5>{{ s.sectionDesc }}</h5>
-      <table class="table table-compact">
-      <!-- measures -->
-      <ng-container *ngFor="let measure of section.measures; let i=index">
-        <ng-container *ngIf="i % s.measuresPerRow == 0">
-          <tr>
-        </ng-container>
-        <td>
-          <!-- chords -->
-          <table class="table table-compact">
-            <tr>
-              <!-- one chord box per beat -->
-              <td class="chord" *ngFor="let j of s.beatsPerMeasure | fill">
-                <input class="chord boxchart"
-                       type="text" 
-                       id="chord-{{j}}" 
-                       value="{{ measure.chords.hasOwnProperty(j) ? 
-                                 measure.chords[j] : null }}" 
-                       size="4" 
-                       placeholder="/">
-                </td>
-              </tr>
-            <!-- lyrics -->
-              <tr *ngFor="let k of s.verseCount | fill">
-                <td [attr.colspan]="s.beatsPerMeasure">
-                  <input type="text" 
-                        id="lyric-{{k}}" 
-                        value="{{ measure.lyrics.hasOwnProperty(k) ? 
-                                  measure.lyrics[k] : null }}" 
-                        size="30">
-                </td>
-              </tr>
-            </table>
-          </td>
-        <ng-container *ngIf="i % s.measuresPerRow == s.measuresPerRow">
-          <tr>
-        </ng-container>
+    <h2>{{ section.sectionName }}</h2>
+    <h5>{{ section.sectionDesc }}</h5>
+    <table class="table table-compact">
+    <!-- START: measures -->
+    <ng-container *ngFor="let measure of section.measures; let i=index">
+      <ng-container *ngIf="i % section.measuresPerRow == 0">
+        <tr>
       </ng-container>
-    </table>
+      <td>
+        <!-- START: chords -->
+        <table class="table table-compact">
+          <tr>
+            <!-- one chord box per beat -->
+            <td class="chord" *ngFor="let j of section.beatsPerMeasure | fill">
+              <input class="chord boxchart"
+                      type="text" 
+                      [(ngModel)]="measure.chords[j]" 
+                      size="4" 
+                      placeholder="/">
+              </td>
+            </tr>
+          <!-- END: chords -->
+          <!-- START: lyrics -->
+            <tr *ngFor="let k of section.verseCount | fill">
+              <td [attr.colspan]="section.beatsPerMeasure">
+                <input type="text" 
+                      [(ngModel)]="measure.lyrics[k]" 
+                      size="30">
+              </td>
+            </tr>
+            <!-- END: lyrics -->
+          </table>
+        </td>
+      <ng-container *ngIf="i % section.measuresPerRow == section.measuresPerRow">
+        <tr>
+      </ng-container>
     </ng-container>
+    <!-- END: measures -->
+  </table>
   </div>
+  <!-- END: sections -->
 </div>

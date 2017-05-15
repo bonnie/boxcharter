@@ -18,19 +18,55 @@
  *
  */
 
+// export class Chord {
+//     beatIndex: number;
+//     chordString: string;
+// }
+
+// export class Lyric {
+//     verseIndex: number;
+//     lyricText: string;
+// }
+
 export class Measure {
-    beatCount: number;
-    chords: string[];
-    lyrics: string[];
+    beatsPerMeasure: number;
+    chords: object;
+    lyrics: object;
 };
 
 export class Section {
-    basicData: object;
-    rows: number;
+    sectionId: number;
+    chartId: number;
+    sectionName: string;
+    sectionDesc: string;
+    beatsPerMeasure: number;
+    verseCount: number;
+    measuresPerRow: number;
+    repeat: boolean;
+    pickupMeasure: boolean;
+    ending1Start: number;
+    ending1End: number;
+    ending2End: number;
     measures: Measure[];
 };
 
 export class Chart {
-  basicData: object;
+  chartId: number;
+  userId: number;
+  title: string;
+  author: string;
+  composer: string;
+  lyricist: string;
+  lyricistSame: boolean;
+  modifiedAt: Date;
+  createdAt: Date;
+  originalKey: string;
+  printKey: string;
+  minPages: number;
+  minFontsize: number;
+  pageWidth: number;
+  pageWidthUnits: string;
+  pageHeight: number;
+  pageHeightUnits: string;
   sections: Section[];
 }
