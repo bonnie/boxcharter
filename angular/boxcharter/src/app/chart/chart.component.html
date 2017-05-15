@@ -256,7 +256,7 @@
 <clr-modal [(clrModalOpen)]="deleteConfirm">
   <h3 class="modal-title">Are you sure you want to delete this {{ deleteType }}?</h3>
   <div class="modal-body" [ngSwitch]="deleteType">
-    <p *ngSwitchCase="'chart'">
+    <p *ngSwitchCase="'chart'" class="danger">
       This action cannot be undone.
     </p>
     <p *ngSwitchDefault>
@@ -274,7 +274,7 @@
 <clr-modal [(clrModalOpen)]="revertConfirm">
   <h3 class="modal-title">Are you sure you want to revert?</h3>
   <div class="modal-body">
-    <p>If you revert to the last saved version, you will <strong>lose all unsaved work</strong>. This action cannot be undone.</p>
+    <p>If you revert to the last saved version, you will <span class="danger">lose all unsaved work</span>. This action cannot be undone.</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="revertConfirm = false">Cancel</button>
