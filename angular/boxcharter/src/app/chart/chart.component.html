@@ -137,18 +137,58 @@
   <!-- START: sections -->
   <div class="sections" *ngFor="let section of chart.sections">
     <div class="section">
-      <input class="chart-md section-title" 
-            type="text"
-            size="64"
-            placeholder="section title"
-            [(ngModel)]="section.sectionName">
-      <input class="chart-md section-desc" 
-            type="text"
-            size="64"
-            placeholder="section description"
-            [(ngModel)]="section.sectionDesc">
-      <table class="table table-compact">
+      <div class="section-headers">
+        <!-- START: section metadata -->
+        <div class="section-metadata section-header">
+          <input class="chart-md section-title" 
+                type="text"
+                size="64"
+                placeholder="section title"
+                [(ngModel)]="section.sectionName">
+          <input class="chart-md section-desc" 
+                type="text"
+                size="64"
+                placeholder="section description"
+                [(ngModel)]="section.sectionDesc">
+          <label class="chart-md" for="measures-row">Measures per row</label>
+          <input id="measures-row"
+              class="chart-md boxchart"
+              type="number"
+              size="4"
+              min="0"
+              step="any"
+              [(ngModel)]="section.measuresPerRow">
+          <label class="chart-md" for="beats-measure">Beats per measure</label>
+          <input id="beats-measure"
+              class="chart-md boxchart"
+              type="number"
+              size="4"
+              min="0"
+              step="any"
+              [(ngModel)]="section.beatsPerMeasure">
+        </div>
+        <!-- END: section metadata -->
+        <!-- START: section buttons -->
+        <div class="section-buttons section-header">
+          <clr-dropdown [clrMenuPosition]="'bottom-left'" [clrCloseMenuOnItemClick]="true">
+              <button class="btn btn-primary-outline" clrDropdownToggle>
+                  <clr-icon shape="add" size="24"></clr-icon>
+                  <clr-icon shape="caret down"></clr-icon>
+              </button>
+              <clr-dropdown-menu>
+                  <a href="..." clrDropdownItem>Add section before</a>
+                  <a href="..." clrDropdownItem>Add section after</a>
+              </clr-dropdown-menu>
+          </clr-dropdown>
+          <button class="btn btn-danger-outline">
+            <clr-icon shape="remove"></clr-icon>
+            <span class="clr-icon-title">Delete</span>
+          </button>
+        </div>
+        <!-- END: section buttons -->
+      </div>
       <!-- START: measures -->
+      <table class="table table-compact">
       <ng-container *ngFor="let measure of section.measures; let i=index">
         <ng-container *ngIf="i % section.measuresPerRow == 0">
           <tr>
