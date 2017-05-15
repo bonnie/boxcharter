@@ -84,7 +84,7 @@ class DataMixin(object):
             if value is None:
                 continue
 
-            if key in (self.no_reset | self.multi_fields):
+            if key in self.no_reset or key in self.multi_fields:
                 continue
 
             # snake-ify key
@@ -240,9 +240,11 @@ class Measure(db.Model):
         for index, chordstring in data.get('chords', {}).items():
             
             # TODO: deal with unparseable chords
-            note, suffix = parse_chord(chordstring)
-            chord = Chord(beat_index=index, note_code=note, chord_suffix=suffix)
-            self.chords.append(chord)
+            if chordstring:
+                # ignore empty string (deleted chords)
+                note, suffix = parse_chord(chordstring)
+                chord = Chord(beat_index=index, note_code=note, chord_suffix=suffix)
+                self.chords.append(chord)
 
         for index, text in data.get('lyrics', {}).items():
             lyric = Lyric(verse_index=index, lyric_text=text)
