@@ -135,7 +135,7 @@
   <!-- END: header tree -->
 
   <!-- START: sections -->
-  <div class="sections" *ngFor="let section of chart.sections">
+  <div class="sections" *ngFor="let section of chart.sections;let section_index=index">
     <div class="section">
       <div class="section-headers">
         <!-- START: section metadata -->
@@ -150,22 +150,40 @@
                 size="64"
                 placeholder="section description"
                 [(ngModel)]="section.sectionDesc">
-          <label class="chart-md" for="measures-row">Measures per row</label>
-          <input id="measures-row"
-              class="chart-md boxchart"
-              type="number"
-              size="4"
-              min="0"
-              step="any"
-              [(ngModel)]="section.measuresPerRow">
-          <label class="chart-md" for="beats-measure">Beats per measure</label>
-          <input id="beats-measure"
-              class="chart-md boxchart"
-              type="number"
-              size="4"
-              min="0"
-              step="any"
-              [(ngModel)]="section.beatsPerMeasure">
+          <clr-tree-node [clrTreeNodeExpanded]="true">
+            Section Data
+            <clr-tree-node class="form-group chart-md">
+              <label class="chart-md" for="measures-row">Measures per row</label>
+              <input id="measures-row"
+                  class="chart-md boxchart"
+                  type="number"
+                  size="4"
+                  min="0"
+                  step="any"
+                  [(ngModel)]="section.measuresPerRow"
+                  (change)=redrawChart()>
+            </clr-tree-node>
+            <clr-tree-node class="form-group chart-md">
+              <label class="chart-md" for="beats-meas">Beats per measure</label>
+              <input id="beats-meas"
+                  class="chart-md boxchart"
+                  type="number"
+                  size="4"
+                  min="0"
+                  step="any"
+                  [(ngModel)]="section.beatsPerMeasure">
+            </clr-tree-node>           
+            <clr-tree-node class="form-group chart-md">
+              <label class="chart-md" for="verse-count">Number of verses</label>
+              <input id="verse-count"
+                  class="chart-md boxchart"
+                  type="number"
+                  size="4"
+                  min="0"
+                  step="any"
+                  [(ngModel)]="section.verseCount">
+            </clr-tree-node>
+          </clr-tree-node>
         </div>
         <!-- END: section metadata -->
         <!-- START: section buttons -->
@@ -180,9 +198,11 @@
                   <a href="..." clrDropdownItem>Add section after</a>
               </clr-dropdown-menu>
           </clr-dropdown>
-          <button class="btn btn-danger-outline">
+          <button class="btn btn-danger-outline" (click)="deleteConfirm=true;deleteType='section';delSectIdx=sectionIndex">
             <clr-icon shape="remove"></clr-icon>
-            <span class="clr-icon-title">Delete</span>
+            <span class="clr-icon-title">
+              Delete
+            </span>
           </button>
         </div>
         <!-- END: section buttons -->
@@ -226,3 +246,16 @@
   </div>
   <!-- END: sections -->
 </div>
+
+<!-- Delete section modal -->
+<clr-modal [(clrModalOpen)]="deleteConfirm">
+  <h3 class="modal-title">Are you sure you want to delete this {{ deleteType }}?</h3>
+  <div class="modal-body">
+    <p>This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="deleteConfirm = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="deleteConfirm = false; deleteElement(deleteType, delSectIdx, delMeasIdx)">Ok</button>
+  </div>
+</clr-modal>
+<!-- END: Delete section modal -->

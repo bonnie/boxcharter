@@ -19,7 +19,7 @@
  */
 
 import 'rxjs/add/operator/switchMap';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ApplicationRef } from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
 import { Chart } from '../data-model';
@@ -48,7 +48,10 @@ export class ChartComponent implements OnInit {
 
     // for getting chart ID from url
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+
+    // for refreshing page on measuresPerRow change
+    private applicationRef: ApplicationRef
   ) {  }
 
   ngOnInit() {
@@ -89,6 +92,34 @@ export class ChartComponent implements OnInit {
               this.chart.modifiedAt = response['modifiedAt'];
             }
           });
+  }
+  redrawChart() {
+    // when measuresPerRow is changed, the redraw is not clean. Race condition?
+    // Anyway, redrawing chart to make sure things look okay. Not something 
+    // likely to be changed often anyway.
+
+    // setTimeout(this.applicationRef.tick, 100);
+    // this doesn't work: throws ERROR TypeError: Cannot read property 'handleError' of undefined
+    // at ApplicationRef_.tick (core.es5.js:5058)
+
+  }
+
+  deleteElement(elementType: string, sectionIndex: number, measureIndex) {
+    // delete element from chart (or chart itself if that's what's called for)
+
+    switch(elementType) {
+        case 'chart':
+          this.chart = new Chart();
+          // TODO: send delete event back to server
+          break;
+        case 'section':
+            this.chart.sections.splice(sectionIndex, 1);
+            break;
+        case 'measure':
+            this.chart.sections[sectionIndex].measures.splice(measureIndex, 1);
+        default:
+            console.log(`bad delete element: ${elementType}`);
+    } 
   }
 }
 
