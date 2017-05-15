@@ -18,11 +18,11 @@
 -->
 
 <div *ngIf="chart" (click)="statusService.clearSuccess()">
-  <div class="btn-group btn-primary-outline chart-btn-group page-header">
-    <button class="btn" (click)="saveChart()">
+  <div class="chart-btn-group page-header">
+    <button class="btn btn-primary-outline" (click)="saveChart()">
       Save
     </button>
-    <button class="btn" (click)="revertConfirm=true">
+    <button class="btn btn-warning-outline" (click)="revertConfirm=true">
       Revert
     </button>
     <button class="btn btn-danger-outline" (click)="deleteConfirm=true;deleteType='chart'">
@@ -143,7 +143,7 @@
   <!-- END: header tree -->
 
   <!-- START: sections -->
-  <div class="sections" *ngFor="let section of chart.sections;let section_index=index">
+  <div class="sections" *ngFor="let section of chart.sections;let sectionIndex=index">
     <div class="section">
       <div class="section-headers">
         <!-- START: section metadata -->
@@ -278,7 +278,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="revertConfirm = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="revertConfirm = false; getChart()">Revert</button>
+    <button type="button" class="btn btn-warning" (click)="revertConfirm = false; getChart()">Revert</button>
   </div>
 </clr-modal>
 <!-- END: Revert confirm modal -->
