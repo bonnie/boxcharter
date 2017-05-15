@@ -18,8 +18,16 @@
 -->
 
 <div *ngIf="chart" (click)="statusService.clearSuccess()">
-  <div class="save-btn">
-    <span class="btn btn-primary" (click)="saveChart()">Save</span>
+  <div class="btn-group btn-primary chart-btn-group page-header">
+    <button class="btn" (click)="saveChart()">
+      Save
+    </button>
+    <button class="btn" (click)="revertConfirm=true">
+      Revert
+    </button>
+    <button class="btn btn-danger" (click)="deleteConfirm=true;deleteType='chart'">
+      Delete
+    </button>
   </div>
   <input id="chart-title"
         class="title boxchart" 
@@ -247,7 +255,7 @@
   <!-- END: sections -->
 </div>
 
-<!-- Delete section modal -->
+<!-- Delete confirm modal -->
 <clr-modal [(clrModalOpen)]="deleteConfirm">
   <h3 class="modal-title">Are you sure you want to delete this {{ deleteType }}?</h3>
   <div class="modal-body">
@@ -258,4 +266,17 @@
     <button type="button" class="btn btn-primary" (click)="deleteConfirm = false; deleteElement(deleteType, delSectIdx, delMeasIdx)">Ok</button>
   </div>
 </clr-modal>
-<!-- END: Delete section modal -->
+<!-- END: Delete confirm modal -->
+
+<!-- Revert confirm modal -->
+<clr-modal [(clrModalOpen)]="revertConfirm">
+  <h3 class="modal-title">Are you sure you want to revert?</h3>
+  <div class="modal-body">
+    <p>If you revert to the last saved version, you will <strong>lose all unsaved work</strong>. This action cannot be undone.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="revertConfirm = false">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="revertConfirm = false; getChart()">Ok</button>
+  </div>
+</clr-modal>
+<!-- END: Revert confirm modal -->

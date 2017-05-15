@@ -58,29 +58,7 @@ export class ChartComponent implements OnInit {
     // clear the status
     this.statusService.clearStatus();
 
-    // load the data
-    this.route.params
-
-      // get chart ID from url and pass it to the chart service getChart method
-      .switchMap((params: Params) => this.chartService.getChart(+params['id']))
-
-      // bind the response to the chart object for this page
-      .subscribe(
-        (response) => {
-
-        if (response['status']['type'] != 'success') {
-          this.statusService.setStatus(response['status']); 
-        } else {
-          // get chart data    
-
-          console.log(response['chart']);
-          this.chart = response['chart'] as Chart;
-
-        }
-        (err) => {
-          // this.statusService.displayError(err);
-        }
-    });
+    this.getChart();
   }
   
   saveChart() {
@@ -102,6 +80,34 @@ export class ChartComponent implements OnInit {
     // this doesn't work: throws ERROR TypeError: Cannot read property 'handleError' of undefined
     // at ApplicationRef_.tick (core.es5.js:5058)
 
+  }
+
+  getChart() {
+    // for use if the user selects "revert to saved"
+
+    // load the data
+    this.route.params
+
+      // get chart ID from url and pass it to the chart service getChart method
+      .switchMap((params: Params) => this.chartService.getChart(+params['id']))
+
+      // bind the response to the chart object for this page
+      .subscribe(
+        (response) => {
+
+        if (response['status']['type'] != 'success') {
+          this.statusService.setStatus(response['status']); 
+        } else {
+          // get chart data    
+
+          // console.log(response['chart']);
+          this.chart = response['chart'] as Chart;
+
+        }
+        (err) => {
+          // this.statusService.displayError(err);
+        }
+    });
   }
 
   deleteElement(elementType: string, sectionIndex: number, measureIndex) {
