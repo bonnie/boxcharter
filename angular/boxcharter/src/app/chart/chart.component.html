@@ -265,7 +265,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="deleteConfirm = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="deleteConfirm = false; deleteElement(deleteType, delSectIdx, delMeasIdx)">Ok</button>
+    <button type="button" class="btn btn-danger" (click)="deleteConfirm = false; deleteElement(deleteType, delSectIdx, delMeasIdx)">Delete</button>
   </div>
 </clr-modal>
 <!-- END: Delete confirm modal -->
@@ -278,7 +278,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="revertConfirm = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="revertConfirm = false; getChart()">Ok</button>
+    <button type="button" class="btn btn-primary" (click)="revertConfirm = false; getChart()">Revert</button>
   </div>
 </clr-modal>
 <!-- END: Revert confirm modal -->
