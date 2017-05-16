@@ -154,18 +154,13 @@ export class ChartComponent implements OnInit {
 
     let measures = this.chart.sections[sectionIndex].measures;
 
-    while (this.isEmpty(measures.slice(-1)[0])) {
-      console.log(measures.slice(-1)[0]);
+    while (measures.length > 0 && this.isEmpty(measures.slice(-1)[0])) {
       measures.splice(-1, 1)
     }
 
   }
   isEmpty(measure) {
     // return boolean indicating whether the measure is empty
-
-    console.log(measure);
-    console.log(Object.keys(measure.chords).length);
-    console.log(Object.keys(measure.lyrics).length);
 
     return Object.keys(measure.chords).length === 0 && 
            Object.keys(measure.lyrics).length === 0;
