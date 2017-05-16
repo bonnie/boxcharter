@@ -30,13 +30,11 @@
 
 export class Measure {
     beatsPerMeasure: number;
-    chords: object;
-    lyrics: object;
+    chords: object = {};
+    lyrics: object = {};
 };
 
 export class Section {
-    sectionId: number;
-    chartId: number;
     sectionName: string;
     sectionDesc: string;
     beatsPerMeasure: number;

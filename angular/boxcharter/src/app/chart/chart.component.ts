@@ -131,7 +131,18 @@ export class ChartComponent implements OnInit {
   addSection(index) {
     // add a new section at the specified position
 
-    this.chart.sections.splice(index, 0, new Section())
+    let sect = new Section();
+
+    // new section defaults
+    sect.beatsPerMeasure = 4;
+    sect.verseCount = 1;
+    sect.measuresPerRow = 4;
+    let meas = new Measure();
+    sect.measures = Array(20).fill(meas);
+
+    console.log(sect);
+
+    this.chart.sections.splice(index, 0, sect);
 
   }
 }
