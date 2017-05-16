@@ -157,8 +157,11 @@
     <div class="section">
       <!-- START: section buttons -->
       <div class="section-buttons">
-        <button class="btn btn-primary-outline btn-sm" (click)="measureModal=true;sectIdx=sectionIndex">
+        <button class="btn btn-primary-outline btn-sm" (click)="addMeasureConfirm=true;sectIdx=sectionIndex">
           Add measures
+        </button>
+        <button class="btn btn-danger-outline btn-sm" (click)="deleteMeasureConfirm=true;sectIdx=sectionIndex">
+              Delete Empty Measures
         </button>
         <button class="btn btn-danger-outline btn-sm" (click)="deleteConfirm=true;deleteType='section';delSectIdx=sectionIndex">
               Delete Section
@@ -292,15 +295,28 @@
 <!-- END: Revert confirm modal -->
 
 <!-- Add measures modal -->
-<clr-modal [(clrModalOpen)]="measureModal">
+<clr-modal [(clrModalOpen)]="addMeasureConfirm">
   <h3 class="modal-title">Add Measures to Section</h3>
   <div class="modal-body">
     <label for="measure-count">Number of measures to add:</label>
         <input id="measure-count" type="number" #newMeasureCount>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="measureModal = false">Cancel</button>
-    <button type="button" class="btn btn-warning" (click)="measureModal = false; addMeasures(sectIdx, newMeasureCount.value)">Add</button>
+    <button type="button" class="btn btn-outline" (click)="addMeasureConfirm = false">Cancel</button>
+    <button type="button" class="btn btn-warning" (click)="addMeasureConfirm = false; addMeasures(sectIdx, newMeasureCount.value)">Add</button>
   </div>
 </clr-modal>
 <!-- END: Add measures modal -->
+
+<!-- Delete measures modal -->
+<clr-modal [(clrModalOpen)]="deleteMeasureConfirm">
+  <h3 class="modal-title">Are you sre?</h3>
+  <div class="modal-body">
+    Are you sure you want to delete the empty measures at the end of this section?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="deleteMeasureConfirm = false">Cancel</button>
+    <button type="button" class="btn btn-warning" (click)="deleteMeasureConfirm = false; deleteEmptyMeasures(sectIdx)">Delete measures</button>
+  </div>
+</clr-modal>
+<!-- END: Delete measures modal -->
