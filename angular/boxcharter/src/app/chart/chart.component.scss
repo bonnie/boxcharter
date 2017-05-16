@@ -21,7 +21,7 @@ td.chord {
 }
 
 div.chart-btn-group {
-    float: right;
+    float: left;
 }
 
 input.title {
@@ -50,31 +50,10 @@ div.section {
     border: 2px solid black;
 }
 
-div.section-headers {
-    // border: 1px solid red;
-    width: 100%;
-}
-
 input.section-title {
     /* h3 */
     font-weight: 200;
     font-size: 22px;
-}
-
-div.section-header {
-    min-height: 48px;
-    display: inline-block;
-    // border: 1px black solid;
-    vertical-align: top;
-}
-
-div.section-metadata {
-    max-width: 80%;
-}
-
-div.section-buttons {
-    float: right;
-    margin-right: 0px;
 }
 
 td.measure {
@@ -96,4 +75,8 @@ input.boxchart::placeholder {
 p.danger, span.danger {
     font-weight: 600;
     color: #C92100;
+}
+
+div.chart-metadata {
+    margin-bottom: 24px;
 }

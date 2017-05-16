@@ -25,7 +25,7 @@ import { Location }                 from '@angular/common';
 import { Chart } from '../data-model';
 import { ChartService } from '../chart.service';
 import { StatusService } from '../status.service';
-import { Measure } from '../data-model';
+import { Measure, Section } from '../data-model';
 import { Status } from '../status';
 
 @Component({
@@ -126,6 +126,13 @@ export class ChartComponent implements OnInit {
         default:
             console.log(`bad delete element: ${elementType}`);
     } 
+  }
+
+  addSection(index) {
+    // add a new section at the specified position
+
+    this.chart.sections.splice(index, 0, new Section())
+
   }
 }
 
