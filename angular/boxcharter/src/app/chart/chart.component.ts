@@ -137,13 +137,16 @@ export class ChartComponent implements OnInit {
     sect.beatsPerMeasure = 4;
     sect.verseCount = 1;
     sect.measuresPerRow = 4;
-    let meas = new Measure();
-    sect.measures = Array(20).fill(meas);
-
-    console.log(sect);
-
+    sect.measures = Array();
     this.chart.sections.splice(index, 0, sect);
+    this.addMeasures(index, 20);
+  }
 
+  addMeasures(sectionIndex, newMeasureCount) {
+    // add the desired number of measures to the desired section index
+    let meas = new Measure();
+    let measArray = Array(+newMeasureCount).fill(meas);
+    this.chart.sections[sectionIndex].measures.push(...measArray);
   }
 }
 

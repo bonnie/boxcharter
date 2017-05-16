@@ -157,7 +157,7 @@
     <div class="section">
       <!-- START: section buttons -->
       <div class="section-buttons">
-        <button class="btn btn-primary-outline btn-sm" (click)="addMeasures(sectionIndex)">
+        <button class="btn btn-primary-outline btn-sm" (click)="measureModal=true;sectIdx=sectionIndex">
           Add measures
         </button>
         <button class="btn btn-danger-outline btn-sm" (click)="deleteConfirm=true;deleteType='section';delSectIdx=sectionIndex">
@@ -256,6 +256,10 @@
   <!-- END: sections -->
 </div>
 
+<!--**************************************************************************** -->
+<!-- modals -->
+<!--**************************************************************************** -->
+
 <!-- Delete confirm modal -->
 <clr-modal [(clrModalOpen)]="deleteConfirm">
   <h3 class="modal-title">Are you sure you want to delete this {{ deleteType }}?</h3>
@@ -287,3 +291,16 @@
 </clr-modal>
 <!-- END: Revert confirm modal -->
 
+<!-- Add measures modal -->
+<clr-modal [(clrModalOpen)]="measureModal">
+  <h3 class="modal-title">Add Measures to Section</h3>
+  <div class="modal-body">
+    <label for="measure-count">Number of measures to add:</label>
+        <input id="measure-count" type="number" #newMeasureCount>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="measureModal = false">Cancel</button>
+    <button type="button" class="btn btn-warning" (click)="measureModal = false; addMeasures(sectIdx, newMeasureCount.value)">Add</button>
+  </div>
+</clr-modal>
+<!-- END: Add measures modal -->
