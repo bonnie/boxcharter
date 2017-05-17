@@ -77,6 +77,24 @@ p.danger, span.danger {
     color: #C92100;
 }
 
+p.danger-light, span.danger-light {
+    font-weight: 400;
+}
+
+p.warning, span.warning {
+    font-weight: 400;
+    color: #C25400;
+}
+
+span.info {
+    font-weight: 400;
+    color: #004981;
+}
+
 div.chart-metadata {
     margin-bottom: 24px;
+}
+
+clr-dropdown.section-dropdown {
+    margin-bottom: 6px;
 }

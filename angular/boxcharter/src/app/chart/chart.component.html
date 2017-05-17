@@ -155,19 +155,31 @@
       Add section here
     </button>
     <div class="section">
-      <!-- START: section buttons -->
-      <div class="section-buttons">
-        <button class="btn btn-primary-outline btn-sm" (click)="addMeasureConfirm=true;sectIdx=sectionIndex">
-          Add measures
+      <!-- START: section dropdown -->
+      <clr-dropdown class="section-dropdown" [clrMenuPosition]="'bottom-left'" [clrCloseMenuOnItemClick]="true">
+        <button clrDropdownToggle>
+          <clr-icon shape="settings" size="24"></clr-icon>
+          <clr-icon shape="caret down"></clr-icon>
         </button>
-        <button class="btn btn-danger-outline btn-sm" (click)="deleteMeasureConfirm=true;sectIdx=sectionIndex">
-              Delete Empty Measures
-        </button>
-        <button class="btn btn-danger-outline btn-sm" (click)="deleteConfirm=true;deleteType='section';delSectIdx=sectionIndex">
-              Delete Section
-        </button>
-      </div>
-      <!-- END: section buttons -->
+        <clr-dropdown-menu>
+          <span clrDropdownItem 
+                class="info"
+                (click)="addMeasureConfirm=true;sectIdx=sectionIndex">
+            Add measures
+          </span>
+          <span clrDropdownItem
+                class="warning"
+                (click)="deleteMeasureConfirm=true;sectIdx=sectionIndex">
+            Delete empty measures
+          </span>
+          <span clrDropdownItem
+                (click)="deleteConfirm=true;deleteType='section';delSectIdx=sectionIndex"
+                class="danger danger-light">
+            Delete section
+          </span>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+      <!-- END: section dropdown -->
       <!-- START: section metadata -->
       <div class="section-metadata">
         <input class="chart-md section-title" 
