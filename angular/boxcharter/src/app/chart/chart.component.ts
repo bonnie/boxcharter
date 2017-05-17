@@ -152,6 +152,12 @@ export class ChartComponent implements OnInit {
     this.chart.sections[sectionIndex].measures.push(...measArray);
   }
 
+  addMeasureBefore(sectionIndex, measureIndex) {
+    // add measure in the section sectionIndex, before the index measureIndex
+    let meas = new Measure();
+    this.chart.sections[sectionIndex].measures.splice(measureIndex, 0, meas);
+  }
+
   deleteEmptyMeasures(sectionIndex) {
     // delete all empty measures from the end of a section
 
