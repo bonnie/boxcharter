@@ -40,6 +40,7 @@ export class ChartComponent implements OnInit {
   chart: Chart;
   status: Status;
   lyricistSame: boolean = false; // lyricist same as composer?
+  measureCells: Object[]; // for tracking when to show measure dropdown
 
   constructor(
     // for getting chart data from flask
@@ -102,6 +103,7 @@ export class ChartComponent implements OnInit {
 
           // console.log(response['chart']);
           this.chart = response['chart'] as Chart;
+          this.measureCells = new Array(this.chart.sections.length).fill({})
 
         }
         (err) => {
@@ -123,6 +125,7 @@ export class ChartComponent implements OnInit {
             break;
         case 'measure':
             this.chart.sections[sectionIndex].measures.splice(measureIndex, 1);
+            break;
         default:
             console.log(`bad delete element: ${elementType}`);
     } 

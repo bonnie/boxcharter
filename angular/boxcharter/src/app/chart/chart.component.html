@@ -173,8 +173,8 @@
             Delete empty measures
           </span>
           <span clrDropdownItem
-                (click)="deleteConfirm=true;deleteType='section';delSectIdx=sectionIndex"
-                class="danger danger-light">
+                class="danger danger-light"
+                (click)="deleteConfirm=true;deleteType='section';delSectIdx=sectionIndex">
             Delete section
           </span>
         </clr-dropdown-menu>
@@ -234,7 +234,36 @@
         <ng-container *ngIf="i % section.measuresPerRow == 0">
           <tr>
         </ng-container>
-        <td class="measure">
+        <td (mouseenter)="measureCells[sectionIndex][i]=true"
+            (mouseleave)="measureCells[sectionIndex][i]=false"
+            class="measure">
+          <!-- START: measure dropdown -->
+          <div class="measure-dropdown">
+            <clr-dropdown 
+                *ngIf="measureCells[sectionIndex] && measureCells[sectionIndex][i]"
+                [clrMenuPosition]="'bottom-left'" 
+                [clrCloseMenuOnItemClick]="true"
+                class="measure-dropdown">
+              <button clrDropdownToggle>
+                <clr-icon shape="settings" size="18"></clr-icon>
+                <clr-icon shape="caret down"></clr-icon>
+              </button>
+              <clr-dropdown-menu>
+              <span clrDropdownItem 
+                    class="info"
+                    (click)="addMeasureConfirm=true;sectIdx=sectionIndex">
+                  Add measure before
+                </span>
+                <span clrDropdownItem
+                      class="danger danger-light"
+                      (click)="deleteConfirm=true;deleteType='measure';
+                      delSectIdx=sectionIndex;delMeasIdx=i">
+                  Delete measure
+                </span>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+          </div> 
+          <!-- END: measure dropdown -->
           <!-- START: chords -->
           <table class="table table-compact">
             <tr>
