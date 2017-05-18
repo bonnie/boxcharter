@@ -158,6 +158,15 @@ export class ChartComponent implements OnInit {
     this.chart.sections[sectionIndex].measures.splice(measureIndex, 0, meas);
   }
 
+  addBeats(sectionIndex, measureIndex, beatsToAdd) {
+
+    let section = this.chart.sections[sectionIndex];
+    let measure = section.measures[measureIndex];
+    let currentBeats = measure.beatsPerMeasure ? measure.beatsPerMeasure : section.beatsPerMeasure;
+    measure.beatsPerMeasure = currentBeats + beatsToAdd;
+
+  }
+
   deleteEmptyMeasures(sectionIndex) {
     // delete all empty measures from the end of a section
 

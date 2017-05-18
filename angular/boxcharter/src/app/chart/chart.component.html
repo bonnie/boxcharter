@@ -241,7 +241,7 @@
           <div class="measure-dropdown">
             <clr-dropdown 
                 *ngIf="measureCells[sectionIndex] && measureCells[sectionIndex][i]"
-                [clrMenuPosition]="'bottom-left'" 
+                [clrMenuPosition]="'bottom-left'"
                 [clrCloseMenuOnItemClick]="true"
                 class="measure-dropdown">
               <button clrDropdownToggle>
@@ -249,17 +249,27 @@
                 <clr-icon shape="caret down"></clr-icon>
               </button>
               <clr-dropdown-menu>
-              <span clrDropdownItem 
+                <span clrDropdownItem 
                     class="info"
                     (click)="addMeasureBefore(sectionIndex, i)">
                   Add measure before
                 </span>
-                <span clrDropdownItem
+                <span clrDropdownItem 
+                    class="info"
+                    (click)="addBeats(sectionIndex, i, 1)">
+                   Add a beat
+                 </span>
+                 <span clrDropdownItem 
+                    class="info"
+                    (click)="addBeats(sectionIndex, i, -1)">
+                   Remove a beat
+                 </span>
+                 <span clrDropdownItem
                       class="danger danger-light"
                       (click)="deleteConfirm=true;deleteType='measure';
                       delSectIdx=sectionIndex;delMeasIdx=i">
-                  Delete measure
-                </span>
+                   Delete measure
+                 </span>
               </clr-dropdown-menu>
             </clr-dropdown>
           </div> 
@@ -268,7 +278,7 @@
           <table class="table table-compact">
             <tr>
               <!-- one chord box per beat -->
-              <td class="chord" *ngFor="let j of section.beatsPerMeasure | fill">
+              <td class="chord" *ngFor="let j of (measure.beatsPerMeasure ? measure.beatsPerMeasure :  section.beatsPerMeasure) | fill">
                 <input class="chord boxchart"
                         type="text" 
                         [(ngModel)]="measure.chords[j]" 
@@ -279,7 +289,7 @@
             <!-- END: chords -->
             <!-- START: lyrics -->
               <tr *ngFor="let k of section.verseCount | fill">
-                <td [attr.colspan]="section.beatsPerMeasure">
+                <td [attr.colspan]="measure.beatsPerMeasure ? measure.beatsPerMeasure :  section.beatsPerMeasure">
                   <input type="text" size="30" [(ngModel)]="measure.lyrics[k]">
                 </td>
               </tr>
