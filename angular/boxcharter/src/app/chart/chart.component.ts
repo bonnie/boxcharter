@@ -72,15 +72,29 @@ export class ChartComponent implements OnInit {
             }
           });
   }
-  redrawChart() {
-    // when measuresPerRow is changed, the redraw is not clean. Race condition?
-    // Anyway, redrawing chart to make sure things look okay. Not something 
-    // likely to be changed often anyway.
+  organizeMeasures() {
+    // measures need to be pre-organized in order to split them into rows
 
-    // setTimeout(this.applicationRef.tick, 100);
-    // this doesn't work: throws ERROR TypeError: Cannot read property 'handleError' of undefined
-    // at ApplicationRef_.tick (core.es5.js:5058)
-
+    for (let sIndex=0; sIndex < this.chart.sections.length; sIndex++) {
+      let section = this.chart.sections[sIndex];
+      let rowWidth = section.measuresPerRow;
+      let measureCount = section.measures.length;
+      let rowCount = Math.ceil( measureCount / rowWidth);
+      section.rows = [];
+      for (let rIndex=0; rIndex < rowCount; rIndex++ ) {
+        let row = new Array();
+        for (let cIndex=0; cIndex < rowWidth; cIndex++) {
+          let mIndex = (rIndex * rowWidth) + cIndex;
+          if (mIndex >= measureCount) {
+            break;
+          }
+          let measure = section.measures[mIndex];
+          measure.index = mIndex;
+          row.push(measure);
+        }
+        section.rows.push(row);
+      }
+    }
   }
 
   getChart() {
@@ -103,8 +117,8 @@ export class ChartComponent implements OnInit {
 
           // console.log(response['chart']);
           this.chart = response['chart'] as Chart;
-          this.measureCells = new Array(this.chart.sections.length).fill({})
-
+          this.measureCells = new Array(this.chart.sections.length).fill({});
+          this.organizeMeasures();
         }
         (err) => {
           // this.statusService.displayError(err);
@@ -125,6 +139,7 @@ export class ChartComponent implements OnInit {
             break;
         case 'measure':
             this.chart.sections[sectionIndex].measures.splice(measureIndex, 1);
+            this.organizeMeasures();
             break;
         default:
             console.log(`bad delete element: ${elementType}`);
@@ -143,6 +158,7 @@ export class ChartComponent implements OnInit {
     sect.measures = Array();
     this.chart.sections.splice(index, 0, sect);
     this.addMeasures(index, 20);
+    this.organizeMeasures();
   }
 
   addMeasures(sectionIndex, newMeasureCount) {
@@ -150,12 +166,14 @@ export class ChartComponent implements OnInit {
     let meas = new Measure();
     let measArray = Array(+newMeasureCount).fill(meas);
     this.chart.sections[sectionIndex].measures.push(...measArray);
+    this.organizeMeasures();
   }
 
   addMeasureBefore(sectionIndex, measureIndex) {
     // add measure in the section sectionIndex, before the index measureIndex
     let meas = new Measure();
     this.chart.sections[sectionIndex].measures.splice(measureIndex, 0, meas);
+    this.organizeMeasures();
   }
 
   deleteEmptyMeasures(sectionIndex) {
@@ -166,7 +184,7 @@ export class ChartComponent implements OnInit {
     while (measures.length > 0 && this.isEmpty(measures.slice(-1)[0])) {
       measures.splice(-1, 1)
     }
-
+    this.organizeMeasures();
   }
   isEmpty(measure) {
     // return boolean indicating whether the measure is empty

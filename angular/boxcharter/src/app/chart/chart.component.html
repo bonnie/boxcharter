@@ -203,7 +203,7 @@
                 min="0"
                 step="any"
                 [(ngModel)]="section.measuresPerRow"
-                (change)=redrawChart()>
+                (click)=organizeMeasures()>
           </clr-tree-node>
           <clr-tree-node class="form-group chart-md">
             <label class="chart-md" for="beats-meas">Beats per measure</label>
@@ -230,17 +230,15 @@
       <!-- END: section metadata -->
       <!-- START: measures -->
       <table class="table table-compact">
-      <ng-container *ngFor="let measure of section.measures; let i=index">
-        <ng-container *ngIf="i % section.measuresPerRow == 0">
-          <tr>
-        </ng-container>
-        <td (mouseenter)="measureCells[sectionIndex][i]=true"
-            (mouseleave)="measureCells[sectionIndex][i]=false"
+      <tr *ngFor="let row of section.rows">
+        <td *ngFor="let measure of row"
+            (mouseenter)="measureCells[sectionIndex][measure.index]=true"
+            (mouseleave)="measureCells[sectionIndex][measure.index]=false"
             class="measure">
           <!-- START: measure dropdown -->
           <div class="measure-dropdown">
             <clr-dropdown 
-                *ngIf="measureCells[sectionIndex] && measureCells[sectionIndex][i]"
+                *ngIf="measureCells[sectionIndex] && measureCells[sectionIndex][measure.index]"
                 [clrMenuPosition]="'bottom-left'" 
                 [clrCloseMenuOnItemClick]="true"
                 class="measure-dropdown">
@@ -251,13 +249,13 @@
               <clr-dropdown-menu>
               <span clrDropdownItem 
                     class="info"
-                    (click)="addMeasureBefore(sectionIndex, i)">
+                    (click)="addMeasureBefore(sectionIndex, measure.index)">
                   Add measure before
                 </span>
                 <span clrDropdownItem
                       class="danger danger-light"
                       (click)="deleteConfirm=true;deleteType='measure';
-                      delSectIdx=sectionIndex;delMeasIdx=i">
+                      delSectIdx=sectionIndex;delMeasIdx=measure.index">
                   Delete measure
                 </span>
               </clr-dropdown-menu>
@@ -286,10 +284,7 @@
               <!-- END: lyrics -->
             </table>
           </td>
-        <ng-container *ngIf="i % section.measuresPerRow == section.measuresPerRow">
-          <tr>
-        </ng-container>
-      </ng-container>
+        </tr>
       <!-- END: measures -->
     </table>
   </div>
@@ -301,7 +296,7 @@
 </div>
 
 <!--**************************************************************************** -->
-<!-- modals -->
+<!-- START: modals -->
 <!--**************************************************************************** -->
 
 <!-- Delete confirm modal -->
@@ -361,3 +356,7 @@
   </div>
 </clr-modal>
 <!-- END: Delete measures modal -->
+
+<!--**************************************************************************** -->
+<!-- END: modals -->
+<!--**************************************************************************** -->

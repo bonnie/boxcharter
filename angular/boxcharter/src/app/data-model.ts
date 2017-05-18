@@ -30,6 +30,7 @@
 
 export class Measure {
     beatsPerMeasure: number;
+    index: number;
     chords: object = {};
     lyrics: object = {};
 };
@@ -46,6 +47,7 @@ export class Section {
     ending1End: number;
     ending2End: number;
     measures: Measure[];
+    rows: Measure[][];
 };
 
 export class Chart {
