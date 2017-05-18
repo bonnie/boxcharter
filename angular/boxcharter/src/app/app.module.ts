@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ClarityModule } from 'clarity-angular';
 import { AppComponent } from './app.component';
-import { ROUTING } from "./app.routing";
+import { AppRoutingModule } from "./app-routing.module";
 import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
 import { UserComponent } from './user/user.component';
@@ -33,7 +33,9 @@ import { ChartComponent } from './chart/chart.component';
 import { FillPipe } from './fill.pipe';
 import { StatusComponent } from './status/status.component';
 import { StatusService } from './status.service';
+import { DialogService } from './dialog.service';
 import { LoginComponent } from './login/login.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
     declarations: [
@@ -44,7 +46,8 @@ import { LoginComponent } from './login/login.component';
         ChartComponent,
         FillPipe,
         StatusComponent,
-        LoginComponent
+        LoginComponent,
+        NotFoundComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -52,11 +55,11 @@ import { LoginComponent } from './login/login.component';
         FormsModule,
         HttpModule,
         ClarityModule.forRoot(),
-        ROUTING
+        AppRoutingModule
     ],
     
     // injecting StatusService here, so there's a global service shared by the whole app
-    providers: [ StatusService ],
+    providers: [ StatusService, DialogService ],
     bootstrap: [ AppComponent ],
 })
 export class AppModule {

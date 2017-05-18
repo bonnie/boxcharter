@@ -18,26 +18,59 @@
  *
  */
 
+import { NgModule }              from '@angular/core';
 import { ModuleWithProviders } from '@angular/core/src/metadata/ng_module';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuardService }      from './auth-guard.service';
+import { CanDeactivateGuardService }    from './can-deactivate-guard.service';
+
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { UserComponent } from './user/user.component';
 import { ChartComponent } from './chart/chart.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const ROUTES: Routes = [
-    {path: '', redirectTo: 'home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent},
-    {path: 'about', component: AboutComponent},
+    {
+        path: '', 
+        redirectTo: 'home', pathMatch: 'full'},
+    {
+        path: 'home', 
+        component: HomeComponent
+    },
+    {
+        path: 'about', 
+        component: AboutComponent
+    },
     {
         path: 'user/:id', 
         component: UserComponent,
         canActivate: [AuthGuardService]
     },
-    {path: 'chart/:id', component: ChartComponent}
+    {
+        path: 'chart/:id', 
+        component: ChartComponent,
+        canDeactivate: [CanDeactivateGuardService]
+    },
+    { 
+        path:'**', 
+        component: NotFoundComponent 
+    }
+
 ];
+
+// @NgModule({
+//   imports: [
+//     RouterModule.forRoot(appRoutes)
+//   ],
+//   exports: [
+//     RouterModule
+//   ],
+//   providers: [
+//     CanDeactivateGuardService, AuthGuardService
+//   ]
+// })
 
 export const ROUTING: ModuleWithProviders = RouterModule.forRoot(ROUTES);
 

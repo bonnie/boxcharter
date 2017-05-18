@@ -25,6 +25,7 @@ import { Location }                 from '@angular/common';
 import { Chart } from '../data-model';
 import { ChartService } from '../chart.service';
 import { StatusService } from '../status.service';
+import { DialogService } from '../dialog.service';
 import { Measure, Section } from '../data-model';
 import { Status } from '../status';
 
@@ -33,7 +34,7 @@ import { Status } from '../status';
   styleUrls: ['./chart.component.scss'],
 
   // don't put statusService here -- we want to use the global app statusService, not our own
-  providers: [ ChartService ],
+  providers: [ ChartService, DialogService ],
 })
 export class ChartComponent implements OnInit {
   
@@ -46,6 +47,7 @@ export class ChartComponent implements OnInit {
     // for getting chart data from flask
     private chartService: ChartService,
     private statusService: StatusService,
+    public dialogService: DialogService,
 
     // for getting chart ID from url
     private route: ActivatedRoute,
@@ -186,11 +188,24 @@ export class ChartComponent implements OnInit {
     }
     this.organizeMeasures();
   }
+
   isEmpty(measure) {
     // return boolean indicating whether the measure is empty
 
     return Object.keys(measure.chords).length === 0 && 
            Object.keys(measure.lyrics).length === 0;
+  }
+
+  canDeactivate(): Promise<boolean> | boolean {
+  // Allow synchronous navigation (`true`) if no crisis or the crisis is unchanged
+    // TODO: put real true condition here...
+
+    // if (!this.crisis || this.crisis.name === this.editName) {
+    //   return true;
+    // }
+    // Otherwise ask the user with the dialog service and return its
+    // promise which resolves to true or false when the user decides
+    return this.dialogService.confirm('Discard changes?');
   }
 }
 
