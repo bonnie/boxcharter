@@ -21,18 +21,53 @@
 import { ModuleWithProviders } from '@angular/core/src/metadata/ng_module';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthGuardService }      from './auth-guard.service';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { UserComponent } from './user/user.component';
 import { ChartComponent } from './chart/chart.component';
 
-
 export const ROUTES: Routes = [
     {path: '', redirectTo: 'home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent},
     {path: 'about', component: AboutComponent},
-    {path: 'user/:id', component: UserComponent},
+    {
+        path: 'user/:id', 
+        component: UserComponent,
+        canActivate: [AuthGuardService]
+    },
     {path: 'chart/:id', component: ChartComponent}
 ];
 
 export const ROUTING: ModuleWithProviders = RouterModule.forRoot(ROUTES);
+
+
+// import { AuthGuard }                from '../auth-guard.service';
+
+// const adminRoutes: Routes = [
+//   {
+//     path: 'admin',
+//     component: AdminComponent,
+//     canActivate: [AuthGuard],
+//     children: [
+//       {
+//         path: '',
+//         children: [
+//           { path: 'crises', component: ManageCrisesComponent },
+//           { path: 'heroes', component: ManageHeroesComponent },
+//           { path: '', component: AdminDashboardComponent }
+//         ],
+//       }
+//     ]
+//   }
+// ];
+
+// @NgModule({
+//   imports: [
+//     RouterModule.forChild(adminRoutes)
+//   ],
+//   exports: [
+//     RouterModule
+//   ]
+// })
+// export class AdminRoutingModule {}

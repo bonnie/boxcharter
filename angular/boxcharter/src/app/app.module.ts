@@ -33,6 +33,7 @@ import { ChartComponent } from './chart/chart.component';
 import { FillPipe } from './fill.pipe';
 import { StatusComponent } from './status/status.component';
 import { StatusService } from './status.service';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,8 @@ import { StatusService } from './status.service';
         UserComponent,
         ChartComponent,
         FillPipe,
-        StatusComponent
+        StatusComponent,
+        LoginComponent
     ],
     imports: [
         BrowserAnimationsModule,
