@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 
+import os
 from datetime import datetime
 
 from server import app
@@ -25,6 +26,7 @@ from model import Chart, Section, Measure, Key, Note, Chord, Lyric, ScaleNote, \
                   User, connect_to_db, db
 
 DEBUG=True
+DATADIR='./seed_data'
 
 def add_scale_note(scale_degree, note_string, key):
     """Create a scale note for this note string and key, and add to db. 
@@ -228,11 +230,17 @@ def load_sample_song(filepath, user):
     db.session.commit()
 
 
+def load_seed_data(datadir):
+    """Load all of the seed data. In one function for testing convenience."""
+
+    load_keys_and_notes()
+    user = load_user()
+    load_sample_song(os.path.join(datadir, 'ring.txt'), user)
+
+
 if __name__ == "__main__":
     connect_to_db(app)
     db.drop_all()
     db.create_all()
 
-    load_keys_and_notes()
-    user = load_user()
-    load_sample_song('seed_data/ring.txt', user)
+    load_seed_data(DATADIR)
