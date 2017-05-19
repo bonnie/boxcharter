@@ -18,18 +18,11 @@
  *
  */
 
-import { TestBed, inject } from '@angular/core/testing';
+import { Injectable } from '@angular/core';
 
-import { StatusService } from './status.service';
+@Injectable()
+export class RegistrationService {
 
-describe('StatusService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [StatusService]
-    });
-  });
+  constructor() { }
 
-  it('should ...', inject([StatusService], (service: StatusService) => {
-    expect(service).toBeTruthy();
-  }));
-});
+}

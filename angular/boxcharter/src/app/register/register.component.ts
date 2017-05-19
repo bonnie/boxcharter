@@ -18,18 +18,18 @@
  *
  */
 
-import { TestBed, inject } from '@angular/core/testing';
+import { Component, OnInit } from '@angular/core';
 
-import { StatusService } from './status.service';
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
+})
+export class RegisterComponent implements OnInit {
 
-describe('StatusService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [StatusService]
-    });
-  });
+  constructor() { }
 
-  it('should ...', inject([StatusService], (service: StatusService) => {
-    expect(service).toBeTruthy();
-  }));
-});
+  ngOnInit() {
+  }
+
+}

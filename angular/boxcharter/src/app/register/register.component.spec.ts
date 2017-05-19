@@ -18,18 +18,28 @@
  *
  */
 
-import { TestBed, inject } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StatusService } from './status.service';
+import { RegisterComponent } from './register.component';
 
-describe('StatusService', () => {
-  beforeEach(() => {
+describe('RegisterComponent', () => {
+  let component: RegisterComponent;
+  let fixture: ComponentFixture<RegisterComponent>;
+
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [StatusService]
-    });
+      declarations: [ RegisterComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(RegisterComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should ...', inject([StatusService], (service: StatusService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

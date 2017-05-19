@@ -20,16 +20,16 @@
 
 import { TestBed, inject } from '@angular/core/testing';
 
-import { StatusService } from './status.service';
+import { RegistrationService } from './registration.service';
 
-describe('StatusService', () => {
+describe('RegistrationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StatusService]
+      providers: [RegistrationService]
     });
   });
 
-  it('should ...', inject([StatusService], (service: StatusService) => {
+  it('should ...', inject([RegistrationService], (service: RegistrationService) => {
     expect(service).toBeTruthy();
   }));
 });

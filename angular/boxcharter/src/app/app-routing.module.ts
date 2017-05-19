@@ -29,6 +29,7 @@ import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { UserComponent } from './user/user.component';
 import { ChartComponent } from './chart/chart.component';
+import { RegisterComponent } from './register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 export const appRoutes: Routes = [
@@ -38,6 +39,10 @@ export const appRoutes: Routes = [
     {
         path: 'home', 
         component: HomeComponent
+    },
+    {
+        path: 'register', 
+        component: RegisterComponent
     },
     {
         path: 'about', 
