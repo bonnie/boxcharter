@@ -204,7 +204,8 @@ class Measure(db.Model):
     # end: special fields
 
     measure_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    section_id = db.Column(db.Integer, db.ForeignKey("sections.section_id"))
+    section_id = db.Column(db.Integer, 
+        db.ForeignKey("sections.section_id", use_alter=True, name='fk_measure_section_id'))
     index = db.Column(db.Integer)
 
     # this will inherit parent measure's beat count if null
