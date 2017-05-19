@@ -20,6 +20,7 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from inflection import camelize, underscore
+from passlib.hash import pbkdf2_sha256
 from chord_utilities import parse_chord
 
 # create a db object to work with
@@ -435,13 +436,12 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    # TODO: save password encrypted!!
-
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     email = db.Column(db.String(64))
-    password = db.Column(db.String(64))
+    password_hash = db.Column(db.String(256))
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
+    joined_at = db.column(db.DateTime)
 
     # relationships
     charts = db.relationship("Chart", order_by=Chart.title)
@@ -449,6 +449,31 @@ class User(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
         return "<User user_id={} email ={}>".format(self.user_id, self.email)
+
+    @classmethod
+    def create_user(cls, **kwargs):
+        """Create a new user from the given criteria, and return User object.
+
+        Hash the password before storing in the database.
+        """
+
+        email = kwargs['email']
+        fname = kwargs['fname']
+        lname = kwargs['lname']
+        created_at = datetime.now()
+
+        raw_password = kwargs['password']
+        passhash = pbkdf2_sha256.hash(raw_password)
+
+        user = cls.__call__(email=email,
+                            first_name=fname,
+                            last_name=lname,
+                            joined_at=created_at,
+                            password_hash=passhash)
+
+        db.session.add(user);
+        db.session.commit()
+        return user
 
     def get_data(self):
         """Return a dict of user details."""

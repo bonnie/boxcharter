@@ -50,6 +50,7 @@ def add_scale_note(scale_degree, note_string, key):
 
     db.session.add(scale_note)
 
+
 def load_keys_and_notes():
     """Read lines from csv and add to database."""
 
@@ -106,15 +107,14 @@ def load_user():
 
     email = 'example@example.com'
     password = 'abc123'
-    fname = 'Sampy'
+    fname = 'Suzy'
     lname = 'Sample'
 
-    newuser = User(email=email,
-                   password=password,
-                   first_name=fname,
-                   last_name=lname)
+    newuser = User.create_user(email=email,
+                           password=password,
+                           fname=fname,
+                           lname=lname)
 
-    db.session.commit()
     return newuser
 
 def parse_metadata(line):
@@ -226,6 +226,7 @@ def load_sample_song(filepath, user):
 
     db.session.add(chart)
     db.session.commit()
+
 
 if __name__ == "__main__":
     connect_to_db(app)
