@@ -28,18 +28,10 @@ from user_processing import get_user, authenticate
 
 
 class UserTests(DbTestCase):
-    """Test user processing."""
+    """Test user processing.
 
-    def setUp(self):
-        """Stuff to do before every test."""
-
-        self.db_setup()
-        self.load_test_data()
-
-    def tearDown(self):
-        """Stuff to do after every test."""
-
-        self.db_teardown()
+    Inherits setUp and tearDown from DbTestCase.
+    """
 
     def test_get_user_exists(self):
         """Test get_user function when user exists."""

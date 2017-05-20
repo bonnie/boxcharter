@@ -34,39 +34,37 @@ TEST_PW = 'abc123'
 class DbTestCase(unittest.TestCase):
     """Parent class for tests that need db setup"""
 
-    @classmethod
-    def load_test_data(cls):
-        """Load test data into db."""
+    # @classmethod
+    # def load_test_data(cls):
+    #     """Load test data into db."""
 
-        load_seed_data(TESTDATA_DIR)
+    #     load_seed_data(TESTDATA_DIR)
 
-
-    @classmethod
-    def db_setup(cls):
+    def setUp(self):
         """Set up database for testing"""
 
         connect_to_db(app, TESTDB_URI)
         db.create_all()
+        load_seed_data(TESTDATA_DIR)
 
-    @classmethod
-    def db_teardown(cls):
+    def tearDown(self):
         """Tear down database for testing"""
 
         db.session.close()
         db.drop_all()
 
-    @classmethod
-    def setUpClass(cls):
-        """Stuff to do once before running all class test methods."""
+    # @classmethod
+    # def setUpClass(cls):
+    #     """Stuff to do once before running all class test methods."""
 
-        # cls.db_setup()
+    #     # cls.db_setup()
 
 
-    @classmethod
-    def tearDownClass(cls):
-        """Stuff to do once after running all class test methods."""
+    # @classmethod
+    # def tearDownClass(cls):
+    #     """Stuff to do once after running all class test methods."""
 
-        # cls.db_teardown()
+    #     # cls.db_teardown()
   
 
 if __name__ == '__main__':
