@@ -449,7 +449,7 @@ class User(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<User user_id={} email ={}>".format(self.user_id, self.email)
+        return "<User user_id={} email={}>".format(self.user_id, self.email)
 
     @classmethod
     def create_user(cls, **kwargs):
@@ -500,11 +500,11 @@ class User(db.Model):
 # Helper functions
 
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri='postgresql:///boxcharts'):
     """Connect the database to our Flask app"""
 
     # configure to use our PostgreSQL db
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///boxcharts'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     # app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)

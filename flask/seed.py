@@ -25,7 +25,7 @@ from chord_utilities import parse_chord, lower_note
 from model import Chart, Section, Measure, Key, Note, Chord, Lyric, ScaleNote, \
                   User, connect_to_db, db
 
-DEBUG=True
+DEBUG=False
 DATADIR='./seed_data'
 
 def add_scale_note(scale_degree, note_string, key):
@@ -239,6 +239,10 @@ def load_seed_data(datadir):
 
 
 if __name__ == "__main__":
+
+    # if it's running by hand, we'll want to see the debug messages
+    DEBUG=True
+
     connect_to_db(app)
     db.drop_all()
     db.create_all()

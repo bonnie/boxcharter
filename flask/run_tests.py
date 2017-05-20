@@ -24,30 +24,14 @@ organization). It also holds common constants.
 import unittest
 from model import db, connect_to_db 
 from server import app
-# from seed import load_seed_data
+from seed import load_seed_data
 
-TESTDB_URI = 'postgresql:///boxcharter_tests'
-TESTDATA_DIR = 'tests/test_data'
-MAX_MAG = 5
+TESTDATA_DIR = './seed_data'
+TESTDB_URI = 'postgresql:///boxchart_tests'
+TEST_EMAIL = 'example@example.com'
+TEST_PW = 'abc123'
 
-# for both planets and stars -- needed for both starfield and star_const tests
-COORDS_KEY_SET = set(['ra', 'dec'])
-SKYOBJECT_KEY_SET = COORDS_KEY_SET | set(['color', 'magnitude', 'name',
-    'distance', 'celestialType', 'distanceUnits', 'constellation'])
-
-class MarginTestCase(unittest.TestCase):
-    """Parent class for tests that need a margin assertion"""
-
-    def assertWithinMargin(self, actual, expected, allowed_margin):
-        """Test whether two values are within an acceptable margin
-
-        TODO: make custom exception here."""
-
-        margin = abs(actual - expected)
-        self.assertTrue(margin < allowed_margin)
-
-
-class DbTestCase(MarginTestCase):
+class DbTestCase(unittest.TestCase):
     """Parent class for tests that need db setup"""
 
     @classmethod
@@ -63,7 +47,6 @@ class DbTestCase(MarginTestCase):
 
         connect_to_db(app, TESTDB_URI)
         db.create_all()
-        
 
     @classmethod
     def db_teardown(cls):
@@ -72,32 +55,24 @@ class DbTestCase(MarginTestCase):
         db.session.close()
         db.drop_all()
 
-
     @classmethod
     def setUpClass(cls):
         """Stuff to do once before running all class test methods."""
 
-        cls.db_setup()
+        # cls.db_setup()
 
 
     @classmethod
     def tearDownClass(cls):
         """Stuff to do once after running all class test methods."""
 
-        cls.db_teardown()
+        # cls.db_teardown()
   
 
 if __name__ == '__main__':
 
     # import the tests
-    from tests.seed_tests import SeedTestsWithoutDb, SeedTestsWithDb, \
-        SeedConstellationTests, SeedStarTests, SeedConstLineTests
-    from tests.starfield_tests import StarFieldTestsWithoutDb
-    from tests.star_const_tests import StarDataTests, ConstellationDataTests, \
-        SerpensConstellationDataTests
-    from tests.model_tests import ModelReprTests
-    from tests.flask_tests import FlaskHTMLTests, FlaskDefinitionTests, \
-        FlaskStarDataTests, FlaskPlacetimeDataTests
+    from tests.user_tests import UserTests
 
     # run the tests
     unittest.main()

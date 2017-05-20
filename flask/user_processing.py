@@ -20,14 +20,14 @@
 from sqlalchemy.orm.exc import NoResultFound
 from passlib.hash import pbkdf2_sha256
 from model import User
-from exceptions import UserNotFoundException, PasswordMismatchException
+from boxcharter_exceptions import UserNotFoundException, PasswordMismatchException
 
 
 def get_user(email):
     """Return User object if the user exists in the system; None otherwise."""
 
     try:
-        user = User.query.filter_by(email=email).one()
+        return User.query.filter_by(email=email).one()
     except NoResultFound: 
         return None
 
