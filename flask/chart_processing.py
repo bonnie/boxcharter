@@ -65,10 +65,7 @@ def get_chart_data(chart_id):
             'Could not get data.', CONTACT_ADMIN)
         return err_status
     else:
-        response = {}
-        response['chart'] = data
-        response['status'] = SUCCESS_STATUS['status']
-        return response
+        return {'chart': data, 'status': SUCCESS_STATUS['status']}
 
 
 def update_chart(chart_id, data):
@@ -79,7 +76,7 @@ def update_chart(chart_id, data):
         chart_data: dict
 
     outputs: 
-        response dict with 'status' and 'chart' keys
+        response dict with 'status' and 'modifiedAt' keys
     """
 
     # for errors

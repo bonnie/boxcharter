@@ -17,10 +17,15 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 
+from copy import deepcopy
+import logging
+
 from sqlalchemy.orm.exc import NoResultFound
 from passlib.hash import pbkdf2_sha256
 from model import User
 from boxcharter_exceptions import UserNotFoundException, PasswordMismatchException
+from status import SUCCESS_STATUS, ERROR_STATUS, BAD_REQUEST, CONTACT_ADMIN
+from log_utilities import log_error
 
 
 def get_user(email):
@@ -41,10 +46,58 @@ def authenticate(email, password):
 
     user = get_user(email)
 
+    # user doesn't exist
     if user is None:
-        raise UserNotFoundException
+        raise UserNotFoundException('authenticate: nonexistent email')
 
+    # hooray, a match
     if pbkdf2_sha256.verify(password, user.password_hash):
-        return True
+        return user
 
-    raise PasswordMismatchException
+    # passwords don't match
+    raise PasswordMismatchException('authenticate: password mismatch')
+
+
+def validate_user(email, password):
+    """Validate the authentication and return user data or error status.
+
+        inputs: 
+        email: str
+        password: str
+
+    outputs: 
+        response dict with 'status' and 'user_data' keys 
+            (user_data omitted if status is not success)
+    """
+
+    err_status = deepcopy(ERROR_STATUS)
+    error_kwargs = {'email': email}
+
+    try:
+        user = authenticate(email, password)
+
+    except UserNotFoundException, PasswordMismatchException: 
+        log_error(e, 1, **error_kwargs)
+        err_status['status']['text'] = 'Invaid email and/or password'
+        return err_status
+
+    except Exception as e:
+        log_error(e, 1, **error_kwargs)
+        err_status['status']['text'] = '{} {}'.format(
+            'Could not authenticate user.', CONTACT_ADMIN)
+        return err_status
+
+    else:
+        # if authentication succeeded
+
+        try:
+            data = user.get_data()
+        except Exception as e:
+            log_error(e, 1, **error_kwargs)
+            err_status['status']['text'] = '{} {}'.format(
+                'Could not get user.', CONTACT_ADMIN)
+            return err_status
+        else:
+            # if user data retrieval succeeded
+            return {'user': data, 'status': SUCCESS_STATUS['status']}
+

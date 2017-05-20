@@ -487,13 +487,12 @@ class User(db.Model):
                 for chart in self.charts
                ]
 
-        return {'charts': charts,
-                'userData': {
+        return {
+                    'charts': charts,
                     'id': self.user_id,
                     'email': self.email,
                     'firstName': self.first_name,
                     'lastName': self.last_name
-                    }
                 }
 
 #######################################################################
