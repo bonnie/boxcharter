@@ -25,7 +25,7 @@ from run_tests import DbTestCase, TEST_EMAIL, TEST_PW
 from server import app
 from model import db, User
 from user_processing import get_user, authenticate
-
+from boxcharter_exceptions import UserNotFoundException, PasswordMismatchException
 
 class UserTests(DbTestCase):
     """Test user processing.
@@ -39,8 +39,26 @@ class UserTests(DbTestCase):
         user = get_user(TEST_EMAIL)
         self.assertEqual(user.email, TEST_EMAIL)
 
+    def test_get_user_doesnt_exist(self):
+        """Test get_user function when user doesn't exist."""
+
+        user = get_user('no@no.com')
+        self.assertIsNone(user)
+
     def test_authenticate_correct_pw(self):
-        """Test the checking of an entered password against the database."""
+        """Test checking a correct entered password against the database."""
 
         valid = authenticate(TEST_EMAIL, TEST_PW)
         self.assertTrue(valid)
+
+    def test_authenticate_incorrect_pw(self):
+        """Test checking an incorrect entered password against the database."""
+
+        with self.assertRaises(PasswordMismatchException):
+            authenticate(TEST_EMAIL, 'wrong')
+
+    def test_authenticate_invalid_user(self):
+        """Test checking a password against the database for invalid user."""
+
+        with self.assertRaises(UserNotFoundException):
+            authenticate('no@no.com', TEST_PW)
