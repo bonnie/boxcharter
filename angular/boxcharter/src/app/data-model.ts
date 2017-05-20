@@ -18,6 +18,14 @@
  *
  */
 
+export class User {
+    'charts': object[];
+    'id': number;
+    'email': string;
+    'firstName': string;
+    'lastName': string;
+}
+
 // export class Chord {
 //     beatIndex: number;
 //     chordString: string;
