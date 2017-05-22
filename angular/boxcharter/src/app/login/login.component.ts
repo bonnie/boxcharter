@@ -18,23 +18,28 @@
  *
  */
 
-import { Component }   from '@angular/core';
+import { Component, OnInit }   from '@angular/core';
 import { Router }      from '@angular/router';
 import { AuthService } from '../auth.service';
+import { StatusService } from '../status.service';
+
 @Component({
-  template: `
-    <h2>LOGIN</h2>
-    <p>{{message}}</p>
-    <p>
-      <button (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
-      <button (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
-    </p>`
+  selector: 'app-not-found',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
-  message: string;
-  constructor(public authService: AuthService, public router: Router) {
+export class LoginComponent implements OnInit {
+
+ message: string;
+  constructor(public authService: AuthService, 
+              public router: Router,
+              public statusService: StatusService) {
     this.setMessage();
   }
+  ngOnInit() { 
+    this.statusService.clearStatus();
+  }
+  
   setMessage() {
     this.message = 'Logged ' + (this.authService.isLoggedIn ? 'in' : 'out');
   }
@@ -56,7 +61,6 @@ export class LoginComponent {
     this.setMessage();
   }
 }
-
 
 // import { Component, OnInit } from '@angular/core';
 
