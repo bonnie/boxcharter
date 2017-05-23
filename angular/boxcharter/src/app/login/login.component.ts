@@ -25,7 +25,7 @@ import { StatusService } from '../status.service';
 import { Status } from '../status';
 
 @Component({
-  selector: 'app-not-found',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
