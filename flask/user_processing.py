@@ -76,7 +76,7 @@ def validate_user(email, password):
     try:
         user = authenticate(email, password)
 
-    except UserNotFoundException, PasswordMismatchException: 
+    except (UserNotFoundException, PasswordMismatchException) as e: 
         log_error(e, 1, **error_kwargs)
         err_status['status']['text'] = 'Invaid email and/or password'
         return err_status
@@ -99,5 +99,7 @@ def validate_user(email, password):
             return err_status
         else:
             # if user data retrieval succeeded
-            return {'user': data, 'status': SUCCESS_STATUS['status']}
+            succ = deepcopy(SUCCESS_STATUS['status'])
+            succ['text'] = 'Successful login for {}.'.format(email)
+            return {'user': data, 'status': succ}
 

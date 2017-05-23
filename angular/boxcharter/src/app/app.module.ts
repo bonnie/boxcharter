@@ -35,6 +35,7 @@ import { FillPipe } from './fill.pipe';
 import { StatusComponent } from './status/status.component';
 import { StatusService } from './status.service';
 import { DialogService } from './dialog.service';
+import { ErrorService } from './error.service';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RegisterComponent } from './register/register.component';
@@ -63,7 +64,7 @@ import { RegisterComponent } from './register/register.component';
     ],
     
     // injecting StatusService here, so there's a global service shared by the whole app
-    providers: [ StatusService, DialogService ],
+    providers: [ StatusService, DialogService, ErrorService ],
     bootstrap: [ AppComponent ],
 })
 export class AppModule {

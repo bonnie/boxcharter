@@ -22,6 +22,7 @@ import { Component, OnInit }   from '@angular/core';
 import { Router }      from '@angular/router';
 import { AuthService } from '../auth.service';
 import { StatusService } from '../status.service';
+import { Status } from '../status';
 
 @Component({
   selector: 'app-not-found',
@@ -30,32 +31,30 @@ import { StatusService } from '../status.service';
 })
 export class LoginComponent implements OnInit {
 
- message: string;
+  email: string = null;
+  password: string = null;
+  message: string;
+
   constructor(public authService: AuthService, 
               public router: Router,
-              public statusService: StatusService) {
-    this.setMessage();
-  }
+              public statusService: StatusService) {}
   ngOnInit() { 
     this.statusService.clearStatus();
+    this.setMessage();
   }
-  
   setMessage() {
     this.message = 'Logged ' + (this.authService.isLoggedIn ? 'in' : 'out');
   }
   login() {
     this.message = 'Trying to log in ...';
-    this.authService.login().subscribe(() => {
-      this.setMessage();
-      if (this.authService.isLoggedIn) {
-        // Get the redirect URL from our auth service
-        // If no redirect has been set, use the default
-        let redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/crisis-center/admin';
-        // Redirect the user
-        this.router.navigate([redirect]);
-      }
-    });
-  }
+
+    this.authService.login(this.email, this.password)
+      .then(data => {
+          this.setMessage()
+          console.log(data)
+      });
+      
+   }
   logout() {
     this.authService.logout();
     this.setMessage();

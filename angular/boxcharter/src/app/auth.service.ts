@@ -19,24 +19,54 @@
  */
 
 import { Injectable } from '@angular/core';
-
+import { Headers, Http } from "@angular/http";
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/delay';
+import { flaskServer } from './app.component'
+import { ErrorService } from './error.service';
+import { StatusService } from './status.service'
+import { Status } from './status'
+// import 'rxjs/add/observable/of';
+// import 'rxjs/add/operator/do';
+// import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/toPromise';
+
 
 @Injectable()
 export class AuthService {
+
+  private authURL = `${flaskServer}/user/auth`;
+;
   isLoggedIn: boolean = false;
+  private jsonHeaders = new Headers(
+  {'Content-Type': 'application/json'});
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
 
-  login(): Observable<boolean> {
-    return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
+  constructor(private http: Http,
+              private statusService: StatusService,
+              private errorService: ErrorService ) { }
+
+  login(email: string, password: string):  Promise<any> {
+    // send login info to flask server and return JSON response
+    const loginInfo = {'email': email, 'password': password};
+    return this.http.post(this.authURL, JSON.stringify(loginInfo), {headers: this.jsonHeaders})
+                    .toPromise()
+                    .then(response => {
+                                      let status = response.json()['status'];
+                                      this.statusService.setStatus(status);
+                                      if (status['type'] == 'success') {
+                                        this.isLoggedIn = true;
+                                        return response.json()['user'];
+                                      }
+                                    })
+                    .catch(err => this.errorService.handleError(err, this.statusService));
   }
 
   logout(): void {
+    this.statusService.clearStatus();
     this.isLoggedIn = false;
   }
+
 }
+

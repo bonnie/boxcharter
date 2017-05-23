@@ -26,6 +26,7 @@ import { Chart } from './data-model';
 import { Status } from './status'
 import { flaskServer } from './app.component'
 import { StatusService } from './status.service'
+import { ErrorService } from './error.service'
 
 @Injectable()
 export class ChartService {
@@ -35,7 +36,8 @@ export class ChartService {
     {'Content-Type': 'application/json'});
 
   constructor(private http: Http,
-              private statusService: StatusService) { }
+              private statusService: StatusService,
+              private errorService: ErrorService) { }
 
   getChart(id: number): Promise<object> {
     // console.log(`id: ${id}`);
@@ -43,7 +45,7 @@ export class ChartService {
     return this.http.get(url)
                     .toPromise()
                     .then(response => response.json())
-                    .catch(err => this.handleError(err, this.statusService));
+                    .catch(err => this.errorService.handleError(err, this.statusService));
   }
 
   updateChart(chart: Chart): Promise<Status> {
@@ -54,16 +56,6 @@ export class ChartService {
           .put(url, JSON.stringify(chart), {headers: this.jsonHeaders})
           .toPromise()
           .then(response => response.json())
-          .catch(err => this.handleError(err, this.statusService));
-  }
-
-  private handleError(error: any, stService: StatusService): Promise<any> {
-    // TODO: really handle errors here, not just console.log
-    let errMsg = error.message || error;
-    if (error.status == 0) {
-      errMsg = 'Could not connect to server. Please contact admin@boxcharter.com';
-    }
-    stService.setStatus({'type': 'danger', 'text': errMsg});
-    return Promise.reject(errMsg);
+          .catch(err => this.errorService.handleError(err, this.statusService));
   }
 }
