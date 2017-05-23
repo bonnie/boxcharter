@@ -27,6 +27,9 @@ import { AuthService } from "../auth.service";
 })
 export class HomeComponent {
 
+    private action: string = 'login';
+    private buttons: string[] = ['login', 'register'];
+
     constructor(public authService: AuthService) {}
 
 }

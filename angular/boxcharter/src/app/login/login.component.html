@@ -17,7 +17,6 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<h2>Log In</h2>
 <!--<p>{{ message }}</p>-->
 <form *ngIf="!authService.isLoggedIn">
 
@@ -31,8 +30,6 @@
         <input [(ngModel)]="password" name="password" class="login" type="password" id="password" placeholder="Password">
     </div>
   </section>
+  <button class="btn btn-primary login" (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
+  <button class="btn btn-primary login" (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
 </form>
-<p>
-  <button class="btn btn-primary" (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
-  <button class="btn btn-primary" (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
-</p>
