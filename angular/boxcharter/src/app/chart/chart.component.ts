@@ -40,8 +40,10 @@ export class ChartComponent implements OnInit {
   
   chart: Chart;
   status: Status;
+  dirty: Boolean; // tracking whether chart has been edited since open / save
   lyricistSame: boolean = false; // lyricist same as composer?
   measureCells: Object[]; // for tracking when to show measure dropdown
+
 
   constructor(
     // for getting chart data from flask
@@ -62,6 +64,7 @@ export class ChartComponent implements OnInit {
     this.statusService.clearStatus();
 
     this.getChart();
+    this.dirty = false;
   }
   
   saveChart() {
@@ -71,6 +74,7 @@ export class ChartComponent implements OnInit {
             this.statusService.setStatus(response['status'] as Status);
             if (response['status']['type'] == 'success') {
               this.chart.modifiedAt = response['modifiedAt'];
+              this.dirty = false;
             }
           });
   }
@@ -205,7 +209,11 @@ export class ChartComponent implements OnInit {
     // }
     // Otherwise ask the user with the dialog service and return its
     // promise which resolves to true or false when the user decides
-    return this.dialogService.confirm('Discard changes?');
+    if (this.dirty === false) {
+      return true;
+    } else {
+      return this.dialogService.confirm('Discard changes?');
+    } 
   }
 }
 

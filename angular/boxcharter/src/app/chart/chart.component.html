@@ -17,7 +17,7 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<div *ngIf="chart" (click)="statusService.clearSuccess()">
+<div *ngIf="chart" (click)="statusService.clearSuccess()" (change)="dirty=true" >
   <div class="chart-metadata">
     <!-- START: chart buttons -->
     <div class="chart-btn-group page-header">
