@@ -19,6 +19,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { Input } from '../input';
 
 @Component({
   selector: 'app-register',
@@ -27,9 +28,65 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
 
+  private inputs: Input[] = Array();
+
   constructor() { }
 
   ngOnInit() {
+
+    // set inputs
+    let emptyMessage = 'This field cannot be empty!';
+
+    // email
+    let emailInput = new Input();
+    emailInput.label = 'Email';
+    emailInput.name = emailInput.type = 'email';
+    emailInput.required = true;
+    emailInput.errorTooltip = emptyMessage;
+    emailInput.placeholder = 'jane@boxcharter.com';
+    this.inputs.push(emailInput);
+
+    // first name
+    let fnameInput = new Input();
+    fnameInput.label = 'First Name';
+    fnameInput.name = 'fname';
+    fnameInput.type = 'text'
+    fnameInput.required = true;
+    fnameInput.errorTooltip = emptyMessage;
+    fnameInput.placeholder = 'Jane';
+    this.inputs.push(fnameInput);
+
+    // last name
+    let lnameInput = new Input();
+    lnameInput.label = 'Last Name';
+    lnameInput.name = 'lname';
+    lnameInput.type = 'text'
+    lnameInput.required = false;
+    lnameInput.placeholder = 'Boxcharts';
+    this.inputs.push(lnameInput);
+
+    // password
+    let passInput = new Input();
+    passInput.label = 'Password';
+    passInput.name = passInput.type = 'password';
+    passInput.required = true;
+    passInput.errorTooltip = emptyMessage;
+    this.inputs.push(passInput);
+
+    // password confirm
+    let pass2Input = new Input();
+    pass2Input.label = 'Confirm Password';
+    pass2Input.name = 'password2';
+    pass2Input.type = 'password'
+    pass2Input.required = true;
+    pass2Input.errorTooltip = 'Passwords must match.';
+    pass2Input.onChange = 'checkPassMatch()';
+    this.inputs.push(pass2Input);
+  }
+
+  checkPassMatch() {
+    // check to see if passwords match and display error if not
+    console.log('checking passwords');
   }
 
 }
