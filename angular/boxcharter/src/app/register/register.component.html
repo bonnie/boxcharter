@@ -19,7 +19,7 @@
 
 <h1>Register for BoxCharter</h1>
 <a href="/login">Log in instead</a>
-<form>
+<form #regForm>
   <section class="form-block">
     <div *ngFor="let input of inputs" class="form-group">
         <label [class.required]="input.required" 
@@ -43,30 +43,7 @@
             </span>
         </label>
     </div>
-    <!--<div class="form-group">
-        <label class="required" for="email">Email</label>
-        <label for="validInput2" aria-haspopup="true" role="tooltip" class="tooltip tooltip-validation invalid tooltip-md">
-            <input required [(ngModel)]="email" class="register" type="email" name="email" id="email" placeholder="jane@boxcharter.com">
-            <span class="tooltip-content">
-                This field cannot be empty!
-            </span>
-        </label>
-    </div>
-    <div class="form-group">
-        <label class="required" for="first-name">First name</label>
-        <input required [(ngModel)]="fname" class="register" type="text" id="first-name" placeholder="Jane">
-    </div>
-    <div class="form-group">
-        <label for="last-name">Last name</label>
-        <input [(ngModel)]="lname" class="register" type="text" id="last-name" placeholder="Doe">
-    </div>
-    <div class="form-group">
-        <label class="required" for="password-1">Password:</label>
-        <input required [(ngModel)]="pass1" class="register" type="password" id="password-1" placeholder="Password">
-    </div>
-    <div class="form-group">
-        <label class="required" for="password-2">Re-type password:</label>
-        <input required [(ngModel)]="pass2" (change)="checkPassMatch()" class="register" type="password" id="password-2" placeholder="Password">
-    </div>-->
+  <button class="btn btn-primary register" (click)="register()">Register</button>
+  <button class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
   </section>
 </form>

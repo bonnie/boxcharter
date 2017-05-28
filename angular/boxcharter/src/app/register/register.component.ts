@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit {
     fnameInput.label = 'First Name';
     fnameInput.name = 'fname';
     fnameInput.type = 'text'
-    fnameInput.required = true;
+    fnameInput.required = false;
     fnameInput.errorTooltip = emptyMessage;
     fnameInput.placeholder = 'Jane';
     this.inputs.push(fnameInput);
@@ -70,7 +70,7 @@ export class RegisterComponent implements OnInit {
     passInput.label = 'Password';
     passInput.name = passInput.type = 'password';
     passInput.required = true;
-    passInput.placeholder = null;
+    passInput.placeholder = '';
     passInput.errorTooltip = emptyMessage;
     this.inputs.push(passInput);
 
@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit {
     pass2Input.name = 'password2';
     pass2Input.type = 'password'
     pass2Input.required = true;
-    pass2Input.placeholder = null;
+    pass2Input.placeholder = '';
     pass2Input.errorTooltip = 'Passwords must match.';
     pass2Input.onChange = 'checkPassMatch()';
     this.inputs.push(pass2Input);

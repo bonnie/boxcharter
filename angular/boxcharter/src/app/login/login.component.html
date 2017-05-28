@@ -31,7 +31,7 @@
         <label for="password">Password:</label>
         <input [(ngModel)]="password" name="password" class="login" type="password" id="password" placeholder="Password">
     </div>
+    <button class="btn btn-primary login" (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
+    <button class="btn btn-primary login" (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
   </section>
-  <button class="btn btn-primary login" (click)="login()"  *ngIf="!authService.isLoggedIn">Login</button>
-  <button class="btn btn-primary login" (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
 </form>
