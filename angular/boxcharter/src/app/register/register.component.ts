@@ -21,7 +21,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RegistrationService} from '../registration.service';
 import { StatusService } from '../status.service';
+import { AuthService } from '../auth.service';
 import { Input } from '../input';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -34,7 +36,9 @@ export class RegisterComponent implements OnInit {
   private inputs: Input[] = Array();
   
   constructor(public registrationService: RegistrationService,
-              public statusService: StatusService ) { }
+              public statusService: StatusService,
+              public authService: AuthService,
+              private router: Router ) { }
 
   ngOnInit() {
 
@@ -107,10 +111,10 @@ export class RegisterComponent implements OnInit {
       regData[input.name] = input.value;
     }
     
-    console.log(regData);
     this.registrationService.register(regData)
-      .then(userData => {
-          console.log(userData)
+      .then(userID => {
+          this.authService.isLoggedIn = true;
+          this.router.navigate(['user/' + userID]);
       });
   }
 }

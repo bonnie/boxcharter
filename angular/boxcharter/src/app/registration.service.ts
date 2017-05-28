@@ -54,7 +54,7 @@ export class RegistrationService {
                                       let status = response.json()['status'];
                                       this.statusService.setStatus(status);
                                       if (status['type'] == 'success') {
-                                        return response.json()['user'];
+                                        return response.json()['userID'];
                                       }
                                     })
                     .catch(err => this.errorService.handleError(err, this.statusService));

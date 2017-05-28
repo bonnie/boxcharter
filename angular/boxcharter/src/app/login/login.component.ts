@@ -40,24 +40,16 @@ export class LoginComponent implements OnInit {
               public statusService: StatusService) {}
   ngOnInit() { 
     this.statusService.clearStatus();
-    this.setMessage();
-  }
-  setMessage() {
-    this.message = 'Logged ' + (this.authService.isLoggedIn ? 'in' : 'out');
   }
   login() {
-    this.message = 'Trying to log in ...';
-
     this.authService.login(this.email, this.password)
-      .then(data => {
-          this.setMessage()
-          console.log(data)
+      .then(userID => {
+        this.router.navigate(['user/' + userID]);
       });
       
    }
   logout() {
     this.authService.logout();
-    this.setMessage();
   }
 }
 

@@ -60,10 +60,10 @@ def add_user(data):
         err_status['status']['text'] = err_text
         return err_status
     else:
-        data = user.get_data()
+        user_id = user.user_id
         succ = deepcopy(SUCCESS_STATUS['status'])
         succ['text'] = 'New user {} successfully added.'.format(data['email'])        
-        return {'user': data, 'status': succ}
+        return {'userID': user_id, 'status': succ}
 
 
 def authenticate(email, password):
@@ -120,7 +120,7 @@ def validate_user(email, password):
         # if authentication succeeded
 
         try:
-            data = user.get_data()
+            user_id = user.user_id
         except Exception as e:
             log_error(e, 1, **error_kwargs)
             err_status['status']['text'] = '{} {}'.format(
@@ -130,5 +130,5 @@ def validate_user(email, password):
             # if user data retrieval succeeded
             succ = deepcopy(SUCCESS_STATUS['status'])
             succ['text'] = 'Successful login for {}.'.format(email)
-            return {'user': data, 'status': succ}
+            return {'userID': user_id, 'status': succ}
 

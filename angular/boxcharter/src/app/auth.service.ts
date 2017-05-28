@@ -57,7 +57,7 @@ export class AuthService {
                                       this.statusService.setStatus(status);
                                       if (status['type'] == 'success') {
                                         this.isLoggedIn = true;
-                                        return response.json()['user'];
+                                        return response.json()['userID'];
                                       }
                                     })
                     .catch(err => this.errorService.handleError(err, this.statusService));
