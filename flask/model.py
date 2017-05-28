@@ -459,8 +459,8 @@ class User(db.Model):
         """
 
         email = kwargs['email']
-        fname = kwargs['fname']
-        lname = kwargs['lname']
+        fname = kwargs.get('fname')
+        lname = kwargs.get('lname')
         created_at = datetime.now()
 
         raw_password = kwargs['password']

@@ -24,6 +24,7 @@ export class Input {
     name: string;
     type: string;
     placeholder: string;
+    value: any;
     onChange: any; // TODO: how can I set this to be a function?
     errorTooltip: string;
 }

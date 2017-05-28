@@ -19,20 +19,27 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { RegistrationService} from '../registration.service';
+import { StatusService } from '../status.service';
 import { Input } from '../input';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  providers: [ RegistrationService ]
 })
 export class RegisterComponent implements OnInit {
 
   private inputs: Input[] = Array();
-
-  constructor() { }
+  
+  constructor(public registrationService: RegistrationService,
+              public statusService: StatusService ) { }
 
   ngOnInit() {
+
+    // clear leftover status
+    this.statusService.clearStatus();
 
     // set inputs
     let emptyMessage = 'This field cannot be empty!';
@@ -91,4 +98,19 @@ export class RegisterComponent implements OnInit {
     console.log('checking passwords');
   }
 
+  register() {
+
+    // TOOD: is there a better way to "serialize" the form? 
+    let regData = {};
+    for (let i=0; i < this.inputs.length; i++ ) {
+      let input = this.inputs[i];
+      regData[input.name] = input.value;
+    }
+    
+    console.log(regData);
+    this.registrationService.register(regData)
+      .then(userData => {
+          console.log(userData)
+      });
+  }
 }

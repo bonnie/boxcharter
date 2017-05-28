@@ -37,6 +37,35 @@ def get_user(email):
         return None
 
 
+def check_user(email):
+    """Check to see if email exists in the system. Return boolean.
+
+    For validating email during registration."""
+
+    return not (get_user(email) == None)
+
+
+def add_user(data):
+    """Add user to database. Return user data."""
+
+    print data
+
+    err_status = deepcopy(ERROR_STATUS)
+
+    try:
+        user = User.create_user(**data)
+    except Exception as e:
+        log_error(e, 1, **data)
+        err_text =  '{} {}'.format('Could not add user.', CONTACT_ADMIN)
+        err_status['status']['text'] = err_text
+        return err_status
+    else:
+        data = user.get_data()
+        succ = deepcopy(SUCCESS_STATUS['status'])
+        succ['text'] = 'New user {} successfully added.'.format(data['email'])        
+        return {'user': data, 'status': succ}
+
+
 def authenticate(email, password):
     """Return true if user exists with that password; else raise exception.
 

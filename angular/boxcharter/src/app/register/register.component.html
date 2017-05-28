@@ -19,7 +19,7 @@
 
 <h1>Register for BoxCharter</h1>
 <a href="/login">Log in instead</a>
-<form #regForm>
+<form (ngSubmit)="register()" #regForm="ngForm">
   <section class="form-block">
     <div *ngFor="let input of inputs" class="form-group">
         <label [class.required]="input.required" 
@@ -30,7 +30,9 @@
             aria-haspopup="true" 
             role="tooltip" 
             class="tooltip tooltip-validation tooltip-md">
-            <input [required]="input.required"
+            <input 
+                [(ngModel)]="input.value"
+                [required]="input.required"
                 class="register" 
                 [type]="input.type" 
                 [name]="input.name" 
@@ -43,7 +45,7 @@
             </span>
         </label>
     </div>
-  <button class="btn btn-primary register" (click)="register()">Register</button>
-  <button class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
+  <button type="submit" class="btn btn-primary register" [disabled]="!regForm.form.valid">Register</button>
+  <button type="button" class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
   </section>
 </form>

@@ -19,10 +19,50 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Headers, Http } from "@angular/http";
+import { Observable } from 'rxjs/Observable';
+import { flaskServer } from './app.component'
+import { ErrorService } from './error.service';
+import { StatusService } from './status.service'
+import { Status } from './status'
+// import 'rxjs/add/observable/of';
+// import 'rxjs/add/operator/do';
+// import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class RegistrationService {
 
-  constructor() { }
+  private regURL = `${flaskServer}/user/add`;
+  private verifyURL = `${flaskServer}/user/check`;
+  isLoggedIn: boolean = false;
+  private jsonHeaders = new Headers(
+  {'Content-Type': 'application/json'});
+
+  // store the URL so we can redirect after logging in
+  redirectUrl: string;
+
+  constructor(private http: Http,
+              private statusService: StatusService,
+              private errorService: ErrorService ) { }
+
+  register(regData: object):  Promise<any> {
+    // send login info to flask server and return JSON response
+    return this.http.post(this.regURL, JSON.stringify(regData), {headers: this.jsonHeaders})
+                    .toPromise()
+                    .then(response => {
+                                      let status = response.json()['status'];
+                                      this.statusService.setStatus(status);
+                                      if (status['type'] == 'success') {
+                                        return response.json()['user'];
+                                      }
+                                    })
+                    .catch(err => this.errorService.handleError(err, this.statusService));
+  }
+
+  // checkEmail(email): Promise<any> {
+
+    
+  // }
 
 }
