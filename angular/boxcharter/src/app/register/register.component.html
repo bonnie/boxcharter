@@ -18,18 +18,19 @@
 -->
 
 <h1>Register for BoxCharter</h1>
+<a href="/login">Log in instead</a>
 <form>
   <section class="form-block">
     <div *ngFor="let input of inputs" class="form-group">
-        <label [class]="input.required ? 'required' : null" 
+        <label [class.required]="input.required" 
             [for]="input.name">
                 {{ input.label }}
         </label>
         <label [for]="input.name" 
             aria-haspopup="true" 
             role="tooltip" 
-            class="tooltip tooltip-validation (input.name.valid && input.name.dirty ? 'invalid': null) tooltip-md">
-            <input [required] = "input.required"
+            class="tooltip tooltip-validation tooltip-md">
+            <input [required]="input.required"
                 class="register" 
                 [type]="input.type" 
                 [name]="input.name" 

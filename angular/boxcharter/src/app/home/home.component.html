@@ -18,13 +18,4 @@
 -->
 
 <h1>Welcome to Boxcharter</h1>
-
-<button *ngFor="let btn of buttons"
-  class="btn btn-link" 
-  [disabled]="action==btn"
-  (click)="action=btn">
-    {{ btn }}
-</button>
-
-<app-login *ngIf="action=='login'"></app-login>
-<app-register *ngIf="action=='register'"></app-register>
+<app-login></app-login>

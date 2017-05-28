@@ -26,10 +26,6 @@ import { AuthService } from "../auth.service";
     templateUrl: './home.component.html',
 })
 export class HomeComponent {
-
-    private action: string = 'login';
-    private buttons: string[] = ['login', 'register'];
-
     constructor(public authService: AuthService) {}
 
 }

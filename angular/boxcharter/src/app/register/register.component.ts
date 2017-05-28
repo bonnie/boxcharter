@@ -70,15 +70,17 @@ export class RegisterComponent implements OnInit {
     passInput.label = 'Password';
     passInput.name = passInput.type = 'password';
     passInput.required = true;
+    passInput.placeholder = null;
     passInput.errorTooltip = emptyMessage;
     this.inputs.push(passInput);
 
     // password confirm
     let pass2Input = new Input();
-    pass2Input.label = 'Confirm Password';
+    pass2Input.label = 'Confirm password';
     pass2Input.name = 'password2';
     pass2Input.type = 'password'
     pass2Input.required = true;
+    pass2Input.placeholder = null;
     pass2Input.errorTooltip = 'Passwords must match.';
     pass2Input.onChange = 'checkPassMatch()';
     this.inputs.push(pass2Input);
