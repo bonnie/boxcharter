@@ -18,7 +18,8 @@
  *
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { RegistrationService} from '../registration.service';
 import { StatusService } from '../status.service';
 import { AuthService } from '../auth.service';
@@ -31,14 +32,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.scss'],
   providers: [ RegistrationService ]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewChecked {
 
-  private inputs: Input[] = Array();
+  private inputs: Input[] = new Array();
   
   constructor(public registrationService: RegistrationService,
               public statusService: StatusService,
               public authService: AuthService,
               private router: Router ) { }
+
+/************** form creation  ****************/
 
   ngOnInit() {
 
@@ -46,14 +49,12 @@ export class RegisterComponent implements OnInit {
     this.statusService.clearStatus();
 
     // set inputs
-    let emptyMessage = 'This field cannot be empty!';
 
     // email
     let emailInput = new Input();
     emailInput.label = 'Email';
     emailInput.name = emailInput.type = 'email';
     emailInput.required = true;
-    emailInput.errorTooltip = emptyMessage;
     emailInput.placeholder = 'jane@boxcharter.com';
     this.inputs.push(emailInput);
 
@@ -63,7 +64,6 @@ export class RegisterComponent implements OnInit {
     fnameInput.name = 'fname';
     fnameInput.type = 'text'
     fnameInput.required = false;
-    fnameInput.errorTooltip = emptyMessage;
     fnameInput.placeholder = 'Jane';
     this.inputs.push(fnameInput);
 
@@ -82,7 +82,6 @@ export class RegisterComponent implements OnInit {
     passInput.name = passInput.type = 'password';
     passInput.required = true;
     passInput.placeholder = '';
-    passInput.errorTooltip = emptyMessage;
     this.inputs.push(passInput);
 
     // password confirm
@@ -92,18 +91,63 @@ export class RegisterComponent implements OnInit {
     pass2Input.type = 'password'
     pass2Input.required = true;
     pass2Input.placeholder = '';
-    pass2Input.errorTooltip = 'Passwords must match.';
-    pass2Input.onChange = 'checkPassMatch()';
     this.inputs.push(pass2Input);
   }
 
-  checkPassMatch() {
-    // check to see if passwords match and display error if not
-    console.log('checking passwords');
+/************** form validation  ****************/
+/* adapted from https://angular.io/docs/ts/latest/cookbook/form-validation.html */
+
+  regForm: NgForm;
+  @ViewChild('regForm') currentForm: NgForm;
+
+  ngAfterViewChecked() {
+    this.formChanged();
   }
 
-  register() {
+  formChanged() {
+    if (this.currentForm === this.regForm) { return; }
+    this.regForm = this.currentForm;
+    if (this.regForm) {
+      this.regForm.valueChanges
+        .subscribe(data => this.onValueChanged(data));
+    }
+  }
 
+  onValueChanged(data?: any) {
+    if (!this.regForm) { return; }
+    const form = this.regForm.form;
+
+    for ( const input of this.inputs ) {
+      // clear previous error message (if any)
+      input.errMsg = '';
+      let field = input.name;
+      const control = form.get(field);
+
+      if (control && control.dirty && !control.valid) {
+        const messages = this.validationMessages[field];
+        for (const key in control.errors) {
+          input.errMsg += messages[key] + ' ';
+        }
+      }
+    }
+  }
+
+  validationMessages = {
+    'email': {
+      'required': 'Email is required.',
+      'taken': 'There is already an account with this email.'
+    },
+    'password': {
+      'required': 'Password is required.'
+    },
+    'password2': {
+      'mismatch': 'Passwords must match.'
+    }
+  };
+
+/************** actual registration  ****************/
+
+ register() {
     // TOOD: is there a better way to "serialize" the form? 
     let regData = {};
     for (let i=0; i < this.inputs.length; i++ ) {

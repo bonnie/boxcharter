@@ -29,19 +29,19 @@
         <label [for]="input.name" 
             aria-haspopup="true" 
             role="tooltip" 
-            class="tooltip tooltip-validation tooltip-md">
+            class="tooltip tooltip-validation tooltip-md"
+            [class.invalid]="input.errMsg != ''">
             <input 
+                class="register" 
                 [(ngModel)]="input.value"
                 [required]="input.required"
-                class="register" 
                 [type]="input.type" 
                 [name]="input.name" 
                 [id]="input.name" 
-                [placeholder]="input.placeholder"
-                (change)="input.onChange">
+                [placeholder]="input.placeholder">
             <span *ngIf="input.required" 
                 class="tooltip-content">
-                    {{ input.errorTooltip }}
+                    {{ input.errMsg }}
             </span>
         </label>
     </div>
