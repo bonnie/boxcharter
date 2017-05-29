@@ -1,5 +1,3 @@
-import { Injectable } from '@angular/core';
-import { Http } from "@angular/http";
 /*
  * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
@@ -20,17 +18,36 @@ import { Http } from "@angular/http";
  *
  */
 
+import { Injectable } from '@angular/core';
+import { Headers, Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
+import { ErrorService } from './error.service';
+import { StatusService } from './status.service';
+import { flaskServer } from './app.component'
 
 @Injectable()
 export class UserService {
 
-  constructor(private http: Http) { }
+  private userURL = `${flaskServer}/user`;
+  private jsonHeaders = new Headers(
+  {'Content-Type': 'application/json'});
 
-  getUser(id: number): Observable<any> {
+  constructor(private http: Http,
+              private statusService: StatusService,
+              private errorService: ErrorService ) { }
 
-    return this.http.get(`http://localhost:5050/user/${id}`);
-
+  getUser(id: number): Promise<any> {
+    // send registration info to flask server and return userID of new user
+    return this.http.post(`${this.userURL}/id`, {headers: this.jsonHeaders})
+                    .toPromise()
+                    .then(response => {
+                                      let status = response.json()['status'];
+                                      this.statusService.setStatus(status);
+                                      if (status['type'] == 'success') {
+                                        return response.json()['user'];
+                                      }
+                                    })
+                    .catch(err => this.errorService.handleError(err, this.statusService));
   }
 
 }

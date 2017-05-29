@@ -17,9 +17,15 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
+<h2>{{ user.fname ? user.fname + ' ' + user.lname : user.email }}</h2>
+
 <h2>My Charts</h2>
-<ul class="user-charts">
-  <li *ngFor="let chart of charts" (click)="onSelect(chart)">
-        <span>{{chart.title}}</span>
-  </li>
-</ul>
+<table class="user-charts">
+  <tr *ngFor="let chart of user.charts">
+        <td><a href="'/chart/' + chart.id">{{chart.title}}</a></td>
+        <td><clr-icon shape="edit"></clr-icon></td>
+        <td><clr-icon shape="delete"></clr-icon></td>
+  </tr>
+</table>
+
+<button class="btn btn-primary">New Chart</button>

@@ -55,8 +55,6 @@ export class ChartComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
 
-    // for refreshing page on measuresPerRow change
-    private applicationRef: ApplicationRef
   ) {  }
 
   ngOnInit() {

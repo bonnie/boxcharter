@@ -19,30 +19,61 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Chart } from '../data-model';
-
-const CHARTS: Chart[] = [
-];
+import { ActivatedRoute, Params }   from '@angular/router';
+import { Location }                 from '@angular/common';
+import { StatusService } from '../status.service';
+import { UserService } from '../user.service';
+import { Chart, User } from '../data-model';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  styleUrls: ['./user.component.scss'],
+  providers: [ UserService ]
 })
 
 export class UserComponent implements OnInit {
 
-  charts = CHARTS;
-  selectedChart: Chart;
+  private user: User;
 
-  onSelect(chart: Chart): void {
-    this.selectedChart = chart;
-  }
-
-  constructor() { }
+  constructor(public statusService: StatusService,
+              public userService: UserService,
+              
+              // for getting chart ID from url
+              private route: ActivatedRoute,
+              private location: Location,
+) { }
 
   ngOnInit() {
+    this.statusService.clearStatus();
+    this.getUser();
+  }
 
+  getUser(): void {
+    // for use if the user selects "revert to saved"
+
+    // load the data
+    this.route.params
+
+      // get chart ID from url and pass it to the chart service getChart method
+      .switchMap((params: Params) => this.userService.getUser(+params['id']))
+
+      // bind the response to the chart object for this page
+      .subscribe(
+        (response) => {
+
+        if (response['status']['type'] != 'success') {
+          this.statusService.setStatus(response['status']); 
+        } else {
+          // get user data    
+
+          // console.log(response['chart']);
+          this.user = response as User;
+        }
+        (err) => {
+          // this.statusService.displayError(err);
+        }
+    });
   }
 
 }
