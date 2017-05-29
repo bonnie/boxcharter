@@ -141,6 +141,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
       'required': 'Password is required.'
     },
     'password2': {
+      'required': 'Passwords must match.',
       'mismatch': 'Passwords must match.'
     }
   };

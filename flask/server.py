@@ -29,7 +29,7 @@ from flask.ext.cors import CORS, cross_origin
 from model import connect_to_db, Chart, User
 from log_utilities import init_logging
 from chart_processing import get_chart_data, update_chart
-from user_processing import validate_user, add_user, check_user
+from user_processing import validate_user, add_user, is_already_user
 
 
 # for cross origin
@@ -102,10 +102,10 @@ def register_user():
 @app.route('/user/check', methods=['GET'])
 @cross_origin(origin=ANGULAR_SERVER_NAME, headers=['Content-Type','Authorization'])
 def check_user():
-    """Add user and return user data (or error status)."""
+    """Check to see whether email is already in db, and return boolean."""
 
-    user_input = request.json
-    response = check_user(user_input)
+    email = request.args.get('email')
+    response = is_already_user(email)
     return response
 
 

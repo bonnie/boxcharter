@@ -37,12 +37,13 @@ def get_user(email):
         return None
 
 
-def check_user(email):
+def is_already_user(email):
     """Check to see if email exists in the system. Return boolean.
 
     For validating email during registration."""
 
-    return not (get_user(email) == None)
+    user_in_db = not (get_user(email) == None)
+    return {'status': SUCCESS_STATUS, 'inDB': user_in_db}
 
 
 def add_user(data):

@@ -26,4 +26,5 @@ export class Input {
     placeholder: string;
     value: any;
     errMsg: string;
+    validProp: string;
 }

@@ -47,7 +47,7 @@ export class RegistrationService {
               private errorService: ErrorService ) { }
 
   register(regData: object):  Promise<any> {
-    // send login info to flask server and return JSON response
+    // send registration info to flask server and return userID of new user
     return this.http.post(this.regURL, JSON.stringify(regData), {headers: this.jsonHeaders})
                     .toPromise()
                     .then(response => {
@@ -60,9 +60,21 @@ export class RegistrationService {
                     .catch(err => this.errorService.handleError(err, this.statusService));
   }
 
-  // checkEmail(email): Promise<any> {
+  checkEmail(email): Promise<any> {
+    // check to see if email already has account; return boolean
+
+    return this.http.get(this.verifyURL, {params: {'email': email}, headers: this.jsonHeaders})
+                    .toPromise()
+                    .then(response => {
+                                      let status = response.json()['status'];
+                                      this.statusService.setStatus(status);
+                                      if (status['type'] == 'success') {
+                                        return response.json()['inDB'];
+                                      }
+                                    })
+                    .catch(err => this.errorService.handleError(err, this.statusService));
 
     
-  // }
+  }
 
 }
