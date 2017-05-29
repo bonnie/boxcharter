@@ -438,7 +438,7 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    email = db.Column(db.String(64))
+    email = db.Column(db.String(64), nullable=False, unique=True)
     password_hash = db.Column(db.String(256))
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
