@@ -19,12 +19,14 @@
  */
 
 import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RegistrationService} from '../registration.service';
 import { StatusService } from '../status.service';
 import { AuthService } from '../auth.service';
-import { Input } from '../input';
+import { FormInput } from '../form-input';
 import { Router } from '@angular/router';
+import { RegisterFormUser } from './register-form-user';
+import { EmailTakenValidator } from '../shared/email-taken.directive';
 
 @Component({
   selector: 'app-register',
@@ -32,14 +34,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.scss'],
   providers: [ RegistrationService ]
 })
-export class RegisterComponent implements OnInit, AfterViewChecked {
+export class RegisterComponent implements OnInit {
 
-  private inputs: Input[] = new Array();
+  public regForm: FormGroup;
+  private regUser: RegisterFormUser = new RegisterFormUser();
+  private inputs: FormInput[] = new Array();
+
+  // for my custom validation
+  private formInvalid: boolean;
   
   constructor(public registrationService: RegistrationService,
               public statusService: StatusService,
               public authService: AuthService,
-              private router: Router ) { }
+              private router: Router,
+              private fb: FormBuilder ) { 
+                // to avoid race condition complaining that regForm doesn't exist
+                // https://stackoverflow.com/questions/40655381
+                this.buildForm();
+              }
 
 /************** form creation  ****************/
 
@@ -48,10 +60,44 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     // clear leftover status
     this.statusService.clearStatus();
 
+    // define the inputs
+    this.defineInputs();
+  }
+
+  buildForm() {
+    // build the form model
+
+    this.regForm = this.fb.group({
+      'email': [this.regUser.email, [
+          Validators.required,
+          Validators.email,
+          EmailTakenValidator(),
+        ]
+      ],
+      'fname': [this.regUser.fname],
+      'lname': [this.regUser.lname],
+      'password': [this.regUser.password, [
+          Validators.required
+        ]
+      ],
+      'password2': [this.regUser.password, [
+          Validators.required
+        ]
+      ],
+    });
+
+    this.regForm.valueChanges
+      .subscribe(data => this.onValueChanged(data));
+
+    this.onValueChanged(); // (re)set validation messages now
+
+  }
+
+  defineInputs() {
     // set inputs
 
     // email
-    let emailInput = new Input();
+    let emailInput = new FormInput();
     emailInput.label = 'Email';
     emailInput.name = emailInput.type = 'email';
     emailInput.required = true;
@@ -59,7 +105,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     this.inputs.push(emailInput);
 
     // first name
-    let fnameInput = new Input();
+    let fnameInput = new FormInput();
     fnameInput.label = 'First Name';
     fnameInput.name = 'fname';
     fnameInput.type = 'text'
@@ -68,7 +114,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     this.inputs.push(fnameInput);
 
     // last name
-    let lnameInput = new Input();
+    let lnameInput = new FormInput();
     lnameInput.label = 'Last Name';
     lnameInput.name = 'lname';
     lnameInput.type = 'text'
@@ -77,7 +123,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     this.inputs.push(lnameInput);
 
     // password
-    let passInput = new Input();
+    let passInput = new FormInput();
     passInput.label = 'Password';
     passInput.name = passInput.type = 'password';
     passInput.required = true;
@@ -85,7 +131,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     this.inputs.push(passInput);
 
     // password confirm
-    let pass2Input = new Input();
+    let pass2Input = new FormInput();
     pass2Input.label = 'Confirm password';
     pass2Input.name = 'password2';
     pass2Input.type = 'password'
@@ -97,32 +143,19 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
 /************** form validation  ****************/
 /* adapted from https://angular.io/docs/ts/latest/cookbook/form-validation.html */
 
-  regForm: NgForm;
-  @ViewChild('regForm') currentForm: NgForm;
-
-  ngAfterViewChecked() {
-    this.formChanged();
-  }
-
-  formChanged() {
-    if (this.currentForm === this.regForm) { return; }
-    this.regForm = this.currentForm;
-    if (this.regForm) {
-      this.regForm.valueChanges
-        .subscribe(data => this.onValueChanged(data));
-    }
-  }
-
   onValueChanged(data?: any) {
     if (!this.regForm) { return; }
-    const form = this.regForm.form;
+    const form = this.regForm;
+    
+    // check for my custom validations
+    this.formInvalid = false;
 
     for ( const input of this.inputs ) {
       // clear previous error message (if any)
       input.errMsg = '';
       let field = input.name;
       const control = form.get(field);
-
+   
       if (control && control.dirty && !control.valid) {
         const messages = this.validationMessages[field];
         for (const key in control.errors) {
@@ -146,17 +179,25 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     }
   };
 
+  // checkEmail(email) {
+  //   // does the email already have an account? 
+
+  //   this.registrationService.checkEmail(email)
+  //         .then(emailExists => {return emailExists;});
+  // }
+
+
 /************** actual registration  ****************/
 
  register() {
-    // TOOD: is there a better way to "serialize" the form? 
-    let regData = {};
-    for (let i=0; i < this.inputs.length; i++ ) {
-      let input = this.inputs[i];
-      regData[input.name] = input.value;
-    }
+    // // TODO: is there a better way to "serialize" the form? 
+    // let regData = {};
+    // for (let i=0; i < this.inputs.length; i++ ) {
+    //   let input = this.inputs[i];
+    //   regData[input.name] = input.value;
+    // }
     
-    this.registrationService.register(regData)
+    this.registrationService.register(this.regForm.value)
       .then(userID => {
           this.authService.isLoggedIn = true;
           this.router.navigate(['user/' + userID]);

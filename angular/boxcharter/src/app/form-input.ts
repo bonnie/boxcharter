@@ -18,7 +18,7 @@
  *
  */
 
-export class Input {
+export class FormInput {
     required: boolean;
     label: string;
     name: string;

@@ -38,7 +38,7 @@ import { DialogService } from './dialog.service';
 import { ErrorService } from './error.service';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { RegisterComponent } from './register/register.component';
+import { RegisterFormReactiveModule } from './register/register.module';
 
 @NgModule({
     declarations: [
@@ -51,7 +51,6 @@ import { RegisterComponent } from './register/register.component';
         StatusComponent,
         LoginComponent,
         NotFoundComponent,
-        RegisterComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -60,7 +59,8 @@ import { RegisterComponent } from './register/register.component';
         HttpModule,
         ClarityModule.forRoot(),
         LoginRoutingModule,
-        AppRoutingModule
+        AppRoutingModule,
+        RegisterFormReactiveModule
     ],
     
     // injecting StatusService here, so there's a global service shared by the whole app

@@ -17,9 +17,12 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
+<!-- adapted from 
+https://angular.io/docs/ts/latest/cookbook/form-validation.html#!#reactive -->
+
 <h1>Register for BoxCharter</h1>
 <a href="/login">Log in instead</a>
-<form (ngSubmit)="register()" #regForm="ngForm">
+<form [formGroup]="regForm" (ngSubmit)="register()">
   <section class="form-block">
     <div *ngFor="let input of inputs" class="form-group">
         <label [class.required]="input.required" 
@@ -32,20 +35,18 @@
             class="tooltip tooltip-validation tooltip-md"
             [class.invalid]="input.errMsg != ''">
             <input 
-                class="register" 
-                [(ngModel)]="input.value"
+                class="register form-control" 
                 [required]="input.required"
                 [type]="input.type" 
-                [name]="input.name" 
+                formControlName="input.name" 
                 [id]="input.name" 
                 [placeholder]="input.placeholder">
-            <span *ngIf="input.required" 
-                class="tooltip-content">
-                    {{ input.errMsg }}
+            <span *ngIf="formErrors[input.name]" class="tooltip-content">
+                    {{ formErrors[input.name] }}
             </span>
         </label>
     </div>
-  <button type="submit" class="btn btn-primary register" [disabled]="!regForm.form.valid">Register</button>
+  <button type="submit" class="btn btn-primary register" [disabled]="!regForm.form.valid || formInvalid ">Register</button>
   <button type="button" class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
   </section>
 </form>
