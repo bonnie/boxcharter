@@ -28,7 +28,7 @@ from status import SUCCESS_STATUS, ERROR_STATUS, BAD_REQUEST, CONTACT_ADMIN
 from log_utilities import log_error
 
 
-def get_user(email):
+def get_user_by_email(email):
     """Return User object if the user exists in the system; None otherwise."""
 
     try:
@@ -42,7 +42,7 @@ def is_already_user(email):
 
     For validating email during registration."""
 
-    user_in_db = not (get_user(email) == None)
+    user_in_db = not (get_user_by_email(email) == None)
     return {'status': SUCCESS_STATUS, 'inDB': user_in_db}
 
 
@@ -74,7 +74,7 @@ def authenticate(email, password):
     If the password doesn't match, raise PasswordMismatchException
     """ 
 
-    user = get_user(email)
+    user = get_user_by_email(email)
 
     # user doesn't exist
     if user is None:
@@ -121,7 +121,7 @@ def validate_user(email, password):
         # if authentication succeeded
 
         try:
-            user_id = user.user_id
+            data = user.get_data()
         except Exception as e:
             log_error(e, 1, **error_kwargs)
             err_status['status']['text'] = '{} {}'.format(
@@ -131,5 +131,32 @@ def validate_user(email, password):
             # if user data retrieval succeeded
             succ = deepcopy(SUCCESS_STATUS['status'])
             succ['text'] = 'Successful login for {}.'.format(email)
-            return {'userID': user_id, 'status': succ}
+            return {'user': data, 'status': succ}
 
+def get_user_by_id(user_id):
+    """Get user object from user ID."""
+
+    return User.query.get(user_id)
+
+
+# def get_user_data(user_id):
+#     """Get user data and package it up with a status message."""
+
+#     err_status = deepcopy(ERROR_STATUS) 
+#     err_status['status']['text'] = 'Could not get user data.'
+#     error_kwargs = {'user_id': user_id}
+
+#     user = get_chart_by_id(chart_id)
+#     if not user:
+#         logging.error("Could not find user id {}".format(user_id))
+#         return {'status': err_status}
+
+#     try:
+#         data = user.get_data()
+#     except Exception as e:
+#         log_error(e, 1, **error_kwargs)
+#         err_status['status']['text'] = '{} {}'.format(
+#             'Could not get data.', CONTACT_ADMIN)
+#         return {'status': err_status}
+#     else:
+#         return {'user': user, 'status': SUCCESS_STATUS['status']}

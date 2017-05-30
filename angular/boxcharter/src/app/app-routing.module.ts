@@ -49,7 +49,7 @@ export const appRoutes: Routes = [
         component: AboutComponent
     },
     {
-        path: 'user/:id', 
+        path: 'user', 
         component: UserComponent,
         canActivate: [AuthGuardService]
     },

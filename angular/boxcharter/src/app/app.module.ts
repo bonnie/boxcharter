@@ -36,6 +36,7 @@ import { StatusComponent } from './status/status.component';
 import { StatusService } from './status.service';
 import { DialogService } from './dialog.service';
 import { ErrorService } from './error.service';
+import { AuthService } from './auth.service';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RegisterComponent } from './register/register.component';
@@ -63,8 +64,8 @@ import { RegisterComponent } from './register/register.component';
         AppRoutingModule
     ],
     
-    // injecting StatusService here, so there's a global service shared by the whole app
-    providers: [ StatusService, DialogService, ErrorService ],
+    // injecting StatusService and AuthService here, so there's a global service shared by the whole app
+    providers: [ StatusService, DialogService, ErrorService, AuthService ],
     bootstrap: [ AppComponent ],
 })
 export class AppModule {

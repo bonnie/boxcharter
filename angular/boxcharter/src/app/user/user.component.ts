@@ -22,22 +22,21 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params }   from '@angular/router';
 import { Location }                 from '@angular/common';
 import { StatusService } from '../status.service';
-import { UserService } from '../user.service';
+import { AuthService } from '../auth.service';
 import { Chart, User } from '../data-model';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss'],
-  providers: [ UserService ]
 })
 
 export class UserComponent implements OnInit {
 
-  private user: User;
+  private user: User = this.authService.currentUser;
 
   constructor(public statusService: StatusService,
-              public userService: UserService,
+              public authService: AuthService,
               
               // for getting chart ID from url
               private route: ActivatedRoute,
@@ -46,34 +45,5 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.statusService.clearStatus();
-    this.getUser();
   }
-
-  getUser(): void {
-    // for use if the user selects "revert to saved"
-
-    // load the data
-    this.route.params
-
-      // get chart ID from url and pass it to the chart service getChart method
-      .switchMap((params: Params) => this.userService.getUser(+params['id']))
-
-      // bind the response to the chart object for this page
-      .subscribe(
-        (response) => {
-
-        if (response['status']['type'] != 'success') {
-          this.statusService.setStatus(response['status']); 
-        } else {
-          // get user data    
-
-          // console.log(response['chart']);
-          this.user = response as User;
-        }
-        (err) => {
-          // this.statusService.displayError(err);
-        }
-    });
-  }
-
 }

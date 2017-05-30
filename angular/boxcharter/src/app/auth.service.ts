@@ -24,7 +24,8 @@ import { Observable } from 'rxjs/Observable';
 import { flaskServer } from './app.component'
 import { ErrorService } from './error.service';
 import { StatusService } from './status.service'
-import { Status } from './status'
+import { Status } from './status';
+import { User } from './data-model';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/delay';
@@ -37,6 +38,7 @@ export class AuthService {
   private authURL = `${flaskServer}/user/auth`;
 ;
   isLoggedIn: boolean = false;
+  currentUser: User;
   private jsonHeaders = new Headers(
   {'Content-Type': 'application/json'});
 
@@ -56,9 +58,10 @@ export class AuthService {
                                       let status = response.json()['status'];
                                       this.statusService.setStatus(status);
                                       if (status['type'] == 'success') {
+                                        this.currentUser = response.json()['user'] as User;
                                         this.isLoggedIn = true;
-                                        return response.json()['userID'];
                                       }
+
                                     })
                     .catch(err => this.errorService.handleError(err, this.statusService));
   }
@@ -66,6 +69,7 @@ export class AuthService {
   logout(): void {
     this.statusService.clearStatus();
     this.isLoggedIn = false;
+    this.currentUser = null;
   }
 
 }

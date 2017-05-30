@@ -44,27 +44,12 @@ export class LoginComponent implements OnInit {
   login() {
     this.authService.login(this.email, this.password)
       .then(userID => {
-        this.router.navigate(['user/' + userID]);
-      });
-      
+        console.log(this.authService.isLoggedIn);
+        console.log(this.authService.currentUser);
+        this.router.navigateByUrl('/user');
+      })
    }
   logout() {
     this.authService.logout();
   }
 }
-
-// import { Component, OnInit } from '@angular/core';
-
-// @Component({
-//   selector: 'app-login',
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.scss']
-// })
-// export class LoginComponent implements OnInit {
-
-//   constructor() { }
-
-//   ngOnInit() {
-//   }
-
-// }

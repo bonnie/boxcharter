@@ -109,13 +109,13 @@ def check_user():
     return response
 
 
-@app.route('/user/<int:user_id>')
-def return_user_data(user_id):
-    """Return JSON containing list of user charts."""
+# @app.route('/user/<int:user_id>')
+# def return_user_data(user_id):
+#     """Return JSON containing list of user charts."""
 
-    user = User.query.get(user_id)
-    json_response = jsonify(user.get_data())
-    return add_cors_header(json_response)
+#     response = get_user_data(user_id)
+#     json_repsonse = jsonify(response)
+#     return add_cors_header(json_response)
 
 
 if __name__ == "__main__":
