@@ -31,6 +31,12 @@ export class AppComponent {
     constructor(private router: Router,
                 public authService: AuthService ) {
     }
+
+    logout() {
+        // when user logs out from the navbar
+        this.authService.logout();
+        this.router.navigateByUrl('/login');
+    }
 }
 
 export const flaskServer = 'http://localhost:5050';

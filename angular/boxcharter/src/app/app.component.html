@@ -26,12 +26,12 @@
       </a>
     </div>
     <div class="header-nav">
-        <a class="nav-link nav-text" href="#" [routerLink]="['/user/1']" routerLinkActive="active">User</a>
+        <a class="nav-link nav-text" href="#" [routerLink]="['/user']" routerLinkActive="active">User</a>
         <a class="nav-link nav-text" href="#" [routerLink]="['/chart/1']" routerLinkActive="active">Chart</a>
         <a class="nav-link nav-text" href="#" [routerLink]="['/about']" routerLinkActive="active">About</a>
     </div>
     <div class="header-actions">
-         <a *ngIf="authService.isLoggedIn" (click)="authService.logout()" class="nav-link nav-text">
+         <a *ngIf="authService.isLoggedIn" (click)="logout()" class="nav-link nav-text">
             Log Out
         </a>
         <a *ngIf="!authService.isLoggedIn" href="#" [routerLink]="['/login']" class="nav-link nav-text">
