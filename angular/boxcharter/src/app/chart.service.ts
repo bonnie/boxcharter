@@ -31,6 +31,7 @@ import { ErrorService } from './error.service'
 @Injectable()
 export class ChartService {
 
+  public currentChart: Chart = null;
   private baseURL = `${flaskServer}/chart`;
   private jsonHeaders = new Headers(
     {'Content-Type': 'application/json'});
@@ -40,22 +41,34 @@ export class ChartService {
               private errorService: ErrorService) { }
 
   getChart(id: number): Promise<object> {
-    // console.log(`id: ${id}`);
+    // get an existing chart, and set currentChart to be this chart's data
     const url = `${this.baseURL}/${id}`;
     return this.http.get(url)
                     .toPromise()
-                    .then(response => response.json())
+                    .then(response => {
+                      let status = response.json()['status'];
+                      if (status['type'] == 'success') {
+                        this.currentChart = response.json()['chart'] as Chart;
+                      }
+                      return status;
+                    })
                     .catch(err => this.errorService.handleError(err, this.statusService));
-  }
+}
 
-  updateChart(chart: Chart): Promise<Status> {
-    const id = chart.chartId;
-    const url = `${this.baseURL}/${id}`;
+  updateChart(): Promise<Status> {
+    // update the database with changes to a chart
+    
+    const url = `${this.baseURL}/${this.currentChart.chartId}`;
 
     return this.http  
-          .put(url, JSON.stringify(chart), {headers: this.jsonHeaders})
+          .put(url, JSON.stringify(this.currentChart), {headers: this.jsonHeaders})
           .toPromise()
           .then(response => response.json())
           .catch(err => this.errorService.handleError(err, this.statusService));
   }
+
+  saveNewChart(chart: Chart) {
+    // save a brand new chart, and set currentChart to the new chart
+  }
 }
+

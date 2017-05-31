@@ -481,7 +481,7 @@ class User(db.Model):
 
         charts = [
                 { 'title': chart.title,
-                  'id': chart.chart_id,
+                  'chartId': chart.chart_id,
                   'createdAt': chart.created_at,
                   'modifiedAt': chart.modified_at }
                 for chart in self.charts
@@ -489,7 +489,7 @@ class User(db.Model):
 
         return {
                     'charts': charts,
-                    'id': self.user_id,
+                    'userId': self.user_id,
                     'email': self.email,
                     'firstName': self.first_name,
                     'lastName': self.last_name

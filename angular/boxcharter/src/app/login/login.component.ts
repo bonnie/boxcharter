@@ -44,8 +44,6 @@ export class LoginComponent implements OnInit {
   login() {
     this.authService.login(this.email, this.password)
       .then(userID => {
-        console.log(this.authService.isLoggedIn);
-        console.log(this.authService.currentUser);
         this.router.navigateByUrl('/user');
       })
    }

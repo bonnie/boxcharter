@@ -325,7 +325,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="revertConfirm = false">Cancel</button>
-    <button type="button" class="btn btn-warning" (click)="revertConfirm = false; getChart()">Revert</button>
+    <button type="button" class="btn btn-warning" (click)="revertConfirm = false; this.chartService.getChart()">Revert</button>
   </div>
 </clr-modal>
 <!-- END: Revert confirm modal -->

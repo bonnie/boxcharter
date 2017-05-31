@@ -20,8 +20,7 @@
 
 import 'rxjs/add/operator/switchMap';
 import { Component, Input, OnInit, ApplicationRef } from '@angular/core';
-import { ActivatedRoute, Params }   from '@angular/router';
-import { Location }                 from '@angular/common';
+import { Params }   from '@angular/router';
 import { Chart } from '../data-model';
 import { ChartService } from '../chart.service';
 import { StatusService } from '../status.service';
@@ -34,7 +33,7 @@ import { Status } from '../status';
   styleUrls: ['./chart.component.scss'],
 
   // don't put statusService here -- we want to use the global app statusService, not our own
-  providers: [ ChartService, DialogService ],
+  providers: [ DialogService ],
 })
 export class ChartComponent implements OnInit {
   
@@ -44,30 +43,24 @@ export class ChartComponent implements OnInit {
   lyricistSame: boolean = false; // lyricist same as composer?
   measureCells: Object[]; // for tracking when to show measure dropdown
 
-
   constructor(
     // for getting chart data from flask
     private chartService: ChartService,
     private statusService: StatusService,
     public dialogService: DialogService,
-
-    // for getting chart ID from url
-    private route: ActivatedRoute,
-    private location: Location,
-
+ 
   ) {  }
 
   ngOnInit() {
     // clear the status
     this.statusService.clearStatus();
-
-    this.getChart();
+    this.chart = this.chartService.currentChart;
     this.dirty = false;
   }
   
   saveChart() {
     // save the chart and display a status alert
-    this.chartService.updateChart(this.chart)
+    this.chartService.updateChart()
           .then(response => {
             this.statusService.setStatus(response['status'] as Status);
             if (response['status']['type'] == 'success') {
@@ -99,35 +92,6 @@ export class ChartComponent implements OnInit {
         section.rows.push(row);
       }
     }
-  }
-
-  getChart() {
-    // for use if the user selects "revert to saved"
-
-    // load the data
-    this.route.params
-
-      // get chart ID from url and pass it to the chart service getChart method
-      .switchMap((params: Params) => this.chartService.getChart(+params['id']))
-
-      // bind the response to the chart object for this page
-      .subscribe(
-        (response) => {
-
-        if (response['status']['type'] != 'success') {
-          this.statusService.setStatus(response['status']); 
-        } else {
-          // get chart data    
-
-          // console.log(response['chart']);
-          this.chart = response['chart'] as Chart;
-          this.measureCells = new Array(this.chart.sections.length).fill({});
-          this.organizeMeasures();
-        }
-        (err) => {
-          // this.statusService.displayError(err);
-        }
-    });
   }
 
   deleteElement(elementType: string, sectionIndex: number, measureIndex) {

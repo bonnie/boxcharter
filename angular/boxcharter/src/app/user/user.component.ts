@@ -19,10 +19,11 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params }   from '@angular/router';
-import { Location }                 from '@angular/common';
+import { Params }   from '@angular/router';
+import { Router }      from '@angular/router';
 import { StatusService } from '../status.service';
 import { AuthService } from '../auth.service';
+import { ChartService } from '../chart.service';
 import { Chart, User } from '../data-model';
 
 @Component({
@@ -36,18 +37,25 @@ export class UserComponent implements OnInit {
   private user: User = this.authService.currentUser;
 
   constructor(public statusService: StatusService,
+              public router: Router,
               public authService: AuthService,
+              public chartService: ChartService,
               
-              // for getting chart ID from url
-              private route: ActivatedRoute,
-              private location: Location,
 ) { }
 
   ngOnInit() {
     this.statusService.clearStatus();
   }
 
-  openChart(chart_id: number) {
+  openChart(id: number) {
     // open chart and set current chart to be this ID
+    this.chartService.getChart(id)
+      .then(status => {
+        if (status['type'] == 'success') {
+          this.router.navigateByUrl('/chart');
+        } else {
+          this.statusService.setStatus(status);
+        }
+      } )
   }
 }

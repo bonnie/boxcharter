@@ -20,7 +20,7 @@
 <h2>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</h2>
 
 <h2>Charts</h2>
-<button class="btn btn-link" (click)="addChart()">Add chart</button>
+<button class="btn btn-link" (click)="addChart()">New chart</button>
 <table class="table user-charts">
   <thead>
     <tr>
@@ -31,8 +31,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let chart of user.charts">
-      <td class="chart-text left" (click)="openChart(chart.chart_id)">
-        <a (click)="openChart(chart.chart_id)">
+      <td class="chart-text left">
+        <a (click)="openChart(chart.chartId)">
           {{chart.title}}
         </a>          
       </td>

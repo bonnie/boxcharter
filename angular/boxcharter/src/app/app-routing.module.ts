@@ -54,7 +54,7 @@ export const appRoutes: Routes = [
         canActivate: [AuthGuardService]
     },
     {
-        path: 'chart/:id', 
+        path: 'chart', 
         component: ChartComponent,
         canDeactivate: [CanDeactivateGuardService]
     },
