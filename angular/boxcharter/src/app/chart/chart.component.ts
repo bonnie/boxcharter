@@ -55,6 +55,7 @@ export class ChartComponent implements OnInit {
     // clear the status
     this.statusService.clearStatus();
     this.chart = this.chartService.currentChart;
+    this.organizeMeasures();
     this.dirty = false;
   }
   
@@ -72,6 +73,10 @@ export class ChartComponent implements OnInit {
   organizeMeasures() {
     // measures need to be pre-organized in order to split them into rows
 
+    console.log(this.chart);
+
+    this.measureCells = new Array(this.chart.sections.length).fill({});
+    
     for (let sIndex=0; sIndex < this.chart.sections.length; sIndex++) {
       let section = this.chart.sections[sIndex];
       let rowWidth = section.measuresPerRow;
