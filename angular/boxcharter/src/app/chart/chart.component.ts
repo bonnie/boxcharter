@@ -76,7 +76,7 @@ export class ChartComponent implements OnInit {
     console.log(this.chart);
 
     this.measureCells = new Array(this.chart.sections.length).fill({});
-    
+
     for (let sIndex=0; sIndex < this.chart.sections.length; sIndex++) {
       let section = this.chart.sections[sIndex];
       let rowWidth = section.measuresPerRow;
@@ -181,6 +181,18 @@ export class ChartComponent implements OnInit {
     } else {
       return this.dialogService.confirm('Discard changes?');
     } 
+  }
+
+  revertChart() {
+    // revert chart to saved state
+
+    this.chartService.getChart(this.chart.chartId)
+      .then(status => {
+        status['text'] = 'Chart successfully reverted.';
+        this.statusService.setStatus(status);
+        this.chart = this.chartService.currentChart;
+        this.dirty = false;
+      });
   }
 }
 
