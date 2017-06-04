@@ -19,6 +19,7 @@
  */
 
 import { Component } from "@angular/core";
+import { StatusService } from "../status.service";
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -26,7 +27,8 @@ import { AuthService } from "../auth.service";
     templateUrl: './home.component.html',
 })
 export class HomeComponent {
-    constructor(public authService: AuthService) {}
+    constructor(public authService: AuthService,
+                public statusService: StatusService) {}
 
 
 }

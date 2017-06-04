@@ -28,7 +28,7 @@ div.home {
     background-color: darkslategrey;
 }
 
-div.login {
+div.home-content {
 
     /* horizontal center */
     margin-left: auto;
@@ -38,8 +38,21 @@ div.login {
     width: 60%;
     padding: 6px 36px;
     background-color: white;
-    border-radius: 10px;
-    opacity: 0.9
+    border-radius: 5px;
+    opacity: 0.92
 }
 
+span.boxcharter-logo {
+    width: 36px;
+    height: 36px;
+    background-size: cover;
+    margin-right: 6px;
+    margin-bottom: -6px;
+    background-position: center; 
+    display: inline-block;
+    background-image: url('../../images/boxcharter-36x36.png');
+}
 
+h5.tag-line {
+    margin-top: 6px;
+}
