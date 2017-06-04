@@ -15,3 +15,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 
+div.home {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url(../../images/strings.jpg);
+    background-position: center; 
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    overflow: visible;
+    background-color: darkslategrey;
+}
+
+div.login {
+
+    /* horizontal center */
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 120px;
+    width: 60%;
+    padding: 6px 36px;
+    background-color: white;
+    border-radius: 10px;
+    opacity: 0.9
+}
+
+
