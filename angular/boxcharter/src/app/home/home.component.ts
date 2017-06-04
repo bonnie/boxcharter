@@ -27,8 +27,8 @@ import { AuthService } from "../auth.service";
     templateUrl: './home.component.html',
 })
 export class HomeComponent {
+
     constructor(public authService: AuthService,
                 public statusService: StatusService) {}
-
 
 }
