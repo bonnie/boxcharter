@@ -32,6 +32,7 @@
             <input 
                 class="register" 
                 [(ngModel)]="input.value"
+                (change)="onChange(input.name)"
                 [required]="input.required"
                 [type]="input.type" 
                 [name]="input.name" 
@@ -43,7 +44,7 @@
             </span>
         </label>
     </div>
-    <button type="submit" class="btn btn-primary register" [disabled]="!regForm.form.valid">Register</button>
+    <button type="submit" class="btn btn-primary register">Register</button>
     <button type="button" class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
     <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='login'">Login</button>
   </section>

@@ -59,6 +59,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     emailInput.value = this.loginRegisterService.email;
     emailInput.required = true;
     emailInput.placeholder = 'jane@boxcharter.com';
+    emailInput.blur="checkEmail()";
     this.inputs.push(emailInput);
 
     // first name
@@ -86,6 +87,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     passInput.value = this.loginRegisterService.password;
     passInput.required = true;
     passInput.placeholder = '';
+    passInput.change="checkPassword()";
     this.inputs.push(passInput);
 
     // password confirm
@@ -95,7 +97,30 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     pass2Input.type = 'password'
     pass2Input.required = true;
     pass2Input.placeholder = '';
+    pass2Input.change="checkPassword()";
     this.inputs.push(pass2Input);
+  }
+
+/******************* form validation **********************/
+
+  onChange(fieldName): void {
+    switch(fieldName) {
+      case 'email':
+        this.checkEmail();
+        break;
+      case 'password':
+      case 'password2':
+        this.checkPassword();
+        break;
+    }
+  }
+
+  checkEmail() {
+    console.log('checking email');
+  }
+
+  checkPassword() {
+    console.log('checking password');
   }
 
 /************** form validation  ****************/

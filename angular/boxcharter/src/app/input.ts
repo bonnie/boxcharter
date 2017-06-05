@@ -27,4 +27,6 @@ export class Input {
     value: any;
     errMsg: string;
     validProp: string;
+    blur: string;
+    change: string;
 }
