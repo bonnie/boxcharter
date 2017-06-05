@@ -17,7 +17,6 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<h3><a href="/login">Log in</a> | Register </h3>
 <form (ngSubmit)="register()" #regForm="ngForm">
   <section class="form-block">
     <div *ngFor="let input of inputs" class="form-group">
@@ -44,7 +43,8 @@
             </span>
         </label>
     </div>
-  <button type="submit" class="btn btn-primary register" [disabled]="!regForm.form.valid">Register</button>
-  <button type="button" class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
+    <button type="submit" class="btn btn-primary register" [disabled]="!regForm.form.valid">Register</button>
+    <button type="button" class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
+    <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='login'">Login</button>
   </section>
 </form>

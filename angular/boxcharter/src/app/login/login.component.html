@@ -21,13 +21,14 @@
   <section class="form-block">
     <div class="form-group">
         <label for="email">Email:</label>
-        <input [(ngModel)]="email" name="email" class="login" type="email" id="email" placeholder="jane@boxcharter.com">
+        <input [(ngModel)]="loginRegisterService.email" name="email" class="login" type="email" id="email" placeholder="jane@boxcharter.com">
     </div>
     <div class="form-group">
         <label for="password">Password:</label>
-        <input [(ngModel)]="password" name="password" class="login" type="password" id="password">
+        <input [(ngModel)]="loginRegisterService.password" name="password" class="login" type="password" id="password">
     </div>
-    <button type="submit" class="btn btn-primary">Login</button><button type="button" class="btn btn-link">Register</button>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='register'">Register</button>
   </section>
 </form>
 

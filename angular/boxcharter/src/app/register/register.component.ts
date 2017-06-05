@@ -23,6 +23,7 @@ import { NgForm } from '@angular/forms';
 import { RegistrationService} from '../registration.service';
 import { StatusService } from '../status.service';
 import { AuthService } from '../auth.service';
+import { LoginRegisterService } from '../login-register.service';
 import { Input } from '../input';
 import { Router } from '@angular/router';
 
@@ -39,6 +40,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
   constructor(public registrationService: RegistrationService,
               public statusService: StatusService,
               public authService: AuthService,
+              public loginRegisterService: LoginRegisterService,
               private router: Router ) { }
 
 /************** form creation  ****************/
@@ -54,6 +56,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     let emailInput = new Input();
     emailInput.label = 'Email';
     emailInput.name = emailInput.type = 'email';
+    emailInput.value = this.loginRegisterService.email;
     emailInput.required = true;
     emailInput.placeholder = 'jane@boxcharter.com';
     this.inputs.push(emailInput);
@@ -80,6 +83,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     let passInput = new Input();
     passInput.label = 'Password';
     passInput.name = passInput.type = 'password';
+    passInput.value = this.loginRegisterService.password;
     passInput.required = true;
     passInput.placeholder = '';
     this.inputs.push(passInput);

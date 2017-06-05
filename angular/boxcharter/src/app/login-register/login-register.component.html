@@ -16,16 +16,11 @@
   You should have received a copy of the GNU Affero General Public License
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
-<div class="home">
-  <div class="row">
-    <div class="col-xs-12 offset-sm-2 col-sm-10 offset-md-4 col-md-8">
-      <div class="home-content"> 
-        <h2 class="title"><span class="boxcharter-logo"></span>Boxcharter</h2>
-        <h5 class="tag-line">Make box charts. Create PDFs. Collaborate with friends. <a href="about">Learn more</a></h5>
-        <app-status></app-status>
-        <div class="login-box">
-          <app-login-register></app-login-register>
-        </div>
-      </div>
-    </div>
+
+<div *ngIf="loginRegisterService.mode == 'login'">
+  <app-login></app-login>
+</div>
+
+<div *ngIf="loginRegisterService.mode == 'register'">
+  <app-register></app-register>
 </div>

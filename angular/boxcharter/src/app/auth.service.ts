@@ -23,7 +23,8 @@ import { Headers, Http } from "@angular/http";
 import { Observable } from 'rxjs/Observable';
 import { flaskServer } from './app.component'
 import { ErrorService } from './error.service';
-import { StatusService } from './status.service'
+import { StatusService } from './status.service';
+import { LoginRegisterService } from './login-register.service';
 import { Status } from './status';
 import { User } from './data-model';
 // import 'rxjs/add/observable/of';
@@ -47,7 +48,8 @@ export class AuthService {
 
   constructor(private http: Http,
               private statusService: StatusService,
-              private errorService: ErrorService ) { }
+              private errorService: ErrorService,
+              private loginRegisterService: LoginRegisterService ) { }
 
   login(email: string, password: string):  Promise<any> {
     // send login info to flask server and return JSON response
@@ -60,6 +62,7 @@ export class AuthService {
                                       if (status['type'] == 'success') {
                                         this.currentUser = response.json()['user'] as User;
                                         this.isLoggedIn = true;
+                                        this.loginRegisterService.clearData();
                                       }
 
                                     })

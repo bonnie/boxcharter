@@ -38,9 +38,11 @@ import { DialogService } from './dialog.service';
 import { ErrorService } from './error.service';
 import { AuthService } from './auth.service';
 import { ChartService } from './chart.service';
+import { LoginRegisterService } from './login-register.service';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RegisterComponent } from './register/register.component';
+import { LoginRegisterComponent } from './login-register/login-register.component';
 
 @NgModule({
     declarations: [
@@ -53,7 +55,8 @@ import { RegisterComponent } from './register/register.component';
         StatusComponent,
         LoginComponent,
         NotFoundComponent,
-        RegisterComponent
+        RegisterComponent,
+        LoginRegisterComponent
     ],
     imports: [
         BrowserAnimationsModule,
@@ -66,7 +69,7 @@ import { RegisterComponent } from './register/register.component';
     ],
     
     // injecting StatusService and AuthService here, so there's a global service shared by the whole app
-    providers: [ StatusService, DialogService, ErrorService, AuthService, ChartService ],
+    providers: [ StatusService, DialogService, ErrorService, AuthService, LoginRegisterService, ChartService ],
     bootstrap: [ AppComponent ],
 })
 export class AppModule {

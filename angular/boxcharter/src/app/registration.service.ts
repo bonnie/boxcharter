@@ -23,7 +23,8 @@ import { Headers, Http } from "@angular/http";
 import { Observable } from 'rxjs/Observable';
 import { flaskServer } from './app.component'
 import { ErrorService } from './error.service';
-import { StatusService } from './status.service'
+import { StatusService } from './status.service';
+import { LoginRegisterService } from './login-register.service'
 import { Status } from './status'
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
@@ -44,7 +45,8 @@ export class RegistrationService {
 
   constructor(private http: Http,
               private statusService: StatusService,
-              private errorService: ErrorService ) { }
+              private errorService: ErrorService,
+              private loginRegisterService: LoginRegisterService ) { }
 
   register(regData: object):  Promise<any> {
     // send registration info to flask server and return userID of new user
@@ -54,6 +56,7 @@ export class RegistrationService {
                                       let status = response.json()['status'];
                                       this.statusService.setStatus(status);
                                       if (status['type'] == 'success') {
+                                        this.loginRegisterService.clearData();
                                         return response.json()['userID'];
                                       }
                                     })

@@ -22,6 +22,7 @@ import { Component, OnInit }   from '@angular/core';
 import { Router }      from '@angular/router';
 import { AuthService } from '../auth.service';
 import { StatusService } from '../status.service';
+import { LoginRegisterService } from '../login-register.service';
 import { Status } from '../status';
 
 @Component({
@@ -31,18 +32,15 @@ import { Status } from '../status';
 })
 export class LoginComponent implements OnInit {
 
-  email: string = null;
-  password: string = null;
-  message: string;
-
   constructor(public authService: AuthService, 
               public router: Router,
-              public statusService: StatusService) {}
+              public statusService: StatusService,
+              public loginRegisterService: LoginRegisterService) {}
   ngOnInit() { 
     this.statusService.clearStatus();
   }
   login() {
-    this.authService.login(this.email, this.password)
+    this.authService.login(this.loginRegisterService.email, this.loginRegisterService.password)
       .then(userID => {
         this.router.navigateByUrl('/user');
       })
@@ -50,4 +48,4 @@ export class LoginComponent implements OnInit {
   logout() {
     this.authService.logout();
   }
-}
+ }
