@@ -21,10 +21,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Params }   from '@angular/router';
 import { Router }      from '@angular/router';
-import { StatusService } from '../status.service';
-import { AuthService } from '../auth.service';
-import { ChartService } from '../chart.service';
-import { Chart, User } from '../data-model';
+
+import { StatusService } from '../../services/status.service';
+import { AuthService } from '../../services/auth.service';
+import { ChartService } from '../../services/chart.service';
+
+import { Chart, User } from '../../model/data-model';
 
 @Component({
   selector: 'app-user',

@@ -22,9 +22,9 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/toPromise';
-import { Chart } from './data-model';
-import { Status } from './status'
-import { flaskServer } from './app.component'
+import { Chart } from '../model/data-model';
+import { Status } from '../model/status'
+import { flaskServer } from '../app.component'
 import { StatusService } from './status.service'
 import { ErrorService } from './error.service'
 

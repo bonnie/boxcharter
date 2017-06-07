@@ -18,26 +18,35 @@
  *
  */
 
-import { NgModule }             from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AuthGuardService }     from './auth-guard.service';
-import { AuthService }          from './auth.service';
-import { LoginComponent }       from './login/login.component';
+/* This service maintains a common Status object among components. */
 
-const loginRoutes: Routes = [
-  { path: 'login', component: LoginComponent }
-];
+import { Injectable } from '@angular/core';
+import { Status } from '../model/status'
 
-@NgModule({
-  imports: [
-    RouterModule.forChild(loginRoutes)
-  ],
-  exports: [
-    RouterModule
-  ],
-  providers: [
-    AuthGuardService,
-    AuthService
-  ]
-})
-export class LoginRoutingModule {}
+
+@Injectable()
+export class StatusService {
+
+  public status: Status;
+
+  constructor() { }
+
+  setStatus(statusResponse: object): void {
+    // set the status based on response from Flask
+    this.status = new Status();
+    this.status.alertType = 'alert-' + statusResponse['type'];
+    this.status.text = statusResponse['text'];
+  }
+  
+  clearStatus(): void {
+    // clear the status data
+    this.status = null;
+  }
+
+  clearSuccess(): void {
+    // clear the status only if it's a success status
+    if (this.status && this.status.alertType == 'alert-success') {
+      this.status = null;
+    }
+  }
+}

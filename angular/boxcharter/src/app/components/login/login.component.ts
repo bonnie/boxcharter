@@ -20,10 +20,10 @@
 
 import { Component, OnInit }   from '@angular/core';
 import { Router }      from '@angular/router';
-import { AuthService } from '../auth.service';
-import { StatusService } from '../status.service';
-import { LoginRegisterService } from '../login-register.service';
-import { Status } from '../status';
+import { AuthService } from '../../services/auth.service';
+import { StatusService } from '../../services/status.service';
+import { LoginRegisterService } from '../../services/login-register.service';
+import { Status } from '../../model/status';
 
 @Component({
   selector: 'app-login',

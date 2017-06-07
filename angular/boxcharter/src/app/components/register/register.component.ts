@@ -20,12 +20,14 @@
 
 import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { RegistrationService} from '../registration.service';
-import { StatusService } from '../status.service';
-import { AuthService } from '../auth.service';
-import { LoginRegisterService } from '../login-register.service';
-import { Input } from '../input';
 import { Router } from '@angular/router';
+
+import { RegistrationService} from '../../services/registration.service';
+import { StatusService } from '../../services/status.service';
+import { AuthService } from '../../services/auth.service';
+import { LoginRegisterService } from '../../services/login-register.service';
+
+import { Input } from '../../model/input';
 
 @Component({
   selector: 'app-register',

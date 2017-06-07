@@ -19,7 +19,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { LoginRegisterService } from '../login-register.service';
+import { LoginRegisterService } from '../../services/login-register.service';
 
 @Component({
   selector: 'app-login-register',

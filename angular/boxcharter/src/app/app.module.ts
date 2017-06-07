@@ -24,26 +24,30 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ClarityModule } from 'clarity-angular';
+
+import { AppRoutingModule } from "./routing/app-routing.module";
+import { LoginRoutingModule } from "./routing/login-routing.module";
+
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from "./app-routing.module";
-import { LoginRoutingModule } from "./login-routing.module";
-import { HomeComponent } from "./home/home.component";
-import { AboutComponent } from "./about/about.component";
-import { UserComponent } from './user/user.component';
-import { ChartComponent } from './chart/chart.component';
+import { HomeComponent } from "./components/home/home.component";
+import { AboutComponent } from "./components/about/about.component";
+import { UserComponent } from './components/user/user.component';
+import { ChartComponent } from './components/chart/chart.component';
+import { StatusComponent } from './components/status/status.component';
+import { LoginComponent } from './components/login/login.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginRegisterComponent } from './components/login-register/login-register.component';
+
 import { FillPipe } from './pipes/fill.pipe';
 import { KeysPipe } from './pipes/keys.pipe';
-import { StatusComponent } from './status/status.component';
-import { StatusService } from './status.service';
-import { DialogService } from './dialog.service';
-import { ErrorService } from './error.service';
-import { AuthService } from './auth.service';
-import { ChartService } from './chart.service';
-import { LoginRegisterService } from './login-register.service';
-import { LoginComponent } from './login/login.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-import { RegisterComponent } from './register/register.component';
-import { LoginRegisterComponent } from './login-register/login-register.component';
+
+import { StatusService } from './services/status.service';
+import { DialogService } from './services/dialog.service';
+import { ErrorService } from './services/error.service';
+import { AuthService } from './services/auth.service';
+import { ChartService } from './services/chart.service';
+import { LoginRegisterService } from './services/login-register.service';
 
 @NgModule({
     declarations: [

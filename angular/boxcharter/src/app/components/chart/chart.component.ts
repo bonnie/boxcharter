@@ -21,12 +21,14 @@
 import 'rxjs/add/operator/switchMap';
 import { Component, Input, OnInit, ApplicationRef } from '@angular/core';
 import { Params }   from '@angular/router';
-import { Chart } from '../data-model';
-import { ChartService } from '../chart.service';
-import { StatusService } from '../status.service';
-import { DialogService } from '../dialog.service';
-import { Measure, Section } from '../data-model';
-import { Status } from '../status';
+
+import { ChartService } from '../../services/chart.service';
+import { StatusService } from '../../services/status.service';
+import { DialogService } from '../../services/dialog.service';
+
+import { Measure, Section } from '../../model/data-model';
+import { Status } from '../../model/status';
+import { Chart } from '../../model/data-model';
 
 @Component({
   templateUrl: './chart.component.html',

@@ -18,35 +18,17 @@
  *
  */
 
-/* This service maintains a common Status object among components. */
+import { Component } from "@angular/core";
+import { StatusService } from "../../services/status.service";
+import { AuthService } from "../../services/auth.service";
 
-import { Injectable } from '@angular/core';
-import { Status } from './status'
+@Component({
+    styleUrls: ['./home.component.scss'],
+    templateUrl: './home.component.html',
+})
+export class HomeComponent {
 
+    constructor(public authService: AuthService,
+                public statusService: StatusService) {}
 
-@Injectable()
-export class StatusService {
-
-  public status: Status;
-
-  constructor() { }
-
-  setStatus(statusResponse: object): void {
-    // set the status based on response from Flask
-    this.status = new Status();
-    this.status.alertType = 'alert-' + statusResponse['type'];
-    this.status.text = statusResponse['text'];
-  }
-  
-  clearStatus(): void {
-    // clear the status data
-    this.status = null;
-  }
-
-  clearSuccess(): void {
-    // clear the status only if it's a success status
-    if (this.status && this.status.alertType == 'alert-success') {
-      this.status = null;
-    }
-  }
 }

@@ -22,15 +22,15 @@ import { NgModule }              from '@angular/core';
 import { ModuleWithProviders } from '@angular/core/src/metadata/ng_module';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuardService }      from './auth-guard.service';
-import { CanDeactivateGuardService }    from './can-deactivate-guard.service';
+import { AuthGuardService }      from '../services/auth-guard.service';
+import { CanDeactivateGuardService }    from '../services/can-deactivate-guard.service';
 
-import { AboutComponent } from './about/about.component';
-import { HomeComponent } from './home/home.component';
-import { UserComponent } from './user/user.component';
-import { ChartComponent } from './chart/chart.component';
-import { RegisterComponent } from './register/register.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { AboutComponent } from '../components/about/about.component';
+import { HomeComponent } from '../components/home/home.component';
+import { UserComponent } from '../components/user/user.component';
+import { ChartComponent } from '../components/chart/chart.component';
+import { RegisterComponent } from '../components/register/register.component';
+import { NotFoundComponent } from '../components/not-found/not-found.component';
 
 export const appRoutes: Routes = [
     {
