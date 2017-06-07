@@ -31,7 +31,8 @@ import { HomeComponent } from "./home/home.component";
 import { AboutComponent } from "./about/about.component";
 import { UserComponent } from './user/user.component';
 import { ChartComponent } from './chart/chart.component';
-import { FillPipe } from './fill.pipe';
+import { FillPipe } from './pipes/fill.pipe';
+import { KeysPipe } from './pipes/keys.pipe';
 import { StatusComponent } from './status/status.component';
 import { StatusService } from './status.service';
 import { DialogService } from './dialog.service';
@@ -52,6 +53,7 @@ import { LoginRegisterComponent } from './login-register/login-register.componen
         UserComponent,
         ChartComponent,
         FillPipe,
+        KeysPipe,
         StatusComponent,
         LoginComponent,
         NotFoundComponent,

@@ -116,7 +116,8 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
   }
 
   checkEmail() {
-    console.log('checking email');
+    // this.registrationService.checkEmail()
+    //   .then(userID => {  })
   }
 
   checkPassword() {
