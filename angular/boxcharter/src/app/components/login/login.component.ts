@@ -36,15 +36,15 @@ export class LoginComponent implements OnInit {
               public router: Router,
               public statusService: StatusService,
               public loginRegisterService: LoginRegisterService) {}
+              
   ngOnInit() { 
     this.statusService.clearStatus();
   }
+
   login() {
-    this.authService.login(this.loginRegisterService.email, this.loginRegisterService.password)
-      .then(userID => {
-        this.router.navigateByUrl('/user');
-      })
-   }
+    this.authService.login(this.loginRegisterService.email, this.loginRegisterService.password);
+  }
+
   logout() {
     this.authService.logout();
   }

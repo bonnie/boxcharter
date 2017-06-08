@@ -20,6 +20,7 @@
 
 import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { flaskServer } from '../app.component'
 import { ErrorService } from './error.service';
@@ -49,7 +50,8 @@ export class AuthService {
   constructor(private http: Http,
               private statusService: StatusService,
               private errorService: ErrorService,
-              private loginRegisterService: LoginRegisterService ) { }
+              private loginRegisterService: LoginRegisterService,
+              public router: Router ) { }
 
   login(email: string, password: string):  Promise<any> {
     // send login info to flask server and return JSON response
@@ -60,11 +62,8 @@ export class AuthService {
                                       let status = response.json()['status'];
                                       this.statusService.setStatus(status);
                                       if (status['type'] == 'success') {
-                                        this.currentUser = response.json()['user'] as User;
-                                        this.isLoggedIn = true;
-                                        this.loginRegisterService.clearData();
+                                          this.setUser(response.json()['user'] as User);
                                       }
-
                                     })
                     .catch(err => this.errorService.handleError(err, this.statusService));
   }
@@ -73,6 +72,15 @@ export class AuthService {
     this.statusService.clearStatus();
     this.isLoggedIn = false;
     this.currentUser = null;
+  }
+
+  setUser(user: User) {
+    // set logged in user to passed-in user object
+
+    this.currentUser = user;
+    this.isLoggedIn = true;
+    this.loginRegisterService.clearData();
+    this.router.navigate(['user'])
   }
 
 }

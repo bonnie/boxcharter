@@ -28,6 +28,7 @@ import { AuthService } from '../../services/auth.service';
 import { LoginRegisterService } from '../../services/login-register.service';
 
 import { Input } from '../../model/input';
+import { User } from '../../model/data-model';
 
 @Component({
   selector: 'app-register',
@@ -192,8 +193,14 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     
     this.registrationService.register(regData)
       .then(userID => {
-          this.authService.isLoggedIn = true;
-          this.router.navigate(['user/' + userID]);
+          let user = new User();
+          user.email = this.inputs['email'].value;
+          user.firstName = this.inputs['fname'].value;
+          user.lastName = this.inputs['lname'].value;
+          user.id = userID;
+          user.charts = [];
+          
+          this.authService.setUser(user);
       });
   }
 }
