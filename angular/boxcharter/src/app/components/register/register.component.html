@@ -19,28 +19,28 @@
 
 <form (ngSubmit)="register()" #regForm="ngForm">
   <section class="form-block">
-    <div *ngFor="let input of inputs" class="form-group">
-        <label [class.required]="input.required" 
-            [for]="input.name">
-                {{ input.label }}
+    <div *ngFor="let input of inputs | keys" class="form-group">
+        <label [class.required]="input.value.required" 
+            [for]="input.key">
+                {{ input.value.label }}
         </label>
         <label [for]="input.name" 
             aria-haspopup="true" 
             role="tooltip" 
             class="tooltip tooltip-validation tooltip-md"
-            [class.invalid]="input.errMsg != ''">
+            [class.invalid]="input.value.errMsg != ''">
             <input 
                 class="register" 
-                [(ngModel)]="input.value"
-                (change)="onChange(input.name)"
-                [required]="input.required"
-                [type]="input.type" 
-                [name]="input.name" 
-                [id]="input.name" 
-                [placeholder]="input.placeholder">
-            <span *ngIf="input.required" 
+                [(ngModel)]="input.value.value"
+                (change)="onChange(input.value.name)"
+                [required]="input.value.required"
+                [type]="input.value.type" 
+                [name]="input.value.name" 
+                [id]="input.value.name" 
+                [placeholder]="input.value.placeholder">
+            <span *ngIf="input.value.required" 
                 class="tooltip-content">
-                    {{ input.errMsg }}
+                    {{ input.value.errMsg }}
             </span>
         </label>
     </div>

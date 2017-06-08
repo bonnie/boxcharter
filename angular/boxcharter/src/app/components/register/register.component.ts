@@ -37,7 +37,7 @@ import { Input } from '../../model/input';
 })
 export class RegisterComponent implements OnInit, AfterViewChecked {
 
-  private inputs: Input[] = new Array();
+  private inputs: Object = {};
   
   constructor(public registrationService: RegistrationService,
               public statusService: StatusService,
@@ -62,7 +62,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     emailInput.required = true;
     emailInput.placeholder = 'jane@boxcharter.com';
     emailInput.blur="checkEmail()";
-    this.inputs.push(emailInput);
+    this.inputs['email'] = emailInput;
 
     // first name
     let fnameInput = new Input();
@@ -71,7 +71,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     fnameInput.type = 'text'
     fnameInput.required = false;
     fnameInput.placeholder = 'Jane';
-    this.inputs.push(fnameInput);
+    this.inputs['fname'] = fnameInput;
 
     // last name
     let lnameInput = new Input();
@@ -80,7 +80,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     lnameInput.type = 'text'
     lnameInput.required = false;
     lnameInput.placeholder = 'Boxcharts';
-    this.inputs.push(lnameInput);
+    this.inputs['lname'] = lnameInput;
 
     // password
     let passInput = new Input();
@@ -90,7 +90,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     passInput.required = true;
     passInput.placeholder = '';
     passInput.change="checkPassword()";
-    this.inputs.push(passInput);
+    this.inputs['password'] = passInput;
 
     // password confirm
     let pass2Input = new Input();
@@ -100,7 +100,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     pass2Input.required = true;
     pass2Input.placeholder = '';
     pass2Input.change="checkPassword()";
-    this.inputs.push(pass2Input);
+    this.inputs['password2'] = pass2Input;
   }
 
 /******************* form validation **********************/
@@ -149,8 +149,9 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
     if (!this.regForm) { return; }
     const form = this.regForm.form;
 
-    for ( const input of this.inputs ) {
+    for ( const inputKey in this.inputs ) {
       // clear previous error message (if any)
+      let input = this.inputs[inputKey];
       input.errMsg = '';
       let field = input.name;
       const control = form.get(field);
@@ -183,8 +184,9 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
  register() {
     // TOOD: is there a better way to "serialize" the form? 
     let regData = {};
-    for (let i=0; i < this.inputs.length; i++ ) {
-      let input = this.inputs[i];
+    for ( const inputKey in this.inputs ) {
+      // clear previous error message (if any)
+      let input = this.inputs[inputKey];
       regData[input.name] = input.value;
     }
     
