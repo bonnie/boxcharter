@@ -46,7 +46,6 @@ export class UserComponent implements OnInit {
 ) { }
 
   ngOnInit() {
-    this.statusService.clearStatus();
   }
 
   openChart(id: number) {
