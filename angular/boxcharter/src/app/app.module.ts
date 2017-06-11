@@ -74,8 +74,16 @@ import { LoginRegisterService } from './services/login-register.service';
         AppRoutingModule
     ],
     
-    // injecting StatusService and AuthService here, so there's a global service shared by the whole app
-    providers: [ StatusService, DialogService, ErrorService, AuthService, LoginRegisterService, ChartService ],
+    // injecting global services here
+    providers: [ 
+        StatusService,
+        DialogService, 
+        ErrorService, 
+        AuthService, 
+        LoginRegisterService, 
+        ChartService 
+    ],
+
     bootstrap: [ AppComponent ],
 })
 export class AppModule {

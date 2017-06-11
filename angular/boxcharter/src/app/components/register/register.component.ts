@@ -18,7 +18,7 @@
  *
  */
 
-import { Component, OnInit, AfterViewChecked, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -36,7 +36,7 @@ import { User } from '../../model/data-model';
   styleUrls: ['./register.component.scss'],
   providers: [ RegistrationService ]
 })
-export class RegisterComponent implements OnInit, AfterViewChecked {
+export class RegisterComponent implements OnInit {
 
   private inputs: Object = {};
   
@@ -130,55 +130,55 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
 /************** form validation  ****************/
 /* adapted from https://angular.io/docs/ts/latest/cookbook/form-validation.html */
 
-  regForm: NgForm;
-  @ViewChild('regForm') currentForm: NgForm;
+  // regForm: NgForm;
+  // @ViewChild('regForm') currentForm: NgForm;
 
-  ngAfterViewChecked() {
-    this.formChanged();
-  }
+  // ngAfterViewChecked() {
+  //   this.formChanged();
+  // }
 
-  formChanged() {
-    if (this.currentForm === this.regForm) { return; }
-    this.regForm = this.currentForm;
-    if (this.regForm) {
-      this.regForm.valueChanges
-        .subscribe(data => this.onValueChanged(data));
-    }
-  }
+  // formChanged() {
+  //   if (this.currentForm === this.regForm) { return; }
+  //   this.regForm = this.currentForm;
+  //   if (this.regForm) {
+  //     this.regForm.valueChanges
+  //       .subscribe(data => this.onValueChanged(data));
+  //   }
+  // }
 
-  onValueChanged(data?: any) {
-    if (!this.regForm) { return; }
-    const form = this.regForm.form;
+  // onValueChanged(data?: any) {
+  //   if (!this.regForm) { return; }
+  //   const form = this.regForm.form;
 
-    for ( const inputKey in this.inputs ) {
-      // clear previous error message (if any)
-      let input = this.inputs[inputKey];
-      input.errMsg = '';
-      let field = input.name;
-      const control = form.get(field);
+  //   for ( const inputKey in this.inputs ) {
+  //     // clear previous error message (if any)
+  //     let input = this.inputs[inputKey];
+  //     input.errMsg = '';
+  //     let field = input.name;
+  //     const control = form.get(field);
 
-      if (control && control.dirty && !control.valid) {
-        const messages = this.validationMessages[field];
-        for (const key in control.errors) {
-          input.errMsg += messages[key] + ' ';
-        }
-      }
-    }
-  }
+  //     if (control && control.dirty && !control.valid) {
+  //       const messages = this.validationMessages[field];
+  //       for (const key in control.errors) {
+  //         input.errMsg += messages[key] + ' ';
+  //       }
+  //     }
+  //   }
+  // }
 
-  validationMessages = {
-    'email': {
-      'required': 'Email is required.',
-      'taken': 'There is already an account with this email.'
-    },
-    'password': {
-      'required': 'Password is required.'
-    },
-    'password2': {
-      'required': 'Passwords must match.',
-      'mismatch': 'Passwords must match.'
-    }
-  };
+  // validationMessages = {
+  //   'email': {
+  //     'required': 'Email is required.',
+  //     'taken': 'There is already an account with this email.'
+  //   },
+  //   'password': {
+  //     'required': 'Password is required.'
+  //   },
+  //   'password2': {
+  //     'required': 'Passwords must match.',
+  //     'mismatch': 'Passwords must match.'
+  //   }
+  // };
 
 /************** actual registration  ****************/
 
@@ -199,7 +199,7 @@ export class RegisterComponent implements OnInit, AfterViewChecked {
           user.lastName = this.inputs['lname'].value;
           user.id = userID;
           user.charts = [];
-          
+
           this.authService.setUser(user);
       });
   }

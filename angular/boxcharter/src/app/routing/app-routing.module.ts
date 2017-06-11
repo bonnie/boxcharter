@@ -41,10 +41,6 @@ export const appRoutes: Routes = [
         component: HomeComponent
     },
     {
-        path: 'register', 
-        component: RegisterComponent
-    },
-    {
         path: 'about', 
         component: AboutComponent
     },

@@ -22,10 +22,13 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { flaskServer } from '../app.component'
+
 import { ErrorService } from './error.service';
 import { StatusService } from './status.service';
 import { LoginRegisterService } from './login-register.service';
+import { ChartService } from './chart.service';
+
+import { flaskServer } from '../app.component'
 import { Status } from '../model/status';
 import { User } from '../model/data-model';
 // import 'rxjs/add/observable/of';
@@ -38,11 +41,9 @@ import 'rxjs/add/operator/toPromise';
 export class AuthService {
 
   private authURL = `${flaskServer}/user/auth`;
-;
   isLoggedIn: boolean = false;
   currentUser: User;
-  private jsonHeaders = new Headers(
-  {'Content-Type': 'application/json'});
+  private jsonHeaders = new Headers({'Content-Type': 'application/json'});
 
   // store the URL so we can redirect after logging in
   redirectUrl: string;
@@ -51,7 +52,8 @@ export class AuthService {
               private statusService: StatusService,
               private errorService: ErrorService,
               private loginRegisterService: LoginRegisterService,
-              public router: Router ) { }
+              public router: Router,
+              public chartService: ChartService ) { }
 
   login(email: string, password: string):  Promise<any> {
     // send login info to flask server and return JSON response
@@ -69,13 +71,15 @@ export class AuthService {
   }
 
   logout(): void {
+    // remove all stored user and chart data
     this.statusService.clearStatus();
+    this.chartService.clearChart();
     this.isLoggedIn = false;
     this.currentUser = null;
   }
 
   setUser(user: User) {
-    // set logged in user to passed-in user object
+    // set logged in user from user object parameter
 
     this.currentUser = user;
     this.isLoggedIn = true;
