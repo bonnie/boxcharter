@@ -56,11 +56,17 @@ export class ChartComponent implements OnInit {
   ngOnInit() {
     // clear the status
     this.statusService.clearStatus();
+    this.initChart();
+ }
+  
+  initChart() {
+    // to be done whenever this.chartService.currentChart changes
     this.chart = this.chartService.currentChart;
     this.organizeMeasures();
     this.dirty = false;
+ 
   }
-  
+
   saveChart() {
     // save the chart and display a status alert
     this.chartService.updateChart()
@@ -192,8 +198,7 @@ export class ChartComponent implements OnInit {
       .then(status => {
         status['text'] = 'Chart successfully reverted.';
         this.statusService.setStatus(status);
-        this.chart = this.chartService.currentChart;
-        this.dirty = false;
+        this.initChart();
       });
   }
 }
