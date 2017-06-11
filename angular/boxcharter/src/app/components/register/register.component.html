@@ -28,7 +28,7 @@
             aria-haspopup="true" 
             role="tooltip" 
             class="tooltip tooltip-validation tooltip-md"
-            [class.invalid]="input.value.errMsg != ''">
+            [class.invalid]="input.value.errMsg">
             <input 
                 class="register" 
                 [(ngModel)]="input.value.value"
@@ -38,14 +38,20 @@
                 [name]="input.value.name" 
                 [id]="input.value.name" 
                 [placeholder]="input.value.placeholder">
-            <span *ngIf="input.value.required" 
+            <span *ngIf="input.value.errMsg" 
                 class="tooltip-content">
                     {{ input.value.errMsg }}
             </span>
         </label>
     </div>
-    <button type="submit" class="btn btn-primary register">Register</button>
-    <button type="button" class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
-    <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='login'">Login</button>
+    <div class="form-group">
+    <label>
+    </label>
+    <label>
+        <button type="submit" class="btn btn-primary register">Register</button>
+        <button type="button" class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
+        <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='login'">Login</button>
+    </label>
+    </div>
   </section>
 </form>

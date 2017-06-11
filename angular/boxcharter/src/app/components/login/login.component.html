@@ -31,7 +31,13 @@
         <label for="password">Password:</label>
         <input [(ngModel)]="loginRegisterService.password" name="password" class="login" type="password" id="password">
     </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-    <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='register'">Register</button>
+    <div class="form-group">
+      <label>
+      </label>
+      <label>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='register'">Register</button>
+      </label>
+    </div>
   </section>
 </form>
