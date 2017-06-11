@@ -239,6 +239,7 @@ export class RegisterComponent implements OnInit {
     
     this.registrationService.register(regData)
       .then(userID => {
+        if (userID) {
           let user = new User();
           user.email = this.inputs['email'].value;
           user.firstName = this.inputs['fname'].value;
@@ -247,6 +248,7 @@ export class RegisterComponent implements OnInit {
           user.charts = [];
 
           this.authService.setUser(user);
+        }
       });
   }
 }
