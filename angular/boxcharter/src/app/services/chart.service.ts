@@ -73,6 +73,15 @@ export class ChartService {
           .catch(err => this.errorService.handleError(err, this.statusService));
   }
 
+  createNewChart() {
+    // create a new chart and display it for editing
+
+    this.currentChart = new Chart();
+    this.currentChart.chartId = null;
+    this.currentChart.sections = [];
+    this.router.navigateByUrl('/chart');
+  }
+
   saveNewChart(chart: Chart) {
     // save a brand new chart, and set currentChart to the new chart
   }

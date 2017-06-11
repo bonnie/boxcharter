@@ -162,13 +162,13 @@
   <!-- END: chart metadata tree -->
   </div>
 
+<button class="btn btn-sm btn-primary-outline"
+        (click)="addSection(0)">
+  Add first section
+</button>
+
   <!-- START: sections -->
   <div class="sections" *ngFor="let section of chart.sections;let sectionIndex=index">
-    <button *ngIf="sectionIndex==0" 
-            class="btn btn-sm btn-primary-outline"
-            (click)="addSection(0)">
-      Add section here
-    </button>
     <div class="section">
       <!-- START: section dropdown -->
       <clr-dropdown class="section-dropdown" [clrMenuPosition]="'bottom-left'" [clrCloseMenuOnItemClick]="true">
