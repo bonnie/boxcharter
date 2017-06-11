@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
               public router: Router,
               public statusService: StatusService,
               public loginRegisterService: LoginRegisterService) {}
-              
+
   ngOnInit() { 
     this.statusService.clearStatus();
   }

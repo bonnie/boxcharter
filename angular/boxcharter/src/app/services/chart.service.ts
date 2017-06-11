@@ -22,11 +22,13 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/toPromise';
+
+import { StatusService } from './status.service'
+import { ErrorService } from './error.service'
+
 import { Chart } from '../model/data-model';
 import { Status } from '../model/status'
 import { flaskServer } from '../app.component'
-import { StatusService } from './status.service'
-import { ErrorService } from './error.service'
 
 @Injectable()
 export class ChartService {
@@ -69,6 +71,12 @@ export class ChartService {
 
   saveNewChart(chart: Chart) {
     // save a brand new chart, and set currentChart to the new chart
+  }
+
+  clearChart() {
+    // remove the saved chart from memory
+
+    this.currentChart = null;
   }
 }
 
