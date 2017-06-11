@@ -17,6 +17,18 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
+<div *ngIf="!chart">
+  <h2>Select a chart</h2>
+  <ul class="list-unstyled">
+    <li *ngFor="let chart of authService.currentUser.charts">
+      <a  (click)="chartService.loadChart(chart.chartId)">{{chart.title}}</a>
+    </li>
+  </ul>
+  <ul class="list-unstyled">
+    <li><a (click)="newChart()">New chart</a></li>
+  </ul>
+</div>
+
 <div *ngIf="chart" (click)="statusService.clearSuccess()" (change)="dirty=true" >
   <div class="chart-metadata">
     <!-- START: chart buttons -->
@@ -30,6 +42,19 @@
       <button class="btn btn-danger-outline" (click)="deleteConfirm=true;deleteType='chart'">
         Delete
       </button>
+      <div class="dropdown">
+        <button class="dropdown-toggle btn btn-link" type="button">
+            Switch chart
+            <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <div class="dropdown-menu">
+          <a *ngFor="let chart of authService.currentUser.charts" (click)=chartService.loadChart(chart.chartId) class="dropdown-item">
+            {{ chart.title }}
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="..." class="dropdown-item">New chart</a>
+        </div>
+      </div>
     </div>
     <!-- END: chart buttons -->
 

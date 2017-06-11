@@ -32,7 +32,7 @@
   <tbody>
     <tr *ngFor="let chart of user.charts">
       <td class="chart-text left">
-        <a (click)="openChart(chart.chartId)">
+        <a (click)="chartService.loadChart(chart.chartId)">
           {{chart.title}}
         </a>          
       </td>

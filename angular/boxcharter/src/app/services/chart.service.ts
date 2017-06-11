@@ -21,6 +21,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
+import { Router }      from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 
 import { StatusService } from './status.service'
@@ -40,9 +41,10 @@ export class ChartService {
 
   constructor(private http: Http,
               private statusService: StatusService,
+              public router: Router,
               private errorService: ErrorService) { }
 
-  getChart(id: number): Promise<object> {
+  loadChart(id: number): Promise<void> {
     // get an existing chart, and set currentChart to be this chart's data
     const url = `${this.baseURL}/${id}`;
     return this.http.get(url)
@@ -51,12 +53,14 @@ export class ChartService {
                       let status = response.json()['status'];
                       if (status['type'] == 'success') {
                         this.currentChart = response.json()['chart'] as Chart;
+                        this.router.navigateByUrl('/chart');
+                      } else {
+                        this.statusService.setStatus(status);
                       }
-                      return status;
                     })
                     .catch(err => this.errorService.handleError(err, this.statusService));
-}
-
+  }
+  
   updateChart(): Promise<Status> {
     // update the database with changes to a chart
     

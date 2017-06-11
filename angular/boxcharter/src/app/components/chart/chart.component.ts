@@ -25,6 +25,7 @@ import { Params }   from '@angular/router';
 import { ChartService } from '../../services/chart.service';
 import { StatusService } from '../../services/status.service';
 import { DialogService } from '../../services/dialog.service';
+import { AuthService } from '../../services/auth.service';
 
 import { Measure, Section } from '../../model/data-model';
 import { Status } from '../../model/status';
@@ -41,7 +42,7 @@ export class ChartComponent implements OnInit {
   
   chart: Chart;
   status: Status;
-  dirty: Boolean; // tracking whether chart has been edited since open / save
+  dirty: Boolean = false; // tracking whether chart has been edited since open / save
   lyricistSame: boolean = false; // lyricist same as composer?
   measureCells: Object[]; // for tracking when to show measure dropdown
 
@@ -50,13 +51,16 @@ export class ChartComponent implements OnInit {
     private chartService: ChartService,
     private statusService: StatusService,
     public dialogService: DialogService,
+    public authService: AuthService
  
   ) {  }
 
   ngOnInit() {
     // clear the status
     this.statusService.clearStatus();
-    this.initChart();
+    if (this.chartService.currentChart) {
+      this.initChart();
+    }
  }
   
   initChart() {
@@ -64,7 +68,6 @@ export class ChartComponent implements OnInit {
     this.chart = this.chartService.currentChart;
     this.organizeMeasures();
     this.dirty = false;
- 
   }
 
   saveChart() {
@@ -193,13 +196,7 @@ export class ChartComponent implements OnInit {
 
   revertChart() {
     // revert chart to saved state
-
-    this.chartService.getChart(this.chart.chartId)
-      .then(status => {
-        status['text'] = 'Chart successfully reverted.';
-        this.statusService.setStatus(status);
-        this.initChart();
-      });
+    this.chartService.loadChart(this.chart.chartId);
   }
 }
 

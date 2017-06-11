@@ -20,7 +20,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Params }   from '@angular/router';
-import { Router }      from '@angular/router';
 
 import { StatusService } from '../../services/status.service';
 import { AuthService } from '../../services/auth.service';
@@ -39,7 +38,6 @@ export class UserComponent implements OnInit {
   private user: User = this.authService.currentUser;
 
   constructor(public statusService: StatusService,
-              public router: Router,
               public authService: AuthService,
               public chartService: ChartService,
               
@@ -48,15 +46,4 @@ export class UserComponent implements OnInit {
   ngOnInit() {
   }
 
-  openChart(id: number) {
-    // open chart and set current chart to be this ID
-    this.chartService.getChart(id)
-      .then(status => {
-        if (status['type'] == 'success') {
-          this.router.navigateByUrl('/chart');
-        } else {
-          this.statusService.setStatus(status);
-        }
-      } )
-  }
 }
