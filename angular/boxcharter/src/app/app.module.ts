@@ -70,7 +70,7 @@ import { LoginRegisterService } from './services/login-register.service';
         FormsModule,
         HttpModule,
         ClarityModule.forRoot(),
-        LoginRoutingModule,
+        // LoginRoutingModule,
         AppRoutingModule
     ],
     

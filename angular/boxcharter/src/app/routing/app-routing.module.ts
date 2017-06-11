@@ -30,6 +30,7 @@ import { HomeComponent } from '../components/home/home.component';
 import { UserComponent } from '../components/user/user.component';
 import { ChartComponent } from '../components/chart/chart.component';
 import { RegisterComponent } from '../components/register/register.component';
+import { LoginRegisterComponent } from '../components/login-register/login-register.component';
 import { NotFoundComponent } from '../components/not-found/not-found.component';
 
 export const appRoutes: Routes = [
@@ -47,13 +48,17 @@ export const appRoutes: Routes = [
     {
         path: 'user', 
         component: UserComponent,
-        canActivate: [AuthGuardService]
+        // canActivate: [AuthGuardService]
     },
     {
         path: 'chart', 
         component: ChartComponent,
-        canActivate: [AuthGuardService],
+        // canActivate: [AuthGuardService],
         canDeactivate: [CanDeactivateGuardService]
+    },
+    {
+        path: 'login',
+        component: LoginRegisterComponent,
     },
     { 
         path:'**', 

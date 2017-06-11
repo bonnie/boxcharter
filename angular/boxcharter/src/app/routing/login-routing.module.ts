@@ -24,10 +24,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService }     from '../services/auth-guard.service';
 import { AuthService }          from '../services/auth.service';
 
-import { LoginRegisterComponent } from '../components/login-register/login-register.component';
+import { LoginComponent } from '../components/login/login.component';
 
 const loginRoutes: Routes = [
-  { path: 'login', component: LoginRegisterComponent }
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({

@@ -17,6 +17,10 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
+<div *ngIf="authService.isLoggedIn">
+  <h6>Currently logged in as {{ authService.currentUser.email }}</h6>
+  <button class="btn btn-primary" (click)="authService.logout()">Log out</button>
+</div>
 <form *ngIf="!authService.isLoggedIn" (ngSubmit)="login()" #loginForm="ngForm">
   <section class="form-block">
     <div class="form-group">
@@ -31,5 +35,3 @@
     <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='register'">Register</button>
   </section>
 </form>
-
-<button *ngIf="authService.isLoggedIn" type="button" class="btn btn-primary" (click)="logout()">Logout</button>
