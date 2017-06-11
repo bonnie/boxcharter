@@ -17,17 +17,7 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<div *ngIf="!chart">
-  <h2>Select a chart</h2>
-  <ul class="list-unstyled">
-    <li *ngFor="let chart of authService.currentUser.charts">
-      <a  (click)="chartService.loadChart(chart.chartId)">{{chart.title}}</a>
-    </li>
-  </ul>
-  <ul class="list-unstyled">
-    <li><a (click)="newChart()">New chart</a></li>
-  </ul>
-</div>
+<app-user-charts *ngIf="!chart"></app-user-charts>
 
 <div *ngIf="chart" (click)="statusService.clearSuccess()" (change)="dirty=true" >
   <div class="chart-metadata">

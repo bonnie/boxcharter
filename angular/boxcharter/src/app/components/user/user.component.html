@@ -19,32 +19,4 @@
 
 <h2>{{ user.firstName ? user.firstName + ' ' + user.lastName : user.email }}</h2>
 
-<h2>Charts</h2>
-<button class="btn btn-link" (click)="addChart()">New chart</button>
-<table class="table user-charts">
-  <thead>
-    <tr>
-      <th class="chart-text left">Title</th>
-      <th class="chart text left">Last modified</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let chart of user.charts">
-      <td class="chart-text left">
-        <a (click)="chartService.loadChart(chart.chartId)">
-          {{chart.title}}
-        </a>          
-      </td>
-      <td class="chart-text left">
-        {{ chart.modifiedAt | date }}
-      </td>
-      <td>
-        <a (click)="deleteChart(chart.chart_id)" role="tooltip" aria-haspopup="true" class="tooltip tooltip-xs">
-          <clr-icon size="24" shape="times-circle" class="is-danger"></clr-icon>
-          <span class="tooltip-content">Delete</span>
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<app-user-charts></app-user-charts>

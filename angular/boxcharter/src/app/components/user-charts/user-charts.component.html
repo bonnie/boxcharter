@@ -1,0 +1,48 @@
+<!--
+  Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+
+  This file is part of BoxCharter.
+
+  BoxCharter is free software: you can redistribute it and/or modify it under
+  the terms of the GNU Affero General Public License as published by the Free
+  Software Foundation, either version 3 of the License, or (at your option)
+  any later version.
+
+  BoxCharter is distributed in the hope that it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+  for more details.
+
+  You should have received a copy of the GNU Affero General Public License
+  along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<h2>Charts</h2>
+<button class="btn btn-link" (click)="addChart()">New chart</button>
+<table class="table user-charts">
+  <thead>
+    <tr>
+      <th class="chart-text left">Title</th>
+      <th class="chart text left">Last modified</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let chart of user.charts">
+      <td class="chart-text left">
+        <a (click)="chartService.loadChart(chart.chartId)">
+          {{chart.title}}
+        </a>          
+      </td>
+      <td class="chart-text left">
+        {{ chart.modifiedAt | date }}
+      </td>
+      <td>
+        <a (click)="deleteChart(chart.chart_id)" role="tooltip" aria-haspopup="true" class="tooltip tooltip-xs">
+          <clr-icon size="24" shape="times-circle" class="is-danger"></clr-icon>
+          <span class="tooltip-content">Delete</span>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>

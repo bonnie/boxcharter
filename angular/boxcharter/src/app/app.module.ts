@@ -38,6 +38,7 @@ import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginRegisterComponent } from './components/login-register/login-register.component';
+import { UserChartsComponent } from './components/user-charts/user-charts.component';
 
 import { FillPipe } from './pipes/fill.pipe';
 import { KeysPipe } from './pipes/keys.pipe';
@@ -62,7 +63,8 @@ import { LoginRegisterService } from './services/login-register.service';
         LoginComponent,
         NotFoundComponent,
         RegisterComponent,
-        LoginRegisterComponent
+        LoginRegisterComponent,
+        UserChartsComponent
     ],
     imports: [
         BrowserAnimationsModule,
