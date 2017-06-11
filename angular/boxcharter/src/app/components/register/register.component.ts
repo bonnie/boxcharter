@@ -107,6 +107,18 @@ export class RegisterComponent implements OnInit {
 /******************* form validation **********************/
 
   onChange(fieldName): void {
+    let input = this.inputs[fieldName];
+
+    // clear previous error
+    input.errMsg = null;
+
+    // for required fields    
+    if (input.required && !input.value) {
+      input.errMsg = `${input.label} is required`;
+      return
+    }
+
+    // for special validations
     switch(fieldName) {
       case 'email':
         this.checkEmail();

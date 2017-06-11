@@ -32,7 +32,7 @@
             <input 
                 class="register" 
                 [(ngModel)]="input.value.value"
-                (change)="onChange(input.value.name)"
+                (blur)="onChange(input.value.name)"
                 [required]="input.value.required"
                 [type]="input.value.type" 
                 [name]="input.value.name" 
