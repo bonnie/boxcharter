@@ -31,8 +31,8 @@
             [class.invalid]="input.value.errMsg">
             <input 
                 class="register" 
-                [(ngModel)]="input.value.value"
-                (blur)="onChange(input.value.name)"
+                [ngModel]="input.value.value"
+                (ngModelChange)="onChange(input.value.name, $event)"
                 [required]="input.value.required"
                 [type]="input.value.type" 
                 [name]="input.value.name" 
@@ -48,7 +48,7 @@
     <label>
     </label>
     <label>
-        <button type="submit" class="btn btn-primary register">Register</button>
+        <button type="submit" class="btn btn-primary register" [disabled]="!formIsValid()">Register</button>
         <button type="button" class="btn btn-outline register" (click)="regForm.reset()">Clear Form</button>
         <button type="button" class="btn btn-link" (click)="loginRegisterService.mode='login'">Login</button>
     </label>

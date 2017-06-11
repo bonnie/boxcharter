@@ -105,14 +105,22 @@ export class RegisterComponent implements OnInit {
   }
 
 /******************* form validation **********************/
-
-  onChange(fieldName): void {
+  
+  onChange(fieldName, newValue): void {
     let input = this.inputs[fieldName];
+    input.value = newValue;
 
     // clear previous error
     input.errMsg = null;
 
-    // for required fields    
+    // and for the other password field if it's a password field
+    if (fieldName == 'password') {
+      this.inputs['password2'].errMsg = null;
+    } else if (fieldName == 'password2') {
+      this.inputs['password'].errMsg = null;
+    }
+
+   // for required fields    
     if (input.required && !input.value) {
       input.errMsg = `${input.label} is required`;
       return
@@ -121,7 +129,7 @@ export class RegisterComponent implements OnInit {
     // for special validations
     switch(fieldName) {
       case 'email':
-        this.checkEmail();
+        this.checkEmail(input.value);
         break;
       case 'password':
       case 'password2':
@@ -130,13 +138,39 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  checkEmail() {
-    // this.registrationService.checkEmail()
-    //   .then(userID => {  })
+  checkEmail(email) {
+    // check to see if email already exists
+
+    this.registrationService.checkEmail(email)
+      .then(inDB => {
+        if (inDB) {
+          this.inputs['email'].errMsg = `${email} already has a BoxCharter user account.`
+        }
+      })
   }
 
   checkPassword() {
-    console.log('checking password');
+    // check to see if passwords match
+
+    let p1 = this.inputs['password'];
+    let p2 = this.inputs['password2'];
+
+    if (p1.value != p2.value) {
+      p1.errMsg = p2.errMsg = "Passwords much match";
+    }
+
+  }
+
+  formIsValid() {
+    // for determining whether the register button is enabled
+
+    for ( const inputKey in this.inputs ) {
+      let input = this.inputs[inputKey]
+      if ((input.required && !input.value) || this.inputs[inputKey].errMsg) {
+        return false;
+      }
+    }
+    return true;
   }
 
 /************** form validation  ****************/
@@ -195,7 +229,7 @@ export class RegisterComponent implements OnInit {
 /************** actual registration  ****************/
 
  register() {
-    // TOOD: is there a better way to "serialize" the form? 
+    // TODO: is there a better way to "serialize" the form? 
     let regData = {};
     for ( const inputKey in this.inputs ) {
       // clear previous error message (if any)

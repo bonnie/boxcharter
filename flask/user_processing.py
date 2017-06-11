@@ -43,7 +43,7 @@ def is_already_user(email):
     For validating email during registration."""
 
     user_in_db = not (get_user_by_email(email) == None)
-    return {'status': SUCCESS_STATUS, 'inDB': user_in_db}
+    return {'status': SUCCESS_STATUS['status'], 'inDB': user_in_db}
 
 
 def add_user(data):

@@ -106,7 +106,7 @@ def check_user():
 
     email = request.args.get('email')
     response = is_already_user(email)
-    return response
+    return jsonify(response)
 
 
 # @app.route('/user/<int:user_id>')

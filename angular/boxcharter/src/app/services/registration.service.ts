@@ -70,7 +70,6 @@ export class RegistrationService {
                     .toPromise()
                     .then(response => {
                                       let status = response.json()['status'];
-                                      this.statusService.setStatus(status);
                                       if (status['type'] == 'success') {
                                         return response.json()['inDB'];
                                       }
