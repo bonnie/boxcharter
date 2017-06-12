@@ -57,7 +57,7 @@
           [(ngModel)]="chart.title">
         
     <!-- START: chart metadata tree -->
-    <clr-tree-node class="chart-metadata" [clrTreeNodeExpanded]="false">
+    <clr-tree-node class="chart-metadata" [clrTreeNodeExpanded]="expandChartData['authors']">
       Chart Authors
       <clr-tree-node class="form-group chart-md">
         <label class="chart-md chart-author" for="chart-composer">Music by</label>
@@ -93,7 +93,7 @@
             [(ngModel)]="chart.author">
       </clr-tree-node>
     </clr-tree-node>
-    <clr-tree-node [clrTreeNodeExpanded]="false">
+    <clr-tree-node [clrTreeNodeExpanded]="expandChartData['keys']">
       Chart Keys
       <clr-tree-node class="form-group chart-md">
         <label class="chart-md" for="original-key">Original Key</label>
@@ -112,7 +112,7 @@
             [(ngModel)]="chart.printKey">
       </clr-tree-node>
     </clr-tree-node>
-    <clr-tree-node [clrTreeNodeExpanded]="false">
+    <clr-tree-node [clrTreeNodeExpanded]="expandChartData['pdf']">
       Chart PDF Options
       <clr-tree-node class="form-group chart-md">
         <label class="chart-md" for="max-pages">Maximum chart pages</label>
@@ -151,7 +151,7 @@
             [(ngModel)]="chart.pageHeight">
       </clr-tree-node>
     </clr-tree-node>
-    <clr-tree-node [clrTreeNodeExpanded]="false">
+    <clr-tree-node [clrTreeNodeExpanded]="expandChartData['dates']">
       Chart Dates
       <clr-tree-node class="chart-md">
         Chart created: {{ chart.createdAt | date:'medium' }}
@@ -209,7 +209,7 @@
               size="64"
               placeholder="section description"
               [(ngModel)]="section.sectionDesc">
-        <clr-tree-node [clrTreeNodeExpanded]="false">
+        <clr-tree-node [clrTreeNodeExpanded]="expandChartData['sectionData']">
           Section Data
           <clr-tree-node class="form-group chart-md">
             <label class="chart-md" for="measures-row">Measures per row</label>

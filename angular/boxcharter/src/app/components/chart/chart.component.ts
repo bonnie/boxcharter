@@ -31,6 +31,13 @@ import { Measure, Section } from '../../model/data-model';
 import { Status } from '../../model/status';
 import { Chart } from '../../model/data-model';
 
+const chartDataTurndowns: string[] = [
+    'authors',
+    'keys',
+    'pdf',
+    'dates',
+    'sectionData']
+
 @Component({
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
@@ -39,10 +46,11 @@ import { Chart } from '../../model/data-model';
   providers: [ DialogService ],
 })
 export class ChartComponent implements OnInit {
-  
+
   chart: Chart;
   status: Status;
   dirty: Boolean = false; // tracking whether chart has been edited since open / save
+  expandChartData: Object = {}; // for tracking whether each tree is open or closed
   lyricistSame: boolean = false; // lyricist same as composer?
   measureCells: Object[]; // for tracking when to show measure dropdown
 
@@ -68,6 +76,12 @@ export class ChartComponent implements OnInit {
     this.chart = this.chartService.currentChart;
     this.organizeMeasures();
     this.dirty = false;
+
+    for (let turndown of chartDataTurndowns) {
+      // expand for new chart; un-expand for existing chart
+
+      this.expandChartData[turndown] = this.chart.chartId ? false : true;
+    }
   }
 
   saveChart() {
