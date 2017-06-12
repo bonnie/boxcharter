@@ -48,6 +48,7 @@
     </div>
     <!-- END: chart buttons -->
 
+    <div class="chart-metadata">
     <input id="chart-title"
           class="title boxchart" 
           type="text" 
@@ -159,12 +160,13 @@
         Chart updated: {{ chart.modifiedAt | date:'medium' }}
       </clr-tree-node>
     </clr-tree-node>
+  </div>
   <!-- END: chart metadata tree -->
   </div>
 
 <button class="btn btn-sm btn-primary-outline"
         (click)="addSection(0)">
-  Add first section
+  Add section here
 </button>
 
   <!-- START: sections -->
