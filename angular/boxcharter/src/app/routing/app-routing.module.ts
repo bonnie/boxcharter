@@ -48,12 +48,12 @@ export const appRoutes: Routes = [
     {
         path: 'user', 
         component: UserComponent,
-        // canActivate: [AuthGuardService]
+        canActivate: [AuthGuardService]
     },
     {
         path: 'chart', 
         component: ChartComponent,
-        // canActivate: [AuthGuardService],
+        canActivate: [AuthGuardService],
         canDeactivate: [CanDeactivateGuardService]
     },
     {
