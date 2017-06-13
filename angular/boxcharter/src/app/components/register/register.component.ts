@@ -244,7 +244,7 @@ export class RegisterComponent implements OnInit {
           user.email = this.inputs['email'].value;
           user.firstName = this.inputs['fname'].value;
           user.lastName = this.inputs['lname'].value;
-          user.id = userID;
+          user.userId = userID;
           user.charts = [];
 
           this.authService.setUser(user);

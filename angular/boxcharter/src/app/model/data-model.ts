@@ -20,7 +20,7 @@
 
 export class User {
     'charts': object[];
-    'id': number;
+    'userId': number;
     'email': string;
     'firstName': string;
     'lastName': string;

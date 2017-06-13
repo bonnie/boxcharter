@@ -20,7 +20,7 @@
 from copy import deepcopy
 import logging
 
-from model import Chart
+from model import Chart, db
 from status import SUCCESS_STATUS, ERROR_STATUS, BAD_REQUEST, CONTACT_ADMIN
 from log_utilities import log_error
 
@@ -73,7 +73,7 @@ def update_chart(chart_id, data):
 
     inputs: 
         chart_id: int
-        chart_data: dict
+        data: dict
 
     outputs: 
         response dict with 'status' and 'modifiedAt' keys
@@ -107,4 +107,53 @@ def update_chart(chart_id, data):
         response = deepcopy(SUCCESS_STATUS)
         response['status']['text'] = SUCCESS_TEXT.format('saved')
         response['modifiedAt'] = chart.modified_at
+        return response
+
+
+def create_chart(data, user_id):
+    """Save chart_data to database as a new chart; return chart data and status
+
+    inputs: 
+        data: dict
+
+    outputs: 
+        response dict with 'status' and 'chart' keys
+    """
+
+    print "input"
+    print data
+
+    # for errors
+    error_kwargs = {'data': data}
+    err_status = deepcopy(ERROR_STATUS) 
+    err_status['status']['text'] = '{} {}'.format(BAD_REQUEST, NO_ACTION.format('created'))
+
+    # save chart data
+    try:
+        chart = Chart()
+        chart.update(data)
+        chart.user_id = user_id
+
+        db.session.add(chart)
+        db.session.commit()
+
+        # I'm not sure why I need to get the chart_id first, but if I don't
+        # do this (or, say, do chart.get_data() twice), then chart_data is 
+        # empty. 
+        chart_id = chart.chart_id
+        chart_data = chart.get_data()
+
+        # import pdb; pdb.set_trace()
+
+    except Exception as e:
+        log_error(e, 1, **error_kwargs)
+        return err_status
+    else:
+        response = deepcopy(SUCCESS_STATUS)
+        response['status']['text'] = SUCCESS_TEXT.format('created')
+        response['chart'] = chart_data
+
+        print "response"
+        print response
+
         return response

@@ -28,7 +28,7 @@ from flask.ext.cors import CORS, cross_origin
 
 from model import connect_to_db, Chart, User
 from log_utilities import init_logging
-from chart_processing import get_chart_data, update_chart
+from chart_processing import get_chart_data, update_chart, create_chart
 from user_processing import validate_user, add_user, is_already_user
 
 
@@ -75,6 +75,16 @@ def update_chart_data(chart_id):
 
     data = request.json
     response = update_chart(chart_id, data)
+    return jsonify(response)
+
+
+@app.route('/user/<int:user_id>/chart/create', methods=['PUT'])
+@cross_origin(origin=ANGULAR_SERVER_NAME, headers=['Content-Type','Authorization'])
+def create_new_chart(user_id):
+    """Create new chart and return chart JSON."""
+
+    data = request.json
+    response = create_chart(data, user_id)
     return jsonify(response)
 
 

@@ -24,12 +24,12 @@ import { Observable } from "rxjs/Observable";
 import { Router }      from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 
-import { StatusService } from './status.service'
-import { ErrorService } from './error.service'
+import { StatusService } from './status.service';
+import { ErrorService } from './error.service';
 
 import { Chart } from '../model/data-model';
-import { Status } from '../model/status'
-import { flaskServer } from '../app.component'
+import { Status } from '../model/status';
+import { flaskServer } from '../app.component';
 
 @Injectable()
 export class ChartService {
@@ -42,7 +42,8 @@ export class ChartService {
   constructor(private http: Http,
               private statusService: StatusService,
               public router: Router,
-              private errorService: ErrorService) { }
+              private errorService: ErrorService,
+             ) { }
 
   loadChart(id: number): Promise<void> {
     // get an existing chart, and set currentChart to be this chart's data
@@ -82,8 +83,16 @@ export class ChartService {
     this.router.navigateByUrl('/chart');
   }
 
-  saveNewChart(chart: Chart) {
+  saveNewChart(userId) {
     // save a brand new chart, and set currentChart to the new chart
+
+    const url = `${flaskServer}/user/${userId}/chart/create`;
+
+    return this.http  
+          .put(url, JSON.stringify(this.currentChart), {headers: this.jsonHeaders})
+          .toPromise()
+          .then(response => response.json())
+          .catch(err => this.errorService.handleError(err, this.statusService));
   }
 
   clearChart() {

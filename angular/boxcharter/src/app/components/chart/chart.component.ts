@@ -79,22 +79,37 @@ export class ChartComponent implements OnInit {
 
     for (let turndown of chartDataTurndowns) {
       // expand for new chart; un-expand for existing chart
-
       this.expandChartData[turndown] = this.chart.chartId ? false : true;
     }
   }
 
   saveChart() {
     // save the chart and display a status alert
-    this.chartService.updateChart()
-          .then(response => {
-            this.statusService.setStatus(response['status'] as Status);
-            if (response['status']['type'] == 'success') {
-              this.chart.modifiedAt = response['modifiedAt'];
-              this.dirty = false;
-            }
-          });
+
+    if (this.chart.chartId) {
+      // updating an existing chart
+      this.chartService.updateChart()
+            .then(response => {
+              this.statusService.setStatus(response['status'] as Status);
+              if (response['status']['type'] == 'success') {
+                this.chart.modifiedAt = response['modifiedAt'];
+                this.dirty = false;
+              }
+            });
+    } else {
+      // creating a new chart
+        this.chartService.saveNewChart(this.authService.currentUser.userId)
+            .then(response => {
+              console.log(response);
+              this.statusService.setStatus(response['status'] as Status);
+              if (response['status']['type'] == 'success') {
+                this.chartService.currentChart = response['data'] as Chart;
+                this.initChart();
+              }
+            });
+      }
   }
+
   organizeMeasures() {
     // measures need to be pre-organized in order to split them into rows
 

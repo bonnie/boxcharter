@@ -85,6 +85,8 @@ export class AuthService {
     this.isLoggedIn = true;
     this.loginRegisterService.clearData();
     this.router.navigate(['user'])
+
+    console.log(`user logged in: ${this.currentUser.userId}`)
   }
 
 }
