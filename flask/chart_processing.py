@@ -151,7 +151,7 @@ def create_chart(data, user_id):
     else:
         response = deepcopy(SUCCESS_STATUS)
         response['status']['text'] = SUCCESS_TEXT.format('created')
-        response['chart'] = chart_data
+        response['data'] = chart_data
 
         print "response"
         print response

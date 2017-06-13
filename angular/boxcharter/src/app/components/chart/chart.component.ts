@@ -113,8 +113,6 @@ export class ChartComponent implements OnInit {
   organizeMeasures() {
     // measures need to be pre-organized in order to split them into rows
 
-    console.log(this.chart);
-
     this.measureCells = new Array(this.chart.sections.length).fill({});
 
     for (let sIndex=0; sIndex < this.chart.sections.length; sIndex++) {
