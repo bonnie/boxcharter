@@ -237,7 +237,7 @@ class Measure(db.Model):
     def set_data(self, data):
         """Set data for the measure from given data dict."""
 
-        self.beats_per_measure = data['beatsPerMeasure']
+        self.beats_per_measure = data.get('beatsPerMeasure')
 
         for index, chordstring in data.get('chords', {}).items():
             
