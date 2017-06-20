@@ -23,6 +23,7 @@ import { Headers, Http } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { Router }      from '@angular/router';
 import 'rxjs/add/operator/toPromise';
+import * as moment from 'moment';
 
 import { StatusService } from './status.service';
 import { ErrorService } from './error.service';
@@ -42,7 +43,7 @@ export class ChartService {
   constructor(private http: Http,
               private statusService: StatusService,
               public router: Router,
-              private errorService: ErrorService,
+              private errorService: ErrorService
              ) { }
 
   loadChart(id: number): Promise<void> {
@@ -79,6 +80,7 @@ export class ChartService {
 
     this.currentChart = new Chart();
     this.currentChart.chartId = null;
+    this.currentChart.createdAt = moment().toDate();
     this.currentChart.sections = [];
     this.router.navigateByUrl('/chart');
   }
