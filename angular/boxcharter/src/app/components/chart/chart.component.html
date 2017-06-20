@@ -17,9 +17,9 @@
   along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<app-user-charts *ngIf="!chart"></app-user-charts>
+<app-user-charts *ngIf="!chartService.currentChart"></app-user-charts>
 
-<div *ngIf="chart" (click)="statusService.clearSuccess()" (change)="dirty=true" >
+<div *ngIf="chartService.currentChart" (click)="statusService.clearSuccess()" (change)="dirty=true" >
   <div class="chart-metadata">
     <!-- START: chart buttons -->
     <div class="chart-btn-group page-header">
@@ -38,8 +38,8 @@
             <clr-icon shape="caret down"></clr-icon>
         </button>
         <clr-dropdown-menu>
-          <a *ngFor="let chart of authService.currentUser.charts" (click)=chartService.loadChart(chart.chartId) class="dropdown-item">
-            {{ chart.title }}
+          <a *ngFor="let otherChart of authService.currentUser.charts" (click)=chartService.loadChart(otherChart.chartId) class="dropdown-item">
+            {{ otherChart.title }}
           </a>
           <div class="dropdown-divider"></div>
           <a href="..." class="dropdown-item">New chart</a>
@@ -54,7 +54,7 @@
           type="text" 
           size="64"
           placeholder="chart title"
-          [(ngModel)]="chart.title">
+          [(ngModel)]="chartService.currentChart.title">
         
     <!-- START: chart metadata tree -->
     <clr-tree-node class="chart-metadata" [clrTreeNodeExpanded]="expandChartData['authors']">
@@ -66,21 +66,21 @@
             type="text"
             size="48"
             placeholder="composer"
-            [(ngModel)]="chart.composer">
+            [(ngModel)]="chartService.currentChart.composer">
       </clr-tree-node>
       <clr-tree-node class="form-group chart-md">
         <label class="chart-md chart-author" for="chart-lyricist">Lyrics by (</label>
         <input id="chart-lyricist-same" 
             type="checkbox" 
-            [(ngModel)]="chart.lyricistSame">
+            [(ngModel)]="chartService.currentChart.lyricistSame">
           <label class="chart-md" for="chart-lyricist-same">Same as composer )</label>
-        <span *ngIf="chart.lyricistSame == false">
+        <span *ngIf="chartService.currentChart.lyricistSame == false">
           <input id="chart-lyricist"
               class="chart-md boxchart"
               type="text"
               size="48"
               placeholder="chart lyricist"
-              [(ngModel)]="chart.lyricist">
+              [(ngModel)]="chartService.currentChart.lyricist">
         </span>
       </clr-tree-node>
       <clr-tree-node class="form-group chart-md">
@@ -90,7 +90,7 @@
             type="text"
             size="48"
             placeholder="chart author"
-            [(ngModel)]="chart.author">
+            [(ngModel)]="chartService.currentChart.author">
       </clr-tree-node>
     </clr-tree-node>
     <clr-tree-node [clrTreeNodeExpanded]="expandChartData['keys']">
@@ -101,7 +101,7 @@
             class="chart-md boxchart"
             type="text"
             size="4"
-            [(ngModel)]="chart.originalKey">
+            [(ngModel)]="chartService.currentChart.originalKey">
       </clr-tree-node>
       <clr-tree-node class="form-group chart-md">
         <label class="chart-md" for="transposed-key">Transposed Key</label>
@@ -109,7 +109,7 @@
             class="chart-md boxchart"
             type="text"
             size="4"
-            [(ngModel)]="chart.printKey">
+            [(ngModel)]="chartService.currentChart.printKey">
       </clr-tree-node>
     </clr-tree-node>
     <clr-tree-node [clrTreeNodeExpanded]="expandChartData['pdf']">
@@ -120,7 +120,7 @@
             class="chart-md boxchart"
             type="number"
             size="4"
-            [(ngModel)]="chart.maxPages">
+            [(ngModel)]="chartService.currentChart.maxPages">
       </clr-tree-node>
       <clr-tree-node class="form-group chart-md">
         <label class="chart-md" for="min-fontsize">Minimum chart font size</label>
@@ -128,7 +128,7 @@
             class="chart-md boxchart"
             type="number"
             size="4"
-            [(ngModel)]="chart.minFontsize">
+            [(ngModel)]="chartService.currentChart.minFontsize">
       </clr-tree-node>
       <clr-tree-node class="form-group chart-md">
         <label class="chart-md" for="page-width">Page width</label>
@@ -138,7 +138,7 @@
             size="4"
             min="0"
             step="any"
-            [(ngModel)]="chart.pageWidth">
+            [(ngModel)]="chartService.currentChart.pageWidth">
       </clr-tree-node>
       <clr-tree-node class="form-group chart-md">
         <label class="chart-md" for="page-width">Page height</label>
@@ -148,16 +148,16 @@
             size="4"
             min="0"
             step="any"
-            [(ngModel)]="chart.pageHeight">
+            [(ngModel)]="chartService.currentChart.pageHeight">
       </clr-tree-node>
     </clr-tree-node>
     <clr-tree-node [clrTreeNodeExpanded]="expandChartData['dates']">
       Chart Dates
       <clr-tree-node class="chart-md">
-        Chart created: {{ chart.createdAt | date:'medium' }}
+        Chart created: {{ chartService.currentChart.createdAt | date:'medium' }}
       </clr-tree-node>
       <clr-tree-node class="chart-md">
-        Chart updated: {{ chart.modifiedAt | date:'medium' }}
+        Chart updated: {{ chartService.currentChart.modifiedAt | date:'medium' }}
       </clr-tree-node>
     </clr-tree-node>
   </div>
@@ -170,7 +170,7 @@
 </button>
 
   <!-- START: sections -->
-  <div class="sections" *ngFor="let section of chart.sections;let sectionIndex=index">
+  <div class="sections" *ngFor="let section of chartService.currentChart.sections;let sectionIndex=index">
     <div class="section">
       <!-- START: section dropdown -->
       <clr-dropdown class="section-dropdown" [clrMenuPosition]="'bottom-left'" [clrCloseMenuOnItemClick]="true">
