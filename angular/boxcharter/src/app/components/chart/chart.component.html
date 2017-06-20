@@ -23,28 +23,28 @@
   <div class="chart-metadata">
     <!-- START: chart buttons -->
     <div class="chart-btn-group page-header">
-      <button class="btn btn-primary-outline" (click)="saveChart()">
+      <button class="btn btn-primary" (click)="saveChart()">
         Save
       </button>
-      <button class="btn btn-warning-outline" (click)="revertConfirm=true">
+      <button class="btn btn-warning" (click)="revertConfirm=true">
         Revert
       </button>
-      <button class="btn btn-danger-outline" (click)="deleteConfirm=true;deleteType='chart'">
+      <button class="btn btn-danger" (click)="deleteConfirm=true;deleteType='chart'">
         Delete
       </button>
-      <div class="dropdown">
-        <button class="dropdown-toggle btn btn-link" type="button">
+      <clr-dropdown clrMenuPosition="top-left">
+        <button class="btn btn-inverse" clrDropdownToggle>
             Switch chart
             <clr-icon shape="caret down"></clr-icon>
         </button>
-        <div class="dropdown-menu">
+        <clr-dropdown-menu>
           <a *ngFor="let chart of authService.currentUser.charts" (click)=chartService.loadChart(chart.chartId) class="dropdown-item">
             {{ chart.title }}
           </a>
           <div class="dropdown-divider"></div>
           <a href="..." class="dropdown-item">New chart</a>
-        </div>
-      </div>
+        </clr-dropdown-menu>
+      </clr-dropdown>
     </div>
     <!-- END: chart buttons -->
 
