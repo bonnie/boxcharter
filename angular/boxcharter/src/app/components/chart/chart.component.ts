@@ -54,8 +54,8 @@ export class ChartComponent implements OnInit {
   measureCells: Object[]; // for tracking when to show measure dropdown
 
   // for showing user charts
-  userChartsLimitFive: Object[];
-  userChartCount: number;
+  userCharts: Object[];
+  userChartTotal: number;
 
   constructor(
     // for getting chart data from flask
@@ -85,20 +85,33 @@ export class ChartComponent implements OnInit {
     }
 
     // update user chart data
-    this.userChartCount = this.authService.currentUser.charts.length;
+    this.userChartTotal = this.authService.currentUser.charts.length;
 
     // get the charts in "last modified" order
     let userChartsInModifiedOrder =  this.authService.currentUser.charts.sort((a, b) => { return a['modifiedAt'] - b['modifiedAt'] });
-    this.userChartsLimitFive = userChartsInModifiedOrder.slice(0, 5);
+    this.userCharts = userChartsInModifiedOrder.slice(0, 5);
 
     // remove the current chart
-    for (let i=0;i < this.userChartsLimitFive.length; i++) {
-      if (this.userChartsLimitFive[i]['chartId'] === this.chartService.currentChart['chartId']) {
-        this.userChartsLimitFive.splice(i, 1);
+    for (let i=0;i < this.userCharts.length; i++) {
+      if (this.userCharts[i]['chartId'] === this.chartService.currentChart['chartId']) {
+        this.userCharts.splice(i, 1);
         break;
       }
     }
+  }
 
+  loadChart(chartId: number) {
+    // load a new chart selected from the drop-down
+
+    this.chartService.loadChart(chartId)
+      .then(result => this.initChart());
+
+  }
+
+  newChart() {
+    // create and load a new chart
+    this.chartService.createNewChart();
+    this.initChart();
   }
 
   saveChart() {
