@@ -38,10 +38,13 @@
             <clr-icon shape="caret down"></clr-icon>
         </button>
         <clr-dropdown-menu>
-          <a *ngFor="let otherChart of authService.currentUser.charts" (click)=chartService.loadChart(otherChart.chartId) class="dropdown-item">
-            {{ otherChart.title }}
-          </a>
+         <div *ngIf="userChartsLimitFive && userChartsLimitFive.length > 0">
+            <a *ngFor="let otherChart of userChartsLimitFive" (click)=chartService.loadChart(otherChart.chartId) class="dropdown-item">
+              {{ otherChart.title }}
+            </a>
+          <a *ngIf="userChartCount && userChartCount > 6" (click)="openUserPage()">more charts...</a>
           <div class="dropdown-divider"></div>
+          </div>
           <a href="..." class="dropdown-item">New chart</a>
         </clr-dropdown-menu>
       </clr-dropdown>

@@ -53,6 +53,10 @@ export class ChartComponent implements OnInit {
   lyricistSame: boolean = false; // lyricist same as composer?
   measureCells: Object[]; // for tracking when to show measure dropdown
 
+  // for showing user charts
+  userChartsLimitFive: Object[];
+  userChartCount: number;
+
   constructor(
     // for getting chart data from flask
     private chartService: ChartService,
@@ -68,7 +72,7 @@ export class ChartComponent implements OnInit {
     if (this.chartService.currentChart) {
       this.initChart();
     }
- }
+  }
   
   initChart() {
     // to be done whenever this.chartService.currentChart changes
@@ -79,6 +83,22 @@ export class ChartComponent implements OnInit {
       // expand for new chart; un-expand for existing chart
       this.expandChartData[turndown] = this.chartService.currentChart.chartId ? false : true;
     }
+
+    // update user chart data
+    this.userChartCount = this.authService.currentUser.charts.length;
+
+    // get the charts in "last modified" order
+    let userChartsInModifiedOrder =  this.authService.currentUser.charts.sort((a, b) => { return a['modifiedAt'] - b['modifiedAt'] });
+    this.userChartsLimitFive = userChartsInModifiedOrder.slice(0, 5);
+
+    // remove the current chart
+    for (let i=0;i < this.userChartsLimitFive.length; i++) {
+      if (this.userChartsLimitFive[i]['chartId'] === this.chartService.currentChart['chartId']) {
+        this.userChartsLimitFive.splice(i, 1);
+        break;
+      }
+    }
+
   }
 
   saveChart() {
