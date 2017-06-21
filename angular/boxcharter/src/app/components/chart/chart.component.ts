@@ -84,6 +84,12 @@ export class ChartComponent implements OnInit {
       this.expandChartData[turndown] = this.chartService.currentChart.chartId ? false : true;
     }
 
+    this.updateUserCharts();
+  }
+
+  updateUserCharts() {
+    // update user chart data for chart switch dropdown
+
     // update user chart data
     this.userChartTotal = this.authService.currentUser.charts.length;
 
@@ -134,7 +140,9 @@ export class ChartComponent implements OnInit {
               console.log(response);
               this.statusService.setStatus(response['status'] as Status);
               if (response['status']['type'] == 'success') {
-                this.chartService.currentChart = response['data'] as Chart;
+                let newChart = response['data'] as Chart;
+                this.authService.currentUser.charts.push(newChart)
+                this.chartService.currentChart = newChart;
                 this.initChart();
               }
             });

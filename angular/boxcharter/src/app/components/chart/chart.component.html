@@ -46,7 +46,7 @@
                   {{ otherChart.title }}
             </a>
           <a *ngIf="userChartTotal && userChartTotal > 5" 
-             (click)="openUserPage()"
+             (click)="chartService.currentChart = null"
              clrDropdownItem>
                 more charts...
           </a>
