@@ -51,7 +51,6 @@ export class ChartComponent implements OnInit {
   dirty: Boolean = false; // tracking whether chart has been edited since open / save
   expandChartData: Object = {}; // for tracking whether each tree is open or closed
   lyricistSame: boolean = false; // lyricist same as composer?
-  measureCells: Object[]; // for tracking when to show measure dropdown
 
   // for showing user charts
   userCharts: Object[];
@@ -76,7 +75,6 @@ export class ChartComponent implements OnInit {
   
   initChart() {
     // to be done whenever this.chartService.currentChart changes
-    this.organizeMeasures();
     this.dirty = false;
 
     for (let turndown of chartDataTurndowns) {
@@ -149,33 +147,6 @@ export class ChartComponent implements OnInit {
       }
   }
 
-  organizeMeasures() {
-    // measures need to be pre-organized in order to split them into rows
-
-    this.measureCells = new Array(this.chartService.currentChart.sections.length).fill({});
-
-    for (let sIndex=0; sIndex < this.chartService.currentChart.sections.length; sIndex++) {
-      let section = this.chartService.currentChart.sections[sIndex];
-      let rowWidth = section.measuresPerRow;
-      let measureCount = section.measures.length;
-      let rowCount = Math.ceil( measureCount / rowWidth);
-      section.rows = [];
-      for (let rIndex=0; rIndex < rowCount; rIndex++ ) {
-        let row = new Array();
-        for (let cIndex=0; cIndex < rowWidth; cIndex++) {
-          let mIndex = (rIndex * rowWidth) + cIndex;
-          if (mIndex >= measureCount) {
-            break;
-          }
-          let measure = section.measures[mIndex];
-          measure.index = mIndex;
-          row.push(measure);
-        }
-        section.rows.push(row);
-      }
-    }
-  }
-
   deleteElement(elementType: string, sectionIndex: number, measureIndex) {
     // delete element from chart (or chart itself if that's what's called for)
 
@@ -189,7 +160,7 @@ export class ChartComponent implements OnInit {
             break;
         case 'measure':
             this.chartService.currentChart.sections[sectionIndex].measures.splice(measureIndex, 1);
-            this.organizeMeasures();
+            this.chartService.organizeMeasures();
             break;
         default:
             console.log(`bad delete element: ${elementType}`);
@@ -208,7 +179,7 @@ export class ChartComponent implements OnInit {
     sect.measures = Array();
     this.chartService.currentChart.sections.splice(index, 0, sect);
     this.addMeasures(index, 20);
-    this.organizeMeasures();
+    this.chartService.organizeMeasures();
   }
 
   addMeasures(sectionIndex, newMeasureCount) {
@@ -216,14 +187,14 @@ export class ChartComponent implements OnInit {
     let meas = new Measure();
     let measArray = Array(+newMeasureCount).fill(meas);
     this.chartService.currentChart.sections[sectionIndex].measures.push(...measArray);
-    this.organizeMeasures();
+    this.chartService.organizeMeasures();
   }
 
   addMeasureBefore(sectionIndex, measureIndex) {
     // add measure in the section sectionIndex, before the index measureIndex
     let meas = new Measure();
     this.chartService.currentChart.sections[sectionIndex].measures.splice(measureIndex, 0, meas);
-    this.organizeMeasures();
+    this.chartService.organizeMeasures();
   }
 
   deleteEmptyMeasures(sectionIndex) {
@@ -234,7 +205,7 @@ export class ChartComponent implements OnInit {
     while (measures.length > 0 && this.isEmpty(measures.slice(-1)[0])) {
       measures.splice(-1, 1)
     }
-    this.organizeMeasures();
+    this.chartService.organizeMeasures();
   }
 
   isEmpty(measure) {

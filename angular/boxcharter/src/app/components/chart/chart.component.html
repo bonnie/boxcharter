@@ -263,13 +263,13 @@
       <table class="table table-compact">
       <tr *ngFor="let row of section.rows">
         <td *ngFor="let measure of row"
-            (mouseenter)="measureCells[sectionIndex][measure.index]=true"
-            (mouseleave)="measureCells[sectionIndex][measure.index]=false"
+            (mouseenter)="chartService.measureCells[sectionIndex][measure.index]=true"
+            (mouseleave)="chartService.measureCells[sectionIndex][measure.index]=false"
             class="measure">
           <!-- START: measure dropdown -->
           <div class="measure-dropdown">
             <clr-dropdown 
-                *ngIf="measureCells[sectionIndex] && measureCells[sectionIndex][measure.index]"
+                *ngIf="chartService.measureCells[sectionIndex] && chartService.measureCells[sectionIndex][measure.index]"
                 [clrMenuPosition]="'bottom-left'" 
                 [clrCloseMenuOnItemClick]="true"
                 class="measure-dropdown">

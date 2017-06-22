@@ -36,6 +36,7 @@ import { flaskServer } from '../app.component';
 export class ChartService {
 
   public currentChart: Chart = null;
+  public measureCells: Object[]; // breaking cells into lines
   private baseURL = `${flaskServer}/chart`;
   private jsonHeaders = new Headers(
     {'Content-Type': 'application/json'});
@@ -55,6 +56,7 @@ export class ChartService {
                       let status = response.json()['status'];
                       if (status['type'] == 'success') {
                         this.currentChart = response.json()['chart'] as Chart;
+                        this.organizeMeasures();
                         this.router.navigateByUrl('/chart');
                       } else {
                         this.statusService.setStatus(status);
@@ -63,6 +65,33 @@ export class ChartService {
                     .catch(err => this.errorService.handleError(err, this.statusService));
   }
   
+  organizeMeasures() {
+    // measures need to be pre-organized in order to split them into rows
+
+    this.measureCells = new Array(this.currentChart.sections.length).fill({});
+
+    for (let sIndex=0; sIndex < this.currentChart.sections.length; sIndex++) {
+      let section = this.currentChart.sections[sIndex];
+      let rowWidth = section.measuresPerRow;
+      let measureCount = section.measures.length;
+      let rowCount = Math.ceil( measureCount / rowWidth);
+      section.rows = [];
+      for (let rIndex=0; rIndex < rowCount; rIndex++ ) {
+        let row = new Array();
+        for (let cIndex=0; cIndex < rowWidth; cIndex++) {
+          let mIndex = (rIndex * rowWidth) + cIndex;
+          if (mIndex >= measureCount) {
+            break;
+          }
+          let measure = section.measures[mIndex];
+          measure.index = mIndex;
+          row.push(measure);
+        }
+        section.rows.push(row);
+      }
+    }
+  }
+
   updateChart(): Promise<Status> {
     // update the database with changes to a chart
     
