@@ -120,9 +120,6 @@ def create_chart(data, user_id):
         response dict with 'status' and 'chart' keys
     """
 
-    print "input"
-    print data
-
     # for errors
     error_kwargs = {'data': data}
     err_status = deepcopy(ERROR_STATUS) 
@@ -152,8 +149,5 @@ def create_chart(data, user_id):
         response = deepcopy(SUCCESS_STATUS)
         response['status']['text'] = SUCCESS_TEXT.format('created')
         response['data'] = chart_data
-
-        print "response"
-        print response
 
         return response
