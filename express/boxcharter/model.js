@@ -7,6 +7,12 @@ var Sequelize = require('Sequelize')
 // Executing (default): SELECT 1+1 AS result
 // github issue: https://github.com/sequelize/sequelize/issues/7818
 
+// sequelize instance
+const sequelize = new Sequelize(
+  'postgres:///boxchart_express'
+  // { define: { paranoid: true } } // when deleting a record, leave in db and set deletedAt
+)
+
 //////////////////////////////////////////////////////////////////////////////
 // User
 //////////////////////////////////////////////////////////////////////////////
@@ -20,12 +26,12 @@ const User = sequelize.define('user', {
     primaryKey: true,
   },
   email: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
     allowNull: false,
     unique: true,
   },
   passwordHash: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
     allowNull: false,
   },
   firstName: {
@@ -41,11 +47,13 @@ const User = sequelize.define('user', {
 ////////////////
 // associations
 
-User.hasMany(Chart,
-  through: {
-  model: UserChart,
-  unique: false
-})
+// User.hasMany(Chart,
+//   {
+//     through: {
+//       model: UserChart,
+//       unique: false
+//     }
+// })
 
 ///////////
 // methods
@@ -65,12 +73,76 @@ User.hasMany(Chart,
 
 //////////
 // table
+const Chart = sequelize.define('chart', {
+  chartId: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+
+  // text metadata
+  title: { type: Sequelize.STRING },
+  author: { type: Sequelize.STRING },
+  composer: { type: Sequelize.STRING },
+  lyricist: { type: Sequelize.STRING },
+
+  // is the lyricist the same as the composer?
+  lyricist_same: {
+    type: Sequelize.BOOLEAN,
+    default: false,
+  },
+
+  // chart pdf properties
+  maxPages: {
+    type: Sequelize.INTEGER,
+    default: 1,
+  },
+  minFontsize: {
+    type: Sequelize.INTEGER,
+    default: 10,
+  },
+  pageWidth: {
+    type: Sequelize.FLOAT,
+    default: 8.5,
+  },
+  pageHeight: {
+    type: Sequelize.FLOAT,
+    default: 11,
+  },
+  pageUnits: {
+    type: Sequelize.STRING,
+    default: 'inches',
+  }
+})
 
 ////////////////
 // associations
 
+// user_id (many to many?)
+
+// # chart key
+// original_key = db.Column(db.String(2), db.ForeignKey('keys.key_code'))
+// print_key = db.Column(db.String(2),
+//                       db.ForeignKey('keys.key_code'),
+//                       nullable=True)
+//
+
+
 ///////////
 // methods
+
+//////////////////////////////////////////////////////////////////////////////
+// Note / ScaleNote / Key
+//////////////////////////////////////////////////////////////////////////////
+
+//////////
+// tables
+
+
+
+////////////////
+// associations
+
 
 //////////////////////////////////////////////////////////////////////////////
 //
@@ -90,10 +162,6 @@ User.hasMany(Chart,
 // Database connection and creation
 //////////////////////////////////////////////////////////////////////////////
 
-const sequelize = new Sequelize(
-  'postgres:///boxchart_express',
-  // { define: { paranoid: true } } // when deleting a record, leave in db and set deletedAt
-)
 sequelize
   .authenticate()
   .then(() => {
@@ -104,11 +172,11 @@ sequelize
   })
 
 // create tables, but only if they don't already exist
-sequelize.sync()
+// sequelize.sync()
+sequelize.sync({force: true}) // force=true creates tables even if they already exist
   .then(() => {
     console.log('Tables created.')
   })
   .catch(error => {
     console.error(`Unable to create tables: ${error}`)
   })
-)
