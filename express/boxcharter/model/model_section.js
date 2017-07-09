@@ -21,16 +21,18 @@
 var Sequelize = require('Sequelize')
 var db = require('./db')
 var chart = require('./model_chart')
+var measure = require('./model_measure')
 
 // for associations
-const Chart = chart.Chart
+// const Chart = chart.Chart
 
 // for measureId fields
 const referencesMeasure = {
   type: Sequelize.INTEGER,
   references: {
-    model: Measure,
+    model: measure.Measure,
     key: 'measureId',
+  }
 }
 
  //////////////////////////////////////////////////////////////////////////////
@@ -72,9 +74,11 @@ const Section = db.sequelize.define('section', {
     type: Sequelize.BOOLEAN,
     default: false,
   },
-  ending1Start: referencesMeasure,
-  ending1End: referencesMeasure,
-  ending2Start: referencesMeasure,
+
+  // can't do these as associations because it causes cyclic references
+  // ending1Start: referencesMeasure,
+  // ending1End: referencesMeasure,
+  // ending2Start: referencesMeasure,
 
 })
  //////////
@@ -83,11 +87,17 @@ const Section = db.sequelize.define('section', {
  ////////////////
  // associations
 
- const Section.Chart = Section.belongsTo(Chart)
- const Chart.Sections = Chart.hasMany(Section) // order_by section id
+ Section.belongsTo(chart.Chart)
+ Section.belongsToMany(measure.Measure, { through: measure.Measure })
+ // chart.Chart.hasMany(Section) // order_by section id
 
  // chart_id = db.Column(db.Integer, db.ForeignKey("charts.chart_id"))
 
 
+
  ///////////
  // methods
+
+ module.exports = {
+   Section: Section,
+ };

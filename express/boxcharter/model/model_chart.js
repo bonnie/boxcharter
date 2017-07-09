@@ -23,8 +23,8 @@ var db = require('./db')
 var user = require('./model_user')
 var key = require('./model_note-key')
 
-const User = user.User
-const Key = key.Key
+// const User = user.User
+// const Key = key.Key
 
 // for keyId fields
 // const referencesKey = {
@@ -92,12 +92,11 @@ const Key = key.Key
  ////////////////
  // associations
 
- const Chart.User = Chart.belongsTo(User)
- const User.Charts = User.hasMany(Chart)
+ Chart.belongsTo(user.User)
+ // user.User.hasMany(Chart)
 
- const Chart.originalKey = Chart.belongsTo(Key, {as: 'originalKey', foreignKey : 'KeyId'});
- const Chart.printKey = Chart.belongsTo(Key, {as: 'printKey', foreignKey : 'KeyId'});
-
+ Chart.belongsTo(key.Key, {as: 'originalKey', foreignKey : 'KeyId'});
+ Chart.belongsTo(key.Key, {as: 'printKey', foreignKey : 'KeyId'});
 
  // user_id (many to many?)
 

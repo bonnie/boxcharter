@@ -21,7 +21,6 @@
  var Sequelize = require('Sequelize')
  var db = require('./db')
 
-
  //////////////////////////////////////////////////////////////////////////////
  // Note / ScaleNote / Key
  //////////////////////////////////////////////////////////////////////////////
@@ -52,11 +51,11 @@
  ////////////////
  // associations
 
- var scaleNote.Note = scaleNote.hasOne(Note)
- var scaleNote.Key = scaleNote.hasOne(Key)
+ ScaleNote.hasOne(Note)
+ ScaleNote.hasOne(Key)
 
  // Key -- notes = db.relationship("ScaleNote", order_by=ScaleNote.scale_degree)
- var Key.Notes = Key.hasMany(ScaleNote) // order_by? 
+ // Key.hasMany(ScaleNote) // order_by?
 
  module.exports = {
    Note: Note,

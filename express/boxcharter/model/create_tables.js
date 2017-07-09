@@ -23,7 +23,7 @@
 // Database connection and creation
 //////////////////////////////////////////////////////////////////////////////
 
-var model = require('./model')
+var db = require('./db')
 
 // order is important for associations / dependencies ( or is it...? )
 require('./model_note-key.js')
@@ -32,7 +32,7 @@ require('./model_chart.js')
 require('./model_measure.js')
 require('./model_section.js')
 
-var sequelize = model.sequelize
+var sequelize = db.sequelize
 
 sequelize
   .authenticate()
@@ -41,6 +41,7 @@ sequelize
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err)
+    process.exit()
   })
 
 // create tables, but only if they don't already exist
@@ -48,6 +49,7 @@ sequelize
 sequelize.sync({force: true}) // force=true creates tables even if they already exist
   .then(() => {
     console.log('Tables created.')
+    process.exit()
   })
   .catch(error => {
     console.error(`Unable to create tables: ${error}`)

@@ -25,10 +25,11 @@
 
 var Sequelize = require('Sequelize')
 var db = require('./db')
-var section = require('./model_section')
+// var section = require('./model_section')
+var key = require('./model_note-key')
 
 // for associations
-const Section = section.Section
+// const Section = section.Section
 
 //////////////////////////////////////////////////////////////////////////////
 // Chord
@@ -47,14 +48,8 @@ const Chord = db.sequelize.define('chord', {
    type: Sequelize.INTEGER,
    allowNull: false,
  },
+ chordSuffix: { type: Sequelize.STRING(8) },
 })
-
-////////////////
-// associations
-
-// measure_id = db.Column(db.Integer, db.ForeignKey("measures.measure_id"))
-// note_code = db.Column(db.String(2), db.ForeignKey('notes.note_code'))
-// chordSuffix: { type: Sequelize.STRING(8) },
 
 
 ///////////
@@ -82,11 +77,11 @@ const Lyric = db.sequelize.define('lyric', {
     autoIncrement: true,
     primaryKey: true,
   },
-  verseIndex {
+  verseIndex: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  lyricText {
+  lyricText: {
     type: Sequelize.STRING,
   }
 })
@@ -104,25 +99,25 @@ const Lyric = db.sequelize.define('lyric', {
 //////////
 // table
 
-const Measure = db.sequelize.define('lyric', {
+const Measure = db.sequelize.define('measure', {
   measureId: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  sectionId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Section,
-      key: 'sectionId',
-      allowNull: false,
-    }
-  },
+  // sectionId: {
+  //   type: Sequelize.INTEGER,
+  //   references: {
+  //     model: section.Section,
+  //     key: 'sectionId',
+  //     allowNull: false,
+  //   }
+  // },
   index: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  beats_per_measure: {
+  beatsPerMeasure: {
     type: Sequelize.INTEGER
   }
 })
@@ -130,15 +125,36 @@ const Measure = db.sequelize.define('lyric', {
 ////////////////
 // associations
 
-const Measure.Section = Measure.belongsTo(Section)
-const Section.Measures = Chart.hasMany(Measure)  // order_by index
+// Measure.belongsTo(section.Section, {foreignKey : 'SectionId'})
 
-const Measure.Chords = Measure.hasMany(Chord) // order by beatIndex
-const Measure.Lyrics = Measure.hasMany(Lyric) // order by verseIndex
+// Section.hasMany(Measure)  // order_by index
+
+// Measure.hasMany(Chord) // order by beatIndex
+// Measure.hasMany(Lyric) // order by verseIndex
 
 // section_id = db.Column(db.Integer,
 //     db.ForeignKey("sections.section_id", use_alter=True, name='fk_measure_section_id'))
 
+// section.Section.belongsTo(Measure, {as: 'ending1Start', foreignKey : 'MeasureId'});
+// section.Section.belongsTo(Measure, {as: 'ending1End', foreignKey : 'MeasureId'});
+// section.Section.belongsTo(Measure, {as: 'ending2Start', foreignKey : 'MeasureId'});
+
+// need to use Measure.hasOne instead of Section.belongsTo, in order to avoid
+// circular references
+// Measure.hasOne(section.Section, {as: 'ending1Start', foreignKey : 'MeasureId'})
+// Measure.hasOne(section.Section, {as: 'ending1End', foreignKey : 'MeasureId'})
+// Measure.hasOne(section.Section, {as: 'ending2Start', foreignKey : 'MeasureId'})
+
+
+////////////////
+// chord
+
+Chord.belongsTo(Measure)
+Chord.belongsTo(key.Note)
+// measure_id = db.Column(db.Integer, db.ForeignKey("measures.measure_id"))
+// note_code = db.Column(db.String(2), db.ForeignKey('notes.note_code'))
+
+Lyric.belongsTo(Measure)
 
 // chords = db.relationship("Chord", order_by=Chord.beat_index)
 // lyrics = db.relationship("Lyric", order_by=Lyric.verse_index)
@@ -181,3 +197,9 @@ const Measure.Lyrics = Measure.hasMany(Lyric) // order by verseIndex
 //
 //     db.session.add(self)
 //     db.session.commit()
+
+module.exports = {
+  Measure: Measure,
+  Chord: Chord,
+  Lyric: Lyric,
+};
