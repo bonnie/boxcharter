@@ -39,4 +39,8 @@ export class AppComponent {
     }
 }
 
-export const flaskServer = 'http://localhost:5050';
+// flask
+// export const flaskServer = 'http://localhost:5050';
+
+// express
+export const flaskServer = 'http://localhost:3000';
