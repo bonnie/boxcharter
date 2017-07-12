@@ -27,7 +27,7 @@ import { Status } from '../model/status'
 @Injectable()
 export class StatusService {
 
-  public status: Status;
+  public status: Status = null;
 
   constructor() { }
 
