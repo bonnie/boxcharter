@@ -20,10 +20,15 @@
 
 /* for status consistency from express to angular */
 
-const statusTypes = {
+const adminEmail = 'admin@boxcharter.com'
+const contactAdmin = `Please report this error to ${adminEmail}`
+
+const statusStrings = {
     success: 'success',
     warning: 'warning',
-    danger: 'danger'
+    danger: 'danger',
+    contactAdmin: contactAdmin, 
+    badRequest: `The server did not understand this request. ${contactAdmin}`
 }
 
-module.exports = { statusTypes: statusTypes }
+module.exports = { statusStrings: statusStrings }
