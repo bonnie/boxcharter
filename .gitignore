@@ -7,12 +7,12 @@ logs/
 ##### angular #####
 
 # compiled output
-angular/boxcharter/dist
-angular/boxcharter/tmp
-angular/boxcharter/out-tsc
+boxcharter/dist
+boxcharter/tmp
+boxcharter/out-tsc
 
 # dependencies
-angular/boxcharter/node_modules
+boxcharter/node_modules
 
 # IDEs and editors
 /.idea
