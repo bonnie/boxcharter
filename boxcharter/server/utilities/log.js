@@ -26,7 +26,7 @@ var winston = require('winston')
 const logRoot = '/var/log/boxcharter/'
 const errorLogTransport = new winston.transports.File ({
             filename: `${logRoot}/error_log`,  
-            colorize: true,
+            colorize: false,
             timestamp: true,
             json: false,
             maxsize: '1024',
