@@ -82,9 +82,9 @@ router.get('/check', function(req, res, next) {
       res.status(200).json(result)
     })
     .catch(error => {
-      const errorText = `Unable to check user ${userInfo.email}. ${statusStrings.contactAdmin}`
+      const errorText = `Unable to check user ${email}. ${statusStrings.contactAdmin}`
       console.error(errorText)
-      response.status = { type: statusStrings.danger, text: errorText }
+      response = { status: { type: statusStrings.danger, text: errorText } }
       res.status(200).json(response);
     })
 });

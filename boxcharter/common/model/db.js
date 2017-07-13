@@ -20,7 +20,8 @@
 
  // use Sequelize ORM to create database model
 
-var Sequelize = require('Sequelize')
+const Sequelize = require('Sequelize')
+const log = require('../../server/utilities/log')
 
 // Get this error when running:
 // DeprecationWarning: Using the automatically created return value from client.query as an event emitter is deprecated and will be removed in pg@7.0. Please see the upgrade guide at https://node-postgres.com/guides/upgrading
@@ -29,7 +30,8 @@ var Sequelize = require('Sequelize')
 
 // sequelize instance
 const sequelize = new Sequelize(
-  'postgres:///boxchart_express'
+  'postgres:///boxchart_express',
+  { logging: msg => { log.logger.info(`SEQUELIZE ${msg}`) } }
   // { define: { paranoid: true } } // when deleting a record, leave in db and set deletedAt
 )
 

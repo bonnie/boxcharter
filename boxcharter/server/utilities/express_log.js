@@ -27,31 +27,20 @@
 
 var winston = require('winston')
 var expressWinston = require('express-winston')
+var log = require('./log.js')
 
-// log location
-const logRoot = '/var/log/boxcharter/'
-
-// for errors
+// express errors
 const errorLogger = expressWinston.errorLogger({
     transports: [ 
-        new winston.transports.File ({
-            filename: `${logRoot}/error_log`,  
-            colorize: true,
-            timestamp: true,
-            json: false,
-            maxsize: '1024',
-            maxFiles: 10,
-            tailable: true,
-            zippedArchive: true
-        })
+        log.errorLogTransport
     ]
 })
 
-// access log params
+// express access
 const accessLogger = expressWinston.logger({
     transports: [ 
         new winston.transports.File ({
-            filename: `${logRoot}/access_log`,  
+            filename: `${log.logRoot}/access_log`,  
             colorize: false,
             timestamp: true,
             json: false,
@@ -63,8 +52,10 @@ const accessLogger = expressWinston.logger({
     ]
 })
 
+// general errors
+
+
 module.exports = {
     errorLogger: errorLogger,
     accessLogger: accessLogger,
-    logRoot: logRoot,
 }

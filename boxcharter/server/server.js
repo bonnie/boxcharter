@@ -27,7 +27,7 @@ const http = require('http');
 const bodyParser = require('body-parser');
 
 // logging
-const log = require('./utilities/logging')
+const expressLog = require('./utilities/express_log')
 
 // Get our API routes
 const user = require('./routes/user');
@@ -39,7 +39,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // access log: before routes
-app.use(log.accessLogger)
+app.use(expressLog.accessLogger)
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, '../dist')));
@@ -53,7 +53,7 @@ app.get('*', (req, res) => {
 });
 
 // error log: after routes
-app.use(log.errorLogger)
+app.use(expressLog.errorLogger)
 
 /**
  * Get port from environment and store in Express.
