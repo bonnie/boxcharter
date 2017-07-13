@@ -22,6 +22,10 @@ var express = require('express');
 var passUtils = require('../utilities/password_utils');
 var user = require('../../common/model/model_user')
 var statusStrings = require('../../common/status_strings').statusStrings
+var log = require('../utilities/log')
+var procError = require('../utilities/err')
+
+// create the router
 var router = express.Router();
 
 /* POST new user. */
@@ -57,16 +61,15 @@ router.post('/add', function(req, res, next) {
     .create(newUserData)
     .then(newUser => {
       const email = newUser.email
-      console.log("added new user", email)
+      log.logger.info("added new user", email)
       const message = `New user ${newUser.email} successfully added.`
       response.status = { type: statusStrings.success, text: message }
       res.status(200).json(response);
     })
     .catch(error => {
-      const errorText = `Unable to add user ${userInfo.email}. ${statusStrings.contactAdmin}`
-      console.error(errorText)
-      response.status = { type: statusStrings.danger, text: errorText }
-      res.status(200).json(response);
+      msg = `Unable to add user ${userInfo.email}`
+      response = procError(error, msg)
+      res.status(200).json(response)
     })
 });
 
@@ -82,10 +85,9 @@ router.get('/check', function(req, res, next) {
       res.status(200).json(result)
     })
     .catch(error => {
-      const errorText = `Unable to check user ${email}. ${statusStrings.contactAdmin}`
-      console.error(errorText)
-      response = { status: { type: statusStrings.danger, text: errorText } }
-      res.status(200).json(response);
+      msg = `Unable to check user ${email}`
+      response = procError(error, msg)
+      res.status(200).json(response)
     })
 });
 
