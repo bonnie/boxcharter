@@ -30,6 +30,7 @@
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "express": "^4.15.3",
+    "express-winston": "^2.4.0",
     "morgan": "^1.8.2",
     "mutationobserver-shim": "^0.3.2",
     "pg": "^6.4.0",
@@ -37,6 +38,8 @@
     "sequelize": "^4.2.0",
     "ts-helpers": "^1.1.1",
     "web-animations-js": "^2.2.1",
+    "winston": "^2.3.1",
+    "winston-logrotate": "^1.2.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

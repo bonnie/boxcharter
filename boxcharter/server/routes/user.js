@@ -21,7 +21,7 @@
 var express = require('express');
 var passUtils = require('../utilities/password_utils');
 var user = require('../../common/model/model_user')
-var statusStrings = require('../../common/status_types').statusStrings
+var statusStrings = require('../../common/status_strings').statusStrings
 var router = express.Router();
 
 /* POST new user. */

@@ -11,3 +11,5 @@ Sequelize tutorial: http://docs.sequelizejs.com/manual/tutorial/models-definitio
 passwords: https://ciphertrick.com/2016/01/18/salt-hash-passwords-using-nodejs-crypto/
 
 express reference: http://expressjs.com/en/api.html
+
+MEAN (mongo express angular node): http://mean.io/
