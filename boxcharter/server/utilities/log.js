@@ -22,6 +22,10 @@
 
 var winston = require('winston')
 
+// set default log level.
+// TODO: adjust according to debugging environment
+const logLevel = 'warn'
+
 // these constants exportable for use in other logging files
 const logRoot = '/var/log/boxcharter/'
 const errorLogTransport = new winston.transports.File ({
@@ -34,10 +38,6 @@ const errorLogTransport = new winston.transports.File ({
             tailable: true,
             zippedArchive: true
 })
-
-// set default log level.
-// TODO: adjust according to debugging environment
-const logLevel = 'info'
 
 // Set up logger
 const customColors = {

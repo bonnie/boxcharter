@@ -22,13 +22,57 @@ var express = require('express');
 var passUtils = require('../utilities/password_utils');
 var user = require('../../common/model/model_user')
 var statusStrings = require('../../common/status_strings').statusStrings
-var log = require('../utilities/log')
+var logger = require('../utilities/log').logger
 var procError = require('../utilities/err')
+var checkPass = require('../utilities/password_utils').checkPass
 
 // create the router
 var router = express.Router();
 
-/* POST new user. */
+/***********************/
+/* POST authorize user */
+/***********************/
+router.post('/auth', function(req, res, next) {
+  const email = req.body.email
+  const password = req.body.password
+
+  user.User.findOne({ where: {email: email} })
+    .then(foundUser => {
+      if (foundUser === null || !checkPass(foundUser, password)) {
+        // user not in db or password doesn't match
+        response = {
+          status: {
+            type: statusStrings.danger,
+            text: "Invalid email and/or password"
+          } 
+        }
+        logger.warn(`${email} loggedin with invalid password`)
+        res.status(200).json(response)
+        return
+      } 
+
+      // otherwise, all's rosy
+      const msg = `Successful login for ${email}`
+      const result = {
+        status: { type: statusStrings.success },
+        text: msg
+      }
+      logger.debug(msg)
+      res.status(200).json(result)
+    })
+    .catch(error => {
+      console.log(error)
+      msg = `Unable to authenticate user ${email}`
+      response = procError(error, msg)
+      res.status(200).json(response)
+    })
+
+})
+
+/***********************/
+/* POST new user.      */
+/***********************/
+
 router.post('/add', function(req, res, next) {
   const userInfo = req.body
 
@@ -61,7 +105,7 @@ router.post('/add', function(req, res, next) {
     .create(newUserData)
     .then(newUser => {
       const email = newUser.email
-      log.logger.info("added new user", email)
+      logger.info("added new user", email)
       const message = `New user ${newUser.email} successfully added.`
       response.status = { type: statusStrings.success, text: message }
       res.status(200).json(response);
@@ -73,7 +117,10 @@ router.post('/add', function(req, res, next) {
     })
 });
 
+/***********************/
 /* GET user existence. */
+/***********************/
+
 router.get('/check', function(req, res, next) {
 
   const email = req.query.email

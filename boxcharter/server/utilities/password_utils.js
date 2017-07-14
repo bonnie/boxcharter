@@ -57,4 +57,14 @@ var saltHashPassword = function(userpassword) {
     // console.log('nSalt = '+passwordData.salt);
 }
 
-module.exports.saltHashPassword = saltHashPassword
+var checkPass = function(user, pass) {
+    // user is a User object, pass is a string
+
+    return sha512(pass, user.passwordSalt).passwordHash === user.passwordHash
+
+}
+
+module.exports = {
+    saltHashPassword: saltHashPassword,
+    checkPass: checkPass
+}

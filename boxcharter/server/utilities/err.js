@@ -27,8 +27,8 @@ const procError = function(error, msg) {
     logger.crit(`${msg}: ${error}`)
     response = { 
         status: { 
-        type: statusStrings.danger, 
-        text: `${msg}. ${statusStrings.contactAdmin}` 
+            type: statusStrings.danger, 
+            text: `${msg}. ${statusStrings.contactAdmin}` 
         }
     }
     return response
