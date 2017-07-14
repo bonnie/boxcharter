@@ -54,8 +54,8 @@ router.post('/auth', function(req, res, next) {
       // otherwise, all's rosy
       const msg = `Successful login for ${email}`
       const result = {
-        status: { type: statusStrings.success },
-        text: msg
+        status: { type: statusStrings.success, text: msg },
+        user: foundUser
       }
       logger.debug(msg)
       res.status(200).json(result)
