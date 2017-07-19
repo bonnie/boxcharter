@@ -20,8 +20,8 @@
 
 var Sequelize = require('Sequelize')
 var db = require('./db')
-var user = require('./model_user')
-var key = require('./model_note-key')
+var user = require('./user')
+var key = require('./note-key')
 
 // const User = user.User
 // const Key = key.Key

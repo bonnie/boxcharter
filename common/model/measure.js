@@ -25,8 +25,8 @@
 
 var Sequelize = require('Sequelize')
 var db = require('./db')
-// var section = require('./model_section')
-var key = require('./model_note-key')
+// var section = require('./section')
+var key = require('./note-key')
 
 // for associations
 // const Section = section.Section

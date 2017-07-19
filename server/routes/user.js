@@ -20,7 +20,7 @@
 
 var express = require('express');
 var passUtils = require('../utilities/password_utils');
-var user = require('../../common/model/model_user')
+var user = require('../../common/model/user')
 var statusStrings = require('../../common/status_strings').statusStrings
 var logger = require('../utilities/log').logger
 var procError = require('../utilities/err')

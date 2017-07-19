@@ -20,8 +20,8 @@
 
 var Sequelize = require('Sequelize')
 var db = require('./db')
-var chart = require('./model_chart')
-var measure = require('./model_measure')
+var chart = require('./chart')
+var measure = require('./measure')
 
 // for associations
 // const Chart = chart.Chart
