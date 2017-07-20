@@ -25,7 +25,7 @@ import { flaskServer } from '../app.component'
 import { ErrorService } from './error.service';
 import { StatusService } from './status.service';
 import { LoginRegisterService } from './login-register.service'
-import { Status } from '../model/status'
+import { Status } from '../../../../common/model/status'
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/delay';

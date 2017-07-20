@@ -21,7 +21,7 @@
 /* This service maintains a common Status object among components. */
 
 import { Injectable } from '@angular/core';
-import { Status } from '../model/status'
+import { Status } from '../../../../common/model/status'
 
 
 @Injectable()

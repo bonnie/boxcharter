@@ -23,7 +23,7 @@ import { Router }      from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { StatusService } from '../../services/status.service';
 import { LoginRegisterService } from '../../services/login-register.service';
-import { Status } from '../../model/status';
+import { Status } from '../../../../../common/model/status';
 
 @Component({
   selector: 'app-login',

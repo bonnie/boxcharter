@@ -27,8 +27,8 @@ import { StatusService } from '../../services/status.service';
 import { AuthService } from '../../services/auth.service';
 import { LoginRegisterService } from '../../services/login-register.service';
 
-import { Input } from '../../model/input';
-import { User } from '../../model/data-model';
+import { Input } from '../../../../../common/model/input';
+import { User } from '../../../../../common/model/data-model';
 
 @Component({
   selector: 'app-register',

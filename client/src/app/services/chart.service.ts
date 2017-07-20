@@ -28,8 +28,8 @@ import * as moment from 'moment';
 import { StatusService } from './status.service';
 import { ErrorService } from './error.service';
 
-import { Chart } from '../model/data-model';
-import { Status } from '../model/status';
+import { Chart } from '../../../../common/model/data-model';
+import { Status } from '../../../../common/model/status';
 import { flaskServer } from '../app.component';
 
 @Injectable()

@@ -25,7 +25,7 @@ import { StatusService } from '../../services/status.service';
 import { AuthService } from '../../services/auth.service';
 import { ChartService } from '../../services/chart.service';
 
-import { Chart, User } from '../../model/data-model';
+import { Chart, User } from '../../../../../common/model/data-model';
 
 @Component({
   selector: 'app-user-charts',

@@ -20,7 +20,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { StatusService } from '../../services/status.service';
-import { Status } from '../../model/status';
+import { Status } from '../../../../../common/model/status';
 
 @Component({
   selector: 'app-status',

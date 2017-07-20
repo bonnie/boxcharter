@@ -29,8 +29,8 @@ import { LoginRegisterService } from './login-register.service';
 import { ChartService } from './chart.service';
 
 import { flaskServer } from '../app.component'
-import { Status } from '../model/status';
-import { User } from '../model/data-model';
+import { Status } from '../../../../common/model/status';
+import { User } from '../../../../common/model/data-model';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/delay';

@@ -27,9 +27,9 @@ import { StatusService } from '../../services/status.service';
 import { DialogService } from '../../services/dialog.service';
 import { AuthService } from '../../services/auth.service';
 
-import { Measure, Section } from '../../model/data-model';
-import { Status } from '../../model/status';
-import { Chart } from '../../model/data-model';
+import { Measure, Section } from '../../../../../common/model/data-model';
+import { Status } from '../../../../../common/model/status';
+import { Chart } from '../../../../../common/model/data-model';
 
 const chartDataTurndowns: string[] = [
     'authors',
