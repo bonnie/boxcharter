@@ -18,17 +18,25 @@
  *
  */
 
-/* for status consistency from express to angular */
+class Status {
+  constructor(type, msg) {
+    this.alertType = type
+    this.text = msg
+    this.clrAlertClosed = false // for ui
+  }
+}
 
 const adminEmail = 'admin@boxcharter.com'
 const contactAdmin = `Please report this error to ${adminEmail}`
 
 const statusStrings = {
-    success: 'success',
-    warning: 'warning',
-    danger: 'danger',
-    contactAdmin: contactAdmin, 
+    success: 'alert-success',
+    warning: 'alert-warning',
+    danger: 'alert-danger',
+    contactAdmin: contactAdmin,
     badRequest: `The server did not understand this request. ${contactAdmin}`
 }
 
-module.exports = { statusStrings: statusStrings }
+module.exports = {
+  Status: Status,
+  statusStrings: statusStrings }

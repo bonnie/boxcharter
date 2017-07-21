@@ -21,7 +21,8 @@
 var express = require('express');
 var passUtils = require('../utilities/password_utils');
 var user = require('../../common/model/user')
-var statusStrings = require('../../common/status_strings').statusStrings
+var statusStrings = require('../../common/model/status').statusStrings
+var Status = require('../../common/model/status').Status
 var logger = require('../utilities/log').logger
 var procError = require('../utilities/err')
 var checkPass = require('../utilities/password_utils').checkPass
@@ -35,26 +36,27 @@ var router = express.Router();
 router.post('/auth', function(req, res, next) {
   const email = req.body.email
   const password = req.body.password
+  const status = new Status()
 
   user.User.findOne({ where: {email: email} })
     .then(foundUser => {
       if (foundUser === null || !checkPass(foundUser, password)) {
         // user not in db or password doesn't match
-        response = {
-          status: {
-            type: statusStrings.danger,
-            text: "Invalid email and/or password"
-          } 
-        }
+        status.alertType = statusStrings.danger
+        status.text = "Invalid email and/or password"
+
+        response = { status: status }
         logger.warn(`${email} loggedin with invalid password`)
         res.status(200).json(response)
         return
-      } 
+      }
 
       // otherwise, all's rosy
-      const msg = `Successful login for ${email}`
+      msg = `Successful login for ${email}`
+      status.alertType = statusStrings.success
+      status.text = msg
       const result = {
-        status: { type: statusStrings.success, text: msg },
+        status: status,
         user: foundUser
       }
       logger.debug(msg)
@@ -86,7 +88,7 @@ router.post('/add', function(req, res, next) {
 
   // create salted password hash
   // general web consensus seems to be: hash on server side, and use
-  // https to protect password in transit 
+  // https to protect password in transit
   const passData = passUtils.saltHashPassword(userInfo.password)
 
   // massage userInfo obj to contain salted pass hash

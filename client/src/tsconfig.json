@@ -2,6 +2,7 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
+        "allowJs": true,
         "rootDir": "../",
         "baseUrl": "",
         "declaration": false,

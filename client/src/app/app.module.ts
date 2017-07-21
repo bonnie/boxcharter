@@ -50,6 +50,8 @@ import { AuthService } from './services/auth.service';
 import { ChartService } from './services/chart.service';
 import { LoginRegisterService } from './services/login-register.service';
 
+import { statusStrings } from '../../../common/model/status'
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -64,7 +66,7 @@ import { LoginRegisterService } from './services/login-register.service';
         NotFoundComponent,
         RegisterComponent,
         LoginRegisterComponent,
-        UserChartsComponent
+        UserChartsComponent,
     ],
     imports: [
         BrowserAnimationsModule,
@@ -75,15 +77,15 @@ import { LoginRegisterService } from './services/login-register.service';
         // LoginRoutingModule,
         AppRoutingModule
     ],
-    
+
     // injecting global services here
-    providers: [ 
+    providers: [
         StatusService,
-        DialogService, 
-        ErrorService, 
-        AuthService, 
-        LoginRegisterService, 
-        ChartService 
+        DialogService,
+        ErrorService,
+        AuthService,
+        LoginRegisterService,
+        ChartService
     ],
 
     bootstrap: [ AppComponent ],

@@ -18,8 +18,17 @@
  *
  */
 
+// TODO: figure out how to share these between JS and TS without duplicating
+// code...
+
 export class Status {
     text: string;
     clrAlertClosed: boolean;
     alertType: string;
+}
+
+export class statusStrings {
+  public static success: 'alert-success';
+  public static warning: 'alert-warning';
+  public static danger: 'alert-danger';
 }

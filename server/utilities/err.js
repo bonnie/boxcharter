@@ -20,15 +20,15 @@
 
  /* Handle express errors */
 
-var statusStrings = require('../../common/status_strings').statusStrings
+var statusStrings = require('../../common/model/Status').statusStrings
 var logger = require('../utilities/log').logger
 
 const procError = function(error, msg) {
     logger.crit(`${msg}: ${error}`)
-    response = { 
-        status: { 
-            type: statusStrings.danger, 
-            text: `${msg}. ${statusStrings.contactAdmin}` 
+    response = {
+        status: {
+            type: statusStrings.danger,
+            text: `${msg}. ${statusStrings.contactAdmin}`
         }
     }
     return response

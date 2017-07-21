@@ -29,7 +29,7 @@ import { StatusService } from './status.service';
 import { ErrorService } from './error.service';
 
 import { Chart } from '../../../../common/model/data-model';
-import { Status } from '../../../../common/model/status';
+import { Status, statusStrings } from '../../../../common/model/status';
 import { flaskServer } from '../app.component';
 
 @Injectable()
@@ -53,8 +53,8 @@ export class ChartService {
     return this.http.get(url)
                     .toPromise()
                     .then(response => {
-                      let status = response.json()['status'];
-                      if (status['type'] == 'success') {
+                      let status = response.json()['status'] as Status;
+                      if (status.alertType == statusStrings.success) {
                         this.currentChart = response.json()['chart'] as Chart;
                         this.organizeMeasures();
                         this.router.navigateByUrl('/chart');
@@ -64,7 +64,7 @@ export class ChartService {
                     })
                     .catch(err => this.errorService.handleError(err, this.statusService));
   }
-  
+
   organizeMeasures() {
     // measures need to be pre-organized in order to split them into rows
 
@@ -94,10 +94,10 @@ export class ChartService {
 
   updateChart(): Promise<Status> {
     // update the database with changes to a chart
-    
+
     const url = `${this.baseURL}/${this.currentChart.chartId}`;
 
-    return this.http  
+    return this.http
           .put(url, JSON.stringify(this.currentChart), {headers: this.jsonHeaders})
           .toPromise()
           .then(response => response.json())
@@ -119,7 +119,7 @@ export class ChartService {
 
     const url = `${flaskServer}/user/${userId}/chart/create`;
 
-    return this.http  
+    return this.http
           .put(url, JSON.stringify(this.currentChart), {headers: this.jsonHeaders})
           .toPromise()
           .then(response => response.json())
@@ -132,4 +132,3 @@ export class ChartService {
     this.currentChart = null;
   }
 }
-

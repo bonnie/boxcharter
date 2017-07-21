@@ -29,7 +29,7 @@ import { LoginRegisterService } from './login-register.service';
 import { ChartService } from './chart.service';
 
 import { flaskServer } from '../app.component'
-import { Status } from '../../../../common/model/status';
+import { Status, statusStrings } from '../../../../common/model/status';
 import { User } from '../../../../common/model/data-model';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
@@ -61,9 +61,9 @@ export class AuthService {
     return this.http.post(this.authURL, JSON.stringify(loginInfo), {headers: this.jsonHeaders})
                     .toPromise()
                     .then(response => {
-                                      let status = response.json()['status'];
+                                      let status = response.json()['status'] as Status;
                                       this.statusService.setStatus(status);
-                                      if (status['type'] == 'success') {
+                                      if (status.alertType == statusStrings.success) {
                                           this.setUser(response.json()['user'] as User);
                                       }
                                     })
@@ -90,4 +90,3 @@ export class AuthService {
   }
 
 }
-

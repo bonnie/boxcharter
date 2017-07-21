@@ -21,8 +21,7 @@
 /* This service maintains a common Status object among components. */
 
 import { Injectable } from '@angular/core';
-import { Status } from '../../../../common/model/status'
-
+import { Status, statusStrings } from '../../../../common/model/status'
 
 @Injectable()
 export class StatusService {
@@ -33,11 +32,11 @@ export class StatusService {
 
   setStatus(statusResponse: object): void {
     // set the status based on response from Flask
-    this.status = new Status();
-    this.status.alertType = 'alert-' + statusResponse['type'];
-    this.status.text = statusResponse['text'];
+    this.status = statusResponse as Status;
+    // this.status.alertType = 'alert-' + statusResponse['type'];
+    // this.status.text = statusResponse['text'];
   }
-  
+
   clearStatus(): void {
     // clear the status data
     this.status = null;
@@ -45,7 +44,7 @@ export class StatusService {
 
   clearSuccess(): void {
     // clear the status only if it's a success status
-    if (this.status && this.status.alertType == 'alert-success') {
+    if (this.status && this.status.alertType == statusStrings.success) {
       this.status = null;
     }
   }
