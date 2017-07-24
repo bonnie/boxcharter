@@ -79,14 +79,15 @@
 
 User.getUser = function(whereClause) {
   return this.find({
-   where: whereClause,
+    where: whereClause,
     attributes: {
-     exclude: [
-       User.passwordHash,
-       User.passwordSalt,
-     ]
-    }
-  })
+      exclude: [
+        'passwordHash',
+        'passwordSalt',
+      ]
+    },
+    raw: true
+   })
 }
 
 User.getByEmail = function(targetEmail) {

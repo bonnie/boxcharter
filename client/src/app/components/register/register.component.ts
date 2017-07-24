@@ -68,20 +68,20 @@ export class RegisterComponent implements OnInit {
     // first name
     let fnameInput = new Input();
     fnameInput.label = 'First Name';
-    fnameInput.name = 'fname';
+    fnameInput.name = 'firstName';
     fnameInput.type = 'text'
     fnameInput.required = false;
     fnameInput.placeholder = 'Jane';
-    this.inputs['fname'] = fnameInput;
+    this.inputs['firstName'] = fnameInput;
 
     // last name
     let lnameInput = new Input();
     lnameInput.label = 'Last Name';
-    lnameInput.name = 'lname';
+    lnameInput.name = 'lastName';
     lnameInput.type = 'text'
     lnameInput.required = false;
     lnameInput.placeholder = 'Boxcharts';
-    this.inputs['lname'] = lnameInput;
+    this.inputs['lastName'] = lnameInput;
 
     // password
     let passInput = new Input();
@@ -238,16 +238,16 @@ export class RegisterComponent implements OnInit {
     }
 
     this.registrationService.register(regData)
-      .then(userID => {
-        if (userID) {
-          let user = new User();
-          user.email = this.inputs['email'].value;
-          user.firstName = this.inputs['fname'].value;
-          user.lastName = this.inputs['lname'].value;
-          user.userId = userID;
-          user.charts = [];
-
-          this.authService.setUser(user);
+      .then(newUser => {
+        console.log("created user", newUser)
+        if (newUser) {
+          // let user = new User();
+          // user.email = this.inputs['email'].value;
+          // user.firstName = this.inputs['firstName'].value;
+          // user.lastName = this.inputs['lastName'].value;
+          // user.userId = userId;
+          newUser.charts = [];
+          this.authService.setUser(newUser);
         }
       });
   }

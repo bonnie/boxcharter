@@ -31,10 +31,7 @@ export class StatusService {
   constructor() { }
 
   setStatus(statusResponse: object): void {
-    // set the status based on response from Flask
     this.status = statusResponse as Status;
-    // this.status.alertType = 'alert-' + statusResponse['type'];
-    // this.status.text = statusResponse['text'];
   }
 
   clearStatus(): void {

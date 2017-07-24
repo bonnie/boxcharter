@@ -84,8 +84,6 @@ router.post('/add', function(req, res, next) {
   password: 'bonnie',
   password2: 'bonnie' } */
 
-  const response = {}
-
   // create salted password hash
   // general web consensus seems to be: hash on server side, and use
   // https to protect password in transit
@@ -101,14 +99,23 @@ router.post('/add', function(req, res, next) {
     .create(userInfo)
     .then(newUser => {
       const email = newUser.email
-      logger.info("added new user", email)
       const msg = `New user ${email} successfully added.`
+      logger.info(msg)
+
+      const response = {}
       response.status = new Status(statusStrings.success, msg)
-      res.status(200).json(response);
+      user.User.getByEmail(email)
+        .then(newUserJSON => {
+          response.user = newUserJSON
+
+          console.log(response)
+
+          res.status(200).json(response);
+        })
     })
     .catch(error => {
       msg = `Unable to add user ${userInfo.email}`
-      response = procError(error, msg)
+      const response = procError(error, msg)
       res.status(200).json(response)
     })
 });

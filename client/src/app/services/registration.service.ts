@@ -25,7 +25,9 @@ import { flaskServer } from '../app.component'
 import { ErrorService } from './error.service';
 import { StatusService } from './status.service';
 import { LoginRegisterService } from './login-register.service'
-import { Status } from '../../../../common/model/status'
+import { Status, statusStrings } from '../../../../common/model/status'
+import { User } from '../model/user'
+
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/delay';
@@ -51,30 +53,32 @@ export class RegistrationService {
   register(regData: object):  Promise<any> {
     // send registration info to flask server and return userID of new user
     return this.http.post(this.regURL, JSON.stringify(regData), {headers: this.jsonHeaders})
-                    .toPromise()
-                    .then(response => {
-                                      let status = response.json()['status'];
-                                      this.statusService.setStatus(status);
-                                      if (status['type'] == 'success') {
-                                        this.loginRegisterService.clearData();
-                                        return response.json()['userID'];
-                                      }
-                                    })
-                    .catch(err => this.errorService.handleError(err, this.statusService));
+      .toPromise()
+      .then(response => {
+        const responseJSON = response.json()
+        console.log("RESPONSE JSON", responseJSON)
+        let status = responseJSON.status;
+          this.statusService.setStatus(status);
+          if (status.alertType == statusStrings.success) {
+            this.loginRegisterService.clearData();
+            return responseJSON.user as User;
+          }
+        })
+      .catch(err => this.errorService.handleError(err, this.statusService));
   }
 
   checkEmail(email): Promise<any> {
     // check to see if email already has account; return boolean
 
     return this.http.get(this.verifyURL, {params: {'email': email}, headers: this.jsonHeaders})
-                    .toPromise()
-                    .then(response => {
-                                      let status = response.json()['status'];
-                                      if (status['type'] == 'success') {
-                                        return response.json()['inDB'];
-                                      }
-                                    })
-                    .catch(err => this.errorService.handleError(err, this.statusService));
+      .toPromise()
+      .then(response => {
+          let status = response.json()['status'] as Status;
+          if (status.alertType == statusStrings.success) {
+            return response.json()['inDB'];
+          }
+        })
+      .catch(err => this.errorService.handleError(err, this.statusService));
 
 
   }

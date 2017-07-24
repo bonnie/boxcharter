@@ -27,7 +27,7 @@ import { StatusService } from '../../services/status.service';
 import { DialogService } from '../../services/dialog.service';
 import { AuthService } from '../../services/auth.service';
 
-import { Status } from '../../../../../common/model/status';
+import { Status, statusStrings } from '../../../../../common/model/status';
 import { Section } from '../../model/section';
 import { Measure } from '../../model/measure';
 import { Chart } from '../../model/chart';
@@ -130,8 +130,9 @@ export class ChartComponent implements OnInit {
       // updating an existing chart
       this.chartService.updateChart()
             .then(response => {
-              this.statusService.setStatus(response['status'] as Status);
-              if (response['status']['type'] == 'success') {
+              const status = response['status'] as Status
+              this.statusService.setStatus(status);
+              if (status.alertType == statusStrings.success) {
                 this.chartService.currentChart.modifiedAt = response['modifiedAt'];
                 this.dirty = false;
               }
@@ -141,8 +142,9 @@ export class ChartComponent implements OnInit {
         this.chartService.saveNewChart(this.authService.currentUser.userId)
             .then(response => {
               console.log(response);
-              this.statusService.setStatus(response['status'] as Status);
-              if (response['status']['type'] == 'success') {
+              const status = response['status'] as Status
+              this.statusService.setStatus(status);
+              if (status.alertType == statusStrings.success) {
                 let newChart = response['data'] as Chart;
                 this.authService.currentUser.charts.push(newChart)
                 this.chartService.currentChart = newChart;
