@@ -18,21 +18,14 @@
  *
  */
 
- /* Handle express errors */
+import { Chart } from './chart'
 
-var statusStrings = require('../../common/model/Status').statusStrings
-var Status = require('../../common/model/Status').Status
-var logger = require('../utilities/log').logger
-
-const procError = function(error, msg) {
-    logger.crit(`${msg}: ${error}`)
-    response = {
-      status: new Status(
-        statusStrings.danger,
-        `${msg}. ${statusStrings.contactAdmin}`
-      )
-    }
-    return response
+export class User {
+   userId: number;
+   email: string;
+   firstName: string;
+   lastName: string;
+   createdAt: Date;
+   updatedAt: Date;
+   charts: Chart[];
 }
-
-module.exports = procError

@@ -27,8 +27,8 @@ import { StatusService } from '../../services/status.service';
 import { AuthService } from '../../services/auth.service';
 import { LoginRegisterService } from '../../services/login-register.service';
 
-import { Input } from '../../../../../common/model/input';
-import { User } from '../../../../../common/model/data-model';
+import { Input } from '../../model/input';
+import { User } from '../../model/user';
 
 @Component({
   selector: 'app-register',
@@ -39,7 +39,7 @@ import { User } from '../../../../../common/model/data-model';
 export class RegisterComponent implements OnInit {
 
   private inputs: Object = {};
-  
+
   constructor(public registrationService: RegistrationService,
               public statusService: StatusService,
               public authService: AuthService,
@@ -105,7 +105,7 @@ export class RegisterComponent implements OnInit {
   }
 
 /******************* form validation **********************/
-  
+
   onChange(fieldName, newValue): void {
     let input = this.inputs[fieldName];
     input.value = newValue;
@@ -120,7 +120,7 @@ export class RegisterComponent implements OnInit {
       this.inputs['password'].errMsg = null;
     }
 
-   // for required fields    
+   // for required fields
     if (input.required && !input.value) {
       input.errMsg = `${input.label} is required`;
       return
@@ -229,14 +229,14 @@ export class RegisterComponent implements OnInit {
 /************** actual registration  ****************/
 
  register() {
-    // TODO: is there a better way to "serialize" the form? 
+    // TODO: is there a better way to "serialize" the form?
     let regData = {};
     for ( const inputKey in this.inputs ) {
       // clear previous error message (if any)
       let input = this.inputs[inputKey];
       regData[input.name] = input.value;
     }
-    
+
     this.registrationService.register(regData)
       .then(userID => {
         if (userID) {

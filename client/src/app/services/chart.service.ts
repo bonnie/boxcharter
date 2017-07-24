@@ -28,7 +28,8 @@ import * as moment from 'moment';
 import { StatusService } from './status.service';
 import { ErrorService } from './error.service';
 
-import { Chart } from '../../../../common/model/data-model';
+import { Chart } from '../model/chart';
+import { Measure } from '../model/measure';
 import { Status, statusStrings } from '../../../../common/model/status';
 import { flaskServer } from '../app.component';
 

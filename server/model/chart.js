@@ -57,7 +57,7 @@ var key = require('./note-key')
    lyricist: { type: Sequelize.STRING },
 
    // is the lyricist the same as the composer?
-   lyricist_same: {
+   lyricistSame: {
      type: Sequelize.BOOLEAN,
      default: false,
    },

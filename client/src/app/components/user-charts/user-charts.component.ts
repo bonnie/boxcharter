@@ -25,7 +25,8 @@ import { StatusService } from '../../services/status.service';
 import { AuthService } from '../../services/auth.service';
 import { ChartService } from '../../services/chart.service';
 
-import { Chart, User } from '../../../../../common/model/data-model';
+import { Chart } from '../../model/chart';
+import { User } from '../../model/user';
 
 @Component({
   selector: 'app-user-charts',
@@ -41,11 +42,11 @@ export class UserChartsComponent implements OnInit {
   constructor(public statusService: StatusService,
               public authService: AuthService,
               public chartService: ChartService,
-              
+
 ) { }
 
   ngOnInit() {
-    
+
     this.user = this.authService.currentUser;
     this.charts = this.user.charts;
 

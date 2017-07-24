@@ -20,6 +20,7 @@
 
  var Sequelize = require('Sequelize')
  var db = require('./db')
+ var procError = require('../utilities/err')
 
  //////////////////////////////////////////////////////////////////////////////
  // User
@@ -54,7 +55,7 @@
    },
    // don't need joinedAt, since timestamps is true by default, and
    // createdAt, updatedAt will automatically be populated
- })
+})
 
  ////////////////
  // associations
@@ -75,7 +76,27 @@
  // User.classLevelMethod = function() {
  //   return 'foo';
  // };
- //
+
+User.getUser = function(whereClause) {
+  return this.find({
+   where: whereClause,
+    attributes: {
+     exclude: [
+       User.passwordHash,
+       User.passwordSalt,
+     ]
+    }
+  })
+}
+
+User.getByEmail = function(targetEmail) {
+  return this.getUser({email: targetEmail})
+}
+
+User.getById = function(targetId) {
+  return this.getUser({userId: targetId})
+}
+
  // // Adding an instance level method
  // User.prototype.instanceLevelMethod = function() {
  //   return 'bar';

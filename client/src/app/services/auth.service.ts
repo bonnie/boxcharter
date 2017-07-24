@@ -30,7 +30,7 @@ import { ChartService } from './chart.service';
 
 import { flaskServer } from '../app.component'
 import { Status, statusStrings } from '../../../../common/model/status';
-import { User } from '../../../../common/model/data-model';
+import { User } from '../model/user';
 // import 'rxjs/add/observable/of';
 // import 'rxjs/add/operator/do';
 // import 'rxjs/add/operator/delay';

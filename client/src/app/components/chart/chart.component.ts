@@ -27,9 +27,11 @@ import { StatusService } from '../../services/status.service';
 import { DialogService } from '../../services/dialog.service';
 import { AuthService } from '../../services/auth.service';
 
-import { Measure, Section } from '../../../../../common/model/data-model';
 import { Status } from '../../../../../common/model/status';
-import { Chart } from '../../../../../common/model/data-model';
+import { Section } from '../../model/section';
+import { Measure } from '../../model/measure';
+import { Chart } from '../../model/chart';
+import { Key } from '../../model/note-key';
 
 const chartDataTurndowns: string[] = [
     'authors',
@@ -62,7 +64,7 @@ export class ChartComponent implements OnInit {
     private statusService: StatusService,
     public dialogService: DialogService,
     public authService: AuthService
- 
+
   ) {  }
 
   ngOnInit() {
@@ -72,7 +74,7 @@ export class ChartComponent implements OnInit {
       this.initChart();
     }
   }
-  
+
   initChart() {
     // to be done whenever this.chartService.currentChart changes
     this.dirty = false;
@@ -92,7 +94,10 @@ export class ChartComponent implements OnInit {
     this.userChartTotal = this.authService.currentUser.charts.length;
 
     // get the charts in "last modified" order
-    let userChartsInModifiedOrder =  this.authService.currentUser.charts.sort((a, b) => { return a['modifiedAt'] - b['modifiedAt'] });
+    // TODO: figure this out with new model format
+    let userChartsInModifiedOrder = this.authService.currentUser.charts
+    // let userChartsInModifiedOrder
+      // this.authService.currentUser.charts.sort((a, b) => { return a.modifiedAt - b.modifiedAt });
     this.userCharts = userChartsInModifiedOrder.slice(0, 5);
 
     // remove the current chart
@@ -164,7 +169,7 @@ export class ChartComponent implements OnInit {
             break;
         default:
             console.log(`bad delete element: ${elementType}`);
-    } 
+    }
   }
 
   addSection(index) {
@@ -211,19 +216,19 @@ export class ChartComponent implements OnInit {
   isEmpty(measure) {
     // return boolean indicating whether the measure is empty
 
-    return Object.keys(measure.chords).length === 0 && 
+    return Object.keys(measure.chords).length === 0 &&
            Object.keys(measure.lyrics).length === 0;
   }
 
   canDeactivate(): Promise<boolean> | boolean {
-    // if the page is "dirty", display warning dialog before allowing user to 
+    // if the page is "dirty", display warning dialog before allowing user to
     // leave page
 
     if (this.dirty === false) {
       return true;
     } else {
       return this.dialogService.confirm('Discard changes?');
-    } 
+    }
   }
 
   revertChart() {
@@ -231,5 +236,3 @@ export class ChartComponent implements OnInit {
     this.chartService.loadChart(this.chartService.currentChart.chartId);
   }
 }
-
-

@@ -76,7 +76,7 @@ export class RegistrationService {
                                     })
                     .catch(err => this.errorService.handleError(err, this.statusService));
 
-    
+
   }
 
 }

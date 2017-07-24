@@ -20,7 +20,7 @@
 
 var express = require('express');
 var passUtils = require('../utilities/password_utils');
-var user = require('../../common/model/user')
+var user = require('../model/user')
 var statusStrings = require('../../common/model/status').statusStrings
 var Status = require('../../common/model/status').Status
 var logger = require('../utilities/log').logger
@@ -38,7 +38,7 @@ router.post('/auth', function(req, res, next) {
   const password = req.body.password
   const status = new Status()
 
-  user.User.findOne({ where: {email: email} })
+  user.User.getByEmail(email)
     .then(foundUser => {
       if (foundUser === null || !checkPass(foundUser, password)) {
         // user not in db or password doesn't match
@@ -55,12 +55,12 @@ router.post('/auth', function(req, res, next) {
       msg = `Successful login for ${email}`
       status.alertType = statusStrings.success
       status.text = msg
-      const result = {
+      const response = {
         status: status,
         user: foundUser
       }
       logger.debug(msg)
-      res.status(200).json(result)
+      res.status(200).json(response)
     })
     .catch(error => {
       console.log(error)
@@ -92,24 +92,18 @@ router.post('/add', function(req, res, next) {
   const passData = passUtils.saltHashPassword(userInfo.password)
 
   // massage userInfo obj to contain salted pass hash
-  // TODO: have the info come in on the user model so less massage necessary
-
-  newUserData = {
-    email: userInfo.email,
-    passwordHash: passData.passwordHash,
-    passwordSalt: passData.salt,
-    firstName: userInfo.fname,
-    lastName: userInfo.lname,
-  }
+  userInfo.passwordHash = passData.passwordHash
+  userInfo.passwordSalt = passData.salt
+  delete userInfo.password
 
   // create user
   user.User
-    .create(newUserData)
+    .create(userInfo)
     .then(newUser => {
       const email = newUser.email
       logger.info("added new user", email)
-      const message = `New user ${newUser.email} successfully added.`
-      response.status = { type: statusStrings.success, text: message }
+      const msg = `New user ${email} successfully added.`
+      response.status = new Status(statusStrings.success, msg)
       res.status(200).json(response);
     })
     .catch(error => {

@@ -18,21 +18,24 @@
  *
  */
 
- /* Handle express errors */
+import { Section } from './section'
+import { Key } from './note-key'
 
-var statusStrings = require('../../common/model/Status').statusStrings
-var Status = require('../../common/model/Status').Status
-var logger = require('../utilities/log').logger
-
-const procError = function(error, msg) {
-    logger.crit(`${msg}: ${error}`)
-    response = {
-      status: new Status(
-        statusStrings.danger,
-        `${msg}. ${statusStrings.contactAdmin}`
-      )
-    }
-    return response
+export class Chart {
+  chartId: number
+  title: string
+  author: string
+  composer: string
+  lyricist: string
+  lyricistSame: boolean
+  originalKey: Key
+  printKey: Key
+  maxPages: number
+  minFontsize: number
+  pageWidth: number
+  pageHeight: number
+  pageUnits: string
+  sections: Section[]
+  createdAt: Date
+  modifiedAt: Date
 }
-
-module.exports = procError

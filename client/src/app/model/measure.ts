@@ -18,21 +18,20 @@
  *
  */
 
- /* Handle express errors */
+import { Key } from './note-key'
 
-var statusStrings = require('../../common/model/Status').statusStrings
-var Status = require('../../common/model/Status').Status
-var logger = require('../utilities/log').logger
-
-const procError = function(error, msg) {
-    logger.crit(`${msg}: ${error}`)
-    response = {
-      status: new Status(
-        statusStrings.danger,
-        `${msg}. ${statusStrings.contactAdmin}`
-      )
-    }
-    return response
+export class Chord {
+  noteCode: string
+  beatIndex: number
+  chordSuffix: string
 }
 
-module.exports = procError
+export class Lyric {
+   verseIndex: number
+   lyricText: string
+}
+
+export class Measure {
+   index: number
+   beatsPerMeasure: number
+}

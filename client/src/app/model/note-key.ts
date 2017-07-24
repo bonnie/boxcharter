@@ -18,21 +18,15 @@
  *
  */
 
- /* Handle express errors */
+ export class Note {
+   noteCode: string
+ }
 
-var statusStrings = require('../../common/model/Status').statusStrings
-var Status = require('../../common/model/Status').Status
-var logger = require('../utilities/log').logger
+ export class Key {
+   keyCode: string
+ }
 
-const procError = function(error, msg) {
-    logger.crit(`${msg}: ${error}`)
-    response = {
-      status: new Status(
-        statusStrings.danger,
-        `${msg}. ${statusStrings.contactAdmin}`
-      )
-    }
-    return response
-}
-
-module.exports = procError
+ export class ScaleNote {
+   scaleNoteId: number
+   scaleDegree: number
+ }

@@ -18,21 +18,18 @@
  *
  */
 
- /* Handle express errors */
+import { Chart } from './chart'
+import { Measure } from './measure'
 
-var statusStrings = require('../../common/model/Status').statusStrings
-var Status = require('../../common/model/Status').Status
-var logger = require('../utilities/log').logger
-
-const procError = function(error, msg) {
-    logger.crit(`${msg}: ${error}`)
-    response = {
-      status: new Status(
-        statusStrings.danger,
-        `${msg}. ${statusStrings.contactAdmin}`
-      )
-    }
-    return response
+export class Section {
+  index: number
+  sectionName: string
+  sectionDesc: string
+  beatsPerMeasure: number
+  verseCount: number
+  measuresPerRow: number
+  pickupMeasure: boolean
+  repeat: boolean
+  measures: Measure[]
+  rows: any[]
 }
-
-module.exports = procError
