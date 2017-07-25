@@ -18,20 +18,9 @@
  *
  */
 
-import { Key } from './note-key'
-
-export class Chord {
-  noteCode: string
-  beatIndex: number
-  chordSuffix: string
-}
-
-export class Lyric {
-   verseIndex: number
-   lyricText: string
-}
-
 export class Measure {
-   index: number
-   beatsPerMeasure: number
+  beatsPerMeasure: number;
+  index: number;
+  chords: object = {};
+  lyrics: object = {};
 }

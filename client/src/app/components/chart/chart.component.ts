@@ -186,7 +186,6 @@ export class ChartComponent implements OnInit {
     sect.measures = Array();
     this.chartService.currentChart.sections.splice(index, 0, sect);
     this.addMeasures(index, 20);
-    this.chartService.organizeMeasures();
   }
 
   addMeasures(sectionIndex, newMeasureCount) {
@@ -195,6 +194,8 @@ export class ChartComponent implements OnInit {
     let measArray = Array(+newMeasureCount).fill(meas);
     this.chartService.currentChart.sections[sectionIndex].measures.push(...measArray);
     this.chartService.organizeMeasures();
+
+    console.log(this.chartService.currentChart)
   }
 
   addMeasureBefore(sectionIndex, measureIndex) {
@@ -226,11 +227,9 @@ export class ChartComponent implements OnInit {
     // if the page is "dirty", display warning dialog before allowing user to
     // leave page
 
-    if (this.dirty === false) {
-      return true;
-    } else {
-      return this.dialogService.confirm('Discard changes?');
-    }
+    return (this.dirty === false) ?
+      true :
+      this.dialogService.confirm('Discard changes?');
   }
 
   revertChart() {
