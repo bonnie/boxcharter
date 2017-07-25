@@ -38,7 +38,8 @@ router.post('/auth', function(req, res, next) {
   const password = req.body.password
   const status = new Status()
 
-  user.User.getByEmail(email)
+  user.User.find({where: {email: email}})
+    // can't use findByEmail here because we need hash and salt
     .then(foundUser => {
       if (foundUser === null || !checkPass(foundUser, password)) {
         // user not in db or password doesn't match
