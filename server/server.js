@@ -30,7 +30,8 @@ const bodyParser = require('body-parser');
 const expressLog = require('./utilities/express_log')
 
 // Get our API routes
-const user = require('./routes/user');
+const user = require('./routes/user_routes');
+const chart = require('./routes/chart_routes');
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Set our api routes
 app.use('/user', user);
+app.use('/chart', chart);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
