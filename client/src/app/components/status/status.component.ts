@@ -20,15 +20,15 @@
 
 import { Component, OnInit } from '@angular/core';
 import { StatusService } from '../../services/status.service';
-import { Status } from '../../../../../common/model/status';
+import { Status } from '../../model/status';
 
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.scss'],
-  
+
   // don't put statusService here -- we want to use the global app statusService, not our own
-  providers: [ ] 
+  providers: [ ]
 })
 
 export class StatusComponent implements OnInit {

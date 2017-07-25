@@ -141,6 +141,8 @@ export class RegisterComponent implements OnInit {
   checkEmail(email) {
     // check to see if email already exists
 
+    // console.log('checking if email exists')
+
     this.registrationService.checkEmail(email)
       .then(inDB => {
         if (inDB) {

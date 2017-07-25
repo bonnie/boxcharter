@@ -25,7 +25,7 @@ import { flaskServer } from '../app.component'
 import { ErrorService } from './error.service';
 import { StatusService } from './status.service';
 import { LoginRegisterService } from './login-register.service'
-import { Status, statusStrings } from '../../../../common/model/status'
+import { Status, statusStrings } from '../model/status'
 import { User } from '../model/user'
 
 // import 'rxjs/add/observable/of';
@@ -79,8 +79,5 @@ export class RegistrationService {
           }
         })
       .catch(err => this.errorService.handleError(err, this.statusService));
-
-
   }
-
 }

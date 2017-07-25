@@ -50,7 +50,7 @@ import { AuthService } from './services/auth.service';
 import { ChartService } from './services/chart.service';
 import { LoginRegisterService } from './services/login-register.service';
 
-import { statusStrings } from '../../../common/model/status'
+import { statusStrings } from './model/status'
 
 @NgModule({
     declarations: [

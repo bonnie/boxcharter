@@ -27,7 +27,7 @@ import { StatusService } from '../../services/status.service';
 import { DialogService } from '../../services/dialog.service';
 import { AuthService } from '../../services/auth.service';
 
-import { Status, statusStrings } from '../../../../../common/model/status';
+import { Status, statusStrings } from '../../model/status';
 import { Section } from '../../model/section';
 import { Measure } from '../../model/measure';
 import { Chart } from '../../model/chart';
@@ -141,7 +141,7 @@ export class ChartComponent implements OnInit {
       // creating a new chart
         this.chartService.saveNewChart(this.authService.currentUser.userId)
             .then(response => {
-              console.log(response);
+              // console.log(response);
               const status = response['status'] as Status
               this.statusService.setStatus(status);
               if (status.alertType == statusStrings.success) {

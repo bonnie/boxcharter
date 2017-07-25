@@ -20,8 +20,8 @@
 
  /* Handle express errors */
 
-var statusStrings = require('../../common/model/Status').statusStrings
-var Status = require('../../common/model/Status').Status
+var statusStrings = require('../model/Status').statusStrings
+var Status = require('../model/Status').Status
 var logger = require('../utilities/log').logger
 
 const procError = function(error, msg) {
