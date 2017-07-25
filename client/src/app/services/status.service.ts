@@ -31,6 +31,9 @@ export class StatusService {
   constructor() { }
 
   setStatus(statusResponse: Status): void {
+    // TODO: scroll up to where status is, so user sees it.
+    // TODO: animate status
+    // TODO: make status disappear after (10) seconds
     this.status = statusResponse;
   }
 
