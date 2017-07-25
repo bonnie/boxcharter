@@ -97,7 +97,7 @@ export class ChartComponent implements OnInit {
     // TODO: figure this out with new model format
     let userChartsInModifiedOrder = this.authService.currentUser.charts
     // let userChartsInModifiedOrder
-      // this.authService.currentUser.charts.sort((a, b) => { return a.modifiedAt - b.modifiedAt });
+      // this.authService.currentUser.charts.sort((a, b) => { return a.updatedAt - b.updatedAt });
     this.userCharts = userChartsInModifiedOrder.slice(0, 5);
 
     // remove the current chart
@@ -133,7 +133,7 @@ export class ChartComponent implements OnInit {
               const status = new Status(response['status'])
               this.statusService.setStatus(status);
               if (status.success()) {
-                this.chartService.currentChart.modifiedAt = response['modifiedAt'];
+                this.chartService.currentChart.updatedAt = response['updatedAt'];
                 this.dirty = false;
               }
             });

@@ -37,5 +37,5 @@ export class Chart {
   pageUnits: string
   sections: Section[]
   createdAt: Date
-  modifiedAt: Date
+  updatedAt: Date
 }
