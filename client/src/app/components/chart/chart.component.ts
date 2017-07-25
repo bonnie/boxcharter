@@ -130,9 +130,9 @@ export class ChartComponent implements OnInit {
       // updating an existing chart
       this.chartService.updateChart()
             .then(response => {
-              const status = response['status'] as Status
+              const status = new Status(response['status'])
               this.statusService.setStatus(status);
-              if (status.alertType == statusStrings.success) {
+              if (status.success()) {
                 this.chartService.currentChart.modifiedAt = response['modifiedAt'];
                 this.dirty = false;
               }
@@ -142,9 +142,9 @@ export class ChartComponent implements OnInit {
         this.chartService.saveNewChart(this.authService.currentUser.userId)
             .then(response => {
               // console.log(response);
-              const status = response['status'] as Status
+              const status = new Status(response['status'])
               this.statusService.setStatus(status);
-              if (status.alertType == statusStrings.success) {
+              if (status.success()) {
                 let newChart = response['data'] as Chart;
                 this.authService.currentUser.charts.push(newChart)
                 this.chartService.currentChart = newChart;

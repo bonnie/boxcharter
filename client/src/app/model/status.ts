@@ -21,10 +21,10 @@
 // TODO: figure out how to share these between JS and TS without duplicating
 // code...
 
-export class statusStrings {
-  public static success: 'alert-success';
-  public static warning: 'alert-warning';
-  public static danger: 'alert-danger';
+export const statusStrings = {
+  success: 'alert-success',
+  warning: 'alert-warning',
+  danger: 'alert-danger'
 }
 
 export class Status {
@@ -32,7 +32,13 @@ export class Status {
     clrAlertClosed: boolean;
     alertType: string;
 
-    success() {
-      return this.alertType == statusStrings.success
+    constructor(statusObj) {
+      this.text = statusObj.text
+      this.alertType = statusObj.alertType
+      this.clrAlertClosed = statusObj.clrAlertClosed
+    }
+
+    success(): boolean {
+      return this.alertType === statusStrings.success
     }
 }

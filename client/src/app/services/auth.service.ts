@@ -61,9 +61,9 @@ export class AuthService {
     return this.http.post(this.authURL, JSON.stringify(loginInfo), {headers: this.jsonHeaders})
                     .toPromise()
                     .then(response => {
-                                      let status = response.json()['status'] as Status;
+                                      let status = new Status(response.json()['status']);
                                       this.statusService.setStatus(status);
-                                      if (status.alertType == statusStrings.success) {
+                                      if (status.success()) {
                                           this.setUser(response.json()['user'] as User);
                                       }
                                     })

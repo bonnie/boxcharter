@@ -107,9 +107,6 @@ router.post('/add', function(req, res, next) {
       user.User.getByEmail(email)
         .then(newUserJSON => {
           response.user = newUserJSON
-
-          console.log(response)
-
           res.status(200).json(response);
         })
     })

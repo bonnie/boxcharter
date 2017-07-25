@@ -30,8 +30,8 @@ export class StatusService {
 
   constructor() { }
 
-  setStatus(statusResponse: object): void {
-    this.status = statusResponse as Status;
+  setStatus(statusResponse: Status): void {
+    this.status = statusResponse;
   }
 
   clearStatus(): void {
@@ -41,7 +41,7 @@ export class StatusService {
 
   clearSuccess(): void {
     // clear the status only if it's a success status
-    if (this.status && this.status.alertType == statusStrings.success) {
+    if (this.status && this.status.success()) {
       this.status = null;
     }
   }

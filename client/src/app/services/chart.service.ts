@@ -54,8 +54,8 @@ export class ChartService {
     return this.http.get(url)
                     .toPromise()
                     .then(response => {
-                      let status = response.json()['status'] as Status;
-                      if (status.alertType == statusStrings.success) {
+                      let status = new Status(response.json()['status']);
+                      if (status.success()) {
                         this.currentChart = response.json()['chart'] as Chart;
                         this.organizeMeasures();
                         this.router.navigateByUrl('/chart');

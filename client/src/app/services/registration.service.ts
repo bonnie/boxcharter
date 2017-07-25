@@ -57,9 +57,11 @@ export class RegistrationService {
       .then(response => {
         const responseJSON = response.json()
         console.log("RESPONSE JSON", responseJSON)
-        let status = responseJSON.status;
+        let status = new Status(responseJSON.status);
           this.statusService.setStatus(status);
-          if (status.alertType == statusStrings.success) {
+          console.log("status", status)
+          console.log("success?", status.success())
+          if (status.success()) {
             this.loginRegisterService.clearData();
             return responseJSON.user as User;
           }
@@ -73,8 +75,8 @@ export class RegistrationService {
     return this.http.get(this.verifyURL, {params: {'email': email}, headers: this.jsonHeaders})
       .toPromise()
       .then(response => {
-          let status = response.json()['status'] as Status;
-          if (status.alertType == statusStrings.success) {
+          let status = new Status(response.json()['status']);
+          if (status.success()) {
             return response.json()['inDB'];
           }
         })

@@ -20,6 +20,7 @@
 
 import { Injectable } from '@angular/core';
 import { StatusService } from './status.service';
+import { Status, statusStrings } from '../model/status'
 
 @Injectable()
 export class ErrorService {
@@ -31,7 +32,8 @@ export class ErrorService {
     if (error.status == 0) {
       errMsg = 'Could not connect to server. Please contact admin@boxcharter.com';
     }
-    stService.setStatus({'type': 'danger', 'text': errMsg});
+    const errStatus = new Status({'alertType': statusStrings.danger, 'text': errMsg})
+    stService.setStatus(errStatus);
     return Promise.reject(errMsg);
   }
 }
