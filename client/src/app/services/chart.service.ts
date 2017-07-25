@@ -31,14 +31,14 @@ import { ErrorService } from './error.service';
 import { Chart } from '../model/chart';
 import { Measure } from '../model/measure';
 import { Status, statusStrings } from '../model/status';
-import { flaskServer } from '../app.component';
+import { APIserver } from '../app.component';
 
 @Injectable()
 export class ChartService {
 
   public currentChart: Chart = null;
   public measureCells: Object[]; // breaking cells into lines
-  private baseURL = `${flaskServer}/chart`;
+  private baseURL = `${APIserver}/chart`;
   private jsonHeaders = new Headers(
     {'Content-Type': 'application/json'});
 
@@ -118,7 +118,7 @@ export class ChartService {
   saveNewChart(userId) {
     // save a brand new chart, and set currentChart to the new chart
 
-    const url = `${flaskServer}/user/${userId}/chart/create`;
+    const url = `${APIserver}/user/${userId}/chart/create`;
 
     return this.http
           .put(url, JSON.stringify(this.currentChart), {headers: this.jsonHeaders})

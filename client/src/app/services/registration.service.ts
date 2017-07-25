@@ -21,7 +21,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from "@angular/http";
 import { Observable } from 'rxjs/Observable';
-import { flaskServer } from '../app.component'
+import { APIserver } from '../app.component'
 import { ErrorService } from './error.service';
 import { StatusService } from './status.service';
 import { LoginRegisterService } from './login-register.service'
@@ -36,8 +36,8 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class RegistrationService {
 
-  private regURL = `${flaskServer}/user/add`;
-  private verifyURL = `${flaskServer}/user/check`;
+  private regURL = `${APIserver}/user/add`;
+  private verifyURL = `${APIserver}/user/check`;
   isLoggedIn: boolean = false;
   private jsonHeaders = new Headers(
   {'Content-Type': 'application/json'});

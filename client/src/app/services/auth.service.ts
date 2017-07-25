@@ -28,7 +28,7 @@ import { StatusService } from './status.service';
 import { LoginRegisterService } from './login-register.service';
 import { ChartService } from './chart.service';
 
-import { flaskServer } from '../app.component'
+import { APIserver } from '../app.component'
 import { Status, statusStrings } from '../model/status';
 import { User } from '../model/user';
 // import 'rxjs/add/observable/of';
@@ -40,7 +40,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class AuthService {
 
-  private authURL = `${flaskServer}/user/auth`;
+  private authURL = `${APIserver}/user/auth`;
   isLoggedIn: boolean = false;
   currentUser: User;
   private jsonHeaders = new Headers({'Content-Type': 'application/json'});

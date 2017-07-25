@@ -40,7 +40,7 @@ export class AppComponent {
 }
 
 // flask
-// export const flaskServer = 'http://localhost:5050';
+// export const APIserver = 'http://localhost:5050';
 
 // express
-export const flaskServer = 'http://localhost:3000';
+export const APIserver = 'http://localhost:3000';
