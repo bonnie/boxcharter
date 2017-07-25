@@ -56,12 +56,15 @@ router.post('/auth', function(req, res, next) {
       msg = `Successful login for ${email}`
       status.alertType = statusStrings.success
       status.text = msg
-      const response = {
-        status: status,
-        user: foundUser
-      }
       logger.debug(msg)
-      res.status(200).json(response)
+
+      user.User.getByEmail(foundUser.email).then(cleanUser => {
+        const response = {
+          status: status,
+          user: cleanUser
+        }
+        res.status(200).json(response)
+      })
     })
     .catch(error => {
       console.log(error)

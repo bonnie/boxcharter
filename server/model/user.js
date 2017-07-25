@@ -88,6 +88,14 @@ User.getUser = function(whereClause) {
     },
     raw: true
    })
+   .then(u => {
+
+     // TODO: actually make list of charts here, not just dummy!
+     u.charts = []
+
+     return Promise.resolve(u)
+
+   })
 }
 
 User.getByEmail = function(targetEmail) {
