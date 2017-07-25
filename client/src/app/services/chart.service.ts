@@ -118,13 +118,17 @@ export class ChartService {
   saveNewChart(userId) {
     // save a brand new chart, and set currentChart to the new chart
 
-    const url = `${APIserver}/user/${userId}/chart/create`;
+    const url = `${APIserver}/chart/create`;
+    const payload = {
+      chartData: this.currentChart,
+      userId: userId
+    }
 
     return this.http
-          .put(url, JSON.stringify(this.currentChart), {headers: this.jsonHeaders})
-          .toPromise()
-          .then(response => response.json())
-          .catch(err => this.errorService.handleError(err, this.statusService));
+      .put(url, JSON.stringify(payload), {headers: this.jsonHeaders})
+      .toPromise()
+      .then(response => response.json())
+      .catch(err => this.errorService.handleError(err, this.statusService));
   }
 
   clearChart() {
