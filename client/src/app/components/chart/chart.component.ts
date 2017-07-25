@@ -190,12 +190,14 @@ export class ChartComponent implements OnInit {
 
   addMeasures(sectionIndex, newMeasureCount) {
     // add the desired number of measures to the desired section index
-    let meas = new Measure();
-    let measArray = Array(+newMeasureCount).fill(meas);
+
+    // can't just fill the array with new Measure(), since it turns out to
+    // share data and a change to one measure changes all of them
+    // adapted from https://stackoverflow.com/a/19892144/7800492
+
+    let measArray = Array.from({length: +newMeasureCount}, () => new Measure());
     this.chartService.currentChart.sections[sectionIndex].measures.push(...measArray);
     this.chartService.organizeMeasures();
-
-    console.log(this.chartService.currentChart)
   }
 
   addMeasureBefore(sectionIndex, measureIndex) {
