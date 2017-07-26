@@ -19,9 +19,9 @@
  */
 
 var express = require('express');
-var chart = require('../model/chart')
 var statusStrings = require('../model/status').statusStrings
 var Status = require('../model/status').Status
+var Chart = require('../model/chart').Chart
 var logger = require('../utilities/log').logger
 var procError = require('../utilities/err')
 
@@ -31,7 +31,13 @@ var router = express.Router();
 /*********************/
 /* POST create chart */
 /*********************/
-router.post('/create', function(req, res, next) {
+router.put('/create', function(req, res, next) {
+
+  const chartData = req.body.chartData
+  const userId = req.body.userId
+
+  chartData.userId = userId
+  Chart.createChart(chartData)
 
 })
 

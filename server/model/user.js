@@ -118,7 +118,7 @@ User.getById = function(targetId) {
  //            { 'title': chart.title,
  //              'chartId': chart.chart_id,
  //              'createdAt': chart.created_at,
- //              'modifiedAt': chart.modified_at }
+ //              'updatedAt': chart.modified_at }
  //            for chart in self.charts
  //           ]
  //

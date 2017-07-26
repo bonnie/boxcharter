@@ -25,6 +25,8 @@
 
 var Sequelize = require('Sequelize')
 var db = require('./db')
+var logger = require('../utilities/log').logger
+
 // var section = require('./section')
 var key = require('./note-key')
 
@@ -51,6 +53,25 @@ const Chord = db.sequelize.define('chord', {
  chordSuffix: { type: Sequelize.STRING(8) },
 })
 
+Chord.getChordstring = function() {
+  // Return a string representing the chord
+
+  return `${this.note_code}${this.chord_suffix}`
+}
+
+Chord.setChord = function(chordData) {
+
+  Chord.create(chordData, {
+    options: {
+      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
+    })
+    .then(newMeasure => {
+      logger.debug(`created new chord ${chordData}`)
+    })
+    .catch(err => {
+      throw `Could not create chord ${chordData}: ${err}`
+    })
+}
 
 ///////////
 // methods
@@ -85,6 +106,20 @@ const Lyric = db.sequelize.define('lyric', {
     type: Sequelize.STRING,
   }
 })
+
+Lyric.setLyric = function(lyricData) {
+
+  Lyric.create(lyricData, {
+    options: {
+      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
+    })
+    .then(newMeasure => {
+      logger.debug(`created new lyric ${lyricData}`)
+    })
+    .catch(err => {
+      throw `Could not create lyric ${lyricData}: ${err}`
+    })
+}
 
 ////////////////
 // associations
@@ -145,6 +180,73 @@ const Measure = db.sequelize.define('measure', {
 // Measure.hasOne(section.Section, {as: 'ending1End', foreignKey : 'MeasureId'})
 // Measure.hasOne(section.Section, {as: 'ending2Start', foreignKey : 'MeasureId'})
 
+Measure.setMeasure = function(measureData) {
+  const chords = measureData.chords
+  const lyrics = measureData.lyrics
+  delete measureData.chords
+  delete measureData.lyrics
+
+  Measure.create(measureData, {
+    options: {
+      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
+    })
+    .then(newMeasure => {
+      logger.debug(`created new measure ${measureData}`)
+      chords.forEach(c => {
+        c.measureId = newMeasure.measureId
+        Chord.setChord(c)
+      })
+      lyrics.forEach(l => {
+        l.MeasureId = newMeasure.measureId
+        Lyric.setLyrics(l)
+      })
+    })
+    .catch(err => {
+      logger.error(
+        `Could not create measure ${measureData}: ${err}`)
+    })
+}
+
+Measure.getSectionMeasures = function(sectionId) {
+  Measure.findAll({
+    where: { sectionId: sectionId },
+    options: { order: ['index'] },
+    attributes: { include: ['beatsPerMeasure'] },
+    raw: true
+  }).then(measures => {
+    completeMeasures = measures.map(m => {
+      m.chords = m.getChords()
+      m.lyrics = m.getLyrics()
+      return m
+    })
+    return Promise.resolve(completeMeasures)
+  })
+}
+
+Measure.getChords = function() {
+  Chord.findAll({
+    where: { measureId: this.measureId }})
+    .then(chords => {
+      const formatChords = {}
+      chords.forEach(c => { formatChords[c.beatIndex] = c.chordString() })
+      return Promise.resolve(formatChords)
+    })
+    .catch(err => {
+      throw `Could not get chords for measureID ${measureId}: ${err}`
+    })
+}
+
+Measure.getLyrics = function() {
+  Lyric.findAll({ where: { measureId: this.measureId }})
+  .then(lyrics => {
+    const formatLyrics = {}
+    lyrics.forEach(l => { formatLyrics[l.verseIndex] = l.text })
+    return Promise.resolve(formatLyrics)
+  })
+  .catch(err => {
+    throw `Could not get chords for measureID ${measureId}: ${err}`
+  })
+}
 
 ////////////////
 // chord
@@ -202,4 +304,4 @@ module.exports = {
   Measure: Measure,
   Chord: Chord,
   Lyric: Lyric,
-};
+}

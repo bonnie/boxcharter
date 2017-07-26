@@ -19,7 +19,11 @@
  */
 
 var Sequelize = require('Sequelize')
+var logger = require('../utilities/log').logger
+var procError = require('../utilities/err')
+
 var db = require('./db')
+var section = require('./section')
 var user = require('./user')
 var key = require('./note-key')
 
@@ -111,6 +115,79 @@ var key = require('./note-key')
  ///////////
  // methods
 
+Chart.getById = function(chartId) {
+  return this.find({
+    where: { chartId: chartId },
+    options: { raw: true }
+  })
+   .then(c => c.getSections()
+     .then(sections => {
+       c.sections = sections
+       return Promise.resolve(c)
+     }))
+}
+
+Chart.getSections = function() {
+  // Get sections for a chart.
+  // Returns promise<Section[]>
+  return section.Section.getChartSections(this.chartId)
+}
+
+Chart.setChart = function(chartData) {
+  // Update existing chart.
+
+  const sections = chartData.sections
+  const chartId = chartData.chartId
+  delete chartData.sections
+  delete chartData.chartId
+
+  // findOrCreate
+  Chart.update(chartData, {
+    where: { chartId: chartData.chartId },
+    options: {
+      // fields: [],
+      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
+    })
+    .then((num, chartRow) => {
+      // num = number of rows updated
+      if (num) {
+        // blow away existing sections
+        chartRow.clearSections()
+        sections.forEach(s => {
+          s.chartId = chartData.chartId
+          section.Section.setSection(s)
+        })
+      } else {
+        return procErr(null, `Could not find chartId ${chartData.chartId}`)
+      }
+    })
+    .catch(err => {
+      msg = `Could not update chart id ${chartData.chartId}: ${err}`
+      return procError(err, msg)
+    })
+}
+
+Chart.clearSections = function() {
+  // clear any existing sections to write new data
+  Section.destroy({ options: { where: { chartId: this.chartId }}})
+}
+
+Chart.createChart = function(chartData) {
+  // Create new chart.
+
+  Chart.create({
+    options: {
+      // fields: [],
+      logging: msg => { logger.info(`SEQUELIZE ${msg}`) }}
+    })
+    .then(newChart => {
+      chartData.chartId = newChart.chartId
+      return Chart.setChart(chartData)
+    })
+    .catch(err => {
+      return procError(err, `Could not create chart from ${chartData}`)
+    })
+}
 
  // def clear(self):
  //     """Clear out chart data to prepare for re-save."""
@@ -139,4 +216,4 @@ var key = require('./note-key')
  //     db.session.commit()
 
 
- module.exports = { Chart: Chart };
+ module.exports = { Chart: Chart }

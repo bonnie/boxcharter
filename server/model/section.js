@@ -19,6 +19,8 @@
  */
 
 var Sequelize = require('Sequelize')
+var logger = require('../utilities/log').logger
+
 var db = require('./db')
 var chart = require('./chart')
 var measure = require('./measure')
@@ -87,8 +89,20 @@ const Section = db.sequelize.define('section', {
  ////////////////
  // associations
 
- Section.belongsTo(chart.Chart)
- Section.belongsToMany(measure.Measure, { through: measure.Measure })
+
+ // TODO: these next two lines were commented when I couldn't require this file
+ // from chart_routes.js with them uncommented. I got this error:
+ // /Users/bonnie/src/boxcharter/client/node_modules/Sequelize/lib/associations/mixin.js:80
+ //     if (!target.prototype || !(target.prototype instanceof this.sequelize.Model)) {
+ //                ^
+ //
+ // TypeError: Cannot read property 'prototype' of undefined
+ //     at Function.<anonymous> (/Users/bonnie/src/boxcharter/client/node_modules/Sequelize/lib/associations/mixin.js:80:16)
+ //     at Object.<anonymous> (/Users/bonnie/src/boxcharter/server/model/section.js:92:10)
+ // Section.belongsTo(chart.Chart)
+ // Section.belongsToMany(measure.Measure, { through: measure.Measure })
+ // END: TODO
+
  // chart.Chart.hasMany(Section) // order_by section id
 
  // chart_id = db.Column(db.Integer, db.ForeignKey("charts.chart_id"))
@@ -98,6 +112,49 @@ const Section = db.sequelize.define('section', {
  ///////////
  // methods
 
- module.exports = {
-   Section: Section,
- };
+Section.setSection = function(sectionData) {
+  // create new section for this chart with sectionData
+
+  const measures = sectionData.measures
+  delete sectionData.measures
+
+  Section.create(sectionData, {
+    options: {
+      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
+    })
+    .then(newSection => {
+      logger.debug(`created new section ${sectionData}`)
+      measures.forEach(m => {
+        m.sectionId = newSection.sectionId
+        measure.Measure.setMeasure(m)
+      })
+    })
+    .catch(err => {
+      throw (`Could not create section ${sectionData}: ${err}`)
+    })
+
+}
+
+Section.getChartSections = function(chartId) {
+  this.findAll({
+    where: { chartId: chartId },
+    options: { order: ['index'] },
+    attributes: { exclude: ['sectionId'] },
+    raw: true
+  }).then(sections => {
+    sectionsWithMeasures = sections.map(s => {
+      s.measures = s.getMeasures()
+      return s
+    })
+    return Promise.resolve(sectionsWithMeasures)
+  })
+}
+
+Section.getMeasures = function() {
+  return measure.Measure.getSectionMeasures(this.sectionId)
+}
+
+
+module.exports = {
+  Section: Section,
+};
