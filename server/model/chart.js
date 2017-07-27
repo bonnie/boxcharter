@@ -23,7 +23,7 @@ var logger = require('../utilities/log').logger
 var procError = require('../utilities/err')
 
 var db = require('./db')
-var section = require('./section')
+var Section = require('./section').Section
 var user = require('./user')
 var key = require('./note-key')
 
@@ -113,7 +113,7 @@ var key = require('./note-key')
 
 
  ///////////
- // methods
+ // class methods
 
 Chart.getById = function(chartId) {
   return this.find({
@@ -143,51 +143,77 @@ Chart.setChart = function(chartData) {
 
   // findOrCreate
   Chart.update(chartData, {
-    where: { chartId: chartData.chartId },
+    where: { chartId: chartId },
     options: {
       // fields: [],
       logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
     })
-    .then((num, chartRow) => {
-      // num = number of rows updated
-      if (num) {
+    .then(num => {
+      // num = array containing number of rows updated
+      const resultCount = num[0]
+      if (resultCount == 1) {
         // blow away existing sections
-        chartRow.clearSections()
-        sections.forEach(s => {
-          s.chartId = chartData.chartId
-          section.Section.setSection(s)
+        Chart.findById(chartId)
+          .then(chartRow => {
+            chartRow.clearSections()
+            sections.forEach(s => {
+              s.chartId = chartId
+              section.Section.setSection(s)
+            })
+          result = {
+            status: new Status(
+              statusStrings.success,
+              'Successfully saved chart'
+            ),
+            chart: chart.getById(chartId)
+          }
+          return Promise.resolve(result)
         })
+
       } else {
-        return procErr(null, `Could not find chartId ${chartData.chartId}`)
+        // bummer
+        return procError(null, `Found ${resultCount} results for chartId ${chartId}`)
       }
     })
     .catch(err => {
-      msg = `Could not update chart id ${chartData.chartId}: ${err}`
-      return procError(err, msg)
+      msg = `Could not update chart id ${chartId}: ${err}`
+      return Promise.resolve(procError(err, msg))
     })
-}
-
-Chart.clearSections = function() {
-  // clear any existing sections to write new data
-  Section.destroy({ options: { where: { chartId: this.chartId }}})
 }
 
 Chart.createChart = function(chartData) {
   // Create new chart.
 
-  Chart.create({
-    options: {
+  const chartDataWithoutSections = chartData
+  delete chartDataWithoutSections.sections
+
+  Chart.create(
+    chartDataWithoutSections,
+    { options: {
       // fields: [],
       logging: msg => { logger.info(`SEQUELIZE ${msg}`) }}
     })
     .then(newChart => {
       chartData.chartId = newChart.chartId
-      return Chart.setChart(chartData)
+      Chart.setChart(chartData)
+        .then(response => { return Promise.resolve(response) })
+        .catch(err => { throw err })
     })
     .catch(err => {
-      return procError(err, `Could not create chart from ${chartData}`)
+      const msg = `Could not create chart "${chartData.title}" for user id ${chartData.userId}`
+      return Promise.resolve(procError(err, msg))
     })
 }
+
+////////////////
+// instance methods
+
+Chart.prototype.clearSections = function() {
+  // clear any existing sections to write new data
+  Section.destroy({ where: { chartId: this.chartId }})
+}
+
+
 
  // def clear(self):
  //     """Clear out chart data to prepare for re-save."""

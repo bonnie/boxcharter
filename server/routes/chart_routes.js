@@ -38,7 +38,14 @@ router.put('/create', function(req, res, next) {
 
   chartData.userId = userId
   Chart.createChart(chartData)
-
+    .then(response => {
+      res.status(200).json(response)
+    })
+    .catch(err => {
+      msg = `Unable to create chart ${chartData.title}`
+      const response = procError(error, msg)
+      res.status(200).json(response)
+    })
 })
 
 
