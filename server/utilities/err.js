@@ -25,14 +25,26 @@ var Status = require('../model/Status').Status
 var logger = require('../utilities/log').logger
 
 const procError = function(error, msg) {
-    logger.crit(`${msg}: ${error}`)
-    response = {
-      status: new Status(
-        statusStrings.danger,
-        `${msg}. ${statusStrings.contactAdmin}`
-      )
+  errString = msg
+
+  if (error) {
+    errString += `: ${error.toString()}`
+    if (error.stack) {
+      const secondLine = error.stack.split('\n')[1]
+      if (error.toString() != error.secondLine) {
+        errString += "\n\t" + error.toString()
+      }
     }
-    return response
+  }
+
+  logger.crit(`${msg}: ${error}`)
+  response = {
+    status: new Status(
+      statusStrings.danger,
+      `${msg}. ${statusStrings.contactAdmin}`
+    )
+  }
+  return response
 }
 
 module.exports = procError
