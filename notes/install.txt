@@ -1,0 +1,3 @@
+> cd client; npm install
+> createdb boxcharter
+> node model/create_tables.js 
