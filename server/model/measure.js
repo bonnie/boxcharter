@@ -27,109 +27,7 @@ var Sequelize = require('Sequelize')
 var db = require('./db')
 var logger = require('../utilities/log').logger
 
-// var section = require('./section')
-var key = require('./note-key')
-
-// for associations
-// const Section = section.Section
-
-//////////////////////////////////////////////////////////////////////////////
-// Chord
-//////////////////////////////////////////////////////////////////////////////
-
-//////////
-// table
-
-const Chord = db.sequelize.define('chord', {
- chordId: {
-   type: Sequelize.INTEGER,
-   autoIncrement: true,
-   primaryKey: true,
- },
- beatIndex: {
-   type: Sequelize.INTEGER,
-   allowNull: false,
- },
- chordSuffix: { type: Sequelize.STRING(8) },
-})
-
-Chord.getChordstring = function() {
-  // Return a string representing the chord
-
-  return `${this.note_code}${this.chord_suffix}`
-}
-
-Chord.setChord = function(chordData) {
-
-  Chord.create(chordData, {
-    options: {
-      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-    })
-    .then(newMeasure => {
-      logger.debug(`created new chord ${chordData}`)
-    })
-    .catch(err => {
-      throw `Could not create chord ${chordData}: ${err}`
-    })
-}
-
-///////////
-// methods
-
-// def get_chordstring(self):
-//     """Return a string representing the chord."""
-//
-//     chordstring = self.note_code
-//     if self.chord_suffix:
-//         chordstring += self.chord_suffix
-//
-//     return chordstring
-
-//////////////////////////////////////////////////////////////////////////////
-// Lyric
-//////////////////////////////////////////////////////////////////////////////
-
-//////////
-// table
-
-const Lyric = db.sequelize.define('lyric', {
-  lyricId: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  verseIndex: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  lyricText: {
-    type: Sequelize.STRING,
-  }
-})
-
-Lyric.setLyric = function(lyricData) {
-
-  Lyric.create(lyricData, {
-    options: {
-      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-    })
-    .then(newMeasure => {
-      logger.debug(`created new lyric ${lyricData}`)
-    })
-    .catch(err => {
-      throw `Could not create lyric ${lyricData}: ${err}`
-    })
-}
-
-////////////////
-// associations
-
-// measure_id = db.Column(db.Integer, db.ForeignKey("measures.measure_id"))
-
-
-//////////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////////
+var Section = require('./section').Section
 
 //////////
 // table
@@ -140,14 +38,14 @@ const Measure = db.sequelize.define('measure', {
     autoIncrement: true,
     primaryKey: true,
   },
-  // sectionId: {
-  //   type: Sequelize.INTEGER,
-  //   references: {
-  //     model: section.Section,
-  //     key: 'sectionId',
-  //     allowNull: false,
-  //   }
-  // },
+  sectionId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Section,
+      key: 'sectionId',
+      allowNull: false,
+    }
+  },
   index: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -158,27 +56,7 @@ const Measure = db.sequelize.define('measure', {
 })
 
 ////////////////
-// associations
-
-// Measure.belongsTo(section.Section, {foreignKey : 'SectionId'})
-
-// Section.hasMany(Measure)  // order_by index
-
-// Measure.hasMany(Chord) // order by beatIndex
-// Measure.hasMany(Lyric) // order by verseIndex
-
-// section_id = db.Column(db.Integer,
-//     db.ForeignKey("sections.section_id", use_alter=True, name='fk_measure_section_id'))
-
-// section.Section.belongsTo(Measure, {as: 'ending1Start', foreignKey : 'MeasureId'});
-// section.Section.belongsTo(Measure, {as: 'ending1End', foreignKey : 'MeasureId'});
-// section.Section.belongsTo(Measure, {as: 'ending2Start', foreignKey : 'MeasureId'});
-
-// need to use Measure.hasOne instead of Section.belongsTo, in order to avoid
-// circular references
-// Measure.hasOne(section.Section, {as: 'ending1Start', foreignKey : 'MeasureId'})
-// Measure.hasOne(section.Section, {as: 'ending1End', foreignKey : 'MeasureId'})
-// Measure.hasOne(section.Section, {as: 'ending2Start', foreignKey : 'MeasureId'})
+// methods
 
 Measure.setMeasure = function(measureData) {
   const chords = measureData.chords
@@ -248,22 +126,8 @@ Measure.getLyrics = function() {
   })
 }
 
-////////////////
-// chord
 
-Chord.belongsTo(Measure)
-Chord.belongsTo(key.Note)
-// measure_id = db.Column(db.Integer, db.ForeignKey("measures.measure_id"))
-// note_code = db.Column(db.String(2), db.ForeignKey('notes.note_code'))
 
-Lyric.belongsTo(Measure)
-
-// chords = db.relationship("Chord", order_by=Chord.beat_index)
-// lyrics = db.relationship("Lyric", order_by=Lyric.verse_index)
-// section = db.relationship("Section",
-//                           foreign_keys=section_id,
-//                           backref='measures',
-//                           order_by=index)
 
 ///////////
 // methods
@@ -302,6 +166,4 @@ Lyric.belongsTo(Measure)
 
 module.exports = {
   Measure: Measure,
-  Chord: Chord,
-  Lyric: Lyric,
 }

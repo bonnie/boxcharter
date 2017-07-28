@@ -26,11 +26,13 @@
 var db = require('./db')
 
 // order is important for associations / dependencies ( or is it...? )
-require('./note-key.js')
-require('./user.js')
-require('./chart.js')
-require('./measure.js')
-require('./section.js')
+require('./user')
+require('./note-key')
+// require('./chord-lyric')
+// require('./measure')
+// require('./section')
+// require('./chart')
+// require('./chartuser')
 
 var sequelize = db.sequelize
 

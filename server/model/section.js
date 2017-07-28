@@ -18,15 +18,12 @@
  *
  */
 
-var Sequelize = require('Sequelize')
-var logger = require('../utilities/log').logger
+const Sequelize = require('Sequelize')
+const logger = require('../utilities/log').logger
 
-var db = require('./db')
-var chart = require('./chart')
-var measure = require('./measure')
-
-// for associations
-// const Chart = chart.Chart
+const db = require('./db')
+const Chart = require('./chart').Chart
+const measure = require('./measure')
 
 // for measureId fields
 const referencesMeasure = {
@@ -41,11 +38,22 @@ const referencesMeasure = {
  // Section
  //////////////////////////////////////////////////////////////////////////////
 
+ //////////
+ // table
+
 const Section = db.sequelize.define('section', {
   sectionId: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
+  },
+  chartId: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: Chart,
+      key: 'chartId',
+      allowNull: false,
+    }
   },
   index: {
     type: Sequelize.INTEGER,
@@ -77,37 +85,11 @@ const Section = db.sequelize.define('section', {
     default: false,
   },
 
-  // can't do these as associations because it causes cyclic references
-  // ending1Start: referencesMeasure,
-  // ending1End: referencesMeasure,
-  // ending2Start: referencesMeasure,
+  ending1Start: referencesMeasure,
+  ending1End: referencesMeasure,
+  ending2Start: referencesMeasure,
 
 })
- //////////
- // table
-
- ////////////////
- // associations
-
-
- // TODO: these next two lines were commented when I couldn't require this file
- // from chart_routes.js with them uncommented. I got this error:
- // /Users/bonnie/src/boxcharter/client/node_modules/Sequelize/lib/associations/mixin.js:80
- //     if (!target.prototype || !(target.prototype instanceof this.sequelize.Model)) {
- //                ^
- //
- // TypeError: Cannot read property 'prototype' of undefined
- //     at Function.<anonymous> (/Users/bonnie/src/boxcharter/client/node_modules/Sequelize/lib/associations/mixin.js:80:16)
- //     at Object.<anonymous> (/Users/bonnie/src/boxcharter/server/model/section.js:92:10)
- // Section.belongsTo(chart.Chart)
- // Section.belongsToMany(measure.Measure, { through: measure.Measure })
- // END: TODO
-
- // chart.Chart.hasMany(Section) // order_by section id
-
- // chart_id = db.Column(db.Integer, db.ForeignKey("charts.chart_id"))
-
-
 
  ///////////
  // methods

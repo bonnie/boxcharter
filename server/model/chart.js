@@ -31,12 +31,13 @@ var key = require('./note-key')
 // const Key = key.Key
 
 // for keyId fields
-// const referencesKey = {
-//   type: Sequelize.INTEGER(3),
-//   references: {
-//     model: Key,
-//     key: 'keyId',
-// }
+const referencesKey = {
+  type: Sequelize.STRING(3),
+  references: {
+    model: key.Key,
+    key: 'keyId',
+  }
+}
 
  //////////////////////////////////////////////////////////////////////////////
  // Chart
@@ -67,8 +68,8 @@ var key = require('./note-key')
    },
 
    // key
-  //  originalKey: referencesKey,
-  //  printKey: referencesKey,
+   originalKey: referencesKey,
+   printKey: referencesKey,
 
    // chart pdf properties
    maxPages: {
@@ -92,24 +93,6 @@ var key = require('./note-key')
      default: 'inches',
    }
  })
-
- ////////////////
- // associations
-
- Chart.belongsTo(user.User)
- // user.User.hasMany(Chart)
-
- Chart.belongsTo(key.Key, {as: 'originalKey', foreignKey : 'KeyId'});
- Chart.belongsTo(key.Key, {as: 'printKey', foreignKey : 'KeyId'});
-
- // user_id (many to many?)
-
- // # chart key
- // original_key = db.Column(db.String(2), db.ForeignKey('keys.key_code'))
- // print_key = db.Column(db.String(2),
- //                       db.ForeignKey('keys.key_code'),
- //                       nullable=True)
- //
 
 
  ///////////
@@ -212,8 +195,6 @@ Chart.prototype.clearSections = function() {
   // clear any existing sections to write new data
   Section.destroy({ where: { chartId: this.chartId }})
 }
-
-
 
  // def clear(self):
  //     """Clear out chart data to prepare for re-save."""

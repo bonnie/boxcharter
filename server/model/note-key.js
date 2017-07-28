@@ -21,19 +21,21 @@
  var Sequelize = require('Sequelize')
  var db = require('./db')
 
- //////////////////////////////////////////////////////////////////////////////
- // Note / ScaleNote / Key
- //////////////////////////////////////////////////////////////////////////////
-
  //////////
  // tables
 
  const Note = db.sequelize.define('note', {
-   noteCode: { type: Sequelize.STRING(2) }
+   noteCode: {
+      type: Sequelize.STRING(2),
+      primaryKey: true
+    }
  })
 
  const Key = db.sequelize.define('key', {
-   keyCode: { type: Sequelize.STRING(3) }
+   keyCode: {
+     type: Sequelize.STRING(3),
+     primaryKey: true
+   }
  })
 
  const ScaleNote = db.sequelize.define('scale_note', {
@@ -45,17 +47,24 @@
    scaleDegree: {
      type: Sequelize.INTEGER,
      allowNull: false,
-   }
- })
-
- ////////////////
- // associations
-
- ScaleNote.hasOne(Note)
- ScaleNote.hasOne(Key)
-
- // Key -- notes = db.relationship("ScaleNote", order_by=ScaleNote.scale_degree)
- // Key.hasMany(ScaleNote) // order_by?
+   },
+   noteCode: {
+     type: Sequelize.STRING(2),
+     references: {
+       model: Note,
+       key: 'noteCode',
+       allowNull: false,
+     }
+   },
+   keyCode: {
+     type: Sequelize.STRING(3),
+     references: {
+       model: Key,
+       key: 'keyCode',
+       allowNull: false,
+     }
+   },
+})
 
  module.exports = {
    Note: Note,

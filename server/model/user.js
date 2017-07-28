@@ -57,19 +57,6 @@
    // createdAt, updatedAt will automatically be populated
 })
 
- ////////////////
- // associations
-
- // user / chart association is defined in the chart model
-
- // User.hasMany(Chart,
- //   {
- //     through: {
- //       model: UserChart,
- //       unique: false
- //     }
- // })
-
  ///////////
  // methods
  // // Adding a class level method
