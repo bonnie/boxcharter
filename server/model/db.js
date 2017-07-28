@@ -30,7 +30,7 @@ const log = require('../../server/utilities/log')
 
 // sequelize instance
 const sequelize = new Sequelize(
-  'postgres:///boxchart_express',
+  'postgres:///boxcharter',
   { logging: msg => { log.logger.info(`SEQUELIZE ${msg}`) } }
   // { define: { paranoid: true } } // when deleting a record, leave in db and set deletedAt
 )
