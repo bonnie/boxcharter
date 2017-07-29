@@ -29,10 +29,11 @@ var db = require('./db')
 require('./user')
 require('./note-key')
 require('./chord-lyric')
-// require('./measure')
-// require('./section')
-// require('./chart')
-// require('./chartuser')
+require('./measure')
+require('./section')
+require('./chart')
+require('./chartuser')
+require('./relations')
 
 var sequelize = db.sequelize
 

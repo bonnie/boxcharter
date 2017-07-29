@@ -57,6 +57,7 @@
    // createdAt, updatedAt will automatically be populated
 })
 
+
  ///////////
  // methods
  // // Adding a class level method
@@ -117,4 +118,4 @@ User.getById = function(targetId) {
  //                'lastName': self.last_name
  //            }
 
- module.exports = { User: User };
+ module.exports = User

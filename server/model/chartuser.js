@@ -21,31 +21,16 @@
 var Sequelize = require('Sequelize')
 var db = require('./db')
 
-var Chart = require('./chart').Chart
-var User = require('./user').User
-
 const ChartUser = db.sequelize.define('chartuser', {
   chartUserId: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  chartId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Chart,
-      key: 'chartId',
-    }
-  },
-  chartId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Chart,
-      key: 'chartId',
-    }
-  },
   permissions: {
     type: Sequelize.INTEGER,
     default: 1, // 1 = owner / editor
   }
 })
+
+module.exports = ChartUser

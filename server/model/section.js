@@ -19,20 +19,8 @@
  */
 
 const Sequelize = require('Sequelize')
-const logger = require('../utilities/log').logger
-
 const db = require('./db')
-const Chart = require('./chart').Chart
-const measure = require('./measure')
-
-// for measureId fields
-const referencesMeasure = {
-  type: Sequelize.INTEGER,
-  references: {
-    model: measure.Measure,
-    key: 'measureId',
-  }
-}
+const logger = require('../utilities/log').logger
 
  //////////////////////////////////////////////////////////////////////////////
  // Section
@@ -46,14 +34,6 @@ const Section = db.sequelize.define('section', {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-  },
-  chartId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Chart,
-      key: 'chartId',
-      allowNull: false,
-    }
   },
   index: {
     type: Sequelize.INTEGER,
@@ -85,14 +65,10 @@ const Section = db.sequelize.define('section', {
     default: false,
   },
 
-  ending1Start: referencesMeasure,
-  ending1End: referencesMeasure,
-  ending2Start: referencesMeasure,
-
 })
 
- ///////////
- // methods
+///////////
+// methods
 
 Section.setSection = function(sectionData) {
   // create new section for this chart with sectionData
@@ -137,6 +113,4 @@ Section.getMeasures = function() {
 }
 
 
-module.exports = {
-  Section: Section,
-};
+module.exports = Section

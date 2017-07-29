@@ -18,16 +18,9 @@
   *
   */
 
-// model for:
-  // measures
-  // chords
-  // lyrics
-
 var Sequelize = require('Sequelize')
 var db = require('./db')
 var logger = require('../utilities/log').logger
-
-var Section = require('./section').Section
 
 //////////
 // table
@@ -37,14 +30,6 @@ const Measure = db.sequelize.define('measure', {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-  },
-  sectionId: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: Section,
-      key: 'sectionId',
-      allowNull: false,
-    }
   },
   index: {
     type: Sequelize.INTEGER,
@@ -129,10 +114,6 @@ Measure.getLyrics = function() {
 
 
 
-///////////
-// methods
-
-
 // def get_data(self):
 //     """Return all data for a measure in a JSON-friendly format."""
 //
@@ -164,6 +145,4 @@ Measure.getLyrics = function() {
 //     db.session.add(self)
 //     db.session.commit()
 
-module.exports = {
-  Measure: Measure,
-}
+module.exports = Measure

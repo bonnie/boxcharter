@@ -21,23 +21,7 @@
 var Sequelize = require('Sequelize')
 var logger = require('../utilities/log').logger
 var procError = require('../utilities/err')
-
 var db = require('./db')
-var Section = require('./section').Section
-var user = require('./user')
-var key = require('./note-key')
-
-// const User = user.User
-// const Key = key.Key
-
-// for keyId fields
-const referencesKey = {
-  type: Sequelize.STRING(3),
-  references: {
-    model: key.Key,
-    key: 'keyId',
-  }
-}
 
  //////////////////////////////////////////////////////////////////////////////
  // Chart
@@ -68,8 +52,8 @@ const referencesKey = {
    },
 
    // key
-   originalKey: referencesKey,
-   printKey: referencesKey,
+  //  originalKey: referencesKey,
+  //  printKey: referencesKey,
 
    // chart pdf properties
    maxPages: {
@@ -93,7 +77,6 @@ const referencesKey = {
      default: 'inches',
    }
  })
-
 
  ///////////
  // class methods
@@ -223,4 +206,4 @@ Chart.prototype.clearSections = function() {
  //     db.session.commit()
 
 
- module.exports = { Chart: Chart }
+ module.exports = Chart

@@ -18,27 +18,9 @@
  *
  */
 
-// model for:
- // measures
- // chords
- // lyrics
-
 var Sequelize = require('Sequelize')
 var db = require('./db')
 var logger = require('../utilities/log').logger
-
-var Measure = require('./measure').Measure
-var key = require('./note-key')
-
-// for associations
-const referencesMeasure = {
-  type: Sequelize.INTEGER,
-  references: {
-    model: Measure,
-    key: 'measureId',
-    allowNull: false,
-  }
-}
 
 //////////////////////////////////////////////////////////////////////////////
 // Chord
@@ -53,26 +35,21 @@ chordId: {
   autoIncrement: true,
   primaryKey: true,
 },
-measureId: referencesMeasure,
 beatIndex: {
   type: Sequelize.INTEGER,
   allowNull: false,
 },
-noteCode: {
-  type: Sequelize.STRING(2),
-  references: {
-    model: key.Note,
-    key: 'noteCode',
-    allowNull: false,
-  }
-},
 chordSuffix: { type: Sequelize.STRING(8) },
 })
+
+
+///////////
+// methods
 
 Chord.getChordstring = function() {
  // Return a string representing the chord
 
- return `${this.noteCode}${this.chordSuffix}`
+ return `${this.noteCode}${this.chordSuffix | ''}`
 }
 
 Chord.setChord = function(chordData) {
@@ -88,9 +65,6 @@ Chord.setChord = function(chordData) {
      throw `Could not create chord ${chordData}: ${err}`
    })
 }
-
-///////////
-// methods
 
 // def get_chordstring(self):
 //     """Return a string representing the chord."""
@@ -114,7 +88,6 @@ const Lyric = db.sequelize.define('lyric', {
    autoIncrement: true,
    primaryKey: true,
  },
- measureId: referencesMeasure,
  verseIndex: {
    type: Sequelize.INTEGER,
    allowNull: false,
@@ -123,6 +96,9 @@ const Lyric = db.sequelize.define('lyric', {
    type: Sequelize.STRING,
  }
 })
+
+///////////
+// methods
 
 Lyric.setLyric = function(lyricData) {
 
@@ -137,10 +113,6 @@ Lyric.setLyric = function(lyricData) {
      throw `Could not create lyric ${lyricData}: ${err}`
    })
 }
-
-
-///////////
-// methods
 
 
 // def get_data(self):

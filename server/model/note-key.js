@@ -48,22 +48,6 @@
      type: Sequelize.INTEGER,
      allowNull: false,
    },
-   noteCode: {
-     type: Sequelize.STRING(2),
-     references: {
-       model: Note,
-       key: 'noteCode',
-       allowNull: false,
-     }
-   },
-   keyCode: {
-     type: Sequelize.STRING(3),
-     references: {
-       model: Key,
-       key: 'keyCode',
-       allowNull: false,
-     }
-   },
 })
 
  module.exports = {
