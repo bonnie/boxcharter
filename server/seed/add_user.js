@@ -50,7 +50,7 @@ const addUser = function() {
       console.log(`New user ${newUser.email} successfully added.`)
     })
     .catch(error => {
-      console.log(`Unable to add user ${userInfo.email}`)
+      console.error(`Unable to add user ${userInfo.email}`)
     })
 }
 

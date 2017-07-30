@@ -42,7 +42,7 @@ const addNotes = function() {
       note = baseNote + acc
       Note.create({noteCode: note})
         .then(n => {console.log(`Created note ${n.noteCode}`)})
-        .catch(err => {console.log(`Failed to create note ${n.noteCode}: ${err}`)})
+        .catch(err => {console.error(`Failed to create note ${n.noteCode}: ${err}`)})
     })
   })
 }
@@ -75,7 +75,7 @@ const addScales = function() {
             include: [ScaleNote]
         })
         .then(k => {console.log(`created key ${k.keyCode}`)})
-        .catch(err => {console.log(`could not create key: ${err}`)})
+        .catch(err => {console.error(`could not create key: ${err}`)})
       })
     })
 }
