@@ -13,3 +13,5 @@ passwords: https://ciphertrick.com/2016/01/18/salt-hash-passwords-using-nodejs-c
 express reference: http://expressjs.com/en/api.html
 
 MEAN (mongo express angular node): http://mean.io/
+
+Understanding promises: https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
