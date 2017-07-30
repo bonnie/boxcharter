@@ -24,8 +24,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 var db = require('./db')
-
-// order is important for associations / dependencies ( or is it...? )
 require('./user')
 require('./note-key')
 require('./chord-lyric')
@@ -34,6 +32,10 @@ require('./section')
 require('./chart')
 require('./chartuser')
 require('./associations')
+
+// for seeding notes and keys
+const addUser = require('../seed/add_user')
+const addNotesAndScales = require('../seed/add_scales')
 
 var sequelize = db.sequelize
 
@@ -52,9 +54,15 @@ sequelize
 sequelize.sync({force: true}) // force=true creates tables even if they already exist
   .then(() => {
     console.log('Tables created.')
-    process.exit()
+
+    // seed data
+    console.log('**Adding notes and scales.')
+    addNotesAndScales()
+
+    // DANGER: *****remove this when deploying!
+    console.log('**Adding user.')
+    addUser()
   })
   .catch(error => {
     console.error(`Unable to create tables: ${error}`)
-    process.exit()
   })
