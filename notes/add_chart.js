@@ -9,7 +9,6 @@ const Section = require('./section')
 const Chart = require('./chart')
 const ChartUser = require('./chartuser')
 require('./associations')
-var newChart
 
 const userId = 1
 
@@ -54,16 +53,14 @@ Chart.create({
     },
   ]
 }).then(thisChart => {
-  newChart = thisChart
   console.log('made new chart', thisChart.chartId)
   // can assume user already exists
-  return User.findById(userId)
-}).then(thisUser => {
-  if (thisUser) {
-    newChart.addUser(thisUser)
-  } else {
-    console.log(`tough luck; thisUser came out as ${thisUser}`)
-  }
+  User.findById(userId).then(thisUser => {
+    return thisChart.addUser(thisUser)
+  }).then(thisChartUser => {
+    // why is this an array of arrays, and not just one chartuser obj? A result of many-to-many?
+    console.log(`chart ${thisChartUser[0][0].chartId} is associated with user ${thisChartUser[0][0].userId}`)
+  })
 }).catch(error => {
   console.error(`uh oh: ${error}`)
 })
