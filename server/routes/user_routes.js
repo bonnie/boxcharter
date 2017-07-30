@@ -20,7 +20,7 @@
 
 var express = require('express');
 var passUtils = require('../utilities/password_utils');
-var user = require('../model/user')
+var User = require('../model/user')
 var statusStrings = require('../model/status').statusStrings
 var Status = require('../model/status').Status
 var logger = require('../utilities/log').logger
@@ -38,7 +38,7 @@ router.post('/auth', function(req, res, next) {
   const password = req.body.password
   const status = new Status()
 
-  user.User.find({where: {email: email}})
+  User.find({where: {email: email}})
     // can't use findByEmail here because we need hash and salt
     .then(foundUser => {
       if (foundUser === null || !checkPass(foundUser, password)) {
@@ -58,7 +58,7 @@ router.post('/auth', function(req, res, next) {
       status.text = msg
       logger.debug(msg)
 
-      user.User.getByEmail(foundUser.email).then(cleanUser => {
+      User.getByEmail(foundUser.email).then(cleanUser => {
         const response = {
           status: status,
           user: cleanUser
@@ -99,7 +99,7 @@ router.post('/add', function(req, res, next) {
   delete userInfo.password
 
   // create user
-  user.User
+  User
     .create(userInfo)
     .then(newUser => {
       const email = newUser.email
@@ -108,7 +108,7 @@ router.post('/add', function(req, res, next) {
 
       const response = {}
       response.status = new Status(statusStrings.success, msg)
-      user.User.getByEmail(email)
+      User.getByEmail(email)
         .then(newUserJSON => {
           response.user = newUserJSON
           res.status(200).json(response);
@@ -129,7 +129,7 @@ router.get('/check', function(req, res, next) {
 
   const email = req.query.email
 
-  user.User.findOne({ where: {email: email} })
+  User.findOne({ where: {email: email} })
     .then(foundUser => {
       inDB = foundUser ? true : false
       const result = { status: {type: statusStrings.success}, inDB: inDB }
