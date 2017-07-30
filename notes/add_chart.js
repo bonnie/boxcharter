@@ -1,14 +1,17 @@
-// const User = require('./user')
-// const Key = require('./note-key').Key
-// const Note = require('./note-key').Note
-// const ScaleNote = require('./note-key').ScaleNote
-// const Chord = require('./chord-lyric').Chord
-// const Lyric = require('./chord-lyric').Lyric
-// const Measure = require('./measure')
-// const Section = require('./section')
-// const Chart = require('./chart')
-// const ChartUser = require('./chartuser')
-// require('./associations')
+const User = require('./user')
+const Key = require('./note-key').Key
+const Note = require('./note-key').Note
+const ScaleNote = require('./note-key').ScaleNote
+const Chord = require('./chord-lyric').Chord
+const Lyric = require('./chord-lyric').Lyric
+const Measure = require('./measure')
+const Section = require('./section')
+const Chart = require('./chart')
+const ChartUser = require('./chartuser')
+require('./associations')
+var newChart
+
+const userId = 1
 
 Chart.create({
   createdAt: '2017-07-29T06:57:54.103Z',
@@ -17,7 +20,6 @@ Chart.create({
   lyricistSame: true,
   author: 'bds',
   originalKey: 'G',
-  // users: [{id: 1}],
   sections: [{
     beatsPerMeasure: 4,
     index: 1,
@@ -27,7 +29,9 @@ Chart.create({
       index: 1,
       chords: [{
         beatIndex: 1,
-        note: {noteCode: 'G'},
+        // can assume all possible noteCodes already exist
+        noteCode: 'G',
+        noteSuffix: 'm7'
       }],
       lyrics: [{
         verseIndex: 1,
@@ -38,20 +42,36 @@ Chart.create({
 },
 {
   include: [
-    // User,
     {
       model: Section,
       include: [{
         model: Measure,
         include: [
           Lyric,
-          { model: Chord,
-            include: [ Note ]
-          }
+          Chord,
         ]
       }]
     },
   ]
 }).then(thisChart => {
-  console.log('thisChart', thisChart)
+  newChart = thisChart
+  console.log('made new chart', thisChart.chartId)
+  // can assume user already exists
+  return User.findById(userId)
+}).then(thisUser => {
+  if (thisUser) {
+    newChart.addUser(thisUser)
+  } else {
+    console.log(`tough luck; thisUser came out as ${thisUser}`)
+  }
+}).catch(error => {
+  console.error(`uh oh: ${error}`)
 })
+
+// .then(thisChart => {
+//   newChart = thisChart
+//   User.findById(userId)
+//   .then(thisUser => {
+//     newChart.addUser(thisUser)
+//   })
+// })
