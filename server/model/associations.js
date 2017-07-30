@@ -51,13 +51,20 @@ Chart.belongsToMany(User,
   { through: { model: ChartUser, unique: false },
     foreignKey: 'chartId'
   })
-Chart.belongsTo(Key, {as: 'originalKey', foreignKey: 'keyCode', unique: false})
-Chart.belongsTo(Key, {as: 'printKey', foreignKey: 'keyCode', unique: false})
+Chart.belongsTo(Key, {
+  as: 'originalKey',
+  // targetKey: 'originalKey',  // otherwise the column ends up as originalKeyKeyCode
+  unique: false
+})
+Chart.belongsTo(Key, {
+  as: 'printKey',
+  // targetKey: 'printKey',
+  unique: false})
 Chart.hasMany(Section, {foreignKey: 'chartId'})
 
 ////////////
 // section
-Section.belongsTo(Chart, {foreignKey: 'chartId', allowNull: false})
+// Section.belongsTo(Chart, {allowNull: false}) // this adds an extra column: chartChartId
 Section.belongsTo(Measure,
   { as: 'ending1Start',
     foreignKey: 'measureId',
@@ -80,12 +87,12 @@ Section.hasMany(Measure, {foreignKey: 'sectionId'})
 
 ///////////////
 // measure
-Measure.belongsTo(Section, {foreignKey: 'sectionId', allowNull: false})
+// Measure.belongsTo(Section, {allowNull: false}) // this adds an extra column: sectionSectionId
 Measure.hasMany(Chord, {foreignKey: 'measureId'})
 Measure.hasMany(Lyric, {foreignKey: 'measureId'})
 
 /////////////
 // chords / lyrics
-Chord.belongsTo(Measure, {foreignKey: 'measureId', allowNull: false})
+// Chord.belongsTo(Measure, {allowNull: false}) // this adds an extra column
 Chord.belongsTo(Note, {foreignKey: 'noteCode', allowNull: false})
-Lyric.belongsTo(Measure, {foreignKey: 'measureId', allowNull: false})
+// Lyric.belongsTo(Measure, {allowNull: false}) // this adds an extra column
