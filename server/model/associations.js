@@ -33,8 +33,12 @@ const ChartUser = require('./chartuser')
 // user
 User.belongsToMany(Chart,
   { through: { model: ChartUser, unique: false },
-    foreignKey: 'chartId'
+    foreignKey: 'userId'
   })
+
+////////////
+// Key
+Key.hasMany(ScaleNote, {foreignKey: 'keyCode'})
 
 ////////////
 // ScaleNote
@@ -45,11 +49,11 @@ ScaleNote.belongsTo(Note, {foreignKey: 'noteCode', unique: false, allowNull: fal
 // chart
 Chart.belongsToMany(User,
   { through: { model: ChartUser, unique: false },
-    foreignKey: 'userId'
+    foreignKey: 'chartId'
   })
 Chart.belongsTo(Key, {as: 'originalKey', foreignKey: 'keyCode', unique: false})
 Chart.belongsTo(Key, {as: 'printKey', foreignKey: 'keyCode', unique: false})
-Chart.hasMany(Section)
+Chart.hasMany(Section, {foreignKey: 'chartId'})
 
 ////////////
 // section
@@ -72,13 +76,13 @@ Section.belongsTo(Measure,
     unique: false,
     constraints: false
   })
-Section.hasMany(Measure)
+Section.hasMany(Measure, {foreignKey: 'sectionId'})
 
 ///////////////
 // measure
 Measure.belongsTo(Section, {foreignKey: 'sectionId', allowNull: false})
-Measure.hasMany(Chord)
-Measure.hasMany(Lyric)
+Measure.hasMany(Chord, {foreignKey: 'measureId'})
+Measure.hasMany(Lyric, {foreignKey: 'measureId'})
 
 /////////////
 // chords / lyrics
