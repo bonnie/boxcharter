@@ -33,7 +33,7 @@ require('./measure')
 require('./section')
 require('./chart')
 require('./chartuser')
-require('./relations')
+require('./associations')
 
 var sequelize = db.sequelize
 
