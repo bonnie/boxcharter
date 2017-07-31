@@ -31,6 +31,20 @@ const statusStrings = require('./status').statusStrings
 const logger = require('../utilities/log').logger
 const procError = require('../utilities/err')
 
+// for associations when retrieving and adding data
+const chartAssociations = [
+  {
+    model: Section,
+    include: [{
+      model: Measure,
+      include: [
+        Lyric,
+        Chord,
+      ]
+    }]
+  },
+]
+
  //////////////////////////////////////////////////////////////////////////////
  // Chart
  //////////////////////////////////////////////////////////////////////////////
@@ -92,7 +106,8 @@ const procError = require('../utilities/err')
 Chart.getById = function(chartId) {
   return this.find({
     where: { chartId: chartId },
-    options: { raw: true }
+    raw: true,
+    // include: chartAssociations
   })
 }
 
@@ -153,23 +168,6 @@ Chart.setChart = function(chartData) {
 Chart.reformatMeasures = function(chartData) {
   // transfrom chart data from client into a format appealing to Sequelize
 
-    /* {
-        chords: {
-          '0': {
-            noteCode: 'G',
-            suffix: '7'
-          },
-          '2': {
-            noteCode: 'G',
-            suffix: '7'
-          },
-        },
-        lyrics: {
-          '0': 'Blackbird'
-        },
-        index: 0
-      } */
-
     chartData.sections = chartData.sections.map(section => {
       section.measures = section.measures.map(measure => {
 
@@ -202,50 +200,46 @@ Chart.reformatMeasures = function(chartData) {
 }
 
 Chart.createChart = function(userId, chartData) {
-  // Create new chart.
+  // Create new chart from angular data.
 
   require('./associations')
   chartData = Chart.reformatMeasures(chartData)
 
-  Chart.create(chartData,
-  {
-    include: [
-      {
-        model: Section,
-        include: [{
-          model: Measure,
-          include: [
-            Lyric,
-            Chord,
-          ]
-        }]
-      },
-    ]
-  }).then(thisChart => {
-    console.log('made new chart', thisChart.chartId)
+  // declare globally, to avoid pyramid .then's
+  var newChart, response
+
+  return Chart.create(chartData, {
+    options: { logging: msg => { logger.info(`SEQUELIZE ${msg}`) }},
+    include: chartAssociations
+  })
+  .then(thisChart => {
+    // save for future .then
+    newChart = thisChart
+    logger.debug('made new chart', thisChart.chartId)
     // Associate with user. Can assume user already exists.
-    User.findById(userId).then(thisUser => {
-      return thisChart.addUser(thisUser)
-    }).then(thisChartUser => {
-      // why is this an array of arrays, and not just one chartuser obj? A result of many-to-many?
-      logger.debug(`chart ${thisChartUser[0][0].chartId} is associated with user ${thisChartUser[0][0].userId}`)
-      const chartId = thisChartUser[0][0].chartId
-      // Package result for web
-      result = {
-        status: new Status(
-          statusStrings.success,
-          'Successfully saved chart'
-        ),
-        chart: Chart.getById(chartId)
-      }
-      return result
-    })
+    return User.findById(userId)
+  })
+  .then(thisUser => {
+    return newChart.addUser(thisUser)
+  })
+  .then(thisChartUser => {
+    // why is this an array of arrays, and not just one chartuser obj? A result of many-to-many?
+    logger.debug(`chart ${thisChartUser[0][0].chartId} is associated with user ${thisChartUser[0][0].userId}`)
+    const chartId = thisChartUser[0][0].chartId
+    return Chart.getById(chartId)
+  })
+  .then(chartData => {
+    // Package result for web
+    response = {
+      status: new Status(statusStrings.success, 'Successfully saved chart'),
+      chart: chartData
+    }
+    return response
   })
   .catch(error => {
     msg = `Unable to create chart ${chartData.title}`
     return procError(error, msg)
   })
-
 
   // const chartDataWithoutSections = chartData
   // delete chartDataWithoutSections.sections

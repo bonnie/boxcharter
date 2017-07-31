@@ -36,8 +36,10 @@ router.put('/create', function(req, res, next) {
   const chartData = req.body.chartData
   const userId = req.body.userId
 
-  const response = Chart.createChart(userId, chartData)
-  res.status(200).json(response)
+  Chart.createChart(userId, chartData).then(response => {
+    console.log('response', response)
+    res.status(200).json(response)
+  })
 })
 
 
