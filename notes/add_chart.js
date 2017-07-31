@@ -1,13 +1,9 @@
 const User = require('./user')
-const Key = require('./note-key').Key
-const Note = require('./note-key').Note
-const ScaleNote = require('./note-key').ScaleNote
 const Chord = require('./chord-lyric').Chord
 const Lyric = require('./chord-lyric').Lyric
 const Measure = require('./measure')
 const Section = require('./section')
 const Chart = require('./chart')
-const ChartUser = require('./chartuser')
 require('./associations')
 
 const userId = 1
