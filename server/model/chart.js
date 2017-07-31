@@ -18,10 +18,18 @@
  *
  */
 
-var Sequelize = require('Sequelize')
-var logger = require('../utilities/log').logger
-var procError = require('../utilities/err')
-var db = require('./db')
+const Sequelize = require('Sequelize')
+const db = require('./db')
+const User = require('./user')
+const Chord = require('./chord-lyric').Chord
+const Lyric = require('./chord-lyric').Lyric
+const Measure = require('./measure')
+const Section = require('./section')
+
+const Status = require('./status').Status
+const statusStrings = require('./status').statusStrings
+const logger = require('../utilities/log').logger
+const procError = require('../utilities/err')
 
  //////////////////////////////////////////////////////////////////////////////
  // Chart
@@ -86,28 +94,19 @@ Chart.getById = function(chartId) {
     where: { chartId: chartId },
     options: { raw: true }
   })
-   .then(c => c.getSections()
-     .then(sections => {
-       c.sections = sections
-       return Promise.resolve(c)
-     }))
-}
-
-Chart.getSections = function() {
-  // Get sections for a chart.
-  // Returns promise<Section[]>
-  return section.Section.getChartSections(this.chartId)
 }
 
 Chart.setChart = function(chartData) {
   // Update existing chart.
+
+  console.log('setting chart', chartData)
 
   const sections = chartData.sections
   const chartId = chartData.chartId
   delete chartData.sections
   delete chartData.chartId
 
-  // findOrCreate
+  // findOrCreate ?
   Chart.update(chartData, {
     where: { chartId: chartId },
     options: {
@@ -120,18 +119,22 @@ Chart.setChart = function(chartData) {
       if (resultCount == 1) {
         // blow away existing sections
         Chart.findById(chartId)
-          .then(chartRow => {
-            chartRow.clearSections()
-            sections.forEach(s => {
-              s.chartId = chartId
-              section.Section.setSection(s)
-            })
+          .then(chartRow => chartRow.clearSections())
+          .then(resp => {
+            if (sections) {
+              sections.forEach(s => {
+                s.chartId = chartId
+                Section.setSection(s)
+              })
+            }
+          })
+          .then(r => {
           result = {
             status: new Status(
               statusStrings.success,
               'Successfully saved chart'
             ),
-            chart: chart.getById(chartId)
+            chart: Chart.getById(chartId)
           }
           return Promise.resolve(result)
         })
@@ -147,28 +150,120 @@ Chart.setChart = function(chartData) {
     })
 }
 
-Chart.createChart = function(chartData) {
+Chart.reformatMeasures = function(chartData) {
+  // transfrom chart data from client into a format appealing to Sequelize
+
+    /* {
+        chords: {
+          '0': {
+            noteCode: 'G',
+            suffix: '7'
+          },
+          '2': {
+            noteCode: 'G',
+            suffix: '7'
+          },
+        },
+        lyrics: {
+          '0': 'Blackbird'
+        },
+        index: 0
+      } */
+
+    chartData.sections = chartData.sections.map(section => {
+      section.measures = section.measures.map(measure => {
+
+        // chords
+        var formattedChords = []
+        Object.entries(measure.chords).forEach(([beatIndex, chordData]) => {
+         // can assume that there is only one key/value pair in chord
+         // TODO: separate note code and suffix
+         formattedChords.push({
+           beatIndex: beatIndex,
+           noteCode: chordData,
+          //  suffix: chordData[1]
+          })
+        })
+        // console.log('formattedChords:', formattedChords)
+        measure.chords = formattedChords
+
+        // lyrics
+        var formattedLyrics = []
+        Object.entries(measure.lyrics).forEach(([verseIndex, lyricText]) => {
+          // can assume that there is only one key/value pair in lyric
+         formattedLyrics.push({ verseIndex: verseIndex, lyricText: lyricText })
+        })
+        measure.lyrics = formattedLyrics
+      return measure
+    })
+    return section
+  })
+  return chartData
+}
+
+Chart.createChart = function(userId, chartData) {
   // Create new chart.
 
-  const chartDataWithoutSections = chartData
-  delete chartDataWithoutSections.sections
+  require('./associations')
+  chartData = Chart.reformatMeasures(chartData)
 
-  Chart.create(
-    chartDataWithoutSections,
-    { options: {
-      // fields: [],
-      logging: msg => { logger.info(`SEQUELIZE ${msg}`) }}
+  Chart.create(chartData,
+  {
+    include: [
+      {
+        model: Section,
+        include: [{
+          model: Measure,
+          include: [
+            Lyric,
+            Chord,
+          ]
+        }]
+      },
+    ]
+  }).then(thisChart => {
+    console.log('made new chart', thisChart.chartId)
+    // Associate with user. Can assume user already exists.
+    User.findById(userId).then(thisUser => {
+      return thisChart.addUser(thisUser)
+    }).then(thisChartUser => {
+      // why is this an array of arrays, and not just one chartuser obj? A result of many-to-many?
+      logger.debug(`chart ${thisChartUser[0][0].chartId} is associated with user ${thisChartUser[0][0].userId}`)
+      const chartId = thisChartUser[0][0].chartId
+      // Package result for web
+      result = {
+        status: new Status(
+          statusStrings.success,
+          'Successfully saved chart'
+        ),
+        chart: Chart.getById(chartId)
+      }
+      return result
     })
-    .then(newChart => {
-      chartData.chartId = newChart.chartId
-      Chart.setChart(chartData)
-        .then(response => { return Promise.resolve(response) })
-        .catch(err => { throw err })
-    })
-    .catch(err => {
-      const msg = `Could not create chart "${chartData.title}" for user id ${chartData.userId}`
-      return Promise.resolve(procError(err, msg))
-    })
+  })
+  .catch(error => {
+    msg = `Unable to create chart ${chartData.title}`
+    return procError(error, msg)
+  })
+
+
+  // const chartDataWithoutSections = chartData
+  // delete chartDataWithoutSections.sections
+  //
+  // Chart.create(
+  //   chartDataWithoutSections,
+  //   { options: {
+  //     // fields: [],
+  //     logging: msg => { logger.info(`SEQUELIZE ${msg}`) }}
+  //   })
+  //   .then(newChart => {
+  //     chartData.chartId = newChart.chartId
+  //     return Chart.setChart(chartData)
+  //   })
+  //   .catch(err => {
+  //     const msg = `Could not create chart "${chartData.title}" for user id ${chartData.userId}`
+  //     return Promise.resolve(procError(err, msg))
+  //   })
 }
 
 ////////////////
@@ -178,6 +273,29 @@ Chart.prototype.clearSections = function() {
   // clear any existing sections to write new data
   Section.destroy({ where: { chartId: this.chartId }})
 }
+
+Chart.prototype.getSections = function() {
+  // Get sections for a chart.
+  // Returns promise<Section[]>
+
+  Section.findAll({
+    where: { chartId: this.chartId },
+    options: { order: ['index'] },
+    attributes: { exclude: ['sectionId'] },
+    raw: true
+  })
+  .then(sections => {
+    console.log('sections', sections)
+    sectionsWithMeasures = sections.map(s => {
+      s.measures = s.getMeasures()
+      return s
+    })
+    console.log('sectionsWithMeasures', sectionsWithMeasures)
+    return Promise.resolve(sectionsWithMeasures)
+  })
+
+}
+
 
  // def clear(self):
  //     """Clear out chart data to prepare for re-save."""

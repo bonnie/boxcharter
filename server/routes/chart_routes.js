@@ -21,7 +21,7 @@
 var express = require('express');
 var statusStrings = require('../model/status').statusStrings
 var Status = require('../model/status').Status
-var Chart = require('../model/chart').Chart
+var Chart = require('../model/chart')
 var logger = require('../utilities/log').logger
 var procError = require('../utilities/err')
 
@@ -36,16 +36,8 @@ router.put('/create', function(req, res, next) {
   const chartData = req.body.chartData
   const userId = req.body.userId
 
-  chartData.userId = userId
-  Chart.createChart(chartData)
-    .then(response => {
-      res.status(200).json(response)
-    })
-    .catch(err => {
-      msg = `Unable to create chart ${chartData.title}`
-      const response = procError(error, msg)
-      res.status(200).json(response)
-    })
+  const response = Chart.createChart(userId, chartData)
+  res.status(200).json(response)
 })
 
 
