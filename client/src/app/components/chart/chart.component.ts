@@ -184,6 +184,7 @@ export class ChartComponent implements OnInit {
     sect.verseCount = 1;
     sect.measuresPerRow = 4;
     sect.measures = Array();
+    sect.index = index;
     this.chartService.currentChart.sections.splice(index, 0, sect);
     this.addMeasures(index, 20);
   }
