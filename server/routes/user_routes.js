@@ -18,71 +18,70 @@
  *
  */
 
-var express = require('express');
-var passUtils = require('../utilities/password_utils');
-var User = require('../model/user')
-var statusStrings = require('../model/status').statusStrings
-var Status = require('../model/status').Status
-var logger = require('../utilities/log').logger
-var procError = require('../utilities/err')
-var checkPass = require('../utilities/password_utils').checkPass
+const express = require('express');
+const passUtils = require('../utilities/password_utils')
+const User = require('../model/user')
+const statusStrings = require('../model/status').statusStrings
+const Status = require('../model/status').Status
+const logger = require('../utilities/log').logger
+const procError = require('../utilities/err')
+const checkPass = require('../utilities/password_utils').checkPass
 
 // create the router
-var router = express.Router();
+const router = express.Router()
 
-/***********************/
+/** ****************** */
 /* POST authorize user */
-/***********************/
-router.post('/auth', function(req, res, next) {
+/* ******************* */
+router.post('/auth', (req, res) => {
   const email = req.body.email
   const password = req.body.password
   const status = new Status()
 
-  User.find({where: {email: email}})
+  User.find({ where: { email } })
     // can't use findByEmail here because we need hash and salt
-    .then(foundUser => {
+    .then((foundUser) => {
       if (foundUser === null || !checkPass(foundUser, password)) {
         // user not in db or password doesn't match
         status.alertType = statusStrings.danger
-        status.text = "Invalid email and/or password"
+        status.text = 'Invalid email and/or password'
 
-        response = { status: status }
+        const response = { status }
         logger.warn(`${email} loggedin with invalid password`)
         res.status(200).json(response)
         return
       }
 
       // otherwise, all's rosy
-      msg = `Successful login for ${email}`
+      const msg = `Successful login for ${email}`
       status.alertType = statusStrings.success
       status.text = msg
       logger.debug(msg)
 
-      User.getByEmail(foundUser.email).then(cleanUser => {
+      User.getByEmail(foundUser.email).then((cleanUser) => {
         const response = {
-          status: status,
-          user: cleanUser
+          status,
+          user: cleanUser,
         }
         res.status(200).json(response)
       })
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error)
-      msg = `Unable to authenticate user ${email}`
-      response = procError(error, msg)
+      const msg = `Unable to authenticate user ${email}`
+      const response = procError(error, msg)
       res.status(200).json(response)
     })
-
 })
 
-/***********************/
+/* ******************* */
 /* POST new user.      */
-/***********************/
+/* ******************* */
 
-router.post('/add', function(req, res, next) {
+router.post('/add', (req, res) => {
   const userInfo = req.body
 
-/* { email: 'bonnie@bonnie',
+  /* { email: 'bonnie@bonnie',
   fname: 'bonnie',
   lname: 'bonnie',
   password: 'bonnie',
@@ -101,7 +100,7 @@ router.post('/add', function(req, res, next) {
   // create user
   User
     .create(userInfo)
-    .then(newUser => {
+    .then((newUser) => {
       const email = newUser.email
       const msg = `New user ${email} successfully added.`
       logger.info(msg)
@@ -109,35 +108,34 @@ router.post('/add', function(req, res, next) {
       const response = {}
       response.status = new Status(statusStrings.success, msg)
       User.getByEmail(email)
-        .then(newUserJSON => {
+        .then((newUserJSON) => {
           response.user = newUserJSON
           res.status(200).json(response);
         })
     })
-    .catch(error => {
-      msg = `Unable to add user ${userInfo.email}`
+    .catch((error) => {
+      const msg = `Unable to add user ${userInfo.email}`
       const response = procError(error, msg)
       res.status(200).json(response)
     })
 });
 
-/***********************/
+/* ******************* */
 /* GET user existence. */
-/***********************/
+/* ******************* */
 
-router.get('/check', function(req, res, next) {
-
+router.get('/check', (req, res) => {
   const email = req.query.email
 
-  User.findOne({ where: {email: email} })
-    .then(foundUser => {
-      inDB = foundUser ? true : false
-      const result = { status: {type: statusStrings.success}, inDB: inDB }
+  User.findOne({ where: { email } })
+    .then((foundUser) => {
+      const inDB = foundUser !== null
+      const result = { status: { type: statusStrings.success }, inDB }
       res.status(200).json(result)
     })
-    .catch(error => {
-      msg = `Unable to check user ${email}`
-      response = procError(error, msg)
+    .catch((error) => {
+      const msg = `Unable to check user ${email}`
+      const response = procError(error, msg)
       res.status(200).json(response)
     })
 });
