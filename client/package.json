@@ -4,9 +4,10 @@
   "description": "Web app to create chord / lyric box charts",
   "angular-cli": {},
   "scripts": {
-    "start": "ng serve",
+    "start": "node ../server/server.js",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test --single-run",
+    "test-server": "mocha ../server/test",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor protractor.config.js"
   },
@@ -52,6 +53,7 @@
     "babel-eslint": "^7.2.3",
     "bootstrap": "4.0.0-alpha.5",
     "chai": "^4.1.1",
+    "chai-http": "^3.0.0",
     "codelyzer": "~2.0.0-beta.4",
     "enhanced-resolve": "^3.0.0",
     "eslint": "^4.4.1",
