@@ -9,6 +9,7 @@
   },
   "rules": {
     "semi": 0,
+    import/no-extraneous-dependencies: [2, { devDependencies: true }],
       "valid-jsdoc": ["error", {
       "requireReturn": true,
       "requireReturnType": true,
