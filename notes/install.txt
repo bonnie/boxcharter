@@ -4,4 +4,4 @@
 > sudo chown bonnie /var/log/boxcharter
 > cd client; npm install
 > cd ../client; ng build
-> cd ../server; node model/create_tables.js (remove user creation line for deploy!!)
+> cd ../server/model; node create_tables.js (remove user creation line for deploy!!)
