@@ -20,17 +20,14 @@
 ----------------------------------------------------------------
 -- notes / keys
 ----------------------------------------------------------------
-DROP TABLE IF EXISTS notes;
 CREATE TABLE notes (
   note_code VARCHAR(2) PRIMARY KEY
 );
 
-DROP TABLE IF EXISTS keys;
 CREATE TABLE keys (
   key_code VARCHAR(3) PRIMARY KEY
 );
 
-DROP TABLE IF EXISTS scale_notes;
 CREATE TABLE scale_notes(
   scale_note_id SERIAL PRIMARY KEY,
   key_code VARCHAR(3) REFERENCES keys,
@@ -39,9 +36,8 @@ CREATE TABLE scale_notes(
 );
 
 ----------------------------------------------------------------
--- sections / charts
+-- charts / sections
 ----------------------------------------------------------------
-DROP TABLE IF EXISTS charts;
 CREATE TABLE charts(
   chart_id SERIAL PRIMARY KEY,
   title TEXT NOT NULL,
@@ -58,7 +54,6 @@ CREATE TABLE charts(
   page_units TEXT DEFAULT 'inches'
 );
 
-DROP TABLE IF EXISTS sections;
 CREATE TABLE sections(
   section_id SERIAL PRIMARY KEY,
   chart_id INTEGER REFERENCES charts,
@@ -67,17 +62,12 @@ CREATE TABLE sections(
   section_desc TEXT,
   beats_per_measure INTEGER NOT NULL,
   verse_count INTEGER NOT NULL,
-  pickup_measure_beats INTEGER DEFAULT 0,
-  repeat_start INTEGER REFERENCES measures,
-  ending1_start INTEGER REFERENCES measures,
-  ending2_start INTEGER REFERENCES measures,
-  ending2_end INTEGER REFERENCES measures
+  pickup_measure_beats INTEGER DEFAULT 0
 );
 
 ----------------------------------------------------------------
--- measures / chords / lyrics
+-- measures / repeats
 ----------------------------------------------------------------
-DROP TABLE IF EXISTS measures;
 CREATE TABLE measures(
   measure_id SERIAL PRIMARY KEY,
   section_id INTEGER REFERENCES sections NOT NULL,
@@ -85,16 +75,27 @@ CREATE TABLE measures(
   beats_per_measure INTEGER
 );
 
-DROP TABLE IF EXISTS chords;
+CREATE TABLE repeats(
+  repeat_id SERIAL PRIMARY KEY,
+  section_id INTEGER REFERENCES sections,
+  repeat_start INTEGER REFERENCES measures,
+  ending1_start INTEGER REFERENCES measures,
+  ending2_start INTEGER REFERENCES measures,
+  ending2_end INTEGER REFERENCES measures
+);
+
+----------------------------------------------------------------
+-- chords / lyrics
+----------------------------------------------------------------
+
 CREATE TABLE chords(
   chord_id SERIAL PRIMARY KEY,
   measure_id INTEGER REFERENCES measures NOT NULL,
   beat_index INTEGER NOT NULL,
-  note_code INTEGER REFERENCES notes NOT NULL,
+  note_code VARCHAR(2) REFERENCES notes NOT NULL,
   suffix VARCHAR(8)
 );
 
-DROP TABLE IF EXISTS lyrics;
 CREATE TABLE lyrics(
   lyric_id SERIAL PRIMARY KEY,
   measure_id INTEGER REFERENCES measures NOT NULL,
@@ -105,7 +106,6 @@ CREATE TABLE lyrics(
 ----------------------------------------------------------------
 -- users
 ----------------------------------------------------------------
-DROP TABLE IF EXISTS users;
 CREATE TABLE users (
   user_id SERIAL PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
@@ -113,4 +113,11 @@ CREATE TABLE users (
   password_salt TEXT NOT NULL,
   first_name TEXT,
   last_name TEXT
+);
+
+CREATE TABLE user_charts (
+  user_chart_id SERIAL PRIMARY KEY,
+  user_id INTEGER REFERENCES users NOT NULL,
+  chart_id INTEGER REFERENCES charts NOT NULL,
+  chart_owner BOOLEAN DEFAULT false
 );

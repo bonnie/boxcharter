@@ -6,12 +6,16 @@
     "start": "nodemon server/app.js",
     "lint": "eslint",
     "test": "export NODE_ENV=test && mocha server/test",
-    "db:create": "psql boxcharter < server/db/db.sql"
+    "db:drop": "source env/production.sh && dropdb $DB_NAME",
+    "db:create": "source env/production.sh && createdb $DB_NAME && psql $DB_NAME < server/db/tables.sql",
+    "db:seed": "source env/production.sh && node ./db/seed/add_keys.js && node ./db/seed/add_user.js",
+    "db:reset": "npm run db:drop && npm run db:create && npm run db:seed"
   },
   "private": true,
   "dependencies": {
     "body-parser": "^1.18.2",
-    "express": "^4.16.1"
+    "express": "^4.16.1",
+    "pg-promise": "^6.10.3"
   },
   "devDependencies": {
     "ajv": "^5.2.2",
