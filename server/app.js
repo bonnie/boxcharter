@@ -21,9 +21,9 @@
 /* adapted from https://scotch.io/tutorials/mean-app-with-angular-2-and-the-angular-cli */
 
 // Get dependencies
-const express = require('express');
 const path = require('path');
 const http = require('http');
+const express = require('express');
 const bodyParser = require('body-parser');
 
 // logging
