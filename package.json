@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon server/app.js",
     "lint": "eslint",
-    "test": "export NODE_ENV=test && mocha server/test"
+    "test": "export NODE_ENV=test && mocha server/test",
+    "db:create": "psql boxcharter < server/db/db.sql"
   },
   "private": true,
   "dependencies": {
