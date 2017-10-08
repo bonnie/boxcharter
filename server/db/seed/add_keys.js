@@ -67,7 +67,7 @@ const addNotes = () => {
       .catch(noteErr =>
         logError(noteErr, `Could not add note ${note}`),
       )
-  }),
+  })
   )
 }
 
@@ -80,34 +80,34 @@ const addNotes = () => {
 const addScales = () =>
   fs.readFile(KEYFILE, 'ascii', (err, data) => {
     if (err) {
-      console.log(`Problem reading file: ${err.toString()}`)
+      console.error(`Problem reading file: ${err.toString()}`)
       throw err
     }
 
     // othersiwe, parse the data and add keys to db
-    return Promise.all(data.split('\n').forEach((keyLine) => {
+    return data.split('\n').forEach((keyLine) => {
+      if (!keyLine) { return 'bad key line data' }
       // example line: Ab,Ab,Bb,C,Db,Eb,F,G
-      if (keyLine) {
-        const notes = keyLine.split(',')
-        const key = notes[0]
-        if (VERBOSE) console.log(`LOOKING AT KEY ${key}`)
+      const notes = keyLine.split(',')
+      const key = notes[0]
+      if (VERBOSE) console.log(`LOOKING AT KEY ${key}`)
 
-        // add the key
-        return db.query(DB_COMMANDS.insertKey, [key])
-          .then((keyRow) => {
-            // add the scale notes
-            Promise.all(notes.slice(1).map((note, index) =>
-              db.query(DB_COMMANDS.insertScaleNote, [keyRow.key_code, note, index])
-                .catch(noteErr =>
-                  logError(noteErr,
-                    `Could not insert scale note for key ${keyRow.key_code}, note: ${note}`)),
-            ),
-            )
-          })
-          .catch(keyErr => logError(keyErr, `Could not insert key ${key}`))
-      }
-    }),
-    ).catch(logError)
+      // add the key
+      return db.one(DB_COMMANDS.insertKey, [key])
+        .then(() => {
+          // add the scale notes
+          if (VERBOSE) console.log(`added key ${key}`)
+          return Promise.all(notes.map((note, index) => {
+            if (VERBOSE) console.log(`\tadding scale note ${note} for ${key}`)
+            return db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
+              .then(() => console.log(`added scale note ${note} for ${key}`))
+              .catch(noteErr =>
+                logError(noteErr,
+                  `Could not insert scale note for key ${key}, note: ${note}`))
+          }))
+        })
+        .catch(keyErr => logError(keyErr, `Could not insert key ${key}`))
+    })
   })
 
 /**
