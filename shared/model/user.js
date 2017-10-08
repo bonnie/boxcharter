@@ -58,7 +58,7 @@ class User {
  * @return {Promise} - Returns a Promise which resolves to a User object,
  *                     or null if no user found.
  */
-User.get = function (lookupColumn, userData) {
+User.getUser = function (lookupColumn, userData) {
   const query = `SELECT * FROM users WHERE ${lookupColumn}=$1`
   return db.one(query, [userData])
     .then(u =>
@@ -86,7 +86,7 @@ User.get = function (lookupColumn, userData) {
  *                     or null if no user found.
  */
 User.getByEmail = function (email) {
-  return User.get('email', email)
+  return User.getUser('email', email)
 }
 
 /**
@@ -97,7 +97,7 @@ User.getByEmail = function (email) {
  *                     or null if no user found.
  */
 User.getById = function (id) {
-  return User.get('user_id', id)
+  return User.getUser('user_id', id)
 }
 
 /**
