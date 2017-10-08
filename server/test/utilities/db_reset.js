@@ -18,8 +18,9 @@
  *
  */
 
-const db = require('../../db/db_connection.js').db
-const addKeys = require('../../db/seed/add_keys')
+const { db } = require('../../db/db_connection.js')
+const { addKeys } = require('../../db/seed/add_keys')
+const { addUser } = require('../../db/seed/add_user')
 
 const getTables = () =>
   // get all tables in current db
@@ -41,7 +42,10 @@ const resetDB = () => {
     .catch(console.error)
 }
 
-const seedDB = () => addKeys()
+const seedDB = () =>
+  addKeys()
+    .then(() => addUser())
+    .catch(console.error)
 
 const initDB = () => {
   resetDB()

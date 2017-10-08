@@ -18,4 +18,34 @@
  *
  */
 
- 
+/**
+ * Function to add a seed user.
+ * @module add_user
+ */
+const db = require('../db_connection').db
+const saltHashPassword = require('../../utilities/password_utils').saltHashPassword
+
+const VERBOSE = process.env.NODE_ENV === 'production'
+
+/**
+ * Add seed user to db
+ * @function
+ * @return {undefined}
+ */
+const addUser = () => {
+  const email = 'bonnie@bonnie'
+  const firstName = 'Bonnie'
+  const lastName = 'BoBonnie'
+  const password = 'bonnie'
+  const { hash, salt } = saltHashPassword(password)
+  const query = `INSERT INTO users
+                  (email, first_name, last_name, password_hash, password_salt)
+                  VALUES ($1, $2, $3, $4, $5)`
+  return db.query(query, [email, firstName, lastName, hash, salt])
+    .then(() => { if (VERBOSE) console.log('Added seed user') })
+    .catch(err => console.log(`FAILED TO ADD USER: ${err}`))
+}
+
+module.exports = {
+  addUser,
+}

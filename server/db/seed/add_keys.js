@@ -42,7 +42,7 @@ const DB_COMMANDS = {
  * @function
  * @param {Error} err - Error to be reported and thrown
  * @param {string} msg - Message to accompany the error
- * @returns { undefined }
+ * @return { undefined }
  */
 const logError = (err, msg) => {
   console.error(`ERROR: ${msg}. ${err.toString()}`)
@@ -52,24 +52,22 @@ const logError = (err, msg) => {
 /**
  * Add all the notes to the db, so they'll be there for the keys
  * @function
- * @returns { undefined }
+ * @return { undefined }
  */
 const addNotes = () => {
   const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
   const accs = ['b', '', '#']
   const allNotes = []
   notes.forEach(note => accs.forEach(acc => allNotes.push(`${note}${acc}`)))
-  return Promise.all(allNotes.map((note) => {
-    if (VERBOSE) console.log(`LOOKING AT NOTE ${note}`)
-    return db.one(DB_COMMANDS.insertNote, [note])
+  return Promise.all(allNotes.map(note =>
+    db.one(DB_COMMANDS.insertNote, [note])
       .then((noteRow) => {
         if (VERBOSE) console.log(`Added note ${noteRow.note_code}`)
       })
       .catch(noteErr =>
         logError(noteErr, `Could not add note ${note}`),
       )
-  })
-  )
+  ))
 }
 
 /**
@@ -77,34 +75,31 @@ const addNotes = () => {
  * @function
  * @param {string} key - the tonic for the key
  * @param {string} notes - the notes for the key
- * @returns {Promise} - value not important; synchronicity is
+ * @return {Promise} - value not important; synchronicity is
  */
 const addKeyNotes = (key, notes) =>
   db.one(DB_COMMANDS.insertKey, [key])
     .then(() => {
       // add the scale notes
       if (VERBOSE) console.log(`added key ${key}`)
-      return Promise.all(notes.map((note, index) => {
-        if (VERBOSE) console.log(`\tadding scale note ${note} for ${key}`)
-        return db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
-          .then(() => console.log(`added scale note ${note} for ${key}`))
+      return Promise.all(notes.map((note, index) =>
+        db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
           .catch(noteErr =>
             logError(noteErr,
               `Could not insert scale note for key ${key}, note: ${note}`))
-      }))
+      ))
     })
     .catch(keyErr => logError(keyErr, `Could not insert key ${key}`))
 
 /**
  * Read scales from file and build keys and scale_notes tables
  * @function
- * @returns { undefined }
+ * @return { undefined }
  */
 const addScales = () =>
   fs.readFile(KEYFILE, 'ascii', (err, data) => {
     if (err) {
-      console.error(`Problem reading file: ${err.toString()}`)
-      throw err
+      logError(err, `Problem reading file: ${err.toString()}`)
     }
 
     // othersiwe, parse the data and add keys to db
@@ -113,20 +108,21 @@ const addScales = () =>
       // example line: Ab,Ab,Bb,C,Db,Eb,F,G
       const notes = keyLine.split(',')
       const key = notes[0]
-      if (VERBOSE) console.log(`LOOKING AT KEY ${key}`)
-
-      return Promise.all(addKeyNotes(key, notes.slice(1)))
+      return addKeyNotes(key, notes.slice(1))
+        .catch(console.error)
     })
   })
 
 /**
  * Run both functions to add notes and scales
  * @function
- * @returns { Promise } Promise data not important; synchronicity is
+ * @return { Promise } Promise data not important; synchronicity is
  */
 const addKeys = () =>
   addNotes()
     .then(() => addScales())
     .catch(console.error)
 
-module.exports = addKeys
+module.exports = {
+  addKeys,
+}

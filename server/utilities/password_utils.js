@@ -22,7 +22,7 @@
  * Functions for generating and checking passwords.
  * adapted from
  *   https://ciphertrick.com/2016/01/18/salt-hash-passwords-using-nodejs-crypto/
- * @module
+ * @module password_utils
  */
 const crypto = require('crypto');
 
@@ -50,7 +50,7 @@ const sha512 = (password, salt) => {
   const value = hash.digest('hex');
   return {
     salt,
-    passwordHash: value,
+    hash: value,
   };
 };
 
