@@ -69,6 +69,8 @@ User.getUser = function (lookupColumn, userData) {
         u.last_name,
         u.password_salt,
         u.password_hash)
+
+      // TODO: get charts here too
     )
     .catch((err) => {
       if (err.code === pgp.queryResultErrorCode.noData) {
@@ -109,106 +111,6 @@ User.getById = function (id) {
 User.prototype.checkPassword = function (enteredPass) {
   return checkPass(this, enteredPass)
 }
-
-//  var Sequelize = require('Sequelize')
-//  var db = require('./db')
-//  var procError = require('../utilities/err')
-//
-//  //////////////////////////////////////////////////////////////////////////////
-//  // User
-//  //////////////////////////////////////////////////////////////////////////////
-//
-//  //////////
-//  // table
-//  const User = db.sequelize.define('user', {
-//    userId: {
-//      type: Sequelize.INTEGER,
-//      autoIncrement: true,
-//      primaryKey: true,
-//    },
-//    email: {
-//      type: Sequelize.STRING,
-//      allowNull: false,
-//      unique: true,
-//    },
-//    passwordHash: {
-//      type: Sequelize.STRING,
-//      allowNull: false,
-//    },
-//    passwordSalt: {
-//      type: Sequelize.STRING,
-//      allowNull: false,
-//    },
-//    firstName: {
-//      type: Sequelize.STRING,
-//    },
-//    lastName: {
-//      type: Sequelize.STRING,
-//    },
-//    // don't need joinedAt, since timestamps is true by default, and
-//    // createdAt, updatedAt will automatically be populated
-// })
-//
-//
-//  ///////////
-//  // methods
-//  // // Adding a class level method
-//  // User.classLevelMethod = function() {
-//  //   return 'foo';
-//  // };
-//
-// User.getUser = function(whereClause) {
-//   return this.find({
-//     where: whereClause,
-//     attributes: {
-//       exclude: [
-//         'passwordHash',
-//         'passwordSalt',
-//       ]
-//     },
-//     raw: true
-//    })
-//    .then(u => {
-//
-//      // TODO: actually make list of charts here, not just dummy!
-//      u.charts = []
-//
-//      return Promise.resolve(u)
-//
-//    })
-// }
-//
-// User.getByEmail = function(targetEmail) {
-//   return this.getUser({email: targetEmail})
-// }
-//
-// User.getById = function(targetId) {
-//   return this.getUser({userId: targetId})
-// }
-//
-//  // // Adding an instance level method
-//  // User.prototype.instanceLevelMethod = function() {
-//  //   return 'bar';
-//  // };
-//
-//  // def get_data(self):
-//  //    """Return a dict of user details."""
-//  //
-//  //    charts = [
-//  //            { 'title': chart.title,
-//  //              'chartId': chart.chart_id,
-//  //              'createdAt': chart.created_at,
-//  //              'updatedAt': chart.modified_at }
-//  //            for chart in self.charts
-//  //           ]
-//  //
-//  //    return {
-//  //                'charts': charts,
-//  //                'userId': self.user_id,
-//  //                'email': self.email,
-//  //                'firstName': self.first_name,
-//  //                'lastName': self.last_name
-//  //            }
 
 module.exports = {
   User,
