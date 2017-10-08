@@ -63,7 +63,7 @@ const resetDB = () => {
  */
 const seedDB = () =>
   addKeys()
-    .then(() => addUser())
+    .then(addUser)
     .catch(console.error)
 
 /**
@@ -73,7 +73,7 @@ const seedDB = () =>
  */
 const initDB = () => {
   resetDB()
-    .then(() => seedDB())
+    .then(seedDB)
     .catch(console.error)
 }
 

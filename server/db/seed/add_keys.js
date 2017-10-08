@@ -120,7 +120,7 @@ const addScales = () =>
  */
 const addKeys = () =>
   addNotes()
-    .then(() => addScales())
+    .then(addScales)
     .catch(console.error)
 
 module.exports = {
