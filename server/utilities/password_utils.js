@@ -18,53 +18,64 @@
  *
  */
 
-var crypto = require('crypto');
-
-/* adapted from https://ciphertrick.com/2016/01/18/salt-hash-passwords-using-nodejs-crypto/ */
+/**
+ * Functions for generating and checking passwords.
+ * adapted from
+ *   https://ciphertrick.com/2016/01/18/salt-hash-passwords-using-nodejs-crypto/
+ * @module
+ */
+const crypto = require('crypto');
 
 /**
- * generates random string of characters i.e salt
+ * Generate random string of characters i.e salt.
  * @function
  * @param {number} length - Length of the random string.
+ * @return {string} - Random string of hex characters of requested length.
  */
-var genRandomString = function(length){
-    return crypto.randomBytes(Math.ceil(length/2))
-            .toString('hex') /** convert to hexadecimal format */
-            .slice(0,length);   /** return required number of characters */
+const genRandomString = length =>
+  crypto.randomBytes(Math.ceil(length / 2))
+    .toString('hex') // convert to hexadecimal format
+    .slice(0, length) // return required number of characters
+
+/**
+ * Hash password with sha512.
+ * @function
+ * @param {string} password - Password to be salted and hashed.
+ * @param {string} salt - Randomly generated salt.
+ * @return {object} - Object containing the password salt and hash.
+ */
+const sha512 = (password, salt) => {
+  const hash = crypto.createHmac('sha512', salt) // Hashing algorithm sha512
+  hash.update(password);
+  const value = hash.digest('hex');
+  return {
+    salt,
+    passwordHash: value,
+  };
 };
 
 /**
- * hash password with sha512.
+ * Generate salt and return object with password and salt.
  * @function
- * @param {string} password - List of required fields.
- * @param {string} salt - Data to be validated.
+ * @param {string} userpassword - Password to be salted and hashed.
+ * @return {object} - Object containing the password salt and hash.
  */
-var sha512 = function(password, salt){
-    var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
-    hash.update(password);
-    var value = hash.digest('hex');
-    return {
-        salt:salt,
-        passwordHash:value
-    };
-};
-
-var saltHashPassword = function(userpassword) {
-    var salt = genRandomString(16); /** Gives us salt of length 16 */
-    return sha512(userpassword, salt);
-    // console.log('UserPassword = '+userpassword);
-    // console.log('Passwordhash = '+passwordData.passwordHash);
-    // console.log('nSalt = '+passwordData.salt);
+const saltHashPassword = (userpassword) => {
+  const salt = genRandomString(16); // Gives us salt of length 16
+  return sha512(userpassword, salt);
 }
 
-var checkPass = function(user, pass) {
-    // user is a User object, pass is a string
-
-    return sha512(pass, user.passwordSalt).passwordHash === user.passwordHash
-
-}
+/**
+ * Determine whether password in db matches entered password.
+ * @function
+ * @param {User} user - User object.
+ * @param {string} pass - Entered password.
+ * @return {object} - Object containing the password salt and hash.
+ */
+const checkPass = (user, pass) =>
+  sha512(pass, user.passwordSalt).passwordHash === user.passwordHash
 
 module.exports = {
-    saltHashPassword: saltHashPassword,
-    checkPass: checkPass
+  saltHashPassword,
+  checkPass,
 }
