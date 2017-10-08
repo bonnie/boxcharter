@@ -93,9 +93,9 @@ User.getUser = function (lookupColumn, userData) {
   return db.one(query, [userData])
     .then(User.dbDatatoUser)
     .then(function (user) {
-      // TODO: get charts here)
-      return user.getCharts()
-    }
+      user.getCharts()
+      return user
+    })
     .catch((err) => {
       if (err.code === pgp.queryResultErrorCode.noData) {
         return null
@@ -140,10 +140,20 @@ User.prototype.update = function () {
 /**
  * Populate a user's charts property
  * @function
- * @return {Promise} - Returns a Promise which resolves to a User object,
+ * @return {undefined} - no return, but the user object has been modified to have
+ *                       an array of charts in its charts property
  */
 User.prototype.getCharts = function () {
-  this.charts = Chart.getCharts(this)
+  this.charts = Chart.getChartsByUser(this.user_id)
+}
+
+/**
+ * Add a chart to a user
+ * @function
+ * @param {number} chartId - id of the chart to be added. It must already exist in the db
+ * @return {undefined} - no return, but the user object has been modified to have another chart
+ */
+User.prototype.addChart = function (chartId) {
 }
 
 /**

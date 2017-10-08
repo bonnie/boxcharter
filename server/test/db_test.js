@@ -40,6 +40,10 @@ userGetterInputs.forEach(function (testData) {
       return initDB()
         .then(function () { user = testData.method(testData.input) })
     })
+    it('should return a user object', function () {
+      return user
+        .then(u => expect(u).to.be.an.instanceof(User))
+    })
     it('should match the seeded firstName', function () {
       return user
         .then(u => expect(u.firstName).to.equal(userData.firstName))
@@ -58,3 +62,7 @@ userGetterInputs.forEach(function (testData) {
     })
   })
 })
+
+// const userUpdateInputs = [
+//   { descString: 'up' },
+// ]

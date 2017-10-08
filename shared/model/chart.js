@@ -18,6 +18,39 @@
  *
  */
 
+ /**
+  * Chart model.
+  * @module chart
+  */
+ const { db, pgp } = require('../../server/db/db_connection')
+
+ /**
+  * Chart object.
+  * @class
+  */
+ class Chart {
+ /**
+  * Chart constructor
+  * @constructor
+  */
+ constructor() {
+ }
+}
+
+
+
+/**
+ * Return an array of chart objects for a particular user
+ * @param {number} userId - a User object
+ * @return {array} - an array of Chart objects
+ */
+Chart.getChartsByUser = function (userId) {
+
+}
+
+/*
+/////////////////
+
 const Sequelize = require('Sequelize')
 const db = require('./db')
 const User = require('./user')
@@ -316,6 +349,8 @@ Chart.prototype.getSections = function() {
  //     # finally, add and commit to db
  //     db.session.add(self)
  //     db.session.commit()
+*/
 
-
- module.exports = Chart
+module.exports = {
+  Chart,
+}
