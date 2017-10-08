@@ -20,6 +20,7 @@
 
 /**
  * Add notes and scales. To be done once when tables are created.
+ * @module add_keys
  */
 const db = require('../db_connection').db
 const fs = require('fs')
@@ -38,7 +39,7 @@ const DB_COMMANDS = {
 
 /**
  * Function for logging and rethrowing errors
-
+ * @function
  * @param {Error} err - Error to be reported and thrown
  * @param {string} msg - Message to accompany the error
  * @returns { undefined }
@@ -50,7 +51,7 @@ const logError = (err, msg) => {
 
 /**
  * Add all the notes to the db, so they'll be there for the keys
-
+ * @function
  * @returns { undefined }
  */
 const addNotes = () => {
@@ -73,7 +74,7 @@ const addNotes = () => {
 
 /**
  * Add a key and its corresponding notes to the db
- *
+ * @function
  * @param {string} key - the tonic for the key
  * @param {string} notes - the notes for the key
  * @returns {Promise} - value not important; synchronicity is
@@ -96,7 +97,7 @@ const addKeyNotes = (key, notes) =>
 
 /**
  * Read scales from file and build keys and scale_notes tables
- *
+ * @function
  * @returns { undefined }
  */
 const addScales = () =>
@@ -120,7 +121,7 @@ const addScales = () =>
 
 /**
  * Run both functions to add notes and scales
-
+ * @function
  * @returns { Promise } Promise data not important; synchronicity is
  */
 const addKeys = () =>
