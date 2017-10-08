@@ -71,10 +71,32 @@ const addNotes = () => {
   )
 }
 
+/**
+ * Add a key and its corresponding notes to the db
+ *
+ * @param {string} key - the tonic for the key
+ * @param {string} notes - the notes for the key
+ * @returns {Promise} - value not important; synchronicity is
+ */
+const addKeyNotes = (key, notes) =>
+  db.one(DB_COMMANDS.insertKey, [key])
+    .then(() => {
+      // add the scale notes
+      if (VERBOSE) console.log(`added key ${key}`)
+      return Promise.all(notes.map((note, index) => {
+        if (VERBOSE) console.log(`\tadding scale note ${note} for ${key}`)
+        return db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
+          .then(() => console.log(`added scale note ${note} for ${key}`))
+          .catch(noteErr =>
+            logError(noteErr,
+              `Could not insert scale note for key ${key}, note: ${note}`))
+      }))
+    })
+    .catch(keyErr => logError(keyErr, `Could not insert key ${key}`))
 
 /**
  * Read scales from file and build keys and scale_notes tables
-
+ *
  * @returns { undefined }
  */
 const addScales = () =>
@@ -92,21 +114,7 @@ const addScales = () =>
       const key = notes[0]
       if (VERBOSE) console.log(`LOOKING AT KEY ${key}`)
 
-      // add the key
-      return db.one(DB_COMMANDS.insertKey, [key])
-        .then(() => {
-          // add the scale notes
-          if (VERBOSE) console.log(`added key ${key}`)
-          return Promise.all(notes.map((note, index) => {
-            if (VERBOSE) console.log(`\tadding scale note ${note} for ${key}`)
-            return db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
-              .then(() => console.log(`added scale note ${note} for ${key}`))
-              .catch(noteErr =>
-                logError(noteErr,
-                  `Could not insert scale note for key ${key}, note: ${note}`))
-          }))
-        })
-        .catch(keyErr => logError(keyErr, `Could not insert key ${key}`))
+      return Promise.all(addKeyNotes(key, notes.slice(1)))
     })
   })
 
