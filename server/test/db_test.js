@@ -18,12 +18,17 @@
  *
  */
 
+/**
+ * Tests for the database model.
+ * @module db_test
+ */
 const expect = require('chai').expect
 const initDB = require('./utilities/db_reset.js').initDB
+const seedUser = require()
 
-describe('DB tests', () => {
-  beforeEach('Reset the DB', () => initDB())
-  it('should not fail', () => {
+describe('Database user', () => {
+  beforeEach('Reset the DB', initDB)
+  it('should retrieve the seeded user', () => {
     expect(true).to.equal(true)
   })
 })
