@@ -18,98 +18,124 @@
   *
   */
 
-var Sequelize = require('Sequelize')
-var db = require('./db')
-var logger = require('../utilities/log').logger
+/**
+ * Measure model.
+ * @module measure
+ */
 
-//////////
-// table
+ const { db, pgp } = require('../../server/db/db_connection')
 
-const Measure = db.sequelize.define('measure', {
-  measureId: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  index: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  beatsPerMeasure: {
-    type: Sequelize.INTEGER
-  }
-})
-
-////////////////
-// methods
-
-Measure.setMeasure = function(measureData) {
-  const chords = measureData.chords
-  const lyrics = measureData.lyrics
-  delete measureData.chords
-  delete measureData.lyrics
-
-  Measure.create(measureData, {
-    options: {
-      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-    })
-    .then(newMeasure => {
-      logger.debug(`created new measure ${measureData}`)
-      chords.forEach(c => {
-        c.measureId = newMeasure.measureId
-        Chord.setChord(c)
-      })
-      lyrics.forEach(l => {
-        l.MeasureId = newMeasure.measureId
-        Lyric.setLyrics(l)
-      })
-    })
-    .catch(err => {
-      logger.error(
-        `Could not create measure ${measureData}: ${err}`)
-    })
+ /**
+  * Measure object.
+  * @class
+  */
+ class Measure {
+   /**
+    * Measure constructor
+    * @constructor
+    * @param {string} id - measure_id
+    * @param {string} email - email
+    * @param {string} firstName - first name
+    * @param {string} lastName - last name
+    * @param {string} salt - password salt
+    * @param {string} hash - password hash
+    */
+   constructor(id, email, firstName, lastName, salt, hash) {
+   }
 }
 
-Measure.getSectionMeasures = function(sectionId) {
-  Measure.findAll({
-    where: { sectionId: sectionId },
-    options: { order: ['index'] },
-    attributes: { include: ['beatsPerMeasure'] },
-    raw: true
-  }).then(measures => {
-    completeMeasures = measures.map(m => {
-      m.chords = m.getChords()
-      m.lyrics = m.getLyrics()
-      return m
-    })
-    return Promise.resolve(completeMeasures)
-  })
-}
-
-Measure.getChords = function() {
-  Chord.findAll({
-    where: { measureId: this.measureId }})
-    .then(chords => {
-      const formatChords = {}
-      chords.forEach(c => { formatChords[c.beatIndex] = c.chordString() })
-      return Promise.resolve(formatChords)
-    })
-    .catch(err => {
-      throw `Could not get chords for measureID ${measureId}: ${err}`
-    })
-}
-
-Measure.getLyrics = function() {
-  Lyric.findAll({ where: { measureId: this.measureId }})
-  .then(lyrics => {
-    const formatLyrics = {}
-    lyrics.forEach(l => { formatLyrics[l.verseIndex] = l.text })
-    return Promise.resolve(formatLyrics)
-  })
-  .catch(err => {
-    throw `Could not get chords for measureID ${measureId}: ${err}`
-  })
-}
+// var Sequelize = require('Sequelize')
+// var db = require('./db')
+// var logger = require('../utilities/log').logger
+//
+// //////////
+// // table
+//
+// const Measure = db.sequelize.define('measure', {
+//   measureId: {
+//     type: Sequelize.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true,
+//   },
+//   index: {
+//     type: Sequelize.INTEGER,
+//     allowNull: false,
+//   },
+//   beatsPerMeasure: {
+//     type: Sequelize.INTEGER
+//   }
+// })
+//
+// ////////////////
+// // methods
+//
+// Measure.setMeasure = function(measureData) {
+//   const chords = measureData.chords
+//   const lyrics = measureData.lyrics
+//   delete measureData.chords
+//   delete measureData.lyrics
+//
+//   Measure.create(measureData, {
+//     options: {
+//       logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
+//     })
+//     .then(newMeasure => {
+//       logger.debug(`created new measure ${measureData}`)
+//       chords.forEach(c => {
+//         c.measureId = newMeasure.measureId
+//         Chord.setChord(c)
+//       })
+//       lyrics.forEach(l => {
+//         l.MeasureId = newMeasure.measureId
+//         Lyric.setLyrics(l)
+//       })
+//     })
+//     .catch(err => {
+//       logger.error(
+//         `Could not create measure ${measureData}: ${err}`)
+//     })
+// }
+//
+// Measure.getSectionMeasures = function(sectionId) {
+//   Measure.findAll({
+//     where: { sectionId: sectionId },
+//     options: { order: ['index'] },
+//     attributes: { include: ['beatsPerMeasure'] },
+//     raw: true
+//   }).then(measures => {
+//     completeMeasures = measures.map(m => {
+//       m.chords = m.getChords()
+//       m.lyrics = m.getLyrics()
+//       return m
+//     })
+//     return Promise.resolve(completeMeasures)
+//   })
+// }
+//
+// Measure.getChords = function() {
+//   Chord.findAll({
+//     where: { measureId: this.measureId }})
+//     .then(chords => {
+//       const formatChords = {}
+//       chords.forEach(c => { formatChords[c.beatIndex] = c.chordString() })
+//       return Promise.resolve(formatChords)
+//     })
+//     .catch(err => {
+//       throw `Could not get chords for measureID ${measureId}: ${err}`
+//     })
+// }
+//
+// Measure.getLyrics = function() {
+//   Lyric.findAll({ where: { measureId: this.measureId }})
+//   .then(lyrics => {
+//     const formatLyrics = {}
+//     lyrics.forEach(l => { formatLyrics[l.verseIndex] = l.text })
+//     return Promise.resolve(formatLyrics)
+//   })
+//   .catch(err => {
+//     throw `Could not get chords for measureID ${measureId}: ${err}`
+//   })
+// }
 
 
 

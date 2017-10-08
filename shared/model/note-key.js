@@ -18,40 +18,47 @@
  *
  */
 
- var Sequelize = require('Sequelize')
- var db = require('./db')
+/**
+ * Models for notes, keys, and scalenotes.
+ * @module note-key
+ */
 
- //////////
- // tables
+/////// I don't think notes/keys/scalenotes need models. Just make a function
+/// to transpose; that will work fine. 
 
- const Note = db.sequelize.define('note', {
-   noteCode: {
-      type: Sequelize.STRING(2),
-      primaryKey: true
-    }
- })
-
- const Key = db.sequelize.define('key', {
-   keyCode: {
-     type: Sequelize.STRING(3),
-     primaryKey: true
-   }
- })
-
- const ScaleNote = db.sequelize.define('scale_note', {
-   scaleNoteId: {
-     type: Sequelize.INTEGER,
-     autoIncrement: true,
-     primaryKey: true,
-   },
-   scaleDegree: {
-     type: Sequelize.INTEGER,
-     allowNull: false,
-   },
-})
-
- module.exports = {
-   Note: Note,
-   Key: Key,
-   ScaleNote: ScaleNote,
- };
+//
+// const { db, pgp } = require('../../server/db/db_connection')
+//
+//
+//
+//  const Note = db.sequelize.define('note', {
+//    noteCode: {
+//       type: Sequelize.STRING(2),
+//       primaryKey: true
+//     }
+//  })
+//
+//  const Key = db.sequelize.define('key', {
+//    keyCode: {
+//      type: Sequelize.STRING(3),
+//      primaryKey: true
+//    }
+//  })
+//
+//  const ScaleNote = db.sequelize.define('scale_note', {
+//    scaleNoteId: {
+//      type: Sequelize.INTEGER,
+//      autoIncrement: true,
+//      primaryKey: true,
+//    },
+//    scaleDegree: {
+//      type: Sequelize.INTEGER,
+//      allowNull: false,
+//    },
+// })
+//
+//  module.exports = {
+//    Note: Note,
+//    Key: Key,
+//    ScaleNote: ScaleNote,
+//  };

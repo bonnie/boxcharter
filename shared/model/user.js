@@ -24,6 +24,7 @@
  */
 const { db, pgp } = require('../../server/db/db_connection')
 const { checkPass } = require('../../server/utilities/password_utils')
+const { Chart } = require('./chart.js')
 
 /**
  * User object.
@@ -47,7 +48,36 @@ class User {
     this.lastName = lastName
     this.salt = salt
     this.hash = hash
+    this.charts = [] // array of Chart objects
   }
+}
+
+/**
+ * Make a user object from database data
+ * @function
+ * @param {object} dbUserData - Data for one user, as returned from a SELECT * FROM users query
+ * @return {User} - user object from data
+ */
+User.dbDatatoUser = function (dbUserData) {
+  return new User(
+    dbUserData.user_id,
+    dbUserData.email,
+    dbUserData.first_name,
+    dbUserData.last_name,
+    dbUserData.password_salt,
+    dbUserData.password_hash)
+}
+
+/**
+ * Update a user's metadata
+ * @function
+ * @param {string} updateColumn - The column for which the given data applies
+ * @param {string} userData - The user data for the colum indicated
+ * @return {Promise} - Returns a Promise which resolves to a User object,
+ *                     or null if no user found.
+ */
+User.addToDb = function() {
+
 }
 
 /**
@@ -61,17 +91,11 @@ class User {
 User.getUser = function (lookupColumn, userData) {
   const query = `SELECT * FROM users WHERE ${lookupColumn}=$1`
   return db.one(query, [userData])
-    .then(u =>
-      new User(
-        u.user_id,
-        u.email,
-        u.first_name,
-        u.last_name,
-        u.password_salt,
-        u.password_hash)
-
-      // TODO: get charts here too
-    )
+    .then(User.dbDatatoUser)
+    .then(function (user) {
+      // TODO: get charts here)
+      return user.getCharts()
+    }
     .catch((err) => {
       if (err.code === pgp.queryResultErrorCode.noData) {
         return null
@@ -100,6 +124,26 @@ User.getByEmail = function (email) {
  */
 User.getById = function (id) {
   return User.getUser('user_id', id)
+}
+
+/**
+ * Update a user's metadata
+ * @function
+ * @param {string} updateColumn - The column for which the given data applies
+ * @param {string} userData - The user data for the colum indicated
+ * @return {Promise} - Returns a Promise which resolves to a User object,
+ */
+User.prototype.update = function () {
+
+}
+
+/**
+ * Populate a user's charts property
+ * @function
+ * @return {Promise} - Returns a Promise which resolves to a User object,
+ */
+User.prototype.getCharts = function () {
+  this.charts = Chart.getCharts(this)
 }
 
 /**

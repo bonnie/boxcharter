@@ -18,9 +18,11 @@
  *
  */
 
-var Sequelize = require('Sequelize')
-var db = require('./db')
-var logger = require('../utilities/log').logger
+//// don't think these need models
+
+// var Sequelize = require('Sequelize')
+// var db = require('./db')
+// var logger = require('../utilities/log').logger
 
 //////////////////////////////////////////////////////////////////////////////
 // Chord
@@ -29,42 +31,42 @@ var logger = require('../utilities/log').logger
 //////////
 // table
 
-const Chord = db.sequelize.define('chord', {
-chordId: {
-  type: Sequelize.INTEGER,
-  autoIncrement: true,
-  primaryKey: true,
-},
-beatIndex: {
-  type: Sequelize.INTEGER,
-  allowNull: false,
-},
-chordSuffix: { type: Sequelize.STRING(8) },
-})
+// const Chord = db.sequelize.define('chord', {
+// chordId: {
+//   type: Sequelize.INTEGER,
+//   autoIncrement: true,
+//   primaryKey: true,
+// },
+// beatIndex: {
+//   type: Sequelize.INTEGER,
+//   allowNull: false,
+// },
+// chordSuffix: { type: Sequelize.STRING(8) },
+// })
 
 
 ///////////
 // methods
 
-Chord.getChordstring = function() {
- // Return a string representing the chord
-
- return `${this.noteCode}${this.chordSuffix | ''}`
-}
-
-Chord.setChord = function(chordData) {
-
- Chord.create(chordData, {
-   options: {
-     logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-   })
-   .then(newMeasure => {
-     logger.debug(`created new chord ${chordData}`)
-   })
-   .catch(err => {
-     throw `Could not create chord ${chordData}: ${err}`
-   })
-}
+// Chord.getChordstring = function() {
+//  // Return a string representing the chord
+//
+//  return `${this.noteCode}${this.chordSuffix | ''}`
+// }
+//
+// Chord.setChord = function(chordData) {
+//
+//  Chord.create(chordData, {
+//    options: {
+//      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
+//    })
+//    .then(newMeasure => {
+//      logger.debug(`created new chord ${chordData}`)
+//    })
+//    .catch(err => {
+//      throw `Could not create chord ${chordData}: ${err}`
+//    })
+// }
 
 // def get_chordstring(self):
 //     """Return a string representing the chord."""
@@ -82,37 +84,37 @@ Chord.setChord = function(chordData) {
 //////////
 // table
 
-const Lyric = db.sequelize.define('lyric', {
- lyricId: {
-   type: Sequelize.INTEGER,
-   autoIncrement: true,
-   primaryKey: true,
- },
- verseIndex: {
-   type: Sequelize.INTEGER,
-   allowNull: false,
- },
- lyricText: {
-   type: Sequelize.STRING,
- }
-})
-
-///////////
-// methods
-
-Lyric.setLyric = function(lyricData) {
-
- Lyric.create(lyricData, {
-   options: {
-     logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-   })
-   .then(newMeasure => {
-     logger.debug(`created new lyric ${lyricData}`)
-   })
-   .catch(err => {
-     throw `Could not create lyric ${lyricData}: ${err}`
-   })
-}
+// const Lyric = db.sequelize.define('lyric', {
+//  lyricId: {
+//    type: Sequelize.INTEGER,
+//    autoIncrement: true,
+//    primaryKey: true,
+//  },
+//  verseIndex: {
+//    type: Sequelize.INTEGER,
+//    allowNull: false,
+//  },
+//  lyricText: {
+//    type: Sequelize.STRING,
+//  }
+// })
+//
+// ///////////
+// // methods
+//
+// Lyric.setLyric = function(lyricData) {
+//
+//  Lyric.create(lyricData, {
+//    options: {
+//      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
+//    })
+//    .then(newMeasure => {
+//      logger.debug(`created new lyric ${lyricData}`)
+//    })
+//    .catch(err => {
+//      throw `Could not create lyric ${lyricData}: ${err}`
+//    })
+// }
 
 
 // def get_data(self):
@@ -145,8 +147,8 @@ Lyric.setLyric = function(lyricData) {
 //
 //     db.session.add(self)
 //     db.session.commit()
-
-module.exports = {
- Chord: Chord,
- Lyric: Lyric,
-}
+//
+// module.exports = {
+//  Chord: Chord,
+//  Lyric: Lyric,
+// }
