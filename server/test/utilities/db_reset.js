@@ -18,16 +18,30 @@
  *
  */
 
+/**
+ * Utilities to reset the database in between tests.
+ * @module db_reset
+ */
 const { db } = require('../../db/db_connection.js')
 const { addKeys } = require('../../db/seed/add_keys')
 const { addUser } = require('../../db/seed/add_user')
 
+/**
+ * Get all the tables in the current db connection.
+ * @function
+ * @returns {array} - Array of objects each representing a table. Each object
+ *    has a key 'table_name'
+ */
 const getTables = () =>
-  // get all tables in current db
   db.query(`SELECT table_name
               FROM information_schema.tables
               WHERE table_schema = 'public';`)
 
+/**
+ * Truncate all tables to reset the database.
+ * @function
+ * @returns {undefined}
+ */
 const resetDB = () => {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('Cowardly refusing to truncate production db.')
@@ -42,11 +56,21 @@ const resetDB = () => {
     .catch(console.error)
 }
 
+/**
+ * Seed the database using functions from the db/seed directory.
+ * @function
+ * @returns {undefined}
+ */
 const seedDB = () =>
   addKeys()
     .then(() => addUser())
     .catch(console.error)
 
+/**
+ * Initialize the db: both reset it, and then seed it.
+ * @function
+ * @returns {undefined}
+ */
 const initDB = () => {
   resetDB()
     .then(() => seedDB())
