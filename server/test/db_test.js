@@ -19,7 +19,7 @@
  */
 
 const expect = require('chai').expect
-const initDB = require('./helpers/db_test_helpers.js').resetDB
+const initDB = require('./helpers/db_test_helpers.js').initDB
 
 describe('DB tests', () => {
   beforeEach('Reset the DB', () => initDB())

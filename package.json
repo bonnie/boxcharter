@@ -5,10 +5,10 @@
   "scripts": {
     "start": "nodemon server/app.js",
     "lint": "eslint",
-    "test": "export NODE_ENV=test && mocha server/test",
+    "test": "source env/test.sh && mocha server/test",
     "db:drop": "source env/production.sh && dropdb $DB_NAME",
     "db:create": "source env/production.sh && createdb $DB_NAME && psql $DB_NAME < server/db/tables.sql",
-    "db:seed": "source env/production.sh && node ./db/seed/add_keys.js && node ./db/seed/add_user.js",
+    "db:seed": "source env/production.sh && node server/test/helpers/db_reset seed",
     "db:reset": "npm run db:drop && npm run db:create && npm run db:seed"
   },
   "private": true,

@@ -87,7 +87,6 @@ CREATE TABLE repeats(
 ----------------------------------------------------------------
 -- chords / lyrics
 ----------------------------------------------------------------
-
 CREATE TABLE chords(
   chord_id SERIAL PRIMARY KEY,
   measure_id INTEGER REFERENCES measures NOT NULL,

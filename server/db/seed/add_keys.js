@@ -18,65 +18,106 @@
  *
  */
 
-/////////////////////////////////////////////////////////////////////
-// Add notes and scales. To be done once when tables are created.
-/////////////////////////////////////////////////////////////////////
-
-const db = require('./db_connection').db
+/**
+ * Add notes and scales. To be done once when tables are created.
+ */
+const db = require('../db_connection').db
 const fs = require('fs')
 
-const addNotes = function() {
-  // Add all the notes to the db, so they'll be there for the keys
-  // With Sequelize, it's easier this way than checking as we go along.
+const VERBOSE = process.env.NODE_ENV === 'production'
 
-  const NOTES = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-  const ACC = ['b', '', '#']
-  NOTES.map(baseNote => {
-    ACC.map(acc => {
-      note = baseNote + acc
-      Note.create({noteCode: note})
-        .then(n => {console.log(`Created note ${n.noteCode}`)})
-        .catch(err => {console.error(`Failed to create note ${n.noteCode}: ${err}`)})
-    })
-  })
+// assuming this will be run from an npm script; working dir is top of proj
+const KEYFILE = './server/db/seed/keys.csv'
+
+const DB_COMMANDS = {
+  insertNote: 'INSERT INTO notes (note_code) VALUES ($1) RETURNING note_code',
+  insertKey: 'INSERT INTO keys (key_code) VALUES ($1) RETURNING key_code',
+  insertScaleNote: `INSERT INTO scale_notes (key_code, note_code, scale_degree)
+                      VALUES ($1, $2, $3)`,
+}
+
+/**
+ * Function for logging and rethrowing errors
+
+ * @param {Error} err - Error to be reported and thrown
+ * @param {string} msg - Message to accompany the error
+ * @returns { undefined }
+ */
+const logError = (err, msg) => {
+  console.error(`ERROR: ${msg}. ${err.toString()}`)
+  process.exit(1)
+}
+
+/**
+ * Add all the notes to the db, so they'll be there for the keys
+
+ * @returns { undefined }
+ */
+const addNotes = () => {
+  const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+  const accs = ['b', '', '#']
+  const allNotes = []
+  notes.forEach(note => accs.forEach(acc => allNotes.push(`${note}${acc}`)))
+  return Promise.all(allNotes.map((note) => {
+    if (VERBOSE) console.log(`LOOKING AT NOTE ${note}`)
+    return db.one(DB_COMMANDS.insertNote, [note])
+      .then((noteRow) => {
+        if (VERBOSE) console.log(`Added note ${noteRow.note_code}`)
+      })
+      .catch(noteErr =>
+        logError(noteErr, `Could not add note ${note}`),
+      )
+  }),
+  )
 }
 
 
-const addScales = function() {
-  fs.readFile('../seed/keys.csv', 'ascii', (err, data) => {
-    if (err) { return console.log(err); }
+/**
+ * Read scales from file and build keys and scale_notes tables
+
+ * @returns { undefined }
+ */
+const addScales = () =>
+  fs.readFile(KEYFILE, 'ascii', (err, data) => {
+    if (err) {
+      console.log(`Problem reading file: ${err.toString()}`)
+      throw err
+    }
 
     // othersiwe, parse the data and add keys to db
-    const keys = {}
-    data.split('\n').map(keyLine => {
-
-        // example line: Ab,Bb,C,Db,Eb,F,G
+    return Promise.all(data.split('\n').forEach((keyLine) => {
+      // example line: Ab,Ab,Bb,C,Db,Eb,F,G
+      if (keyLine) {
         const notes = keyLine.split(',')
-        const tonic = notes[0]
+        const key = notes[0]
+        if (VERBOSE) console.log(`LOOKING AT KEY ${key}`)
 
-        const scale_notes = notes.slice(1).map(
-          (note, index) => {
-            return { noteCode: note, scaleDegree: index }
+        // add the key
+        return db.query(DB_COMMANDS.insertKey, [key])
+          .then((keyRow) => {
+            // add the scale notes
+            Promise.all(notes.slice(1).map((note, index) =>
+              db.query(DB_COMMANDS.insertScaleNote, [keyRow.key_code, note, index])
+                .catch(noteErr =>
+                  logError(noteErr,
+                    `Could not insert scale note for key ${keyRow.key_code}, note: ${note}`)),
+            ),
+            )
           })
+          .catch(keyErr => logError(keyErr, `Could not insert key ${key}`))
+      }
+    }),
+    ).catch(logError)
+  })
 
-        // create key
-        Key.create(
-          {
-            keyCode: tonic,
-            scale_notes: scale_notes
-          },
-          {
-            include: [ScaleNote]
-        })
-        .then(k => {console.log(`created key ${k.keyCode}`)})
-        .catch(err => {console.error(`could not create key: ${err}`)})
-      })
-    })
-}
+/**
+ * Run both functions to add notes and scales
 
-const addNotesAndScales = function () {
+ * @returns { Promise } Promise data not important; synchronicity is
+ */
+const addKeys = () =>
   addNotes()
-  addScales()
-}
+    .then(() => addScales())
+    .catch(console.error)
 
-module.exports = addNotesAndScales
+module.exports = addKeys
