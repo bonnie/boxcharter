@@ -51,15 +51,16 @@ class User {
 }
 
 /**
- * Return a User object for a given email.
+ * Return a User object for the given criteria.
  * @function
- * @param {string} email - Email for which to find a user.
+ * @param {string} lookupColumn - The column for which the given data applies
+ * @param {string} userData - The user data for the colum indicated
  * @return {Promise} - Returns a Promise which resolves to a User object,
  *                     or null if no user found.
  */
-User.getByEmail = (email) => {
-  const query = 'SELECT * FROM users WHERE email=$1'
-  return db.one(query, [email])
+User.get = function (lookupColumn, userData) {
+  const query = `SELECT * FROM users WHERE ${lookupColumn}=$1`
+  return db.one(query, [userData])
     .then(u =>
       new User(
         u.user_id,
@@ -75,6 +76,28 @@ User.getByEmail = (email) => {
       }
       throw err
     })
+}
+
+/**
+ * Return a User object for a given email.
+ * @function
+ * @param {string} email - Email for which to find a user.
+ * @return {Promise} - Returns a Promise which resolves to a User object,
+ *                     or null if no user found.
+ */
+User.getByEmail = function (email) {
+  return User.get('email', email)
+}
+
+/**
+ * Return a User object for a given user_id.
+ * @function
+ * @param {number} id - ID for which to find a user.
+ * @return {Promise} - Returns a Promise which resolves to a User object,
+ *                     or null if no user found.
+ */
+User.getById = function (id) {
+  return User.get('user_id', id)
 }
 
 /**

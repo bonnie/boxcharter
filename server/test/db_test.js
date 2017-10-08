@@ -28,26 +28,33 @@ const { userData } = require('../db/seed/add_user')
 
 const { User } = require('../../shared/model/user.js')
 
-describe('Database user', function () {
-  let user
-  before('Reset the DB', function () {
-    return initDB()
-      .then(function () { user = User.getByEmail(userData.email) })
-  })
-  it('should match the seeded firstName', function () {
-    return user
-      .then(u => expect(u.firstName).to.equal(userData.firstName))
-  })
-  it('should match the seeded lastName', function () {
-    return user
-      .then(u => expect(u.lastName).to.equal(userData.lastName))
-  })
-  it('should match the seeded password', function () {
-    return user
-      .then(u => expect(u.checkPassword(userData.password)).to.equal(true))
-  })
-  it('should not match a random password string', function () {
-    return user
-      .then(u => expect(u.checkPassword('a random password string')).to.equal(false))
+const userGetterInputs = [
+  { descString: 'User.getByEmail', method: User.getByEmail, input: userData.email },
+  { descString: 'User.getById', method: User.getById, input: 1 },
+]
+
+userGetterInputs.forEach(function (testData) {
+  describe(testData.descString, function () {
+    let user
+    before('Reset the DB', function () {
+      return initDB()
+        .then(function () { user = testData.method(testData.input) })
+    })
+    it('should match the seeded firstName', function () {
+      return user
+        .then(u => expect(u.firstName).to.equal(userData.firstName))
+    })
+    it('should match the seeded lastName', function () {
+      return user
+        .then(u => expect(u.lastName).to.equal(userData.lastName))
+    })
+    it('should match the seeded password', function () {
+      return user
+        .then(u => expect(u.checkPassword(userData.password)).to.equal(true))
+    })
+    it('should not match a random password string', function () {
+      return user
+        .then(u => expect(u.checkPassword('a random password string')).to.equal(false))
+    })
   })
 })
