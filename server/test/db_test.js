@@ -22,13 +22,32 @@
  * Tests for the database model.
  * @module db_test
  */
-const expect = require('chai').expect
-const initDB = require('./utilities/db_reset.js').initDB
-const seedUser = require()
+const { expect } = require('chai')
+const { initDB } = require('./utilities/db_reset')
+const { userData } = require('../db/seed/add_user')
 
-describe('Database user', () => {
-  beforeEach('Reset the DB', initDB)
-  it('should retrieve the seeded user', () => {
-    expect(true).to.equal(true)
+const { User } = require('../../shared/model/user.js')
+
+describe('Database user', function () {
+  let user
+  before('Reset the DB', function () {
+    return initDB()
+      .then(function () { user = User.getByEmail(userData.email) })
+  })
+  it('should match the seeded firstName', function () {
+    return user
+      .then(u => expect(u.firstName).to.equal(userData.firstName))
+  })
+  it('should match the seeded lastName', function () {
+    return user
+      .then(u => expect(u.lastName).to.equal(userData.lastName))
+  })
+  it('should match the seeded password', function () {
+    return user
+      .then(u => expect(u.checkPassword(userData.password)).to.equal(true))
+  })
+  it('should not match a random password string', function () {
+    return user
+      .then(u => expect(u.checkPassword('a random password string')).to.equal(false))
   })
 })

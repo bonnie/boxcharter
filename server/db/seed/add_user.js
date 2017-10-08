@@ -26,6 +26,12 @@ const db = require('../db_connection').db
 const saltHashPassword = require('../../utilities/password_utils').saltHashPassword
 
 const VERBOSE = process.env.NODE_ENV === 'production'
+const userData = {
+  email: 'bonnie@bonnie',
+  firstName: 'Bonnie',
+  lastName: 'BoBonnie',
+  password: 'bonnie',
+}
 
 /**
  * Add seed user to db
@@ -33,19 +39,16 @@ const VERBOSE = process.env.NODE_ENV === 'production'
  * @return {undefined}
  */
 const addUser = () => {
-  const email = 'bonnie@bonnie'
-  const firstName = 'Bonnie'
-  const lastName = 'BoBonnie'
-  const password = 'bonnie'
-  const { hash, salt } = saltHashPassword(password)
+  const { hash, salt } = saltHashPassword(userData.password)
   const query = `INSERT INTO users
                   (email, first_name, last_name, password_hash, password_salt)
                   VALUES ($1, $2, $3, $4, $5)`
-  return db.query(query, [email, firstName, lastName, hash, salt])
+  return db.query(query, [userData.email, userData.firstName, userData.lastName, hash, salt])
     .then(() => { if (VERBOSE) console.log('Added seed user') })
     .catch(err => console.log(`FAILED TO ADD USER: ${err}`))
 }
 
 module.exports = {
   addUser,
+  userData,
 }

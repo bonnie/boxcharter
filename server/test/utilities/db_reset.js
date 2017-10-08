@@ -46,7 +46,7 @@ const resetDB = () => {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('Cowardly refusing to truncate production db.')
   }
-  getTables()
+  return getTables()
     .then((tables) => {
       Promise.all(tables.map(table =>
         db.none(`TRUNCATE ${table.table_name} RESTART IDENTITY CASCADE`),
@@ -71,11 +71,10 @@ const seedDB = () =>
  * @function
  * @returns {undefined}
  */
-const initDB = () => {
+const initDB = () =>
   resetDB()
     .then(seedDB)
     .catch(console.error)
-}
 
 // if the file is run as a command (used in npm scripts)
 if (!module.parent) {
