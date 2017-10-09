@@ -137,11 +137,9 @@ User.getById = function (id) {
  */
 User.prototype.update = function (updateColumn, userData) {
   // update the db
-  console.log(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`)
-  console.log(this)
-  db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId])
+  return db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId])
   // update the instance
-    .then(function () {
+    .then(() => {
       this[updateColumn] = userData
     })
     .catch(console.err)
@@ -154,7 +152,8 @@ User.prototype.update = function (updateColumn, userData) {
  *                       an array of charts in its charts property.
  */
 User.prototype.getCharts = function () {
-  this.charts = Chart.getChartsByUser(this.userId)
+  // return Chart.getChartsByUser(this.userId)
+  //   .then((charts) => { this.charts = charts })
 }
 
 /**

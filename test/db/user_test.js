@@ -28,8 +28,8 @@ const { userData } = require('../../server/db/seed/add_user')
 const { User } = require('../../shared/model/user.js')
 
 const userGetterInputs = [
-  { descString: 'User.getByEmail', method: User.getByEmail, input: userData.email },
-  { descString: 'User.getById', method: User.getById, input: 1 },
+  { descString: 'User.getByEmail()', method: User.getByEmail, input: userData.email },
+  { descString: 'User.getById()', method: User.getById, input: 1 },
 ]
 
 userGetterInputs.forEach(function (testData) {
