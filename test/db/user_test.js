@@ -63,9 +63,9 @@ userGetterInputs.forEach(function (testData) {
 })
 
 const userUpdateInputs = [
-  { field: 'email', property: 'email', value: 'wakkawakka@wallawalla.com' },
-  { field: 'first_name', property: 'firstName', value: 'Fozzie' },
-  { field: 'last_name', property: 'lastName', value: 'Bear' },
+  { field: 'email', value: 'wakkawakka@wallawalla.com' },
+  { field: 'firstName', value: 'Fozzie' },
+  { field: 'lastName', value: 'Bear' },
 ]
 
 describe('User.prototype.update()', function () {
@@ -82,12 +82,12 @@ describe('User.prototype.update()', function () {
       })
       it(`has changed the ${testData.field} field in the db`, function () {
         return User.getById(1).then(function (u) {
-          expect(u[testData.property]).to.equal(testData.value)
+          expect(u[testData.field]).to.equal(testData.value)
         })
       })
-      it(`has changed the ${testData.property} property in the user obj`, function () {
+      it(`has changed the ${testData.field} property in the user obj`, function () {
         return user.then(function (u) {
-          expect(u[testData.property]).to.equal(testData.value)
+          expect(u[testData.field]).to.equal(testData.value)
         })
       })
       it('has not affected user authentication for db data', function () {

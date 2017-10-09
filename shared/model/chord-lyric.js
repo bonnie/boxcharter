@@ -71,7 +71,7 @@
 // def get_chordstring(self):
 //     """Return a string representing the chord."""
 //
-//     chordstring = self.note_code
+//     chordstring = self.noteCode
 //     if self.chord_suffix:
 //         chordstring += self.chord_suffix
 //
@@ -138,7 +138,7 @@
 //         if chordstring:
 //             # ignore empty string (deleted chords)
 //             note, suffix = parse_chord(chordstring)
-//             chord = Chord(beat_index=index, note_code=note, chord_suffix=suffix)
+//             chord = Chord(beat_index=index, noteCode=note, chord_suffix=suffix)
 //             self.chords.append(chord)
 //
 //     for index, text in data.get('lyrics', {}).items():

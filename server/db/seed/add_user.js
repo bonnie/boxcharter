@@ -41,7 +41,7 @@ const userData = {
 const addUser = () => {
   const { hash, salt } = saltHashPassword(userData.password)
   const query = `INSERT INTO users
-                  (email, first_name, last_name, password_hash, password_salt)
+                  (email, firstName, lastName, passwordHash, passwordSalt)
                   VALUES ($1, $2, $3, $4, $5)`
   return db.query(query, [userData.email, userData.firstName, userData.lastName, hash, salt])
     .then(() => { if (VERBOSE) console.log('Added seed user') })

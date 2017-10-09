@@ -33,7 +33,7 @@
    /**
     * Measure constructor
     * @constructor
-    * @param {string} id - measure_id
+    * @param {string} id - measureId
     * @param {string} email - email
     * @param {string} firstName - first name
     * @param {string} lastName - last name
@@ -161,7 +161,7 @@
 //         if chordstring:
 //             # ignore empty string (deleted chords)
 //             note, suffix = parse_chord(chordstring)
-//             chord = Chord(beat_index=index, note_code=note, chord_suffix=suffix)
+//             chord = Chord(beat_index=index, noteCode=note, chord_suffix=suffix)
 //             self.chords.append(chord)
 //
 //     for index, text in data.get('lyrics', {}).items():

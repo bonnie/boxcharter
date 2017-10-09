@@ -31,9 +31,9 @@ const VERBOSE = process.env.NODE_ENV === 'production'
 const KEYFILE = './server/db/seed/keys.csv'
 
 const DB_COMMANDS = {
-  insertNote: 'INSERT INTO notes (note_code) VALUES ($1) RETURNING note_code',
-  insertKey: 'INSERT INTO keys (key_code) VALUES ($1) RETURNING key_code',
-  insertScaleNote: `INSERT INTO scale_notes (key_code, note_code, scale_degree)
+  insertNote: 'INSERT INTO notes (noteCode) VALUES ($1) RETURNING noteCode',
+  insertKey: 'INSERT INTO keys (keyCode) VALUES ($1) RETURNING keyCode',
+  insertScaleNote: `INSERT INTO scale_notes (keyCode, noteCode, scaleDegree)
                       VALUES ($1, $2, $3)`,
 }
 
@@ -62,7 +62,7 @@ const addNotes = () => {
   return Promise.all(allNotes.map(note =>
     db.one(DB_COMMANDS.insertNote, [note])
       .then((noteRow) => {
-        if (VERBOSE) console.log(`Added note ${noteRow.note_code}`)
+        if (VERBOSE) console.log(`Added note ${noteRow.noteCode}`)
       })
       .catch(noteErr =>
         logError(noteErr, `Could not add note ${note}`),

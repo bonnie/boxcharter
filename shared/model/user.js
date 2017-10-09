@@ -34,7 +34,7 @@ class User {
   /**
    * User constructor
    * @constructor
-   * @param {string} id - user_id
+   * @param {string} id - userId
    * @param {string} email - email
    * @param {string} firstName - first name
    * @param {string} lastName - last name
@@ -59,13 +59,14 @@ class User {
  * @return {User} - user object from data
  */
 User.dbDatatoUser = function (dbUserData) {
+  // fields get returned lowercased from pg-promise
   return new User(
-    dbUserData.user_id,
+    dbUserData.userid,
     dbUserData.email,
-    dbUserData.first_name,
-    dbUserData.last_name,
-    dbUserData.password_salt,
-    dbUserData.password_hash)
+    dbUserData.firstname,
+    dbUserData.lastname,
+    dbUserData.passwordsalt,
+    dbUserData.passwordhash)
 }
 
 /**
@@ -76,7 +77,7 @@ User.dbDatatoUser = function (dbUserData) {
  * @return {Promise} - Returns a Promise which resolves to a User object,
  *                     or null if no user found.
  */
-User.addToDb = function() {
+User.addToDb = function () {
 
 }
 
@@ -116,14 +117,14 @@ User.getByEmail = function (email) {
 }
 
 /**
- * Return a User object for a given user_id.
+ * Return a User object for a given userId.
  * @function
  * @param {number} id - ID for which to find a user.
  * @return {Promise} - Returns a Promise which resolves to a User object,
  *                     or null if no user found.
  */
 User.getById = function (id) {
-  return User.getUser('user_id', id)
+  return User.getUser('userId', id)
 }
 
 /**
@@ -135,7 +136,12 @@ User.getById = function (id) {
  *                     object has been modified with the new data.
  */
 User.prototype.update = function () {
-
+  // update the db
+  // db.query()
+  // update the instance
+  // .then(function(data) {
+  // })
+  // .catch(err => throw err)
 }
 
 /**
@@ -145,7 +151,7 @@ User.prototype.update = function () {
  *                       an array of charts in its charts property.
  */
 User.prototype.getCharts = function () {
-  this.charts = Chart.getChartsByUser(this.user_id)
+  this.charts = Chart.getChartsByUser(this.userId)
 }
 
 /**

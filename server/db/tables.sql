@@ -21,102 +21,102 @@
 -- notes / keys
 ----------------------------------------------------------------
 CREATE TABLE notes (
-  note_code VARCHAR(2) PRIMARY KEY
+  noteCode VARCHAR(2) PRIMARY KEY
 );
 
 CREATE TABLE keys (
-  key_code VARCHAR(3) PRIMARY KEY
+  keyCode VARCHAR(3) PRIMARY KEY
 );
 
 CREATE TABLE scale_notes(
-  scale_note_id SERIAL PRIMARY KEY,
-  key_code VARCHAR(3) REFERENCES keys,
-  note_code VARCHAR(2) REFERENCES notes,
-  scale_degree INTEGER NOT NULL
+  scaleNoteId SERIAL PRIMARY KEY,
+  keyCode VARCHAR(3) REFERENCES keys,
+  noteCode VARCHAR(2) REFERENCES notes,
+  scaleDegree INTEGER NOT NULL
 );
 
 ----------------------------------------------------------------
 -- charts / sections
 ----------------------------------------------------------------
 CREATE TABLE charts(
-  chart_id SERIAL PRIMARY KEY,
+  chartId SERIAL PRIMARY KEY,
   title TEXT NOT NULL,
   author TEXT,
   composer TEXT,
   lyricist TEXT,
-  lyricist_same BOOLEAN,
-  original_key VARCHAR(3) REFERENCES keys,
-  print_key VARCHAR(3) REFERENCES keys,
-  max_pages INTEGER DEFAULT 1,
-  min_fontsize INTEGER DEFAULT 10,
-  page_width REAL DEFAULT 8.5,
-  page_height REAL DEFAULT 11,
-  page_units TEXT DEFAULT 'inches'
+  lyricistSame BOOLEAN,
+  originalKey VARCHAR(3) REFERENCES keys,
+  printKey VARCHAR(3) REFERENCES keys,
+  maxPages INTEGER DEFAULT 1,
+  minFontsize INTEGER DEFAULT 10,
+  pageWidth REAL DEFAULT 8.5,
+  pageHeight REAL DEFAULT 11,
+  pageUnits TEXT DEFAULT 'inches'
 );
 
 CREATE TABLE sections(
-  section_id SERIAL PRIMARY KEY,
-  chart_id INTEGER REFERENCES charts,
+  sectionId SERIAL PRIMARY KEY,
+  chartId INTEGER REFERENCES charts,
   index INTEGER NOT NULL,
-  section_name TEXT,
-  section_desc TEXT,
-  beats_per_measure INTEGER NOT NULL,
-  verse_count INTEGER NOT NULL,
-  pickup_measure_beats INTEGER DEFAULT 0
+  sectionName TEXT,
+  sectionDesc TEXT,
+  beatsPerMeasure INTEGER NOT NULL,
+  verseCount INTEGER NOT NULL,
+  pickupMeasureBeats INTEGER DEFAULT 0
 );
 
 ----------------------------------------------------------------
 -- measures / repeats
 ----------------------------------------------------------------
 CREATE TABLE measures(
-  measure_id SERIAL PRIMARY KEY,
-  section_id INTEGER REFERENCES sections NOT NULL,
+  measureId SERIAL PRIMARY KEY,
+  sectionId INTEGER REFERENCES sections NOT NULL,
   index INTEGER NOT NULL,
-  beats_per_measure INTEGER
+  beatsPerMeasure INTEGER
 );
 
 CREATE TABLE repeats(
-  repeat_id SERIAL PRIMARY KEY,
-  section_id INTEGER REFERENCES sections,
-  repeat_start INTEGER REFERENCES measures,
-  ending1_start INTEGER REFERENCES measures,
-  ending2_start INTEGER REFERENCES measures,
-  ending2_end INTEGER REFERENCES measures
+  repeatId SERIAL PRIMARY KEY,
+  sectionId INTEGER REFERENCES sections,
+  repeatStart INTEGER REFERENCES measures,
+  ending1Start INTEGER REFERENCES measures,
+  ending2Start INTEGER REFERENCES measures,
+  ending2End INTEGER REFERENCES measures
 );
 
 ----------------------------------------------------------------
 -- chords / lyrics
 ----------------------------------------------------------------
 CREATE TABLE chords(
-  chord_id SERIAL PRIMARY KEY,
-  measure_id INTEGER REFERENCES measures NOT NULL,
-  beat_index INTEGER NOT NULL,
-  note_code VARCHAR(2) REFERENCES notes NOT NULL,
+  chordId SERIAL PRIMARY KEY,
+  measureId INTEGER REFERENCES measures NOT NULL,
+  beatIndex INTEGER NOT NULL,
+  noteCode VARCHAR(2) REFERENCES notes NOT NULL,
   suffix VARCHAR(8)
 );
 
 CREATE TABLE lyrics(
-  lyric_id SERIAL PRIMARY KEY,
-  measure_id INTEGER REFERENCES measures NOT NULL,
-  verse_index INTEGER NOT NULL,
-  lyric_text TEXT NOT NULL
+  lyricId SERIAL PRIMARY KEY,
+  measureId INTEGER REFERENCES measures NOT NULL,
+  verseIndex INTEGER NOT NULL,
+  lyricText TEXT NOT NULL
 );
 
 ----------------------------------------------------------------
 -- users
 ----------------------------------------------------------------
 CREATE TABLE users (
-  user_id SERIAL PRIMARY KEY,
+  userId SERIAL PRIMARY KEY,
   email TEXT NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
-  password_salt TEXT NOT NULL,
-  first_name TEXT,
-  last_name TEXT
+  passwordHash TEXT NOT NULL,
+  passwordSalt TEXT NOT NULL,
+  firstName TEXT,
+  lastName TEXT
 );
 
-CREATE TABLE user_charts (
-  user_chart_id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users NOT NULL,
-  chart_id INTEGER REFERENCES charts NOT NULL,
-  chart_owner BOOLEAN DEFAULT false
+CREATE TABLE userCharts (
+  userChartId SERIAL PRIMARY KEY,
+  userId INTEGER REFERENCES users NOT NULL,
+  chartId INTEGER REFERENCES charts NOT NULL,
+  chartOwner BOOLEAN DEFAULT false
 );
