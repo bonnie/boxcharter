@@ -23,9 +23,8 @@
  * @module db_test
  */
 const { expect } = require('chai')
-const { initDB } = require('./utilities/db_reset')
-const { userData } = require('../db/seed/add_user')
-
+const { initDB } = require('../utilities/db_reset')
+const { userData } = require('../../server/db/seed/add_user')
 const { User } = require('../../shared/model/user.js')
 
 const userGetterInputs = [
@@ -36,7 +35,7 @@ const userGetterInputs = [
 userGetterInputs.forEach(function (testData) {
   describe(testData.descString, function () {
     let user
-    before('Reset the DB', function () {
+    before('Reset the DB and get the user', function () {
       return initDB()
         .then(function () { user = testData.method(testData.input) })
     })
@@ -63,6 +62,44 @@ userGetterInputs.forEach(function (testData) {
   })
 })
 
-// const userUpdateInputs = [
-//   { descString: 'up' },
-// ]
+const userUpdateInputs = [
+  { field: 'email', property: 'email', value: 'wakkawakka@wallawalla.com' },
+  { field: 'first_name', property: 'firstName', value: 'Fozzie' },
+  { field: 'last_name', property: 'lastName', value: 'Bear' },
+]
+
+describe('User.prototype.update()', function () {
+  let user
+  before('Reset the DB and get the user', function () {
+    return initDB().then(function () {
+      user = User.getById(1)
+    })
+  })
+  userUpdateInputs.forEach(function (testData) {
+    describe(testData.field, function () {
+      before('Run the update', function () {
+        return user.then(u => u.update(testData.field, testData.value))
+      })
+      it(`has changed the ${testData.field} field in the db`, function () {
+        return User.getById(1).then(function (u) {
+          expect(u[testData.property]).to.equal(testData.value)
+        })
+      })
+      it(`has changed the ${testData.property} property in the user obj`, function () {
+        return user.then(function (u) {
+          expect(u[testData.property]).to.equal(testData.value)
+        })
+      })
+      it('has not affected user authentication for db data', function () {
+        return User.getById(1).then(function (u) {
+          expect(u.checkPassword(userData.password)).to.equal(true)
+        })
+      })
+      it('has not affected user authentication for user obj data', function () {
+        return user.then(function (u) {
+          expect(u.checkPassword(userData.password)).to.equal(true)
+        })
+      })
+    })
+  })
+})

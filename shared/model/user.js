@@ -129,29 +129,30 @@ User.getById = function (id) {
 /**
  * Update a user's metadata
  * @function
- * @param {string} updateColumn - The column for which the given data applies
- * @param {string} userData - The user data for the colum indicated
- * @return {Promise} - Returns a Promise which resolves to a User object,
+ * @param {string} updateColumn - The column for which the given data applies.
+ * @param {string} userData - The user data for the colum indicated.
+ * @return {Promise} - Returns a Promise whose value is unimportant. The user
+ *                     object has been modified with the new data.
  */
 User.prototype.update = function () {
 
 }
 
 /**
- * Populate a user's charts property
+ * Populate a user's charts property.
  * @function
  * @return {undefined} - no return, but the user object has been modified to have
- *                       an array of charts in its charts property
+ *                       an array of charts in its charts property.
  */
 User.prototype.getCharts = function () {
   this.charts = Chart.getChartsByUser(this.user_id)
 }
 
 /**
- * Add a chart to a user
+ * Add a chart to a user.
  * @function
- * @param {number} chartId - id of the chart to be added. It must already exist in the db
- * @return {undefined} - no return, but the user object has been modified to have another chart
+ * @param {number} chartId - id of the chart to be added. It must already exist in the db.
+ * @return {undefined} - no return, but the user object has been modified to have another chart.
  */
 User.prototype.addChart = function (chartId) {
 }
