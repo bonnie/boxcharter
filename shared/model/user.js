@@ -34,15 +34,15 @@ class User {
   /**
    * User constructor
    * @constructor
-   * @param {string} id - userId
+   * @param {string} userId - userId
    * @param {string} email - email
    * @param {string} firstName - first name
    * @param {string} lastName - last name
    * @param {string} salt - password salt
    * @param {string} hash - password hash
    */
-  constructor(id, email, firstName, lastName, salt, hash) {
-    this.id = id
+  constructor(userId, email, firstName, lastName, salt, hash) {
+    this.userId = userId
     this.email = email
     this.firstName = firstName
     this.lastName = lastName
@@ -135,13 +135,16 @@ User.getById = function (id) {
  * @return {Promise} - Returns a Promise whose value is unimportant. The user
  *                     object has been modified with the new data.
  */
-User.prototype.update = function () {
+User.prototype.update = function (updateColumn, userData) {
   // update the db
-  // db.query()
+  console.log(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`)
+  console.log(this)
+  db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId])
   // update the instance
-  // .then(function(data) {
-  // })
-  // .catch(err => throw err)
+    .then(function () {
+      this[updateColumn] = userData
+    })
+    .catch(console.err)
 }
 
 /**

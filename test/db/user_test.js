@@ -51,6 +51,10 @@ userGetterInputs.forEach(function (testData) {
       return user
         .then(u => expect(u.lastName).to.equal(userData.lastName))
     })
+    it('should have a userId of 1', function () {
+      return user
+        .then(u => expect(u.userId).to.equal(1))
+    })
     it('should match the seeded password', function () {
       return user
         .then(u => expect(u.checkPassword(userData.password)).to.equal(true))
