@@ -22,9 +22,6 @@
  * User model.
  * @module user
  */
-const { db, pgp } = require('../../server/db/db_connection')
-const { checkPass } = require('../../server/utilities/password_utils')
-const { Chart } = require('./chart.js')
 
 /**
  * User object.
@@ -34,7 +31,7 @@ class User {
   /**
    * User constructor
    * @constructor
-   * @param {string} userId - userId
+   * @param {number} userId - userId
    * @param {string} email - email
    * @param {string} firstName - first name
    * @param {string} lastName - last name
@@ -67,112 +64,6 @@ User.dbDatatoUser = function (dbUserData) {
     dbUserData.lastname,
     dbUserData.passwordsalt,
     dbUserData.passwordhash)
-}
-
-/**
- * Update a user's metadata
- * @function
- * @param {string} updateColumn - The column for which the given data applies
- * @param {string} userData - The user data for the colum indicated
- * @return {Promise} - Returns a Promise which resolves to a User object,
- *                     or null if no user found.
- */
-User.addToDb = function () {
-
-}
-
-/**
- * Return a User object for the given criteria.
- * @function
- * @param {string} lookupColumn - The column for which the given data applies
- * @param {string} userData - The user data for the colum indicated
- * @return {Promise} - Returns a Promise which resolves to a User object,
- *                     or null if no user found.
- */
-User.getUser = function (lookupColumn, userData) {
-  const query = `SELECT * FROM users WHERE ${lookupColumn}=$1`
-  return db.one(query, [userData])
-    .then(User.dbDatatoUser)
-    .then(function (user) {
-      user.getCharts()
-      return user
-    })
-    .catch((err) => {
-      if (err.code === pgp.queryResultErrorCode.noData) {
-        return null
-      }
-      throw err
-    })
-}
-
-/**
- * Return a User object for a given email.
- * @function
- * @param {string} email - Email for which to find a user.
- * @return {Promise} - Returns a Promise which resolves to a User object,
- *                     or null if no user found.
- */
-User.getByEmail = function (email) {
-  return User.getUser('email', email)
-}
-
-/**
- * Return a User object for a given userId.
- * @function
- * @param {number} id - ID for which to find a user.
- * @return {Promise} - Returns a Promise which resolves to a User object,
- *                     or null if no user found.
- */
-User.getById = function (id) {
-  return User.getUser('userId', id)
-}
-
-/**
- * Update a user's metadata
- * @function
- * @param {string} updateColumn - The column for which the given data applies.
- * @param {string} userData - The user data for the colum indicated.
- * @return {Promise} - Returns a Promise whose value is unimportant. The user
- *                     object has been modified with the new data.
- */
-User.prototype.update = function (updateColumn, userData) {
-  // update the db
-  return db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId])
-  // update the instance
-    .then(() => {
-      this[updateColumn] = userData
-    })
-    .catch(console.err)
-}
-
-/**
- * Populate a user's charts property.
- * @function
- * @return {undefined} - no return, but the user object has been modified to have
- *                       an array of charts in its charts property.
- */
-User.prototype.getCharts = function () {
-  // return Chart.getChartsByUser(this.userId)
-  //   .then((charts) => { this.charts = charts })
-}
-
-/**
- * Add a chart to a user.
- * @function
- * @param {number} chartId - id of the chart to be added. It must already exist in the db.
- * @return {undefined} - no return, but the user object has been modified to have another chart.
- */
-User.prototype.addChart = function (chartId) {
-}
-
-/**
- * Check password against entered password.
- * @method
- * @param {string} enteredPass - Password entered.
- * @returns {boolean} - Whether or not the password matched.
- */
-User.prototype.checkPassword = function (enteredPass) {
-  return checkPass(this, enteredPass)
 }
 
 module.exports = {

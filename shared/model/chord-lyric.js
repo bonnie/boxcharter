@@ -18,7 +18,51 @@
  *
  */
 
-//// don't think these need models
+/**
+  * Chord and Lyric models.
+  * @module measure
+  */
+const { db, pgp } = require('../../server/db/db_connection')
+
+/**
+   * Chord object.
+   * @class
+   */
+class Chord {
+  /**
+     * Chord constructor
+     * @constructor
+     * @param {number} chordId - chordId
+     * @param {number} beatIndex - position within the measure
+     * @param {string} noteCode - code of the note for the chord
+     * @param {string} suffix - suffix
+     */
+  constructor(chordId, beatIndex, noteCode, suffix) {
+    this.chordId = chordId
+    this.beatIndex = beatIndex
+    this.noteCode = noteCode
+    this.suffix = suffix
+  }
+}
+
+/**
+   * Lyric object.
+   * @class
+   */
+class Lyric {
+  /**
+     * Chord constructor
+     * @constructor
+     * @param {number} lyricId - lyricId
+     * @param {string} noteCode - code of the note for the chord
+     * @param {string} lyricText - lyric text
+     */
+  constructor(lyricId, noteCode, lyricText) {
+    this.lyricId = lyricId
+    this.noteCode = noteCode
+    this.lyricText = lyricText
+  }
+}
 
 // var Sequelize = require('Sequelize')
 // var db = require('./db')
@@ -148,7 +192,7 @@
 //     db.session.add(self)
 //     db.session.commit()
 //
-// module.exports = {
-//  Chord: Chord,
-//  Lyric: Lyric,
-// }
+module.exports = {
+  Chord,
+  Lyric,
+}

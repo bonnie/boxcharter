@@ -19,13 +19,13 @@
  */
 
 /**
- * Tests for the database model.
- * @module db_test
+ * Tests for the user model.
+ * @module user_test
  */
 const { expect } = require('chai')
 const { initDB } = require('../utilities/db_reset')
 const { userData } = require('../../server/db/seed/add_user')
-const { User } = require('../../shared/model/user.js')
+const { User } = require('../../server/db/model/user_db')
 
 const userGetterInputs = [
   { descString: 'User.getByEmail()', method: User.getByEmail, input: userData.email },

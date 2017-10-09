@@ -15,6 +15,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.1",
+    "pg-async": "^3.1.0",
     "pg-promise": "^6.10.3"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
- /*
+/*
   * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
   *
   * This file is part of BoxCharter.
@@ -22,26 +22,27 @@
  * Measure model.
  * @module measure
  */
+// const { db, pgp } = require('../../server/db/db_connection')
 
- const { db, pgp } = require('../../server/db/db_connection')
-
- /**
+/**
   * Measure object.
   * @class
   */
- class Measure {
-   /**
-    * Measure constructor
+class Measure {
+  /**
+    * Measure constructor.
     * @constructor
-    * @param {string} id - measureId
-    * @param {string} email - email
-    * @param {string} firstName - first name
-    * @param {string} lastName - last name
-    * @param {string} salt - password salt
-    * @param {string} hash - password hash
+    * @param {number} measureId - measureId.
+    * @param {number} beatsPerMeasure - if different from parent section.
+    * @param {array} chords - array of Chord objects.
+    * @param {array} lyrics - array of Lyric objects.
     */
-   constructor(id, email, firstName, lastName, salt, hash) {
-   }
+  constructor(measureId, beatsPerMeasure, chords, lyrics) {
+    this.measureId = measureId
+    this.beatsPerMeasure = beatsPerMeasure || null
+    this.chords = chords || []
+    this.lyrics = lyrics || []
+  }
 }
 
 // var Sequelize = require('Sequelize')
