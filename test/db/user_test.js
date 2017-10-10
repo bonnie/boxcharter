@@ -29,39 +29,33 @@ const { User } = require('../../server/db/model/user_db')
 
 const userGetterInputs = [
   { descString: 'User.getByEmail()', method: User.getByEmail, input: userData.email },
-  { descString: 'User.getById()', method: User.getById, input: 1 },
+  // { descString: 'User.getById()', method: User.getById, input: 1 },
 ]
 
 userGetterInputs.forEach(function (testData) {
   describe(testData.descString, function () {
     let user
-    before('Reset the DB and get the user', function () {
-      return initDB()
-        .then(function () { user = testData.method(testData.input) })
+    before('Reset the DB and get the user', async function () {
+      await initDB()
+      user = await testData.method(testData.input)
     })
     it('should return a user object', function () {
-      return user
-        .then(u => expect(u).to.be.an.instanceof(User))
+      expect(user).to.be.an.instanceof(User)
     })
     it('should match the seeded firstName', function () {
-      return user
-        .then(u => expect(u.firstName).to.equal(userData.firstName))
+      expect(user.firstName).to.equal(userData.firstName)
     })
     it('should match the seeded lastName', function () {
-      return user
-        .then(u => expect(u.lastName).to.equal(userData.lastName))
+      expect(user.lastName).to.equal(userData.lastName)
     })
     it('should have a userId of 1', function () {
-      return user
-        .then(u => expect(u.userId).to.equal(1))
+      expect(user.userId).to.equal(1)
     })
     it('should match the seeded password', function () {
-      return user
-        .then(u => expect(u.checkPassword(userData.password)).to.equal(true))
+      expect(user.checkPassword(userData.password)).to.equal(true)
     })
     it('should not match a random password string', function () {
-      return user
-        .then(u => expect(u.checkPassword('a random password string')).to.equal(false))
+      expect(user.checkPassword('a random password string')).to.equal(false)
     })
   })
 })
@@ -74,35 +68,28 @@ const userUpdateInputs = [
 
 describe('User.prototype.update()', function () {
   let user
-  before('Reset the DB and get the user', function () {
-    return initDB().then(function () {
-      user = User.getById(1)
-    })
+  before('Reset the DB and get the user', async function () {
+    await initDB()
+    user = await User.getById(1)
   })
   userUpdateInputs.forEach(function (testData) {
     describe(testData.field, function () {
-      before('Run the update', function () {
-        return user.then(u => u.update(testData.field, testData.value))
+      before('Run the update', async function () {
+        await user.update(testData.field, testData.value)
       })
-      it(`has changed the ${testData.field} field in the db`, function () {
-        return User.getById(1).then(function (u) {
-          expect(u[testData.field]).to.equal(testData.value)
-        })
+      it(`has changed the ${testData.field} field in the db`, async function () {
+        const u = await User.getById(1)
+        expect(u[testData.field]).to.equal(testData.value)
       })
       it(`has changed the ${testData.field} property in the user obj`, function () {
-        return user.then(function (u) {
-          expect(u[testData.field]).to.equal(testData.value)
-        })
+        expect(user[testData.field]).to.equal(testData.value)
       })
-      it('has not affected user authentication for db data', function () {
-        return User.getById(1).then(function (u) {
-          expect(u.checkPassword(userData.password)).to.equal(true)
-        })
+      it('has not affected user authentication for db data', async function () {
+        const u = await User.getById(1)
+        expect(u.checkPassword(userData.password)).to.equal(true)
       })
       it('has not affected user authentication for user obj data', function () {
-        return user.then(function (u) {
-          expect(u.checkPassword(userData.password)).to.equal(true)
-        })
+        expect(user.checkPassword(userData.password)).to.equal(true)
       })
     })
   })

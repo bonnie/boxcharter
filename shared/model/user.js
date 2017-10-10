@@ -49,23 +49,6 @@ class User {
   }
 }
 
-/**
- * Make a user object from database data
- * @function
- * @param {object} dbUserData - Data for one user, as returned from a SELECT * FROM users query
- * @return {User} - user object from data
- */
-User.dbDatatoUser = function (dbUserData) {
-  // fields get returned lowercased from pg-promise
-  return new User(
-    dbUserData.userid,
-    dbUserData.email,
-    dbUserData.firstname,
-    dbUserData.lastname,
-    dbUserData.passwordsalt,
-    dbUserData.passwordhash)
-}
-
 module.exports = {
   User,
 }

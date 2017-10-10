@@ -28,46 +28,62 @@ const { User } = require('../../../shared/model/user')
 // const { Chart } = require('./chart_db.js')
 
 /**
+ * Make a user object from database data
+ * @function
+ * @param {object} dbUserData - Data for one user, as returned from a SELECT * FROM users query
+ * @return {User} - user object from data
+ */
+User.dbDatatoUser = function (dbUserData) {
+  // fields get returned lowercased from pg-promise
+  return new User(
+    dbUserData.userid,
+    dbUserData.email,
+    dbUserData.firstname,
+    dbUserData.lastname,
+    dbUserData.passwordsalt,
+    dbUserData.passwordhash)
+}
+
+/**
  * Return a User object for the given criteria.
  * @function
  * @param {string} lookupColumn - The column for which the given data applies
  * @param {string} userData - The user data for the colum indicated
- * @return {Promise} - Returns a Promise which resolves to a User object,
- *                     or null if no user found.
+ * @return {User} - Returns a User object, or null if no user found.
  */
-User.getUser = function (lookupColumn, userData) {
+User.getUser = async function (lookupColumn, userData) {
   const query = `SELECT * FROM users WHERE ${lookupColumn}=$1`
-  return db.one(query, [userData])
-    .then(User.dbDatatoUser)
-    .then(function (user) {
-      user.getCharts()
-      return user
-    })
-    .catch((err) => {
-      if (err.code === pgp.queryResultErrorCode.noData) {
-        return null
-      }
-      throw err
-    })
+
+  try {
+    const dbUser = await db.one(query, [userData])
+    const user = User.dbDatatoUser(dbUser)
+    user.getCharts()
+    return user
+  } catch (err) {
+    if (err.code === pgp.queryResultErrorCode.noData) {
+      return null
+    }
+    throw err
+  }
 }
 
 /**
  * Return a User object for a given email.
  * @function
  * @param {string} email - Email for which to find a user.
- * @return {Promise} - Returns a Promise which resolves to a User object,
- *                     or null if no user found.
+ * @return {User} - Returns a User object, or null if no user found.
+ *
  */
-User.getByEmail = function (email) {
+User.getByEmail = async function (email) {
   return User.getUser('email', email)
 }
+
 
 /**
  * Return a User object for a given userId.
  * @function
  * @param {number} id - ID for which to find a user.
- * @return {Promise} - Returns a Promise which resolves to a User object,
- *                     or null if no user found.
+ * @return {User} - Returns a User object, or null if no user found.
  */
 User.getById = function (id) {
   return User.getUser('userId', id)
@@ -78,17 +94,16 @@ User.getById = function (id) {
  * @function
  * @param {string} updateColumn - The column for which the given data applies.
  * @param {string} userData - The user data for the colum indicated.
- * @return {Promise} - Returns a Promise whose value is unimportant. The user
- *                     object has been modified with the new data.
+ * @return {undefined} - Changes are made to the User instance; nothing is returned.
  */
-User.prototype.update = function (updateColumn, userData) {
+User.prototype.update = async function (updateColumn, userData) {
   // update the db
-  return db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId])
-  // update the instance
-    .then(() => {
-      this[updateColumn] = userData
-    })
-    .catch(console.err)
+  try {
+    await db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId])
+    this[updateColumn] = userData
+  } catch (err) {
+    throw err
+  }
 }
 
 /**
