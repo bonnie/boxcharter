@@ -42,7 +42,7 @@ const DB_COMMANDS = {
  * @function
  * @param {Error} err - Error to be reported and thrown
  * @param {string} msg - Message to accompany the error
- * @return { undefined }
+ * @return {undefined}
  */
 const logError = (err, msg) => {
   console.error(`ERROR: ${msg}. ${err.toString()}`)
@@ -52,22 +52,21 @@ const logError = (err, msg) => {
 /**
  * Add all the notes to the db, so they'll be there for the keys
  * @function
- * @return { undefined }
+ * @return {array} - an array of promises, containing the resolution of each insert
  */
-const addNotes = () => {
+const addNotes = async () => {
   const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
   const accs = ['b', '', '#']
   const allNotes = []
   notes.forEach(note => accs.forEach(acc => allNotes.push(`${note}${acc}`)))
-  return Promise.all(allNotes.map(note =>
-    db.one(DB_COMMANDS.insertNote, [note])
-      .then((noteRow) => {
-        if (VERBOSE) console.log(`Added note ${noteRow.noteCode}`)
-      })
-      .catch(noteErr =>
-        logError(noteErr, `Could not add note ${note}`),
-      )
-  ))
+  await Promise.all(allNotes.map(async (note) => {
+    try {
+      const noteRow = await db.one(DB_COMMANDS.insertNote, [note])
+      if (VERBOSE) console.log(`Added note ${noteRow.noteCode}`)
+    } catch (err) {
+      logError(err, `Could not add note ${note}`)
+    }
+  }))
 }
 
 /**
@@ -75,53 +74,57 @@ const addNotes = () => {
  * @function
  * @param {string} key - the tonic for the key
  * @param {string} notes - the notes for the key
- * @return {Promise} - value not important; synchronicity is
+ * @return {undefined}
  */
-const addKeyNotes = (key, notes) =>
-  db.one(DB_COMMANDS.insertKey, [key])
-    .then(() => {
-      // add the scale notes
-      if (VERBOSE) console.log(`added key ${key}`)
-      return Promise.all(notes.map((note, index) =>
-        db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
-          .catch(noteErr =>
-            logError(noteErr,
-              `Could not insert scale note for key ${key}, note: ${note}`))
-      ))
-    })
-    .catch(keyErr => logError(keyErr, `Could not insert key ${key}`))
+const addKeyNotes = async (key, notes) => {
+  try {
+    await db.one(DB_COMMANDS.insertKey, [key])
+    if (VERBOSE) console.log(`added key ${key}`)
+  } catch (err) {
+    logError(err, `Could not insert key ${key}`)
+  }
+  await Promise.all(notes.map(async (note, index) => {
+    try {
+      await db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
+    } catch (err) {
+      logError(err, `Could not insert scale note for key ${key}, note: ${note}`)
+    }
+  }))
+}
 
 /**
  * Read scales from file and build keys and scale_notes tables
  * @function
- * @return { undefined }
+ * @return {undefined}
  */
-const addScales = () =>
-  fs.readFile(KEYFILE, 'ascii', (err, data) => {
-    if (err) {
-      logError(err, `Problem reading file: ${err.toString()}`)
-    }
-
-    // othersiwe, parse the data and add keys to db
-    return data.split('\n').forEach((keyLine) => {
-      if (!keyLine) { return 'bad key line data' }
-      // example line: Ab,Ab,Bb,C,Db,Eb,F,G
-      const notes = keyLine.split(',')
-      const key = notes[0]
-      return addKeyNotes(key, notes.slice(1))
-        .catch(console.error)
+const addScales = async () => {
+  try {
+    const keyData = fs.readFileSync(KEYFILE, 'ascii')
+    await keyData.split('\n').forEach(async (keyLine) => {
+      if (keyLine) {
+        // example line: Am,A,B,C,D,E,F,G
+        const notes = keyLine.split(',')
+        const key = notes[0]
+        await addKeyNotes(key, notes.slice(1))
+      }
     })
-  })
-
+  } catch (err) {
+    logError(err, `Problem adding scales: ${err.toString()}`)
+  }
+}
 /**
  * Run both functions to add notes and scales
  * @function
- * @return { Promise } Promise data not important; synchronicity is
+ * @return {undefined}
  */
-const addKeys = () =>
-  addNotes()
-    .then(addScales)
-    .catch(console.error)
+const addKeys = async () => {
+  try {
+    await addNotes()
+    await addScales()
+  } catch (err) {
+    logError(err, `Adding keys failed: ${err.toString()}`)
+  }
+}
 
 module.exports = {
   addKeys,
