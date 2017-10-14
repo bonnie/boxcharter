@@ -49,7 +49,8 @@ User.dbDatatoUser = function (dbUserData) {
  * @function
  * @param {string} lookupColumn - The column for which the given data applies
  * @param {string} userData - The user data for the colum indicated
- * @return {User} - Returns a User object, or null if no user found.
+ * @return {Promise} - Returns a promise resolving to a User object, or null if
+ *                     no user found.
  */
 User.getUser = async function (lookupColumn, userData) {
   const query = `SELECT * FROM users WHERE ${lookupColumn}=$1`
@@ -71,8 +72,8 @@ User.getUser = async function (lookupColumn, userData) {
  * Return a User object for a given email.
  * @function
  * @param {string} email - Email for which to find a user.
- * @return {User} - Returns a User object, or null if no user found.
- *
+ * @return {Promise} - Returns a promise resolving to a User object, or null if
+ *                     no user found.
  */
 User.getByEmail = async function (email) {
   return User.getUser('email', email)
@@ -83,7 +84,8 @@ User.getByEmail = async function (email) {
  * Return a User object for a given userId.
  * @function
  * @param {number} id - ID for which to find a user.
- * @return {User} - Returns a User object, or null if no user found.
+ * @return {Promise} - Returns a promise resolving to a User object, or null if
+ *                     no user found.
  */
 User.getById = function (id) {
   return User.getUser('userId', id)
