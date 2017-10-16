@@ -51,13 +51,74 @@ const addChart = async () => {
   }
 }
 
+
+/**
+ * Add sections to db for chart ID 1
+ * @function
+ * @return {undefined}
+ */
+const addSections = async () => {
+  const section1 = [1, 0, null, null, 4, 3]
+  const section2 = [1, 1, 'Bridge', 'between verses 2 and 3', 4, 1]
+  const query = `
+    INSERT INTO sections
+      (chartId,
+      index,
+      sectionName,
+      sectionDesc,
+      beatsPerMeasure,
+      verseCount)
+    VALUES ($1, $2, $3, $4, $5, $6)`
+
+  try {
+    if (VERBOSE) console.log('adding sections')
+    const sections = [section1, section2]
+    for (const section of sections) {
+      await db.query(query, section)
+      if (VERBOSE) console.log(`added section ${section[2]}`)
+    }
+  } catch (err) {
+    throw err
+  }
+}
+
+/**
+ * Add measures to db for section IDs 1 and 2
+ * @function
+ * @return {undefined}
+ */
+const addMeasures = async () => {
+  const section1 = [1, 0, null, null, 4, 3]
+  const section2 = [1, 1, 'Bridge', 'between verses 2 and 3', 4, 1]
+  const query = `
+    INSERT INTO sections
+      (chartId,
+      index,
+      sectionName,
+      sectionDesc,
+      beatsPerMeasure,
+      verseCount)
+    VALUES ($1, $2, $3, $4, $5, $6)`
+
+  try {
+    if (VERBOSE) console.log('adding sections')
+    const sections = [section1, section2]
+    for (let section of sections) {
+      await db.query(query, section)
+      if (VERBOSE) console.log(`added section ${section[2]}`)
+    }
+  } catch (err) {
+    throw err
+  }
+}
+
 const addEntireChart = async () => {
   await addChart()
+  await addSections()
 }
 
 if (!module.parent) {
-  addEntireChart()
-  pgp.end()
+  addEntireChart().then(pgp.end)
 }
 
 module.exports = {
