@@ -76,7 +76,7 @@ describe('User.prototype.update()', function () {
   userUpdateInputs.forEach(function (testData) {
     describe(testData.field, function () {
       before('Run the update', async function () {
-        user.update(testData.field, testData.value)
+        await user.update(testData.field, testData.value)
       })
       it(`has changed the ${testData.field} field in the db`, async function () {
         const u = await User.getById(1)
