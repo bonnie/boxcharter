@@ -59,22 +59,26 @@ const resetDB = () => {
 /**
  * Seed the database using functions from the db/seed directory.
  * @function
- * @returns {undefined}
+ * @returns {Promise} - resolution unimportant
  */
-const seedDB = () =>
-  addKeys()
-    .then(addUser)
-    .catch(console.error)
+const seedDB = async () => {
+  try {
+    await addKeys()
+    await addUser()
+  } catch (err) { console.error(err) }
+}
 
 /**
  * Initialize the db: both reset it, and then seed it.
  * @function
- * @returns {undefined}
+ * @returns {Promise} - resolution unimportant
  */
-const initDB = () =>
-  resetDB()
-    .then(seedDB)
-    .catch(console.error)
+const initDB = async () => {
+  try {
+    await resetDB()
+    await seedDB()
+  } catch (err) { console.error(err) }
+}
 
 // if the file is run as a command (used in npm scripts)
 if (!module.parent) {

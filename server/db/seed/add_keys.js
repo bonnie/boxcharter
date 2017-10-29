@@ -60,9 +60,10 @@ const addNotes = async () => {
   const allNotes = []
   notes.forEach(note => accs.forEach(acc => allNotes.push(`${note}${acc}`)))
   allNotes.push('%')
+  if (VERBOSE) console.log(allNotes)
   await Promise.all(allNotes.map(async (note) => {
     try {
-      const noteRow = await db.one(DB_COMMANDS.insertNote, [note])
+      const noteRow = await db.one(DB_COMMANDS.insertNote, note)
       if (VERBOSE) console.log(`Added note ${noteRow.noteCode}`)
     } catch (err) {
       logError(err, `Could not add note ${note}`)
