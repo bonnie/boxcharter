@@ -57,8 +57,8 @@ const successItems = {
 }
 
 const fields = {
-  chord: ['chordId', 'beatIndex', 'noteCode', 'bassNoteCode', 'suffix'],
-  lyric: ['lyricId', 'verseIndex', 'lyricText'],
+  chord: ['chordId', 'measureId', 'beatIndex', 'noteCode', 'bassNoteCode', 'suffix'],
+  lyric: ['lyricId', 'measureId', 'verseIndex', 'lyricText'],
 }
 
 types.forEach(type => addToDbSuccessTests(type, successItems[type], fields[type], addItem))

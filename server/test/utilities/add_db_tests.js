@@ -44,7 +44,7 @@ const getItemById = itemType =>
  * @returns {undefined}
  */
 const addToDbSuccessTests = (type, items, fields, addItem) => {
-  describe('successful addToDb()', function () {
+  describe(`successful ${type} prototype.addToDb()`, function () {
     items.forEach(function (testData) {
       context(testData.descString, function () {
         let itemId
@@ -55,7 +55,7 @@ const addToDbSuccessTests = (type, items, fields, addItem) => {
           itemId = await addItem(item)
           itemFromDb = await db.one(getItemById(type), itemId)
         })
-        it('should return a number itemId', function () {
+        it(`should return a number ${type}Id`, function () {
           expect(itemId).to.be.a('number')
         })
         fields.forEach((field) => {
@@ -79,7 +79,7 @@ const addToDbSuccessTests = (type, items, fields, addItem) => {
  * @returns {undefined}
  */
 const addToDbFailTests = (type, items, prepare) => {
-  describe('failure prototype.addToDb()', function () {
+  describe(`failure ${type} prototype.addToDb()`, function () {
     items.forEach(function (testData) {
       context(testData.descString, function () {
         before('Reset the DB', async function () {

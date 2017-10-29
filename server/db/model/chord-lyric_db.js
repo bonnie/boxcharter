@@ -39,6 +39,7 @@ Chord.prototype.addToDb = async function (measureId) {
         VALUES ($1, $2, $3, $4, $5)
         RETURNING chordId`,
       [measureId, this.beatIndex, this.noteCode, this.bassNoteCode, this.suffix])
+    this.measureId = measureId
     this.chordId = response.chordid
     return response.chordid
   } catch (err) {
@@ -61,6 +62,7 @@ Lyric.prototype.addToDb = async function (measureId) {
         VALUES ($1, $2, $3)
         RETURNING lyricId`,
       [measureId, this.verseIndex, this.lyricText])
+    this.measureId = measureId
     this.lyricId = response.lyricid
     return response.lyricid
   } catch (err) {

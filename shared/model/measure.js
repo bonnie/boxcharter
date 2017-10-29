@@ -12,8 +12,8 @@
   * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
   * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
   * for more details.
-  *
   * You should have received a copy of the GNU Affero General Public License
+  *
   * along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
   *
   */
@@ -32,13 +32,14 @@ class Measure {
   /**
     * Measure constructor.
     * @constructor
-    * @param {number} measureId - measureId.
+    * @param {number} index - position in the section
     * @param {number} beatsPerMeasure - if different from parent section.
     * @param {array} chords - array of Chord objects.
     * @param {array} lyrics - array of Lyric objects.
     */
-  constructor(measureId, beatsPerMeasure, chords, lyrics) {
-    this.measureId = measureId
+  constructor(index, beatsPerMeasure, chords, lyrics) {
+    this.measureId = null
+    this.index = index
     this.beatsPerMeasure = beatsPerMeasure || null
     this.chords = chords || []
     this.lyrics = lyrics || []
@@ -172,4 +173,6 @@ class Measure {
 //     db.session.add(self)
 //     db.session.commit()
 
-module.exports = Measure
+module.exports = {
+  Measure,
+}

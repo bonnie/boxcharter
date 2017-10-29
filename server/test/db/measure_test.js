@@ -22,7 +22,52 @@
  * Tests for the measure model.
  * @module measure_test
  */
-const { expect } = require('chai')
-const { initDB } = require('../utilities/db_reset')
-// const { chartData } = require('../../server/db/seed/add_chart')
-const { Measure } = require('../../../shared/model/measure.js')
+const { createSection } = require('../utilities/create_items')
+const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_tests')
+const { Measure } = require('../../db/model/measure_db')
+
+// //////////////////////////////////////////////////////////////////////////////
+// SUCCESS addToDb
+// //////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Add measure
+ * @param  {Measure}  measure - measure instance
+ * @return {Promise}            Promise resolving to the measure's id in the database
+ */
+const addMeasure = async (measure) => {
+  // make a fake section to insert measure into
+  const section = await createSection()
+  return measure.addToDb(section.sectionid)
+}
+
+const successMeasures = [
+  { descString: 'measure with no beatsPerMeasure', item: new Measure(0) },
+  { descString: 'measure with beatsPerMeasure', item: new Measure(1, 2) },
+]
+
+const measureFields = ['measureId', 'sectionId', 'index', 'beatsPerMeasure']
+
+addToDbSuccessTests('measure', successMeasures, measureFields, addMeasure)
+
+// //////////////////////////////////////////////////////////////////////////////
+// FAILURE addToDb
+// //////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Preparation function for failure tests
+ * @return {Promise} - measureId for created measure
+ */
+const failPrepare = async () => {
+  // make a fake section to insert chord into;
+  // assume there will be a section with id 1 after this
+  await createSection()
+}
+
+const failureMeasures = [
+  { descString: 'the sectionId doesn\'t exist in the db', item: new Measure(0), args: [-1] },
+  { descString: 'the measure is missing a sectionId', item: new Measure(0), args: [null] },
+  { descString: 'the measure is missing an index', item: new Measure(), args: [null] },
+]
+
+addToDbFailTests('measure', failureMeasures, failPrepare)
