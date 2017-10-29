@@ -51,15 +51,14 @@ class Chord {
    */
 class Lyric {
   /**
-     * Chord constructor
+     * Lyric constructor
      * @constructor
-     * @param {number} lyricId - lyricId
-     * @param {string} noteCode - code of the note for the chord
+     * @param {string} verseIndex - index of the lyric's verse
      * @param {string} lyricText - lyric text
      */
-  constructor(lyricId, noteCode, lyricText) {
-    this.lyricId = lyricId
-    this.noteCode = noteCode
+  constructor(verseIndex, lyricText) {
+    this.lyricId = null
+    this.verseIndex = verseIndex
     this.lyricText = lyricText
   }
 }

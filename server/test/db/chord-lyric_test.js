@@ -24,49 +24,42 @@
  */
 const { expect } = require('chai')
 const { initDB } = require('../utilities/db_reset')
-const { createMeasure } = require('../utilities/create_items.js')
+const { createMeasure } = require('../utilities/create_items')
+const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_tests')
 const { db } = require('../../db/db_connection')
 const { Chord, Lyric } = require('../../db/model/chord-lyric_db')
 
-const fields = {
-  chord: ['chordId', 'beatIndex', 'noteCode', 'bassNoteCode', 'suffix'],
-  lyric: ['lyricId', 'verseIndex', 'lyricText'],
+/**
+ * Add chord or lyric
+ * @param  {object}  item Chord or Lyric instance
+ * @return {Promise}      Promise resolving to the item's id in the database
+ */
+const addItem = async (item) => {
+  // make a fake chart/section/measure to insert item into
+  const measure = await createMeasure()
+  return item.addToDb(measure.measureid)
 }
 
-const items = [
-  // beatIndex, noteCode, bassNoteCode, suffix
-  { type: 'chord', descString: 'chord with no suffix, no bass note', item: new Chord(0, 'G', null, null) },
-  { type: 'chord', descString: 'chord with bass note, no suffix', item: new Chord(1, 'C#', 'E', null) },
-  { type: 'chord', descString: 'chord with suffix, no bass note', item: new Chord(2, 'Bb', null, 'dim') },
-  { type: 'chord', descString: 'chord with suffix, bass note', item: new Chord(3, 'A', 'B', 'm7b5') },
-]
+const successItems = {
+  chords: [
+    { type: 'chord', descString: 'chord with no suffix, no bass note', item: new Chord(0, 'G', null, null) },
+    { type: 'chord', descString: 'chord with bass note, no suffix', item: new Chord(1, 'C#', 'E', null) },
+    { type: 'chord', descString: 'chord with suffix, no bass note', item: new Chord(2, 'Bb', null, 'dim') },
+    { type: 'chord', descString: 'chord with suffix, bass note', item: new Chord(3, 'A', 'B', 'm7b5') },
+  ],
+  lyrics: [
+    { type: 'lyric', descString: 'lyric with non-empty text', item: new Lyric(0, 'joy to the world') },
+    { type: 'lyric', descString: 'lyric with empty text', item: new Lyric(1, '') },
+  ],
+}
 
-describe('successful addToDb()', function () {
-  items.forEach(function (testData) {
-    context(testData.descString, function () {
-      let itemId
-      let itemFromDb
-      const item = testData.item
-      before('Reset the DB and add the item', async function () {
-        await initDB()
-        // make a fake chart/section/measure to insert item into
-        const measure = await createMeasure()
-        itemId = await item.addToDb(measure.measureid)
-        itemFromDb = await db.one(`SELECT * FROM  ${testData.type}s WHERE ${testData.type}Id=$1`, itemId)
-      })
-      it('should return a number itemId', function () {
-        expect(itemId).to.be.a('number')
-      })
-      fields[testData.type].forEach((field) => {
-        it(`should set the ${field} in the db`, function () {
-          const fromDb = itemFromDb[field.toLowerCase()]
-          const fromItem = item[field]
-          expect(fromDb).to.equal(fromItem)
-        })
-      })
-    })
-  })
-})
+const fields = {
+  chords: ['chordId', 'beatIndex', 'noteCode', 'bassNoteCode', 'suffix'],
+  lyrics: ['lyricId', 'verseIndex', 'lyricText'],
+}
+
+const types = ['chords', 'lyrics']
+types.forEach(type => addToDbSuccessTests(successItems[type], fields[type], addItem))
 
 const chordFailures = [
   { descString: 'the measureId doesn\'t exist in the db', chord: new Chord(0, 'G'), measureId: -1 },
