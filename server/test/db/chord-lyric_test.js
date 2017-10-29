@@ -28,48 +28,41 @@ const { createMeasure } = require('../utilities/create_items.js')
 const { db } = require('../../db/db_connection')
 const { Chord, Lyric } = require('../../db/model/chord-lyric_db')
 
-const chords = [
+const fields = {
+  chord: ['chordId', 'beatIndex', 'noteCode', 'bassNoteCode', 'suffix'],
+  lyric: ['lyricId', 'verseIndex', 'lyricText'],
+}
+
+const items = [
   // beatIndex, noteCode, bassNoteCode, suffix
-  { descString: 'chord with no suffix, no bass note', chord: new Chord(0, 'G', null, null) },
-  { descString: 'chord with bass note, no suffix', chord: new Chord(1, 'C#', 'E', null) },
-  { descString: 'chord with suffix, no bass note', chord: new Chord(2, 'Bb', null, 'dim') },
-  { descString: 'chord with suffix, bass note', chord: new Chord(3, 'A', 'B', 'm7b5') },
+  { type: 'chord', descString: 'chord with no suffix, no bass note', item: new Chord(0, 'G', null, null) },
+  { type: 'chord', descString: 'chord with bass note, no suffix', item: new Chord(1, 'C#', 'E', null) },
+  { type: 'chord', descString: 'chord with suffix, no bass note', item: new Chord(2, 'Bb', null, 'dim') },
+  { type: 'chord', descString: 'chord with suffix, bass note', item: new Chord(3, 'A', 'B', 'm7b5') },
 ]
 
-describe('successful Chord.prototype.addToDb()', function () {
-  chords.forEach(function (testData) {
+describe('successful addToDb()', function () {
+  items.forEach(function (testData) {
     context(testData.descString, function () {
-      let chordId
-      let chordFromDb
-      const chord = testData.chord
-      before('Reset the DB and add the chord', async function () {
+      let itemId
+      let itemFromDb
+      const item = testData.item
+      before('Reset the DB and add the item', async function () {
         await initDB()
-        // make a fake chart/section/measure to insert chord into
+        // make a fake chart/section/measure to insert item into
         const measure = await createMeasure()
-        chordId = await chord.addToDb(measure.measureid)
-        chordFromDb = await db.one('SELECT * FROM chords WHERE chordId=$1', chordId)
+        itemId = await item.addToDb(measure.measureid)
+        itemFromDb = await db.one(`SELECT * FROM  ${testData.type}s WHERE ${testData.type}Id=$1`, itemId)
       })
-      it('should return a number chordId', function () {
-        expect(chordId).to.be.a('number')
+      it('should return a number itemId', function () {
+        expect(itemId).to.be.a('number')
       })
-      it('should set the chordId of the object', function () {
-        expect(chord.chordId).to.equal(chordFromDb.chordid)
-      })
-      it('should match the given beatIndex', function () {
-        expect(chordFromDb.beatindex).to.equal(chord.beatIndex)
-      })
-      it('should match the given noteCode', function () {
-        expect(chordFromDb.notecode).to.equal(chord.noteCode)
-      })
-      it('should match the given bassNoteCode', function () {
-        if (chord.bassNoteCode) {
-          expect(chordFromDb.bassnotecode).to.equal(chord.bassNoteCode)
-        } else {
-          expect(chordFromDb.bassNoteCode).to.be.undefined
-        }
-      })
-      it('should match the given suffix', function () {
-        expect(chordFromDb.suffix).to.equal(chord.suffix)
+      fields[testData.type].forEach((field) => {
+        it(`should set the ${field} in the db`, function () {
+          const fromDb = itemFromDb[field.toLowerCase()]
+          const fromItem = item[field]
+          expect(fromDb).to.equal(fromItem)
+        })
       })
     })
   })

@@ -47,12 +47,12 @@ const resetDB = () => {
     throw new Error('Cowardly refusing to truncate production db.')
   }
   return getTables()
-    .then((tables) => {
+    .then(async tables =>
       Promise.all(tables.map(table =>
         db.none(`TRUNCATE ${table.table_name} RESTART IDENTITY CASCADE`),
       ))
         .catch(console.error)
-    })
+    )
     .catch(console.error)
 }
 

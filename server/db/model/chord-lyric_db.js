@@ -27,7 +27,7 @@ const { logger } = require('../../utilities/log')
 const { Chord, Lyric } = require('../../../shared/model/chord-lyric')
 
 /**
- * Add chord object to the db with the specified sectionId, and set the object's
+ * Add chord object to the db with the specified measureId, and set the object's
  * chordId to be the resulting chordId
  * @param {number} measureId - measureId for the chord
  * @returns {Promise} - Promise resolving to chordId, or throw an error
@@ -45,6 +45,28 @@ Chord.prototype.addToDb = async function (measureId) {
     logger.crit(`Failed to add chord ${this.noteCode} at index ${this.beatIndex} of measure ${measureId}`)
     logger.crit(err)
     throw new Error(`Chord not added: ${err.message}`)
+  }
+}
+
+/**
+ * Add lyric object to the db with the specified measureId, and set the object's
+ * lyricId to be the resulting lyricId
+ * @param {number} measureId - measureId for the lyric
+ * @returns {Promise} - Promise resolving to lyricId, or throw an error
+ */
+Lyric.prototype.addToDb = async function (measureId) {
+  try {
+    const response = await db.one(
+      `INSERT INTO lyrics (measureId, verseIndex, lyricText)
+        VALUES ($1, $2, $3)
+        RETURNING lyricId`,
+      [measureId, this.verseIndex, this.lyricText])
+    this.lyricId = response.lyricid
+    return response.lyricid
+  } catch (err) {
+    logger.crit(`Failed to add lyric ${this.lyricText} at index ${this.verseIndex} of measure ${measureId}`)
+    logger.crit(err)
+    throw new Error(`Lyric not added: ${err.message}`)
   }
 }
 
