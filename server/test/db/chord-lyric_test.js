@@ -22,11 +22,8 @@
  * Tests for the chord-lyric db functions.
  * @module chord-lyric_test
  */
-const { expect } = require('chai')
-const { initDB } = require('../utilities/db_reset')
 const { createMeasure } = require('../utilities/create_items')
 const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_tests')
-const { db } = require('../../db/db_connection')
 const { Chord, Lyric } = require('../../db/model/chord-lyric_db')
 
 const types = ['chord', 'lyric']
