@@ -33,18 +33,17 @@ const { Measure } = require('../../../shared/model/measure.js')
  * @param {number} sectionId - sectionId for the measure
  * @returns {Promise} - Promise resolving to measureId, or throw an error
  */
-Measure.prototype.addToDb = async function (sectionId) {
+Measure.prototype.addToDb = async function () {
   try {
     const response = await db.one(
       `INSERT INTO measures (sectionId, index, beatsPerMeasure)
         VALUES ($1, $2, $3)
         RETURNING measureId`,
-      [sectionId, this.index, this.beatsPerMeasure])
-    this.sectionId = sectionId
+      [this.sectionId, this.index, this.beatsPerMeasure])
     this.measureId = response.measureid
     return response.measureid
   } catch (err) {
-    logger.crit(`Failed to add measure at index ${this.index} of section ${sectionId}`)
+    logger.crit(`Failed to add measure at index ${this.index} of section ${this.sectionId}`)
     logger.crit(err)
     throw new Error(`Measure not added: ${err.message}`)
   }

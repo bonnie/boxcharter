@@ -32,18 +32,17 @@ const { Chord, Lyric } = require('../../../shared/model/chord-lyric')
  * @param {number} measureId - measureId for the chord
  * @returns {Promise} - Promise resolving to chordId, or throw an error
  */
-Chord.prototype.addToDb = async function (measureId) {
+Chord.prototype.addToDb = async function () {
   try {
     const response = await db.one(
       `INSERT INTO chords (measureId, beatIndex, noteCode, bassNoteCode, suffix)
         VALUES ($1, $2, $3, $4, $5)
         RETURNING chordId`,
-      [measureId, this.beatIndex, this.noteCode, this.bassNoteCode, this.suffix])
-    this.measureId = measureId
+      [this.measureId, this.beatIndex, this.noteCode, this.bassNoteCode, this.suffix])
     this.chordId = response.chordid
     return response.chordid
   } catch (err) {
-    logger.crit(`Failed to add chord ${this.noteCode} at index ${this.beatIndex} of measure ${measureId}`)
+    logger.crit(`Failed to add chord ${this.noteCode} at index ${this.beatIndex} of measure ${this.measureId}`)
     logger.crit(err)
     throw new Error(`Chord not added: ${err.message}`)
   }
@@ -55,18 +54,17 @@ Chord.prototype.addToDb = async function (measureId) {
  * @param {number} measureId - measureId for the lyric
  * @returns {Promise} - Promise resolving to lyricId, or throw an error
  */
-Lyric.prototype.addToDb = async function (measureId) {
+Lyric.prototype.addToDb = async function () {
   try {
     const response = await db.one(
       `INSERT INTO lyrics (measureId, verseIndex, lyricText)
         VALUES ($1, $2, $3)
         RETURNING lyricId`,
-      [measureId, this.verseIndex, this.lyricText])
-    this.measureId = measureId
+      [this.measureId, this.verseIndex, this.lyricText])
     this.lyricId = response.lyricid
     return response.lyricid
   } catch (err) {
-    logger.crit(`Failed to add lyric ${this.lyricText} at index ${this.verseIndex} of measure ${measureId}`)
+    logger.crit(`Failed to add lyric ${this.lyricText} at index ${this.verseIndex} of measure ${this.measureId}`)
     logger.crit(err)
     throw new Error(`Lyric not added: ${err.message}`)
   }

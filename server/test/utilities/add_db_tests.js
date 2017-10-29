@@ -87,7 +87,7 @@ const addToDbFailTests = (type, items, prepare) => {
           await prepare()
         })
         it(`should throw an error when ${testData.descString}`, function () {
-          return testData.item.addToDb(...testData.args)
+          return testData.item.addToDb()
             .catch(err => expect(err.message.toLowerCase()).to.contain(`${type} not added`))
         })
       })

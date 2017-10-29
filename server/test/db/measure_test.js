@@ -38,12 +38,14 @@ const { Measure } = require('../../db/model/measure_db')
 const addMeasure = async (measure) => {
   // make a fake section to insert measure into
   const section = await createSection()
-  return measure.addToDb(section.sectionid)
+  measure.sectionId = section.sectionid
+  console.log(measure)
+  return measure.addToDb()
 }
 
 const successMeasures = [
-  { descString: 'measure with no beatsPerMeasure', item: new Measure(0) },
-  { descString: 'measure with beatsPerMeasure', item: new Measure(1, 2) },
+  { descString: 'measure with no beatsPerMeasure', item: new Measure(null, 0) },
+  { descString: 'measure with beatsPerMeasure', item: new Measure(null, 1, 2) },
 ]
 
 const measureFields = ['measureId', 'sectionId', 'index', 'beatsPerMeasure']
@@ -65,9 +67,9 @@ const failPrepare = async () => {
 }
 
 const failureMeasures = [
-  { descString: 'the sectionId doesn\'t exist in the db', item: new Measure(0), args: [-1] },
-  { descString: 'the measure is missing a sectionId', item: new Measure(0), args: [null] },
-  { descString: 'the measure is missing an index', item: new Measure(), args: [null] },
+  { descString: 'the sectionId doesn\'t exist in the db', item: new Measure(-1, 0) },
+  { descString: 'the measure is missing a sectionId', item: new Measure(null, 0) },
+  { descString: 'the measure is missing an index', item: new Measure(1) },
 ]
 
 addToDbFailTests('measure', failureMeasures, failPrepare)

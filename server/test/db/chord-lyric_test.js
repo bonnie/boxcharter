@@ -40,19 +40,20 @@ const types = ['chord', 'lyric']
 const addItem = async (item) => {
   // make a fake chart/section/measure to insert item into
   const measure = await createMeasure()
-  return item.addToDb(measure.measureid)
+  item.measureId = measure.measureid
+  return item.addToDb()
 }
 
 const successItems = {
   chord: [
-    { descString: 'chord with no suffix, no bass note', item: new Chord(0, 'G', null, null) },
-    { descString: 'chord with bass note, no suffix', item: new Chord(1, 'C#', 'E', null) },
-    { descString: 'chord with suffix, no bass note', item: new Chord(2, 'Bb', null, 'dim') },
-    { descString: 'chord with suffix, bass note', item: new Chord(3, 'A', 'B', 'm7b5') },
+    { descString: 'chord with no suffix, no bass note', item: new Chord(null, 0, 'G', null, null) },
+    { descString: 'chord with bass note, no suffix', item: new Chord(null, 1, 'C#', 'E', null) },
+    { descString: 'chord with suffix, no bass note', item: new Chord(null, 2, 'Bb', null, 'dim') },
+    { descString: 'chord with suffix, bass note', item: new Chord(null, 3, 'A', 'B', 'm7b5') },
   ],
   lyric: [
-    { descString: 'lyric with non-empty text', item: new Lyric(0, 'joy to the world') },
-    { descString: 'lyric with empty text', item: new Lyric(1, '') },
+    { descString: 'lyric with non-empty text', item: new Lyric(null, 0, 'joy to the world') },
+    { descString: 'lyric with empty text', item: new Lyric(null, 1, '') },
   ],
 }
 
@@ -79,13 +80,13 @@ const failPrepare = async () => {
 
 const failureItems = {
   chord: [
-    { descString: 'the measureId doesn\'t exist in the db', item: new Chord(0, 'G'), args: [-1] },
-    { descString: 'the chord is missing a measureId', item: new Chord(0, 'G'), args: [null] },
-    { descString: 'the chord is missing a note code', item: new Chord(0), args: [1] },
+    { descString: 'the measureId doesn\'t exist in the db', item: new Chord(-1, 0, 'G') },
+    { descString: 'the chord is missing a measureId', item: new Chord(null, 0, 'G') },
+    { descString: 'the chord is missing a note code', item: new Chord(1, 0) },
   ],
   lyric: [
-    { descString: 'the measureId doesn\'t exist in the db', item: new Lyric(0, 'la la la'), args: [-1] },
-    { descString: 'the lyric is missing lyricText', item: new Lyric(0), args: [null] },
+    { descString: 'the measureId doesn\'t exist in the db', item: new Lyric(-1, 0, 'la la la') },
+    { descString: 'the lyric is missing lyricText', item: new Lyric(1, 0) },
   ],
 }
 
