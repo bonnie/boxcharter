@@ -20,7 +20,7 @@
 
 /* adapted from https://gist.github.com/vikas5914/cf568748ac89446e19ecd5e2e6900443 */
 
-var winston = require('winston')
+const winston = require('winston')
 
 // set default log level.
 // TODO: adjust according to debugging environment
@@ -28,15 +28,15 @@ const logLevel = 'warn'
 
 // these constants exportable for use in other logging files
 const logRoot = '/var/log/boxcharter/'
-const errorLogTransport = new winston.transports.File ({
-            filename: `${logRoot}/error_log`,
-            colorize: false,
-            timestamp: true,
-            json: false,
-            maxsize: '1024',
-            maxFiles: 10,
-            tailable: true,
-            zippedArchive: true
+const errorLogTransport = new winston.transports.File({
+  filename: `${logRoot}/error_log`,
+  colorize: false,
+  timestamp: true,
+  json: false,
+  maxsize: '1024',
+  maxFiles: 10,
+  tailable: true,
+  zippedArchive: true,
 })
 
 // Set up logger
@@ -46,7 +46,17 @@ const customColors = {
   info: 'blue',
   warn: 'yellow',
   crit: 'red',
-  fatal: 'red'
+  fatal: 'red',
+}
+
+const transports = [errorLogTransport]
+
+// only log to the console in dev mode
+if (process.env.NODE_ENV === 'dev') {
+  transports.push(new (winston.transports.Console)({
+    colorize: true,
+    timestamp: true,
+  }))
 }
 
 const logger = new (winston.Logger)({
@@ -58,15 +68,9 @@ const logger = new (winston.Logger)({
     warn: 2,
     info: 3,
     debug: 4,
-    trace: 5
+    trace: 5,
   },
-  transports: [
-    new (winston.transports.Console)({
-      colorize: true,
-      timestamp: true
-    }),
-    errorLogTransport,
-  ]
+  transports
 })
 
 winston.addColors(customColors)

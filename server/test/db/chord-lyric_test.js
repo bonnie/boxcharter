@@ -30,10 +30,10 @@ const { Chord, Lyric } = require('../../db/model/chord-lyric_db')
 
 const chords = [
   // beatIndex, noteCode, bassNoteCode, suffix
-  { descString: 'chord with no suffix, no bass note', chord: new Chord(null, 0, 'G', null, null) },
-  { descString: 'chord with bass note, no suffix', chord: new Chord(null, 1, 'C#', 'E', null) },
-  { descString: 'chord with suffix, no bass note', chord: new Chord(null, 2, 'Bb', null, 'dim') },
-  { descString: 'chord with suffix, bass note', chord: new Chord(null, 3, 'A', 'B', 'm7b5') },
+  { descString: 'chord with no suffix, no bass note', chord: new Chord(0, 'G', null, null) },
+  { descString: 'chord with bass note, no suffix', chord: new Chord(1, 'C#', 'E', null) },
+  { descString: 'chord with suffix, no bass note', chord: new Chord(2, 'Bb', null, 'dim') },
+  { descString: 'chord with suffix, bass note', chord: new Chord(3, 'A', 'B', 'm7b5') },
 ]
 
 describe('successful Chord.prototype.addToDb()', function () {
@@ -42,7 +42,7 @@ describe('successful Chord.prototype.addToDb()', function () {
       let chordId
       let chordFromDb
       const chord = testData.chord
-      before('Reset the DB and get the user', async function () {
+      before('Reset the DB and add the chord', async function () {
         await initDB()
         // make a fake chart/section/measure to insert chord into
         const measure = await createMeasure()
@@ -62,10 +62,37 @@ describe('successful Chord.prototype.addToDb()', function () {
         expect(chordFromDb.notecode).to.equal(chord.noteCode)
       })
       it('should match the given bassNoteCode', function () {
-        expect(chordFromDb.bassnotecode).to.equal(chord.bassNoteCode)
+        if (chord.bassNoteCode) {
+          expect(chordFromDb.bassnotecode).to.equal(chord.bassNoteCode)
+        } else {
+          expect(chordFromDb.bassNoteCode).to.be.undefined
+        }
       })
       it('should match the given suffix', function () {
         expect(chordFromDb.suffix).to.equal(chord.suffix)
+      })
+    })
+  })
+})
+
+const chordFailures = [
+  { descString: 'the measureId doesn\'t exist in the db', chord: new Chord(0, 'G'), measureId: -1 },
+  { descString: 'the chord is missing a measureId', chord: new Chord(0, 'G'), measureId: null },
+  { descString: 'the chord is missing a note code', chord: new Chord(0), measureId: 1 },
+]
+
+describe('failure Chord.prototype.addToDb()', function () {
+  chordFailures.forEach(function (testData) {
+    context(testData.descString, function () {
+      before('Reset the DB', async function () {
+        await initDB()
+        // make a fake measure to insert chord into;
+        // assume there will be a measure with id 1 after this
+        await createMeasure()
+      })
+      it(`should throw an error when ${testData.descString}`, function () {
+        return testData.chord.addToDb(testData.measureId)
+          .catch(err => expect(err.message).to.contain('Chord not added'))
       })
     })
   })

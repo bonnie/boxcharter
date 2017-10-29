@@ -3,7 +3,8 @@
   "version": "1.0.0-alpha.1",
   "description": "Web app to create chord / lyric box charts",
   "scripts": {
-    "start": "nodemon server/app.js",
+    "start": "node server/app.js",
+    "dev:start": "source env/dev.sh && nodemon server/app.js",
     "lint": "eslint",
     "test": "source env/test.sh && npm run test:server",
     "test:server": "mocha --recursive server/test --full-trace --exit",

@@ -22,7 +22,7 @@
   * Chord and Lyric db methods.
   * @module chord-lyric_db
   */
-const { db, pgp } = require('../db_connection')
+const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
 const { Chord, Lyric } = require('../../../shared/model/chord-lyric')
 
@@ -30,7 +30,7 @@ const { Chord, Lyric } = require('../../../shared/model/chord-lyric')
  * Add chord object to the db with the specified sectionId, and set the object's
  * chordId to be the resulting chordId
  * @param {number} measureId - measureId for the chord
- * @returns {Promise} - Promise resolving to chordId, or resolving to null if error
+ * @returns {Promise} - Promise resolving to chordId, or throw an error
  */
 Chord.prototype.addToDb = async function (measureId) {
   try {
@@ -42,9 +42,9 @@ Chord.prototype.addToDb = async function (measureId) {
     this.chordId = response.chordid
     return response.chordid
   } catch (err) {
-    logger.crit(`Failed to add chord ${this.noteCode}${this.suffix} at index ${this.beatIndex} of measure ${measureId}`)
+    logger.crit(`Failed to add chord ${this.noteCode} at index ${this.beatIndex} of measure ${measureId}`)
     logger.crit(err)
-    return Promise.resolve(null)
+    throw new Error(`Chord not added: ${err.message}`)
   }
 }
 
