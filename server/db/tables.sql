@@ -56,7 +56,7 @@ CREATE TABLE charts(
 
 CREATE TABLE sections(
   sectionId SERIAL PRIMARY KEY,
-  chartId INTEGER REFERENCES charts,
+  chartId INTEGER REFERENCES charts NOT NULL,
   index INTEGER NOT NULL,
   sectionName TEXT,
   sectionDesc TEXT,
@@ -79,6 +79,7 @@ CREATE TABLE repeats(
   repeatId SERIAL PRIMARY KEY,
   sectionId INTEGER REFERENCES sections,
   repeatStart INTEGER REFERENCES measures,
+  repeatEnd INTEGER REFERENCES measures,
   ending1Start INTEGER REFERENCES measures,
   ending2Start INTEGER REFERENCES measures,
   ending2End INTEGER REFERENCES measures
@@ -92,6 +93,7 @@ CREATE TABLE chords(
   measureId INTEGER REFERENCES measures NOT NULL,
   beatIndex INTEGER NOT NULL,
   noteCode VARCHAR(2) REFERENCES notes NOT NULL,
+  bassNoteCode VARCHAR(2) REFERENCES notes,
   suffix VARCHAR(8)
 );
 

@@ -59,6 +59,7 @@ const addNotes = async () => {
   const accs = ['b', '', '#']
   const allNotes = []
   notes.forEach(note => accs.forEach(acc => allNotes.push(`${note}${acc}`)))
+  allNotes.push('%')
   await Promise.all(allNotes.map(async (note) => {
     try {
       const noteRow = await db.one(DB_COMMANDS.insertNote, [note])

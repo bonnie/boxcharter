@@ -24,6 +24,5 @@
  */
 const { expect } = require('chai')
 const { initDB } = require('../utilities/db_reset')
-const { songData } = require('../../server/db/seed/add_user')
-const { Measure } = require('../../shared/model/measure.js')
-const { Chord, Lyric } = require('../../shared/model/chord-lyric.js')
+// const { chartData } = require('../../server/db/seed/add_chart')
+const { Measure } = require('../../../shared/model/measure.js')

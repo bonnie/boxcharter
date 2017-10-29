@@ -20,9 +20,8 @@
 
 /**
   * Chord and Lyric models.
-  * @module measure
+  * @module chord-lyric
   */
-const { db, pgp } = require('../../server/db/db_connection')
 
 /**
    * Chord object.
@@ -35,12 +34,14 @@ class Chord {
      * @param {number} chordId - chordId
      * @param {number} beatIndex - position within the measure
      * @param {string} noteCode - code of the note for the chord
+     * @param {string} bassNoteCode - code of the base note for the chord
      * @param {string} suffix - suffix
      */
-  constructor(chordId, beatIndex, noteCode, suffix) {
+  constructor(chordId, beatIndex, noteCode, bassNoteCode, suffix) {
     this.chordId = chordId
     this.beatIndex = beatIndex
     this.noteCode = noteCode
+    this.bassNoteCode = bassNoteCode
     this.suffix = suffix
   }
 }

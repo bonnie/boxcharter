@@ -5,7 +5,11 @@
   "scripts": {
     "start": "nodemon server/app.js",
     "lint": "eslint",
-    "test": "source env/test.sh && mocha --recursive",
+    "test": "source env/test.sh && npm run test:server",
+    "test:server": "mocha --recursive server/test --full-trace --exit",
+    "test:db:drop": "source env/test.sh && dropdb $DB_NAME",
+    "test:db:create": "source env/test.sh && createdb $DB_NAME && psql $DB_NAME < server/db/tables.sql",
+    "test:db:reset": "npm run test:db:drop && npm run test:db:create",
     "db:drop": "source env/production.sh && dropdb $DB_NAME",
     "db:create": "source env/production.sh && createdb $DB_NAME && psql $DB_NAME < server/db/tables.sql",
     "db:seed": "source env/production.sh && node test/utilities/db_reset seed",
@@ -16,7 +20,8 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.1",
     "pg-async": "^3.1.0",
-    "pg-promise": "^6.10.3"
+    "pg-promise": "^6.10.3",
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "ajv": "^5.2.2",

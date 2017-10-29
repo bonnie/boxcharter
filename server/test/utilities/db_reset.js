@@ -22,9 +22,9 @@
  * Utilities to reset the database in between tests.
  * @module db_reset
  */
-const { db } = require('../../server/db/db_connection.js')
-const { addKeys } = require('../../server/db/seed/add_keys')
-const { addUser } = require('../../server/db/seed/add_user')
+const { db } = require('../../db/db_connection.js')
+const { addKeys } = require('../../db/seed/add_keys')
+const { addUser } = require('../../db/seed/add_user')
 
 /**
  * Get all the tables in the current db connection.

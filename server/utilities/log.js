@@ -29,7 +29,7 @@ const logLevel = 'warn'
 // these constants exportable for use in other logging files
 const logRoot = '/var/log/boxcharter/'
 const errorLogTransport = new winston.transports.File ({
-            filename: `${logRoot}/error_log`,  
+            filename: `${logRoot}/error_log`,
             colorize: false,
             timestamp: true,
             json: false,
@@ -94,7 +94,7 @@ logger.log = function (level, msg) {
  */
 
 module.exports = {
-    logger: logger,
-    logRoot: logRoot,
-    errorLogTransport: errorLogTransport,
+  logger,
+  logRoot,
+  errorLogTransport,
 }

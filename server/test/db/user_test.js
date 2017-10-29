@@ -19,16 +19,17 @@
  */
 
 /**
- * Tests for the user model.
+ * Tests for the user db functions.
  * @module user_test
  */
 const { expect } = require('chai')
 const { initDB } = require('../utilities/db_reset')
-const { userData } = require('../../server/db/seed/add_user')
-const { User } = require('../../server/db/model/user_db')
+const { userData } = require('../../db/seed/add_user')
+const { User } = require('../../db/model/user_db')
 
 const userGetterInputs = [
   { descString: 'User.getByEmail()', method: User.getByEmail, input: userData.email },
+  // TODO: why is this commented?
   // { descString: 'User.getById()', method: User.getById, input: 1 },
 ]
 
@@ -75,7 +76,7 @@ describe('User.prototype.update()', function () {
   userUpdateInputs.forEach(function (testData) {
     describe(testData.field, function () {
       before('Run the update', async function () {
-        await user.update(testData.field, testData.value)
+        user.update(testData.field, testData.value)
       })
       it(`has changed the ${testData.field} field in the db`, async function () {
         const u = await User.getById(1)
