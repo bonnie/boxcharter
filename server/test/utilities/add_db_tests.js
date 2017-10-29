@@ -29,7 +29,7 @@ const { initDB } = require('./db_reset')
 const makeItemQuery = itemType =>
   `SELECT * FROM  ${itemType}s WHERE ${itemType}Id=$1`
 
-const addToDbSuccessTests = (items, fields, addItem) => {
+const addToDbSuccessTests = (type, items, fields, addItem) => {
   describe('successful addToDb()', function () {
     items.forEach(function (testData) {
       context(testData.descString, function () {
@@ -39,7 +39,7 @@ const addToDbSuccessTests = (items, fields, addItem) => {
         before('Reset the DB and add the item', async function () {
           await initDB()
           itemId = await addItem(item)
-          itemFromDb = await db.one(makeItemQuery(testData.type), itemId)
+          itemFromDb = await db.one(makeItemQuery(type), itemId)
         })
         it('should return a number itemId', function () {
           expect(itemId).to.be.a('number')
@@ -56,7 +56,24 @@ const addToDbSuccessTests = (items, fields, addItem) => {
   })
 }
 
+const addToDbFailTests = (itemType, items, prepare) => {
+  describe('failure prototype.addToDb()', function () {
+    items.forEach(function (testData) {
+      context(testData.descString, function () {
+        before('Reset the DB', async function () {
+          await initDB()
+          await prepare()
+        })
+        it(`should throw an error when ${testData.descString}`, function () {
+          return testData.item.addToDb(...testData.args)
+            .catch(err => expect(err.message.toLowerCase()).to.contain(`${itemType} not added`))
+        })
+      })
+    })
+  })
+}
+
 module.exports = {
   addToDbSuccessTests,
-  // addToDbFailTests,
+  addToDbFailTests,
 }

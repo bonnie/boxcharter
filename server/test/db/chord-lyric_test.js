@@ -29,6 +29,12 @@ const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_t
 const { db } = require('../../db/db_connection')
 const { Chord, Lyric } = require('../../db/model/chord-lyric_db')
 
+const types = ['chord', 'lyric']
+
+// //////////////////////////////////////////////////////////////////////////////
+// SUCCESS
+// //////////////////////////////////////////////////////////////////////////////
+
 /**
  * Add chord or lyric
  * @param  {object}  item Chord or Lyric instance
@@ -41,80 +47,49 @@ const addItem = async (item) => {
 }
 
 const successItems = {
-  chords: [
-    { type: 'chord', descString: 'chord with no suffix, no bass note', item: new Chord(0, 'G', null, null) },
-    { type: 'chord', descString: 'chord with bass note, no suffix', item: new Chord(1, 'C#', 'E', null) },
-    { type: 'chord', descString: 'chord with suffix, no bass note', item: new Chord(2, 'Bb', null, 'dim') },
-    { type: 'chord', descString: 'chord with suffix, bass note', item: new Chord(3, 'A', 'B', 'm7b5') },
+  chord: [
+    { descString: 'chord with no suffix, no bass note', item: new Chord(0, 'G', null, null) },
+    { descString: 'chord with bass note, no suffix', item: new Chord(1, 'C#', 'E', null) },
+    { descString: 'chord with suffix, no bass note', item: new Chord(2, 'Bb', null, 'dim') },
+    { descString: 'chord with suffix, bass note', item: new Chord(3, 'A', 'B', 'm7b5') },
   ],
-  lyrics: [
-    { type: 'lyric', descString: 'lyric with non-empty text', item: new Lyric(0, 'joy to the world') },
-    { type: 'lyric', descString: 'lyric with empty text', item: new Lyric(1, '') },
+  lyric: [
+    { descString: 'lyric with non-empty text', item: new Lyric(0, 'joy to the world') },
+    { descString: 'lyric with empty text', item: new Lyric(1, '') },
   ],
 }
 
 const fields = {
-  chords: ['chordId', 'beatIndex', 'noteCode', 'bassNoteCode', 'suffix'],
-  lyrics: ['lyricId', 'verseIndex', 'lyricText'],
+  chord: ['chordId', 'beatIndex', 'noteCode', 'bassNoteCode', 'suffix'],
+  lyric: ['lyricId', 'verseIndex', 'lyricText'],
 }
 
-const types = ['chords', 'lyrics']
-types.forEach(type => addToDbSuccessTests(successItems[type], fields[type], addItem))
+types.forEach(type => addToDbSuccessTests(type, successItems[type], fields[type], addItem))
 
-const chordFailures = [
-  { descString: 'the measureId doesn\'t exist in the db', chord: new Chord(0, 'G'), measureId: -1 },
-  { descString: 'the chord is missing a measureId', chord: new Chord(0, 'G'), measureId: null },
-  { descString: 'the chord is missing a note code', chord: new Chord(0), measureId: 1 },
-]
+// //////////////////////////////////////////////////////////////////////////////
+// FAILURES
+// //////////////////////////////////////////////////////////////////////////////
 
-describe('failure Chord.prototype.addToDb()', function () {
-  chordFailures.forEach(function (testData) {
-    context(testData.descString, function () {
-      before('Reset the DB', async function () {
-        await initDB()
-        // make a fake measure to insert chord into;
-        // assume there will be a measure with id 1 after this
-        await createMeasure()
-      })
-      it(`should throw an error when ${testData.descString}`, function () {
-        return testData.chord.addToDb(testData.measureId)
-          .catch(err => expect(err.message).to.contain('Chord not added'))
-      })
-    })
-  })
-})
+/**
+ * Preparation function for failure tests
+ * @return {Promise} - measureId for created measure
+ */
+const failPrepare = async () => {
+  // make a fake measure to insert chord into;
+  // assume there will be a measure with id 1 after this
+  await createMeasure()
+}
 
-// const userUpdateInputs = [
-//   { field: 'email', value: 'wakkawakka@wallawalla.com' },
-//   { field: 'firstName', value: 'Fozzie' },
-//   { field: 'lastName', value: 'Bear' },
-// ]
-//
-// describe('User.prototype.update()', function () {
-//   let user
-//   before('Reset the DB and get the user', async function () {
-//     await initDB()
-//     user = await User.getById(1)
-//   })
-//   userUpdateInputs.forEach(function (testData) {
-//     describe(testData.field, function () {
-//       before('Run the update', async function () {
-//         await user.update(testData.field, testData.value)
-//       })
-//       it(`has changed the ${testData.field} field in the db`, async function () {
-//         const u = await User.getById(1)
-//         expect(u[testData.field]).to.equal(testData.value)
-//       })
-//       it(`has changed the ${testData.field} property in the user obj`, function () {
-//         expect(user[testData.field]).to.equal(testData.value)
-//       })
-//       it('has not affected user authentication for db data', async function () {
-//         const u = await User.getById(1)
-//         expect(u.checkPassword(userData.password)).to.equal(true)
-//       })
-//       it('has not affected user authentication for user obj data', function () {
-//         expect(user.checkPassword(userData.password)).to.equal(true)
-//       })
-//     })
-//   })
-// })
+const failureItems = {
+  chord: [
+    { descString: 'the measureId doesn\'t exist in the db', item: new Chord(0, 'G'), args: [-1] },
+    { descString: 'the chord is missing a measureId', item: new Chord(0, 'G'), args: [null] },
+    { descString: 'the chord is missing a note code', item: new Chord(0), args: [1] },
+  ],
+  lyric: [
+    { descString: 'the measureId doesn\'t exist in the db', item: new Lyric(0, 'la la la'), args: [-1] },
+    { descString: 'the lyric is missing lyricText', item: new Lyric(0), args: [null] },
+  ],
+}
+
+types.forEach(type => addToDbFailTests(type, failureItems[type], failPrepare))
