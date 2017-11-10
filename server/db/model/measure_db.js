@@ -28,8 +28,8 @@ const { Measure } = require('../../../shared/model/measure.js')
 // const { Chord, Lyric } = require('../../../shared/model/chord-lyric.js')
 
 /**
- * Add measure object to the db with the specified measureId, and set the object's
- * measureId to be the resulting measureId
+ * Add measure object to the db, and set the object's measureId to be the
+ * resulting measureId
  * @param {number} sectionId - sectionId for the measure
  * @returns {Promise} - Promise resolving to measureId, or throw an error
  */

@@ -18,99 +18,43 @@
  *
  */
 
-const Sequelize = require('Sequelize')
-const db = require('./db')
-const logger = require('../utilities/log').logger
+/**
+ * Section model.
+ * @module section
+ */
 
- //////////////////////////////////////////////////////////////////////////////
- // Section
- //////////////////////////////////////////////////////////////////////////////
-
- //////////
- // table
-
-const Section = db.sequelize.define('section', {
-  sectionId: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  index: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  // metadata
-  sectionName: { type: Sequelize.STRING },
-  sectionDesc: { type: Sequelize.STRING },
-  beatsPerMeasure: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  verseCount: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  // layout
-  measuresPerRow: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
-  pickupMeasure: {
-    type: Sequelize.BOOLEAN,
-    default: false
-  },
-  // repeat
-  repeat: {
-    type: Sequelize.BOOLEAN,
-    default: false,
-  },
-
-})
-
-///////////
-// methods
-
-Section.setSection = function(sectionData) {
-  // create new section for this chart with sectionData
-
-  const measures = sectionData.measures
-  delete sectionData.measures
-
-  Section.create(sectionData, {
-    options: {
-      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-    })
-    .then(newSection => {
-      logger.debug(`created new section ${sectionData}`)
-      measures.forEach(m => {
-        m.sectionId = newSection.sectionId
-        measure.Measure.setMeasure(m)
-      })
-    })
-    .catch(err => {
-      throw (`Could not create section ${sectionData}: ${err}`)
-    })
-
+/**
+  * Section object.
+  * @class
+  */
+class Section {
+  /**
+    * Section constructor.
+    * @constructor
+    * @param {number} chartId - id of the chart to which this section belongs
+    * @param {number} index - position in the chart
+    * @param {string} sectionName - name of the section
+    * @param {string} sectionDesc - description of the section
+    * @param {number} beatsPerMeasure - number of beats per measure
+    * @param {number} verseCount - number of verses in the section
+    * @param {number} pickupMeasureBeats - number of beats in the pickup measure.
+    *                                      0 for no pickup measure.
+    * @param {array} measures - array of Measure objects.
+    */
+  constructor(chartId, index, sectionName, sectionDesc, beatsPerMeasure,
+    verseCount, pickupMeasureBeats, measures) {
+    this.sectionId = null
+    this.chartId = chartId
+    this.index = index
+    this.sectionName = sectionName
+    this.sectionDesc = sectionDesc
+    this.beatsPerMeasure = beatsPerMeasure
+    this.verseCount = verseCount
+    this.pickupMeasureBeats = pickupMeasureBeats
+    this.chords = measures || []
+  }
 }
 
-Section.getChartSections = function(chartId) {
-  this.findAll({
-    where: { chartId: chartId },
-    options: { order: ['index'] },
-    attributes: { exclude: ['sectionId'] },
-    raw: true
-  }).then(sections => {
-    sectionsWithMeasures = sections.map(s => {
-      s.measures = s.getMeasures()
-      return s
-    })
-    return Promise.resolve(sectionsWithMeasures)
-  })
+module.exports = {
+  Section,
 }
-
-Section.getMeasures = function() {
-  return measure.Measure.getSectionMeasures(this.sectionId)
-}
-
-
-module.exports = Section

@@ -62,7 +62,7 @@ CREATE TABLE sections(
   sectionDesc TEXT,
   beatsPerMeasure INTEGER NOT NULL,
   verseCount INTEGER NOT NULL,
-  pickupMeasureBeats INTEGER DEFAULT 0
+  pickupMeasureBeats INTEGER
 );
 
 ----------------------------------------------------------------

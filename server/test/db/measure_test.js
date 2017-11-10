@@ -39,7 +39,6 @@ const addMeasure = async (measure) => {
   // make a fake section to insert measure into
   const section = await createSection()
   measure.sectionId = section.sectionid
-  console.log(measure)
   return measure.addToDb()
 }
 
