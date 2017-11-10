@@ -1,11 +1,3 @@
-const User = require('./user')
-const Chord = require('./chord-lyric').Chord
-const Lyric = require('./chord-lyric').Lyric
-const Measure = require('./measure')
-const Section = require('./section')
-const Chart = require('./chart')
-require('./associations')
-
 const userId = 1
 
 Chart.create({
