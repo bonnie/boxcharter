@@ -47,11 +47,11 @@ CREATE TABLE charts(
   lyricistSame BOOLEAN,
   originalKeyCode VARCHAR(3) REFERENCES keys,
   printKeyCode VARCHAR(3) REFERENCES keys,
-  maxPages INTEGER DEFAULT 1,
-  minFontsize INTEGER DEFAULT 10,
-  pageWidth REAL DEFAULT 8.5,
-  pageHeight REAL DEFAULT 11,
-  pageUnits TEXT DEFAULT 'inches'
+  maxPages INTEGER,
+  minFontsize INTEGER,
+  pageWidth REAL,
+  pageHeight REAL,
+  pageUnits TEXT
 );
 
 CREATE TABLE sections(

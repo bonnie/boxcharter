@@ -18,338 +18,50 @@
  *
  */
 
- /**
-  * Chart model.
-  * @module chart
-  */
- const { db, pgp } = require('../../server/db/db_connection')
+/**
+ * Chart model.
+ * @module chart
+ */
 
- /**
+/**
   * Chart object.
   * @class
   */
- class Chart {
- /**
-  * Chart constructor
-  * @constructor
-  */
- constructor() {
- }
+class Chart {
+  /**
+   * Chart constructor
+   * @param  {string} title           title of chart
+   * @param  {string} author          author of chart
+   * @param  {string} composer        song composer
+   * @param  {string} lyricist        song lyricist
+   * @param  {boolean} lyricistSame    whether or not the lyricist is the same as the composer
+   * @param  {string} originalKeyCode original key of the chart
+   * @param  {string} printKeyCode    transposed key of the chart
+   * @param  {number} maxPages        maximum pages for chart PDF
+   * @param  {number} minFontsize     minimum font size for chart PDF
+   * @param  {number} pageWidth       chart PDF page width
+   * @param  {number} pageHeight      chart PDF page height
+   * @param  {string} pageUnits       units for page dimension values (e.g. inches)
+   * @param  {array} sections         array of Section objects
+   */
+  constructor(title, author, composer, lyricist, lyricistSame, originalKeyCode,
+    printKeyCode, maxPages, minFontsize, pageWidth, pageHeight, pageUnits, sections) {
+    this.chartId = null
+    this.title = title
+    this.author = author
+    this.composer = composer
+    this.lyricist = lyricist
+    this.lyricistSame = lyricistSame
+    this.originalKeyCode = originalKeyCode
+    this.printKeyCode = printKeyCode
+    this.maxPages = maxPages
+    this.minFontsize = minFontsize
+    this.pageWidth = pageWidth
+    this.pageHeight = pageHeight
+    this.pageUnits = pageUnits
+    this.sections = sections || []
+  }
 }
-
-
-
-/**
- * Return an array of chart objects for a particular user
- * @param {number} userId - a User object
- * @return {array} - an array of Chart objects
- */
-Chart.getChartsByUser = function (userId) {
-
-}
-
-/*
-/////////////////
-
-const Sequelize = require('Sequelize')
-const db = require('./db')
-const User = require('./user')
-const Chord = require('./chord-lyric').Chord
-const Lyric = require('./chord-lyric').Lyric
-const Measure = require('./measure')
-const Section = require('./section')
-
-const Status = require('./status').Status
-const statusStrings = require('./status').statusStrings
-const logger = require('../utilities/log').logger
-const procError = require('../utilities/err')
-
-// for associations when retrieving and adding data
-const chartAssociations = [
-  {
-    model: Section,
-    include: [{
-      model: Measure,
-      include: [
-        Lyric,
-        Chord,
-      ]
-    }]
-  },
-]
-
- //////////////////////////////////////////////////////////////////////////////
- // Chart
- //////////////////////////////////////////////////////////////////////////////
-
- //////////
- // table
- const Chart = db.sequelize.define('chart', {
-   chartId: {
-     type: Sequelize.INTEGER,
-     autoIncrement: true,
-     primaryKey: true,
-   },
-
-   // text metadata
-   title: {
-     type: Sequelize.STRING,
-     allowNull: false,
-   },
-   author: { type: Sequelize.STRING },
-   composer: { type: Sequelize.STRING },
-   lyricist: { type: Sequelize.STRING },
-
-   // is the lyricist the same as the composer?
-   lyricistSame: {
-     type: Sequelize.BOOLEAN,
-     default: false,
-   },
-
-   // key
-  //  originalKey: referencesKey,
-  //  printKey: referencesKey,
-
-   // chart pdf properties
-   maxPages: {
-     type: Sequelize.INTEGER,
-     default: 1,
-   },
-   minFontsize: {
-     type: Sequelize.INTEGER,
-     default: 10,
-   },
-   pageWidth: {
-     type: Sequelize.FLOAT,
-     default: 8.5,
-   },
-   pageHeight: {
-     type: Sequelize.FLOAT,
-     default: 11,
-   },
-   pageUnits: {
-     type: Sequelize.STRING,
-     default: 'inches',
-   }
- })
-
- ///////////
- // class methods
-
-Chart.getById = function(chartId) {
-  return this.find({
-    where: { chartId: chartId },
-    raw: true,
-    // include: chartAssociations
-  })
-}
-
-Chart.setChart = function(chartData) {
-  // Update existing chart.
-
-  console.log('setting chart', chartData)
-
-  const sections = chartData.sections
-  const chartId = chartData.chartId
-  delete chartData.sections
-  delete chartData.chartId
-
-  // findOrCreate ?
-  Chart.update(chartData, {
-    where: { chartId: chartId },
-    options: {
-      // fields: [],
-      logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-    })
-    .then(num => {
-      // num = array containing number of rows updated
-      const resultCount = num[0]
-      if (resultCount == 1) {
-        // blow away existing sections
-        Chart.findById(chartId)
-          .then(chartRow => chartRow.clearSections())
-          .then(resp => {
-            if (sections) {
-              sections.forEach(s => {
-                s.chartId = chartId
-                Section.setSection(s)
-              })
-            }
-          })
-          .then(r => {
-          result = {
-            status: new Status(
-              statusStrings.success,
-              'Successfully saved chart'
-            ),
-            chart: Chart.getById(chartId)
-          }
-          return Promise.resolve(result)
-        })
-
-      } else {
-        // bummer
-        return procError(null, `Found ${resultCount} results for chartId ${chartId}`)
-      }
-    })
-    .catch(err => {
-      msg = `Could not update chart id ${chartId}: ${err}`
-      return Promise.resolve(procError(err, msg))
-    })
-}
-
-Chart.reformatMeasures = function(chartData) {
-  // transfrom chart data from client into a format appealing to Sequelize
-
-    chartData.sections = chartData.sections.map(section => {
-      section.measures = section.measures.map(measure => {
-
-        // chords
-        var formattedChords = []
-        Object.entries(measure.chords).forEach(([beatIndex, chordData]) => {
-         // can assume that there is only one key/value pair in chord
-         // TODO: separate note code and suffix
-         formattedChords.push({
-           beatIndex: beatIndex,
-           noteCode: chordData,
-          //  suffix: chordData[1]
-          })
-        })
-        // console.log('formattedChords:', formattedChords)
-        measure.chords = formattedChords
-
-        // lyrics
-        var formattedLyrics = []
-        Object.entries(measure.lyrics).forEach(([verseIndex, lyricText]) => {
-          // can assume that there is only one key/value pair in lyric
-         formattedLyrics.push({ verseIndex: verseIndex, lyricText: lyricText })
-        })
-        measure.lyrics = formattedLyrics
-      return measure
-    })
-    return section
-  })
-  return chartData
-}
-
-Chart.createChart = function(userId, chartData) {
-  // Create new chart from angular data.
-
-  require('./associations')
-  chartData = Chart.reformatMeasures(chartData)
-
-  // declare globally, to avoid pyramid .then's
-  var newChart, response
-
-  return Chart.create(chartData, {
-    options: { logging: msg => { logger.info(`SEQUELIZE ${msg}`) }},
-    include: chartAssociations
-  })
-  .then(thisChart => {
-    // save for future .then
-    newChart = thisChart
-    logger.debug('made new chart', thisChart.chartId)
-    // Associate with user. Can assume user already exists.
-    return User.findById(userId)
-  })
-  .then(thisUser => {
-    return newChart.addUser(thisUser)
-  })
-  .then(thisChartUser => {
-    // why is this an array of arrays, and not just one chartuser obj? A result of many-to-many?
-    logger.debug(`chart ${thisChartUser[0][0].chartId} is associated with user ${thisChartUser[0][0].userId}`)
-    const chartId = thisChartUser[0][0].chartId
-    return Chart.getById(chartId)
-  })
-  .then(chartData => {
-    // Package result for web
-    response = {
-      status: new Status(statusStrings.success, 'Successfully saved chart'),
-      chart: chartData
-    }
-    return response
-  })
-  .catch(error => {
-    msg = `Unable to create chart ${chartData.title}`
-    return procError(error, msg)
-  })
-
-  // const chartDataWithoutSections = chartData
-  // delete chartDataWithoutSections.sections
-  //
-  // Chart.create(
-  //   chartDataWithoutSections,
-  //   { options: {
-  //     // fields: [],
-  //     logging: msg => { logger.info(`SEQUELIZE ${msg}`) }}
-  //   })
-  //   .then(newChart => {
-  //     chartData.chartId = newChart.chartId
-  //     return Chart.setChart(chartData)
-  //   })
-  //   .catch(err => {
-  //     const msg = `Could not create chart "${chartData.title}" for user id ${chartData.userId}`
-  //     return Promise.resolve(procError(err, msg))
-  //   })
-}
-
-////////////////
-// instance methods
-
-Chart.prototype.clearSections = function() {
-  // clear any existing sections to write new data
-  Section.destroy({ where: { chartId: this.chartId }})
-}
-
-Chart.prototype.getSections = function() {
-  // Get sections for a chart.
-  // Returns promise<Section[]>
-
-  Section.findAll({
-    where: { chartId: this.chartId },
-    options: { order: ['index'] },
-    attributes: { exclude: ['sectionId'] },
-    raw: true
-  })
-  .then(sections => {
-    console.log('sections', sections)
-    sectionsWithMeasures = sections.map(s => {
-      s.measures = s.getMeasures()
-      return s
-    })
-    console.log('sectionsWithMeasures', sectionsWithMeasures)
-    return Promise.resolve(sectionsWithMeasures)
-  })
-
-}
-
-
- // def clear(self):
- //     """Clear out chart data to prepare for re-save."""
- //
- //     self.title = None
- //     self.author = None
- //     self.composer = None
- //     self.lyricist = None
- //     self.originalKey = None
- //     self.printKey = None
- //     self.maxPages = None
- //     self.minFontSize = None
- //     self.sections = []
- //
- // def update(self, data):
- //     """Update chart with the supplied data and sections."""
- //
- //     # first set the metadata
- //     self.set_data(data)
- //
- //     # update the modified date
- //     self.modified_at = datetime.now()
- //
- //     # finally, add and commit to db
- //     db.session.add(self)
- //     db.session.commit()
-*/
 
 module.exports = {
   Chart,

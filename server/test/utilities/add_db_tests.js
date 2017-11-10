@@ -61,7 +61,10 @@ const addToDbSuccessTests = (type, items, fields, addItem) => {
         fields.forEach((field) => {
           it(`should set the ${field} in the db`, function () {
             const fromDb = itemFromDb[field.toLowerCase()]
-            const fromItem = item[field]
+            let fromItem = item[field]
+            if (fromItem === undefined) {
+              fromItem = null // undefined in the obj comes back as null from the db
+            }
             expect(fromDb).to.equal(fromItem)
           })
         })

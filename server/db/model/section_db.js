@@ -35,12 +35,25 @@ const { Section } = require('../../../shared/model/section.js')
 Section.prototype.addToDb = async function () {
   try {
     const response = await db.one(
-      `INSERT INTO sections (chartId, index, sectionName, sectionDesc,
-                             beatsPerMeasure, verseCount, pickupMeasureBeats)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        RETURNING sectionId`,
-      [this.chartId, this.index, this.sectionName, this.sectionDesc,
-        this.beatsPerMeasure, this.verseCount, this.pickupMeasureBeats])
+      `INSERT INTO sections (
+        chartId,
+        index,
+        sectionName,
+        sectionDesc,
+        beatsPerMeasure,
+        verseCount,
+        pickupMeasureBeats)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING sectionId`,
+      [
+        this.chartId,
+        this.index,
+        this.sectionName,
+        this.sectionDesc,
+        this.beatsPerMeasure,
+        this.verseCount,
+        this.pickupMeasureBeats,
+      ])
     this.sectionId = response.sectionid
     return response.sectionid
   } catch (err) {
