@@ -22,7 +22,6 @@
  * Tests for the chart model.
  * @module chart_test
  */
-const { createChart } = require('../utilities/create_items')
 const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_tests')
 const { Chart } = require('../../db/model/chart_db')
 
@@ -67,12 +66,8 @@ addToDbSuccessTests('chart', successCharts, chartFields, addChart)
 // FAILURE addToDb
 // //////////////////////////////////////////////////////////////////////////////
 
-// const failureCharts = [
-//   { descString: 'the chartId doesn\'t exist in the db', item: new Chart(-1, 0, null, null, 4, 1, null) },
-//   { descString: 'the chart is missing a chartId', item: new Chart(null, 0, null, null, 4, 1, null) },
-//   { descString: 'the chart is missing an index', item: new Chart(1, null, null, null, 4, 1, null) },
-//   { descString: 'the chart is missing beatsPerMeasure', item: new Chart(1, 0, null, null, null, 1, null) },
-//   { descString: 'the chart is missing verseCount', item: new Chart(1, 0, null, null, 4, null, null) },
-// ]
-//
-// addToDbFailTests('chart', failureCharts, addChart)
+const failureCharts = [
+  { descString: 'the chart is missing a title', item: new Chart(null) },
+]
+
+addToDbFailTests('chart', failureCharts, () => {})

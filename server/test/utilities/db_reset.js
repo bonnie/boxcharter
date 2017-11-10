@@ -29,31 +29,31 @@ const { addUser } = require('../../db/seed/add_user')
 /**
  * Get all the tables in the current db connection.
  * @function
- * @returns {array} - Array of objects each representing a table. Each object
- *    has a key 'table_name'
+ * @returns {Promise} - Promise resolving to array of objects each representing
+ *  a table. Each object has a key 'table_name'.
  */
-const getTables = () =>
-  db.query(`SELECT table_name
-              FROM information_schema.tables
-              WHERE table_schema = 'public';`)
+const getTables = function () {
+  return db.query(
+    `SELECT table_name
+      FROM information_schema.tables
+      WHERE table_schema = 'public';`)
+}
 
 /**
  * Truncate all tables to reset the database.
  * @function
- * @returns {undefined}
+ * @returns {Promise} - Promise whose resolution is unimportant.
  */
-const resetDB = () => {
+const resetDB = async function () {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('Cowardly refusing to truncate production db.')
   }
-  return getTables()
-    .then(async tables =>
-      Promise.all(tables.map(table =>
-        db.none(`TRUNCATE ${table.table_name} RESTART IDENTITY CASCADE`),
-      ))
-        .catch(console.error)
-    )
-    .catch(console.error)
+  try {
+    const tables = await getTables()
+    await Promise.all(tables.map(table =>
+      db.none(`TRUNCATE ${table.table_name} RESTART IDENTITY CASCADE`),
+    ))
+  } catch (err) { console.error(err) }
 }
 
 /**
