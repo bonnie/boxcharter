@@ -104,7 +104,7 @@ describe('User.prototype.addChart() success', function () {
   const userId = 1
   before('Reset the DB and create a chart', async function () {
     await initDB()
-    chart = new Chart('new chart')
+    chart = new Chart({ title: 'new chart' })
     await chart.addToDb()
     const user = await User.getById(userId)
     await user.addChart(chart, permissions)
@@ -125,14 +125,14 @@ describe('User.prototype.addChart() failures', function () {
   const failString = 'Chart not added to user.'
   beforeEach('Reset the DB', () => initDB())
   it('should fail if user does not have a userId', async () => {
-    const chart = new Chart('new chart')
+    const chart = new Chart({ title: 'new chart' })
     const user = new User()
     await chart.addToDb()
     await user.addChart(chart)
       .catch(err => expect(err.message).to.contain(failString))
   })
-  it.only('should fail if chart does not have a chartId', async () => {
-    const chart = new Chart('new chart')
+  it('should fail if chart does not have a chartId', async () => {
+    const chart = new Chart({ title: 'new chart' })
     const user = await User.getById(1)
     await user.addChart(chart)
       .then(() => expect(false, 'Did not throw').to.be.true)

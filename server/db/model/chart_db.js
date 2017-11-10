@@ -24,7 +24,7 @@
  */
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
-const { Chart } = require('../../../shared/model/chart.js')
+const { Chart, chartFields } = require('../../../shared/model/chart.js')
 
 /**
  * Add chart object to the db, and set the object's chartId to be the
@@ -72,6 +72,32 @@ Chart.prototype.addToDb = async function () {
     logger.crit(err)
     throw new Error(`Chart not added: ${err.message}`)
   }
+}
+
+/**
+ * Get a chart by chartId
+ * @param  {number} chartId  id of the chart to be gotten
+ * @return {Promise}         resolves to Chart object
+ */
+Chart.getById = async function (chartId) {
+  try {
+    const chartQuery = 'SELECT * FROM charts WHERE chartID = $1'
+    const chartData = await db.one(chartQuery, chartId)
+    const chart = new Chart(chartData)
+    await chart.getSections()
+    await chart.getUsers()
+    return chart
+  } catch (e) {
+    throw new Error(`Could not get chartId ${chartId}: ${e.toString()}`)
+  }
+}
+
+Chart.prototype.getSections = function () {
+
+}
+
+Chart.prototype.getUsers = function () {
+
 }
 
 // ///////////
@@ -340,4 +366,5 @@ Chart.prototype.getSections = function() {
 
 module.exports = {
   Chart,
+  chartFields,
 }

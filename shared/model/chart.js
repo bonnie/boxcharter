@@ -22,46 +22,38 @@
  * Chart model.
  * @module chart
  */
+const { Base } = require('./base')
 
 /**
   * Chart object.
   * @class
   */
-class Chart {
+class Chart extends Base {
   /**
    * Chart constructor
-   * @param  {string} title           title of chart
-   * @param  {string} author          author of chart
-   * @param  {string} composer        song composer
-   * @param  {string} lyricist        song lyricist
-   * @param  {boolean} lyricistSame    whether or not the lyricist is the same as the composer
-   * @param  {string} originalKeyCode original key of the chart
-   * @param  {string} printKeyCode    transposed key of the chart
-   * @param  {number} maxPages        maximum pages for chart PDF
-   * @param  {number} minFontsize     minimum font size for chart PDF
-   * @param  {number} pageWidth       chart PDF page width
-   * @param  {number} pageHeight      chart PDF page height
-   * @param  {string} pageUnits       units for page dimension values (e.g. inches)
-   * @param  {array} sections         array of Section objects
+   * @param  {object} data - Object containing data for new chart.
    */
-  constructor(title, author, composer, lyricist, lyricistSame, originalKeyCode,
-    printKeyCode, maxPages, minFontsize, pageWidth, pageHeight, pageUnits, sections) {
-    this.chartId = null
-    this.title = title
-    this.author = author
-    this.composer = composer
-    this.lyricist = lyricist
-    this.lyricistSame = lyricistSame
-    this.originalKeyCode = originalKeyCode
-    this.printKeyCode = printKeyCode
-    this.maxPages = maxPages
-    this.minFontsize = minFontsize
-    this.pageWidth = pageWidth
-    this.pageHeight = pageHeight
-    this.pageUnits = pageUnits
-    this.sections = sections || []
+  constructor(data) {
+    super(data, Chart.fields)
   }
 }
+
+Chart.fields = [
+  'chartId',
+  'title',
+  'author',
+  'composer',
+  'lyricist',
+  'lyricistSame',
+  'originalKeyCode',
+  'printKeyCode',
+  'maxPages',
+  'minFontsize',
+  'pageWidth',
+  'pageHeight',
+  'pageUnits',
+]
+
 
 module.exports = {
   Chart,

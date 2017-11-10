@@ -25,7 +25,7 @@
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
 const { Measure } = require('../../../shared/model/measure.js')
-// const { Chord, Lyric } = require('../../../shared/model/chord-lyric.js')
+const { Chord, Lyric } = require('../../../shared/model/chord-lyric.js')
 
 /**
  * Add measure object to the db, and set the object's measureId to be the
@@ -46,6 +46,50 @@ Measure.prototype.addToDb = async function () {
     logger.crit(`Failed to add measure at index ${this.index} of section ${this.sectionId}`)
     logger.crit(err)
     throw new Error(`Measure not added: ${err.message}`)
+  }
+}
+
+Measure.prototype.getChords = async function () {
+  const chordQuery = `
+    SELECT chordId, beatIndex, noteCode, baseNoteCode, suffix
+    FROM chords
+    WHERE measureId = $1
+    ORDER BY beatIndex`
+  try {
+    const chords = await db.any(chordQuery, this.measureId)
+    chords.forEach((data) => {
+      const chord = new Chord(
+        this.measureId,
+        data.beatIndex,
+        data.noteCode,
+        data.baseNoteCode,
+        data.suffix)
+      chord.chordId = data.chordid
+      this.chords.push(chord)
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+Measure.prototype.getLyrics = async function () {
+  const lyricQuery = `
+    SELECT lyricId, verseIndex, lyricText
+    FROM lyrics
+    WHERE measureId = $1
+    ORDER BY verseIndex`
+  try {
+    const lyrics = await db.any(lyricQuery, this.measureId)
+    lyrics.forEach((data) => {
+      const lyric = new Lyric(
+        this.measureId,
+        data.verseIndex,
+        data.lyricText)
+      lyric.lyricId = data.lyricid
+      this.lyrics.push(lyric)
+    })
+  } catch (e) {
+    console.error(e)
   }
 }
 

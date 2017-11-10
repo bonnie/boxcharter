@@ -25,8 +25,8 @@
 const db = require('../db_connection').db
 const fs = require('fs')
 
-// const VERBOSE = process.env.NODE_ENV === 'production'
-const VERBOSE = true
+const VERBOSE = process.env.NODE_ENV === 'production'
+// const VERBOSE = true
 
 // assuming this will be run from an npm script; working dir is top of proj
 const KEYFILE = './server/db/seed/keys.csv'
@@ -80,7 +80,7 @@ const addNotes = async () => {
  * @return {undefined}
  */
 const addKeyNotes = async (key, notes) => {
-  console.log(`adding notes for ${key}`)
+  if (VERBOSE) console.log(`adding notes for ${key}`)
   try {
     await db.one(DB_COMMANDS.insertKey, [key])
     if (VERBOSE) console.log(`added key ${key}`)
@@ -103,7 +103,7 @@ const addKeyNotes = async (key, notes) => {
  */
 const addScales = async () => {
   try {
-    console.log('adding scales')
+    if (VERBOSE) console.log('adding scales')
     const keyData = fs.readFileSync(KEYFILE, 'ascii')
     await Promise.all(keyData.split('\n').filter(keyline => keyline).map((keyLine) => {
       // example line: Am,A,B,C,D,E,F,G

@@ -43,13 +43,11 @@ const addMeasure = async (measure) => {
 }
 
 const successMeasures = [
-  { descString: 'measure with no beatsPerMeasure', item: new Measure(null, 0) },
-  { descString: 'measure with beatsPerMeasure', item: new Measure(null, 1, 2) },
+  { descString: 'measure with no beatsPerMeasure', item: new Measure({ index: 0 }) },
+  { descString: 'measure with beatsPerMeasure', item: new Measure({ index: 1, beatsPerMeasure: 2 }) },
 ]
 
-const measureFields = ['measureId', 'sectionId', 'index', 'beatsPerMeasure']
-
-addToDbSuccessTests('measure', successMeasures, measureFields, addMeasure)
+addToDbSuccessTests('measure', successMeasures, Measure.fields, addMeasure)
 
 // //////////////////////////////////////////////////////////////////////////////
 // FAILURE addToDb
@@ -66,9 +64,9 @@ const failPrepare = async () => {
 }
 
 const failureMeasures = [
-  { descString: 'the sectionId doesn\'t exist in the db', item: new Measure(-1, 0) },
-  { descString: 'the measure is missing a sectionId', item: new Measure(null, 0) },
-  { descString: 'the measure is missing an index', item: new Measure(1) },
+  { descString: 'the sectionId doesn\'t exist in the db', item: new Measure({ sectionId: -1, index: 0 }) },
+  { descString: 'the measure is missing a sectionId', item: new Measure({ index: 0 }) },
+  { descString: 'the measure is missing an index', item: new Measure({ sectionId: 1 }) },
 ]
 
 addToDbFailTests('measure', failureMeasures, failPrepare)

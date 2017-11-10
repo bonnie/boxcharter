@@ -37,37 +37,32 @@ const { Chart } = require('../../db/model/chart_db')
 const addChart = async chart => chart.addToDb()
 
 const successCharts = [
-  { descString: 'chart with only necessary metadata', item: new Chart('my new chart') },
+  { descString: 'chart with only necessary metadata', item: new Chart({ title: 'my new chart' }) },
   { descString: 'chart with all metadata',
-    item: new Chart('charty chart', 'chart auth', 'chart comp',
-      'chart lyricist', false, 'Bb', 'F#m', 1, 10, 8.5, 11, 'inches'),
+    item: new Chart({
+      title: 'charty chart',
+      author: 'chart auth',
+      composer: 'chart comp',
+      lyricist: 'chart lyricist',
+      lyricistSame: false,
+      originalKeyCode: 'Bb',
+      printKeyCode: 'F#m',
+      maxPages: 1,
+      minFontsize: 10,
+      pageWidth: 8.5,
+      pageHeight: 11,
+      pageUnits: 'inches' }),
   },
 ]
 
-const chartFields = [
-  'chartId',
-  'title',
-  'author',
-  'composer',
-  'lyricist',
-  'lyricistSame',
-  'originalKeyCode',
-  'printKeyCode',
-  'maxPages',
-  'minFontsize',
-  'pageWidth',
-  'pageHeight',
-  'pageUnits',
-]
-
-addToDbSuccessTests('chart', successCharts, chartFields, addChart)
+addToDbSuccessTests('chart', successCharts, Chart.fields, addChart)
 
 // //////////////////////////////////////////////////////////////////////////////
 // FAILURE addToDb
 // //////////////////////////////////////////////////////////////////////////////
 
 const failureCharts = [
-  { descString: 'the chart is missing a title', item: new Chart(null) },
+  { descString: 'the chart is missing a title', item: new Chart({}) },
 ]
 
 addToDbFailTests('chart', failureCharts, () => {})

@@ -22,50 +22,51 @@
   * Chord and Lyric models.
   * @module chord-lyric
   */
+const { Base } = require('./base')
 
 /**
-   * Chord object.
-   * @class
-   */
-class Chord {
+  * Chord object.
+  * @class
+  */
+class Chord extends Base {
   /**
-     * Chord constructor
-     * @constructor
-     * @param {number} measureId - id for the measure to which this lyric belongs
-     * @param {number} beatIndex - position within the measure
-     * @param {string} noteCode - code of the note for the chord
-     * @param {string} bassNoteCode - code of the base note for the chord
-     * @param {string} suffix - suffix
-     */
-  constructor(measureId, beatIndex, noteCode, bassNoteCode, suffix) {
-    this.chordId = null
-    this.mesureId = measureId
-    this.beatIndex = beatIndex
-    this.noteCode = noteCode
-    this.bassNoteCode = bassNoteCode
-    this.suffix = suffix
+   * Chord constructor
+   * @param  {object} data     Object containing chord data corresponding
+   *                           to fields in the chord table
+   */
+  constructor(data) {
+    super(data, Chord.fields)
   }
 }
+
+Chord.fields = [
+  'chordId',
+  'measureId',
+  'beatIndex',
+  'noteCode',
+  'suffix',
+  'bassNoteCode']
 
 /**
    * Lyric object.
    * @class
    */
-class Lyric {
+class Lyric extends Base {
   /**
-     * Lyric constructor
-     * @constructor
-     * @param {number} measureId - id for the measure to which this lyric belongs
-     * @param {string} verseIndex - index of the lyric's verse
-     * @param {string} lyricText - lyric text
-     */
-  constructor(measureId, verseIndex, lyricText) {
-    this.lyricId = null
-    this.mesureId = measureId
-    this.verseIndex = verseIndex
-    this.lyricText = lyricText
+  * Lyric constructor
+  * @param  {object} data     Object containing lyric data corresponding
+  *                           to fields in the lyric table
+  */
+  constructor(data) {
+    super(data, Lyric.fields)
   }
 }
+
+Lyric.fields = [
+  'lyricId',
+  'measureId',
+  'verseIndex',
+  'lyricText']
 
 // var Sequelize = require('Sequelize')
 // var db = require('./db')

@@ -43,21 +43,19 @@ const addSection = async (section) => {
 }
 
 const successSections = [
-  { descString: 'section with only necessary metadata', item: new Section(null, 0, null, null, 4, 1, null) },
-  { descString: 'section with all metadata', item: new Section(null, 1, 'three word name', 'description is this', 4, 3, 2) },
+  { descString: 'section with only necessary metadata',
+    item: new Section({ index: 0, beatsPerMeasure: 4, verseCount: 1 }) },
+  { descString: 'section with all metadata',
+    item: new Section({
+      index: 1,
+      sectionName: 'three word name',
+      sectionDesc: 'description is this',
+      beatsPerMeasure: 4,
+      verseCount: 3,
+      pickupMeasureBeats: 2 }) },
 ]
 
-const sectionFields = [
-  'sectionId',
-  'chartId',
-  'index',
-  'sectionName',
-  'sectionDesc',
-  'beatsPerMeasure',
-  'verseCount',
-  'pickupMeasureBeats']
-
-addToDbSuccessTests('section', successSections, sectionFields, addSection)
+addToDbSuccessTests('section', successSections, Section.fields, addSection)
 
 // //////////////////////////////////////////////////////////////////////////////
 // FAILURE addToDb
@@ -74,11 +72,32 @@ const failPrepare = async () => {
 }
 
 const failureSections = [
-  { descString: 'the chartId doesn\'t exist in the db', item: new Section(-1, 0, null, null, 4, 1, null) },
-  { descString: 'the section is missing a chartId', item: new Section(null, 0, null, null, 4, 1, null) },
-  { descString: 'the section is missing an index', item: new Section(1, null, null, null, 4, 1, null) },
-  { descString: 'the section is missing beatsPerMeasure', item: new Section(1, 0, null, null, null, 1, null) },
-  { descString: 'the section is missing verseCount', item: new Section(1, 0, null, null, 4, null, null) },
+  { descString: 'the chartId doesn\'t exist in the db',
+    item: new Section({
+      chartId: -1,
+      index: 0,
+      beatsPerMeasure: 4,
+      verseCount: 1 }) },
+  { descString: 'the section is missing a chartId',
+    item: new Section({
+      index: 0,
+      beatsPerMeasure: 4,
+      verseCount: 1 }) },
+  { descString: 'the section is missing an index',
+    item: new Section({
+      chartId: 1,
+      beatsPerMeasure: 4,
+      verseCount: 1 }) },
+  { descString: 'the section is missing beatsPerMeasure',
+    item: new Section({
+      chartId: 1,
+      index: 0,
+      verseCount: 1 }) },
+  { descString: 'the section is missing verseCount',
+    item: new Section({
+      chartId: 1,
+      index: 0,
+      beatsPerMeasure: 4 }) },
 ]
 
 addToDbFailTests('section', failureSections, failPrepare)

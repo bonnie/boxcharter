@@ -22,31 +22,24 @@
  * Measure model.
  * @module measure
  */
-// const { db, pgp } = require('../../server/db/db_connection')
+const { Base } = require('./base')
 
 /**
   * Measure object.
   * @class
   */
-class Measure {
+class Measure extends Base {
   /**
-    * Measure constructor.
-    * @constructor
-    * @param {number} sectionId - id of the section to which this measure belongs
-    * @param {number} index - position in the section
-    * @param {number} beatsPerMeasure - if different from parent section.
-    * @param {array} chords - array of Chord objects.
-    * @param {array} lyrics - array of Lyric objects.
-    */
-  constructor(sectionId, index, beatsPerMeasure, chords, lyrics) {
-    this.measureId = null
-    this.sectionId = sectionId
-    this.index = index
-    this.beatsPerMeasure = beatsPerMeasure || null
-    this.chords = chords || []
-    this.lyrics = lyrics || []
+   * Measure constructor
+   * @param  {object} data     Object containing measure data corresponding
+   *                           to fields in the measure table
+   */
+  constructor(data) {
+    super(data, Measure.fields)
   }
 }
+
+Measure.fields = ['measureId', 'sectionId', 'index', 'beatsPerMeasure']
 
 // var Sequelize = require('Sequelize')
 // var db = require('./db')

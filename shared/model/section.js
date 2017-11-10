@@ -22,38 +22,32 @@
  * Section model.
  * @module section
  */
+const { Base } = require('./base')
 
 /**
-  * Section object.
+  * Section class.
   * @class
   */
-class Section {
+class Section extends Base {
   /**
-    * Section constructor.
-    * @constructor
-    * @param {number} chartId - id of the chart to which this section belongs
-    * @param {number} index - position in the chart
-    * @param {string} sectionName - name of the section
-    * @param {string} sectionDesc - description of the section
-    * @param {number} beatsPerMeasure - number of beats per measure
-    * @param {number} verseCount - number of verses in the section
-    * @param {number} pickupMeasureBeats - number of beats in the pickup measure.
-    *                                      0 for no pickup measure.
-    * @param {array} measures - array of Measure objects.
-    */
-  constructor(chartId, index, sectionName, sectionDesc, beatsPerMeasure,
-    verseCount, pickupMeasureBeats, measures) {
-    this.sectionId = null
-    this.chartId = chartId
-    this.index = index
-    this.sectionName = sectionName
-    this.sectionDesc = sectionDesc
-    this.beatsPerMeasure = beatsPerMeasure
-    this.verseCount = verseCount
-    this.pickupMeasureBeats = pickupMeasureBeats
-    this.chords = measures || []
+   * Section constructor
+   * @param  {object} data - Object containing data for new section.
+   */
+  constructor(data) {
+    super(data, Section.fields)
   }
 }
+
+Section.fields = [
+  'sectionId',
+  'chartId',
+  'index',
+  'sectionName',
+  'sectionDesc',
+  'beatsPerMeasure',
+  'verseCount',
+  'pickupMeasureBeats',
+]
 
 module.exports = {
   Section,

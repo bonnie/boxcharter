@@ -46,14 +46,20 @@ const addItem = async (item) => {
 
 const successItems = {
   chord: [
-    { descString: 'chord with no suffix, no bass note', item: new Chord(null, 0, 'G', null, null) },
-    { descString: 'chord with bass note, no suffix', item: new Chord(null, 1, 'C#', 'E', null) },
-    { descString: 'chord with suffix, no bass note', item: new Chord(null, 2, 'Bb', null, 'dim') },
-    { descString: 'chord with suffix, bass note', item: new Chord(null, 3, 'A', 'B', 'm7b5') },
+    { descString: 'chord with no suffix, no bass note',
+      item: new Chord({ beatIndex: 0, noteCode: 'G' }) },
+    { descString: 'chord with bass note, no suffix',
+      item: new Chord({ beatIndex: 1, noteCode: 'C#', baseNoteCode: 'E' }) },
+    { descString: 'chord with suffix, no bass note',
+      item: new Chord({ beatIndex: 2, noteCode: 'Bb', suffix: 'dim' }) },
+    { descString: 'chord with suffix, bass note',
+      item: new Chord({ beatIndex: 3, noteCode: 'A', bassNoteCode: 'B', suffix: 'm7b5' }) },
   ],
   lyric: [
-    { descString: 'lyric with non-empty text', item: new Lyric(null, 0, 'joy to the world') },
-    { descString: 'lyric with empty text', item: new Lyric(null, 1, '') },
+    { descString: 'lyric with non-empty text',
+      item: new Lyric({ verseIndex: 0, lyricText: 'joy to the world' }) },
+    { descString: 'lyric with empty text',
+      item: new Lyric({ verseIndex: 1, lyricText: '' }) },
   ],
 }
 
@@ -80,13 +86,24 @@ const failPrepare = async () => {
 
 const failureItems = {
   chord: [
-    { descString: 'the measureId doesn\'t exist in the db', item: new Chord(-1, 0, 'G') },
-    { descString: 'the chord is missing a measureId', item: new Chord(null, 0, 'G') },
-    { descString: 'the chord is missing a note code', item: new Chord(1, 0) },
+    { descString: 'the measureId doesn\'t exist in the db',
+      item: new Chord({ measureId: -1, beatIndex: 0, noteCode: 'G' }) },
+    { descString: 'the chord is missing a measureId',
+      item: new Chord({ beatIndex: 0, noteCode: 'G' }) },
+    { descString: 'the chord is missing a beatIndex',
+      item: new Chord({ measureId: 1, noteCode: 'G' }) },
+    { descString: 'the noteCode is not in the notes table',
+      item: new Chord({ measureId: 1, beatIndex: 1, noteCode: 'X' }) },
+    { descString: 'the bassNoteCode is not in the notes table',
+      item: new Chord({ measureId: 1, beatIndex: 1, noteCode: 'G', bassNoteCode: '5' }) },
+    { descString: 'the chord is missing a note code',
+      item: new Chord({ measureId: 1, beatIndex: 0 }) },
   ],
   lyric: [
-    { descString: 'the measureId doesn\'t exist in the db', item: new Lyric(-1, 0, 'la la la') },
-    { descString: 'the lyric is missing lyricText', item: new Lyric(1, 0) },
+    { descString: 'the measureId doesn\'t exist in the db',
+      item: new Lyric({ measureId: -1, verseIndex: 0, lyricText: 'la la la' }) },
+    { descString: 'the lyric is missing an index',
+      item: new Lyric({ measureId: 1 }) },
   ],
 }
 
