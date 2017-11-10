@@ -131,10 +131,11 @@ describe('User.prototype.addChart() failures', function () {
     await user.addChart(chart)
       .catch(err => expect(err.message).to.contain(failString))
   })
-  it('should fail if chart does not have a chartId', async () => {
+  it.only('should fail if chart does not have a chartId', async () => {
     const chart = new Chart('new chart')
     const user = await User.getById(1)
     await user.addChart(chart)
+      .then(() => expect(false, 'Did not throw').to.be.true)
       .catch(err => expect(err.message).to.contain(failString))
   })
 })
