@@ -73,10 +73,12 @@ const failPrepare = async () => {
   await createChart()
 }
 
-// const failureSections = [
-//   { descString: 'the sectionId doesn\'t exist in the db', item: new Section(-1, 0) },
-//   { descString: 'the section is missing a sectionId', item: new Section(null, 0) },
-//   { descString: 'the section is missing an index', item: new Section(1) },
-// ]
-//
-// addToDbFailTests('section', failureSections, failPrepare)
+const failureSections = [
+  { descString: 'the chartId doesn\'t exist in the db', item: new Section(-1, 0, null, null, 4, 1, null) },
+  { descString: 'the section is missing a chartId', item: new Section(null, 0, null, null, 4, 1, null) },
+  { descString: 'the section is missing an index', item: new Section(1, null, null, null, 4, 1, null) },
+  { descString: 'the section is missing beatsPerMeasure', item: new Section(1, 0, null, null, null, 1, null) },
+  { descString: 'the section is missing verseCount', item: new Section(1, 0, null, null, 4, null, null) },
+]
+
+addToDbFailTests('section', failureSections, failPrepare)
