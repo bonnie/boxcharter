@@ -116,9 +116,9 @@ CREATE TABLE users (
   lastName TEXT
 );
 
-CREATE TABLE userCharts (
+CREATE TABLE usercharts (
   userChartId SERIAL PRIMARY KEY,
   userId INTEGER REFERENCES users NOT NULL,
   chartId INTEGER REFERENCES charts NOT NULL,
-  chartOwner BOOLEAN DEFAULT false
+  permissions INTEGER -- 0 for owner, 1 for non-owner editor, 2 for non-owner viewer
 );

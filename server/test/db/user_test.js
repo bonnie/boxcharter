@@ -26,11 +26,12 @@ const { expect } = require('chai')
 const { initDB } = require('../utilities/db_reset')
 const { userData } = require('../../db/seed/add_user')
 const { User } = require('../../db/model/user_db')
+const { Chart } = require('../../db/model/chart_db')
+const { db } = require('../../db/db_connection.js')
 
 const userGetterInputs = [
   { descString: 'User.getByEmail()', method: User.getByEmail, input: userData.email },
-  // TODO: why is this commented?
-  // { descString: 'User.getById()', method: User.getById, input: 1 },
+  { descString: 'User.getById()', method: User.getById, input: 1 },
 ]
 
 userGetterInputs.forEach(function (testData) {
@@ -93,5 +94,47 @@ describe('User.prototype.update()', function () {
         expect(user.checkPassword(userData.password)).to.equal(true)
       })
     })
+  })
+})
+
+describe('User.prototype.addChart() success', function () {
+  let record
+  let chart
+  const permissions = 0
+  const userId = 1
+  before('Reset the DB and create a chart', async function () {
+    await initDB()
+    chart = new Chart('new chart')
+    await chart.addToDb()
+    const user = await User.getById(userId)
+    await user.addChart(chart, permissions)
+    record = await db.one('SELECT userId, chartId, permissions FROM usercharts WHERE userId = 1')
+  })
+  it('should add userId properly', function () {
+    expect(record.userid).to.equal(userId)
+  })
+  it('should add chartId properly', function () {
+    expect(record.chartid).to.equal(chart.chartId)
+  })
+  it('should add permissions properly', function () {
+    expect(record.permissions).to.equal(permissions)
+  })
+})
+
+describe('User.prototype.addChart() failures', function () {
+  const failString = 'Chart not added to user.'
+  beforeEach('Reset the DB', () => initDB())
+  it('should fail if user does not have a userId', async () => {
+    const chart = new Chart('new chart')
+    const user = new User()
+    await chart.addToDb()
+    await user.addChart(chart)
+      .catch(err => expect(err.message).to.contain(failString))
+  })
+  it('should fail if chart does not have a chartId', async () => {
+    const chart = new Chart('new chart')
+    const user = await User.getById(1)
+    await user.addChart(chart)
+      .catch(err => expect(err.message).to.contain(failString))
   })
 })

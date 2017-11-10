@@ -120,13 +120,22 @@ User.prototype.getCharts = function () {
 }
 
 /**
- * Add a chart to a user.
- * @function
- * @param {number} chartId - id of the chart to be added. It must already exist in the db.
- * @return {undefined} - no return, but the user object has been modified to have another chart.
+ * Associate chart with user
+ * @param {Chart} chart - chart object
+ * @param {number} permissions - 0 for owner, 1 for non-owner editor, 2 for non-owner viewer
+ * @returns {Promise} - Promise resolving to chartuserid of association record
  */
-// User.prototype.addChart = function (chartId) {
-// }
+User.prototype.addChart = async function (chart, permissions) {
+  const errMsg = 'Chart not added to user.'
+  if (!this.userId) throw new Error(`User has no user id. ${errMsg}`)
+  if (!chart.chartId) throw new Error(`Chart has no chart id. ${errMsg}`)
+  const response = await db.one(
+    'INSERT INTO usercharts (chartId, userId, permissions) VALUES ($1, $2, $3) returning userChartId',
+    [chart.chartId, this.userId, permissions]
+  )
+  return response.userchartid
+}
+
 
 /**
  * Check password against entered password.
