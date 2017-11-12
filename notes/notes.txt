@@ -8,3 +8,6 @@ https://github.com/sequelize/sequelize/issues/7818
 examples:
     (node:16893) DeprecationWarning: Using the automatically created return value from client.query as an event emitter is deprecated and will be removed in pg@7.0. Please see the upgrade guide at https://node-postgres.com/guides/upgrading
     (node:15039) DeprecationWarning: Using the automatically created return value from client.query as an event emitter is deprecated and will be removed in pg@7.0. Please see the upgrade guide at https://node-postgres.com/guides/upgrading
+    
+REACT / EXPRESS:
+https://daveceddia.com/create-react-app-express-production/
