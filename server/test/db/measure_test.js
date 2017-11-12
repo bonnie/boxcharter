@@ -24,7 +24,11 @@
  */
 const { createSection } = require('../utilities/create_items')
 const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_tests')
+const { getChildrenSuccessTests } = require('../utilities/getchildren_tests')
+const { chartData } = require('../utilities/add_chart')
+const { db } = require('../../db/db_connection')
 const { Measure } = require('../../db/model/measure_db')
+const { Chord, Lyric } = require('../../db/model/chord-lyric_db')
 
 // //////////////////////////////////////////////////////////////////////////////
 // SUCCESS addToDb
@@ -70,3 +74,37 @@ const failureMeasures = [
 ]
 
 addToDbFailTests('measure', failureMeasures, failPrepare)
+
+const getMeasureId = function (measureIndex, sectionIndex) {
+  return db.one(
+    'SELECT measureId FROM measures WHERE index=$1 AND sectionId = $2',
+    [measureIndex, sectionIndex])
+}
+
+const childTests = [
+  { measureIndex: 0, sectionIndex: 0 },
+]
+
+const childSubTests = [
+  { class: Chord, type: 'chord', orderBy: 'beatsPerMeasure', childFunc: 'getChords' },
+  { class: Lyric, type: 'lyric', orderBy: 'verseIndex', childFunc: 'getLyrics' },
+]
+
+const parentType = 'measure'
+const parentClass = 'Measure'
+
+childTests.forEach((test) => {
+  const queryFunc = getMeasureId(test.measureIndex, test.sectionIndex)
+  childSubTests.forEach((childSubTest) => {
+    getChildrenSuccessTests({
+      queryFunc,
+      parentType,
+      parentClass,
+      childType: childSubTest.type,
+      childClass: childSubTest.class,
+      orderBy: childSubTest.orderBy,
+      childFunc: childSubTest.childFunc,
+      expectedChildCount: Object.keys(chartData.measures[test.measureIndex][`${childSubTest.type}s`]).length,
+    })
+  })
+})

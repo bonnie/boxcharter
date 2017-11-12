@@ -24,7 +24,7 @@
  */
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
-const { Chart, chartFields } = require('../../../shared/model/chart.js')
+const { Chart } = require('../../../shared/model/chart.js')
 
 /**
  * Add chart object to the db, and set the object's chartId to be the
@@ -92,8 +92,8 @@ Chart.getById = async function (chartId) {
   }
 }
 
-Chart.prototype.getSections = function () {
-
+Chart.prototype.getSections = async function () {
+  await promise.All()
 }
 
 Chart.prototype.getUsers = function () {
@@ -366,5 +366,4 @@ Chart.prototype.getSections = function() {
 
 module.exports = {
   Chart,
-  chartFields,
 }
