@@ -26,6 +26,7 @@
 const { db, pgp } = require('../../db/db_connection')
 
 const VERBOSE = process.env.NODE_ENV === 'production'
+// const VERBOSE = true
 
 const chartMetaData = {
   title: 'Blackbird',
@@ -176,7 +177,7 @@ const addMeasures = async (measureData) => {
 
   try {
     if (VERBOSE) console.log('adding measures')
-    await Promise.all(measureData.map(async (measure, index) => {
+    return Promise.all(measureData.map(async (measure, index) => {
       const response = await db.one(measureQuery, [measure.section_id, index])
       const measureId = response.measureid
       const chordLyricPromises = []
@@ -189,11 +190,12 @@ const addMeasures = async (measureData) => {
           chordLyricPromises.push(db.query(lyricQuery, [measureId, lyricIndex, lyricText]))
         }
       }
-      await Promise.all(chordLyricPromises).catch((err) => {
-        console.error(err)
-        process.exit(1)
-      })
-      if (VERBOSE) console.log(`added measure ${index}`)
+      return Promise.all(chordLyricPromises)
+        .then(() => { if (VERBOSE) console.log(`added measure ${index}`) })
+        .catch((err) => {
+          console.error(err)
+          process.exit(1)
+        })
     }))
       .catch(console.error)
   } catch (err) {

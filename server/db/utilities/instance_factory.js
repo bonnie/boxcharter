@@ -29,7 +29,7 @@ const { Measure } = require('../model/measure_db')
 const { Section } = require('../model/section_db')
 const { Chart } = require('../model/chart_db')
 
-const InstanceFactory = {
+const instanceFactory = {
   /**
    * Return an instance of a class from the class's string
    * @param  {string} className class name as a string
@@ -53,5 +53,5 @@ const InstanceFactory = {
 }
 
 module.exports = {
-  InstanceFactory,
+  instanceFactory,
 }

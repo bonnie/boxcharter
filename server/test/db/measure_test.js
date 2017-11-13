@@ -77,8 +77,9 @@ addToDbFailTests('measure', failureMeasures, failPrepare)
 
 const getMeasureId = function (measureIndex, sectionIndex) {
   return db.one(
-    'SELECT measureId FROM measures WHERE index=$1 AND sectionId = $2',
+    'SELECT measureId FROM measures WHERE index=$1 AND sectionId=(SELECT sectionId FROM sections WHERE index=$2)',
     [measureIndex, sectionIndex])
+    .catch(console.error)
 }
 
 const childTests = [
@@ -94,10 +95,12 @@ const parentType = 'measure'
 const parentClass = 'Measure'
 
 childTests.forEach((test) => {
-  const queryFunc = getMeasureId(test.measureIndex, test.sectionIndex)
+  // const measureIdPromise = getMeasureId(test.measureIndex, test.sectionIndex)
+  // const queryFunc = () => 1
   childSubTests.forEach((childSubTest) => {
     getChildrenSuccessTests({
-      queryFunc,
+      idQueryFunc: getMeasureId,
+      idQueryArgs: [test.measureIndex, test.sectionIndex],
       parentType,
       parentClass,
       childType: childSubTest.type,

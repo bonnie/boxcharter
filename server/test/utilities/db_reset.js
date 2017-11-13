@@ -50,10 +50,13 @@ const resetDB = async function () {
   }
   try {
     const tables = await getTables()
-    await Promise.all(tables.map(table =>
+    return await Promise.all(tables.map(table =>
       db.none(`TRUNCATE ${table.table_name} RESTART IDENTITY CASCADE`),
     ))
-  } catch (err) { console.error(err) }
+  } catch (err) {
+    console.error(err)
+    return null
+  }
 }
 
 /**

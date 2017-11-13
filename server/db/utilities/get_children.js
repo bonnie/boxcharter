@@ -24,7 +24,39 @@
  */
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
-const { InstanceFactory } = require('./instance_factory')
+// const { instanceFactory } = require('./instance_factory')
+
+// TODO: why the f*** can't I require this?!?!?!?!??!?!?!?
+// It comes out as 'undefined' with the above require
+const { Chord, Lyric } = require('../model/chord-lyric_db')
+const { Measure } = require('../model/measure_db')
+const { Section } = require('../model/section_db')
+const { Chart } = require('../model/chart_db')
+
+const instanceFactory = {
+  /**
+   * Return an instance of a class from the class's string
+   * @param  {string} className class name as a string
+   * @param  {object} data      data for new class instance
+   * @return {any}              instance of the class
+   */
+  getInstance(className, data) {
+    if (this.classes[className]) {
+      return new this.classes[className](data)
+    }
+    logger.crit(`Could not instantiate ${className}`)
+    return null
+  },
+  classes: {
+    Chart,
+    Section,
+    Measure,
+    Chord,
+    Lyric,
+  },
+}
+// END: TODO
+// /////////////////////////////////////////////////////////////////////////
 
 /**
  * Get children of a particular type (e.g. get sections for a chart) and add
@@ -47,10 +79,10 @@ const getChildren = async function (childClassName, childType, parentType, paren
     // clear current list of children
     const children = await db.any(query, parentId)
     // console.log('BABIES', children)
-    // console.log('instance factory', InstanceFactory)
+    // console.log('instance factory', instanceFactory)
     return children.map((childData) => {
-      // const newChild = InstanceFactory.getInstance(childClassName, childData)
-      const newChild = childData
+      const newChild = instanceFactory.getInstance(childClassName, childData)
+      // const newChild = childData
       newChild[`${childType}Id`] = childData[`${childType}id`]
       // console.log('BABE IS BORN', newChild)
       return newChild
