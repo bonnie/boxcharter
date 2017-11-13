@@ -26,33 +26,31 @@ const { expect } = require('chai')
 const { db } = require('../../db/db_connection')
 const { initDB } = require('./db_reset')
 const { addEntireChart } = require('./add_chart')
-const { InstanceFactory } = require('../../db/utilities/instance_factory')
+const { instanceFactory } = require('../../db/utilities/instance_factory')
 
 const getChildrenSuccessTests = (testData) => {
-  describe(`successful ${testData.parentType} prototype.getChildren() ${testData.childType}`, function () {
+  describe(`successful ${testData.parentType} prototype.getChildren() ${testData.childType} for ${testData.idQueryArgs}`, function () {
     let item
     before('Reset the DB, add chart, and get the children', async function () {
       await initDB()
       await addEntireChart()
-      // const parentId = await testData.queryFunc
-      const parentId = 1
+      const parentId = await testData.idQueryFunc(...testData.idQueryArgs)
       const itemData = await db.one(`
         SELECT *
         FROM ${testData.parentType}s
-        WHERE ${testData.parentType}Id = ${parentId}`)
-      item = InstanceFactory.getInstance(testData.parentClass, itemData)
+        WHERE ${testData.parentType}Id = $1`, parentId[`${testData.parentType}id`])
+      item = instanceFactory.getInstance(testData.parentClass, itemData)
       await item[testData.childFunc](testData.childClass, testData.childType,
         testData.parentType, testData.orderBy)
     })
     it(`should add ${testData.expectedChildCount} ${testData.childType}(s)`, function () {
-      console.log('item', item)
       expect(item[`${testData.childType}s`].length).to.equal(testData.expectedChildCount)
     })
-    // item[`${testData.childType}s`].forEach((child, index) => {
-    //   it(`should add child ${index} of type ${testData.childClass}`, function () {
-    //     expect(child).to.be.an.instanceof(testData.childClass)
-    //   })
-    // })
+    it(`should add the first child as type ${testData.childClass.name}`, function () {
+      if (item[`${testData.childType}s`].length > 0) {
+        expect(item[`${testData.childType}s`][0]).to.be.an.instanceof(testData.childClass)
+      }
+    })
   })
 }
 

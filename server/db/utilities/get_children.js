@@ -24,12 +24,14 @@
  */
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
-const { InstanceFactory } = require('./instance_factory')
+const { instanceFactory } = require('./instance_factory')
 
+
+// NOTE: I wish I could instantiate the children here, but it's not possible to
+// do that because of circular references X(
 /**
  * Get children of a particular type (e.g. get sections for a chart) and add
  * replace the appropriate property of the parent with a list of child objects
- * @param  {string} childClassName  string of the class of the child type (e.g. 'Section')
  * @param  {string} childType  singular 'type' for the child (e.g. 'section')
  * @param  {string} parentType singular 'type' for the parent (e.g. chart)
  * @param  {string} parentId   id of the parent in the db (e.g. 1)
@@ -37,7 +39,7 @@ const { InstanceFactory } = require('./instance_factory')
  * @return {Promise}           Promise that resolves to array of children.
  *
  */
-const getChildren = async function (childClassName, childType, parentType, parentId, orderBy) {
+const getChildren = async function (childType, parentType, parentId, orderBy) {
   const query = `
     SELECT *
     FROM ${childType}s
@@ -45,18 +47,8 @@ const getChildren = async function (childClassName, childType, parentType, paren
     ORDER BY ${orderBy}`
   try {
     // clear current list of children
-    const children = await db.any(query, parentId)
-    // console.log('BABIES', children)
-    // console.log('instance factory', InstanceFactory)
-    return children.map((childData) => {
-      // const newChild = InstanceFactory.getInstance(childClassName, childData)
-      const newChild = childData
-      newChild[`${childType}Id`] = childData[`${childType}id`]
-      // console.log('BABE IS BORN', newChild)
-      return newChild
-    })
+    return db.any(query, parentId)
   } catch (e) {
-    console.log('DROPPED THE BABIES!!!!')
     console.error(e)
     logger.crit(`Could not get ${childType}s for ${this}: ${e.toString()}`)
     return []

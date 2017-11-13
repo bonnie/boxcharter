@@ -26,6 +26,7 @@
 const { db, pgp } = require('../../db/db_connection')
 
 const VERBOSE = process.env.NODE_ENV === 'production'
+// const VERBOSE = true
 
 const chartMetaData = {
   title: 'Blackbird',
@@ -57,44 +58,44 @@ const sections = [
 ]
 
 const measures = [
-  { section_id: 1, chords: { 1: { note: 'G' } }, lyrics: { 1: 'Blackbird' } },
-  { section_id: 1, chords: { 1: { note: 'A', suffix: 'm7' }, 3: { note: 'G', bassNote: 'B' } }, lyrics: { 1: 'singing in the dead of' } },
-  { section_id: 1, chords: { 1: { note: 'G' } }, lyrics: { 1: 'night' } },
-  { section_id: 1, chords: { 1: { note: '%' } } },
-  { section_id: 1, chords: { 1: { note: 'C' }, 3: { note: 'C#', suffix: 'dim' } }, lyrics: { 1: 'Take these broken', 2: 'Take these sunken', 3: 'Take these broken' } },
-  { section_id: 1, chords: { 1: { note: 'D' }, 3: { note: 'D#', suffix: 'dim' } }, lyrics: { 1: 'wings and learn to', 2: 'eyes and learn to', 3: 'wings and learn to' } },
-  { section_id: 1, chords: { 1: { note: 'E' } }, lyrics: { 1: 'fly', 2: 'see', 3: 'fly' } },
-  { section_id: 1, chords: { 1: { note: 'E', suffix: 'm', bassNote: 'Eb' } } },
-  { section_id: 1, chords: { 1: { note: 'D' }, 3: { note: 'C', suffix: '#dim' } }, lyrics: { 1: 'all your', 2: 'all your', 3: 'all your' } },
-  { section_id: 1, chords: { 1: { note: 'C' } }, lyrics: { 1: 'life', 2: 'life', 3: 'life' } },
-  { section_id: 1, chords: { 1: { note: 'C', suffix: 'm' } }, lyrics: { 1: '', 2: '', 3: '(to outtro)' } },
-  { section_id: 1, chords: { 1: { note: 'G', bassNote: 'B' } }, lyrics: { 1: 'you were only', 2: 'you were only' } },
-  { section_id: 1, chords: { 1: { note: 'A', suffix: '7' } }, lyrics: { 1: 'waiting for this', 2: 'waiting for this' } },
-  { section_id: 1, chords: { 1: { note: 'D', suffix: '7' } }, lyrics: { 1: 'moment to a-', 2: 'moment to be' } },
-  { section_id: 1, chords: { 1: { note: 'G' } }, lyrics: { 1: 'rise', 2: 'free' } },
-  { section_id: 1, chords: { 1: { note: '%' } }, lyrics: { 1: '', 2: '(to bridge)' } },
-  { section_id: 1, chords: { 1: { note: 'C' } } },
-  { section_id: 1, chords: { 1: { note: 'G', bassNote: 'B' } } },
-  { section_id: 1, chords: { 1: { note: 'A', suffix: '7' }, 3: { note: 'D', suffix: '7sus4' } } },
-  { section_id: 1, chords: { 1: { note: 'G' } } },
+  { section_id: 1, index: 0, chords: { 1: { note: 'G' } }, lyrics: { 1: 'Blackbird' } },
+  { section_id: 1, index: 1, chords: { 1: { note: 'A', suffix: 'm7' }, 3: { note: 'G', bassNote: 'B' } }, lyrics: { 1: 'singing in the dead of' } },
+  { section_id: 1, index: 2, chords: { 1: { note: 'G' } }, lyrics: { 1: 'night' } },
+  { section_id: 1, index: 3, chords: { 1: { note: '%' } } },
+  { section_id: 1, index: 4, chords: { 1: { note: 'C' }, 3: { note: 'C#', suffix: 'dim' } }, lyrics: { 1: 'Take these broken', 2: 'Take these sunken', 3: 'Take these broken' } },
+  { section_id: 1, index: 5, chords: { 1: { note: 'D' }, 3: { note: 'D#', suffix: 'dim' } }, lyrics: { 1: 'wings and learn to', 2: 'eyes and learn to', 3: 'wings and learn to' } },
+  { section_id: 1, index: 6, chords: { 1: { note: 'E' } }, lyrics: { 1: 'fly', 2: 'see', 3: 'fly' } },
+  { section_id: 1, index: 7, chords: { 1: { note: 'E', suffix: 'm', bassNote: 'Eb' } } },
+  { section_id: 1, index: 8, chords: { 1: { note: 'D' }, 3: { note: 'C', suffix: '#dim' } }, lyrics: { 1: 'all your', 2: 'all your', 3: 'all your' } },
+  { section_id: 1, index: 9, chords: { 1: { note: 'C' } }, lyrics: { 1: 'life', 2: 'life', 3: 'life' } },
+  { section_id: 1, index: 10, chords: { 1: { note: 'C', suffix: 'm' } }, lyrics: { 1: '', 2: '', 3: '(to outtro)' } },
+  { section_id: 1, index: 11, chords: { 1: { note: 'G', bassNote: 'B' } }, lyrics: { 1: 'you were only', 2: 'you were only' } },
+  { section_id: 1, index: 12, chords: { 1: { note: 'A', suffix: '7' } }, lyrics: { 1: 'waiting for this', 2: 'waiting for this' } },
+  { section_id: 1, index: 13, chords: { 1: { note: 'D', suffix: '7' } }, lyrics: { 1: 'moment to a-', 2: 'moment to be' } },
+  { section_id: 1, index: 14, chords: { 1: { note: 'G' } }, lyrics: { 1: 'rise', 2: 'free' } },
+  { section_id: 1, index: 15, chords: { 1: { note: '%' } }, lyrics: { 1: '', 2: '(to bridge)' } },
+  { section_id: 1, index: 16, chords: { 1: { note: 'C' } } },
+  { section_id: 1, index: 17, chords: { 1: { note: 'G', bassNote: 'B' } } },
+  { section_id: 1, index: 18, chords: { 1: { note: 'A', suffix: '7' }, 3: { note: 'D', suffix: '7sus4' } } },
+  { section_id: 1, index: 19, chords: { 1: { note: 'G' } } },
 
-  { section_id: 2, chords: { 1: { note: 'F' }, 3: { note: 'C', bassNote: 'E' } }, lyrics: { 1: 'Black-' } },
-  { section_id: 2, chords: { 1: { note: 'D', suffix: 'm' }, 3: { note: 'C' } }, lyrics: { 1: 'bird' } },
-  { section_id: 2, chords: { 1: { note: 'B', suffix: 'b6' } }, lyrics: { 1: 'fly' } },
-  { section_id: 2, chords: { 1: { note: 'C' } } },
-  { section_id: 2, chords: { 1: { note: 'F' }, 3: { note: 'C', bassNote: 'E' } }, lyrics: { 1: 'Black-' } },
-  { section_id: 2, chords: { 1: { note: 'D', suffix: 'm' }, 3: { note: 'C' } }, lyrics: { 1: 'bird' } },
-  { section_id: 2, chords: { 1: { note: 'B', suffix: 'b6' } }, lyrics: { 1: 'fly' } },
-  { section_id: 2, chords: { 1: { note: 'A' } }, lyrics: { 1: 'into the' } },
-  { section_id: 2, chords: { 1: { note: 'D', suffix: '7sus4' } }, lyrics: { 1: 'light of a dark black' } },
-  { section_id: 2, chords: { 1: { note: 'G' } }, lyrics: { 1: 'night' } },
-  { section_id: 2, chords: { 1: { note: 'A', suffix: 'm7' }, 3: { note: 'G', bassNote: 'B' } } },
-  { section_id: 2, chords: { 1: { note: 'G' } } },
+  { section_id: 2, index: 0, chords: { 1: { note: 'F' }, 3: { note: 'C', bassNote: 'E' } }, lyrics: { 1: 'Black-' } },
+  { section_id: 2, index: 1, chords: { 1: { note: 'D', suffix: 'm' }, 3: { note: 'C' } }, lyrics: { 1: 'bird' } },
+  { section_id: 2, index: 2, chords: { 1: { note: 'B', suffix: 'b6' } }, lyrics: { 1: 'fly' } },
+  { section_id: 2, index: 3, chords: { 1: { note: 'C' } } },
+  { section_id: 2, index: 4, chords: { 1: { note: 'F' }, 3: { note: 'C', bassNote: 'E' } }, lyrics: { 1: 'Black-' } },
+  { section_id: 2, index: 5, chords: { 1: { note: 'D', suffix: 'm' }, 3: { note: 'C' } }, lyrics: { 1: 'bird' } },
+  { section_id: 2, index: 6, chords: { 1: { note: 'B', suffix: 'b6' } }, lyrics: { 1: 'fly' } },
+  { section_id: 2, index: 7, chords: { 1: { note: 'A' } }, lyrics: { 1: 'into the' } },
+  { section_id: 2, index: 8, chords: { 1: { note: 'D', suffix: '7sus4' } }, lyrics: { 1: 'light of a dark black' } },
+  { section_id: 2, index: 9, chords: { 1: { note: 'G' } }, lyrics: { 1: 'night' } },
+  { section_id: 2, index: 10, chords: { 1: { note: 'A', suffix: 'm7' }, 3: { note: 'G', bassNote: 'B' } } },
+  { section_id: 2, index: 11, chords: { 1: { note: 'G' } } },
 
-  { section_id: 3, chords: { 1: { note: 'C' }, 3: { note: 'G', bassNote: 'B' } }, lyrics: { 1: 'you were only' } },
-  { section_id: 3, chords: { 1: { note: 'A', suffix: '7' } }, lyrics: { 1: 'waiting for this' } },
-  { section_id: 3, chords: { 1: { note: 'D', suffix: '7' } }, lyrics: { 1: 'moment to a-' } },
-  { section_id: 3, chords: { 1: { note: 'G' } }, lyrics: { 1: 'rise' } },
+  { section_id: 3, index: 0, chords: { 1: { note: 'C' }, 3: { note: 'G', bassNote: 'B' } }, lyrics: { 1: 'you were only' } },
+  { section_id: 3, index: 1, chords: { 1: { note: 'A', suffix: '7' } }, lyrics: { 1: 'waiting for this' } },
+  { section_id: 3, index: 2, chords: { 1: { note: 'D', suffix: '7' } }, lyrics: { 1: 'moment to a-' } },
+  { section_id: 3, index: 3, chords: { 1: { note: 'G' } }, lyrics: { 1: 'rise' } },
 
 ]
 
@@ -176,8 +177,8 @@ const addMeasures = async (measureData) => {
 
   try {
     if (VERBOSE) console.log('adding measures')
-    await Promise.all(measureData.map(async (measure, index) => {
-      const response = await db.one(measureQuery, [measure.section_id, index])
+    return Promise.all(measureData.map(async (measure) => {
+      const response = await db.one(measureQuery, [measure.section_id, measure.index])
       const measureId = response.measureid
       const chordLyricPromises = []
       for (const [chordIndex, chord] of Object.entries(measure.chords)) {
@@ -189,11 +190,12 @@ const addMeasures = async (measureData) => {
           chordLyricPromises.push(db.query(lyricQuery, [measureId, lyricIndex, lyricText]))
         }
       }
-      await Promise.all(chordLyricPromises).catch((err) => {
-        console.error(err)
-        process.exit(1)
-      })
-      if (VERBOSE) console.log(`added measure ${index}`)
+      return Promise.all(chordLyricPromises)
+        .then(() => { if (VERBOSE) console.log(`added measure ${measure.index} of section ${measure.section_id}`) })
+        .catch((err) => {
+          console.error(err)
+          process.exit(1)
+        })
     }))
       .catch(console.error)
   } catch (err) {
