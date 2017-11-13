@@ -15,3 +15,9 @@ express reference: http://expressjs.com/en/api.html
 MEAN (mongo express angular node): http://mean.io/
 
 Understanding promises: https://pouchdb.com/2015/05/18/we-have-a-problem-with-promises.html
+
+React authentication:
+  http://jasonwatmore.com/post/2017/09/16/react-redux-user-registration-and-login-tutorial-example
+  https://vladimirponomarev.com/blog/authentication-in-react-apps-creating-components
+  https://auth0.com/blog/reactjs-authentication-tutorial/
+  http://www.thegreatcodeadventure.com/jwt-authentication-with-react-redux/
