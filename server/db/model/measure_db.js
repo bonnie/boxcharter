@@ -25,6 +25,7 @@
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
 const { Measure } = require('../../../shared/model/measure')
+const { Chord, Lyric } = require('./chord-lyric_db')
 const { getChildren } = require('../utilities/get_children')
 
 /**
@@ -50,14 +51,28 @@ Measure.prototype.addToDb = async function () {
 }
 
 Measure.prototype.getChords = function () {
-  return getChildren('Chord', 'chord', 'measure', this.measureId, 'beatIndex')
-    .then((chords) => { this.chords = chords })
+  return getChildren('chord', 'measure', this.measureId, 'beatIndex')
+    .then((chordResults) => {
+      this.chords = [] // for measures when there are no chords
+      this.chords = chordResults.map((chordData) => {
+        const newChord = new Chord(chordData)
+        newChord.chordId = chordData.chordId
+        return newChord
+      })
+    })
     .catch(console.error)
 }
 
 Measure.prototype.getLyrics = function () {
-  return getChildren('Lyric', 'lyric', 'measure', this.measureId, 'verseIndex')
-    .then((lyrics) => { this.lyrics = lyrics })
+  return getChildren('lyric', 'measure', this.measureId, 'verseIndex')
+    .then((lyricResults) => {
+      this.lyrics = [] // for measures when there are no lyrics
+      this.lyrics = lyricResults.map((lyricData) => {
+        const newLyric = new Lyric(lyricData)
+        newLyric.lyricId = lyricData.lyricId
+        return newLyric
+      })
+    })
     .catch(console.error)
 }
 

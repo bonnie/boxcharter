@@ -25,6 +25,8 @@
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
 const { Section } = require('../../../shared/model/section.js')
+const { Measure } = require('./measure_db')
+const { getChildren } = require('../utilities/get_children')
 
 /**
  * Add section object to the db, and set the object's sectionId to be the
@@ -62,6 +64,20 @@ Section.prototype.addToDb = async function () {
     throw new Error(`Section not added: ${err.message}`)
   }
 }
+
+Section.prototype.getMeasures = function () {
+  return getChildren('measure', 'section', this.sectionId, 'index')
+    .then((measureResults) => {
+      this.measures = [] // for sections when there are no measures
+      this.measures = measureResults.map((measureData) => {
+        const newMeasure = new Measure(measureData)
+        newMeasure.measureId = measureData.measureId
+        return newMeasure
+      })
+    })
+    .catch(console.error)
+}
+
 
 // ///////////
 // // methods

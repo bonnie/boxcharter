@@ -29,7 +29,7 @@ const { addEntireChart } = require('./add_chart')
 const { instanceFactory } = require('../../db/utilities/instance_factory')
 
 const getChildrenSuccessTests = (testData) => {
-  describe(`successful ${testData.parentType} prototype.getChildren() ${testData.childType}`, function () {
+  describe(`successful ${testData.parentType} prototype.getChildren() ${testData.childType} for ${testData.idQueryArgs}`, function () {
     let item
     before('Reset the DB, add chart, and get the children', async function () {
       await initDB()
@@ -47,7 +47,9 @@ const getChildrenSuccessTests = (testData) => {
       expect(item[`${testData.childType}s`].length).to.equal(testData.expectedChildCount)
     })
     it(`should add the first child as type ${testData.childClass.name}`, function () {
-      expect(item[`${testData.childType}s`][0]).to.be.an.instanceof(testData.childClass)
+      if (item[`${testData.childType}s`].length > 0) {
+        expect(item[`${testData.childType}s`][0]).to.be.an.instanceof(testData.childClass)
+      }
     })
   })
 }

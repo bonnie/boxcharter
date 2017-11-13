@@ -75,6 +75,10 @@ const failureMeasures = [
 
 addToDbFailTests('measure', failureMeasures, failPrepare)
 
+// ///////////////////////////////////////////////////////
+// Get children tests
+// ///////////////////////////////////////////////////////
+
 const getMeasureId = function (measureIndex, sectionIndex) {
   return db.one(
     'SELECT measureId FROM measures WHERE index=$1 AND sectionId=(SELECT sectionId FROM sections WHERE index=$2)',
@@ -84,6 +88,9 @@ const getMeasureId = function (measureIndex, sectionIndex) {
 
 const childTests = [
   { measureIndex: 0, sectionIndex: 0 },
+  { measureIndex: 4, sectionIndex: 0 },
+  { measureIndex: 4, sectionIndex: 1 },
+  { measureIndex: 3, sectionIndex: 1 },
 ]
 
 const childSubTests = [
@@ -98,6 +105,10 @@ childTests.forEach((test) => {
   // const measureIdPromise = getMeasureId(test.measureIndex, test.sectionIndex)
   // const queryFunc = () => 1
   childSubTests.forEach((childSubTest) => {
+    const targetObject = chartData.measures.filter(measure =>
+      measure.section_id === test.sectionIndex + 1)[test.measureIndex][`${childSubTest.type}s`]
+    const expectedChildCount = targetObject ? Object.keys(targetObject).length : 0
+
     getChildrenSuccessTests({
       idQueryFunc: getMeasureId,
       idQueryArgs: [test.measureIndex, test.sectionIndex],
@@ -107,7 +118,7 @@ childTests.forEach((test) => {
       childClass: childSubTest.class,
       orderBy: childSubTest.orderBy,
       childFunc: childSubTest.childFunc,
-      expectedChildCount: Object.keys(chartData.measures[test.measureIndex][`${childSubTest.type}s`]).length,
+      expectedChildCount,
     })
   })
 })

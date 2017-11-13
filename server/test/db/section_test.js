@@ -22,9 +22,14 @@
  * Tests for the section model.
  * @module section_test
  */
-const { createChart } = require('../utilities/create_items')
-const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_tests')
+const { db } = require('../../db/db_connection')
 const { Section } = require('../../db/model/section_db')
+const { Measure } = require('../../db/model/measure_db')
+
+const { createChart } = require('../utilities/create_items')
+const { chartData } = require('../utilities/add_chart')
+const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_tests')
+const { getChildrenSuccessTests } = require('../utilities/getchildren_tests')
 
 // //////////////////////////////////////////////////////////////////////////////
 // SUCCESS addToDb
@@ -101,3 +106,38 @@ const failureSections = [
 ]
 
 addToDbFailTests('section', failureSections, failPrepare)
+
+// ///////////////////////////////////////////////////////
+// Get children tests
+// ///////////////////////////////////////////////////////
+
+const getMeasureId = function (sectionIndex, chartId) {
+  return db.one(
+    'SELECT sectionId FROM sections WHERE index=$1 AND chartId=$2',
+    [sectionIndex, chartId])
+    .catch(console.error)
+}
+
+const childTests = [
+  { sectionIndex: 0, chartId: 1 },
+  { sectionIndex: 2, chartId: 1 },
+]
+
+childTests.forEach((test) => {
+  // const measureIdPromise = getMeasureId(test.measureIndex, test.sectionIndex)
+  // const queryFunc = () => 1
+  getChildrenSuccessTests({
+    idQueryFunc: getMeasureId,
+    idQueryArgs: [test.sectionIndex, test.chartId],
+    parentType: 'section',
+    parentClass: 'Section',
+    childType: 'measure',
+    childClass: Measure,
+    orderBy: 'index',
+    childFunc: 'getMeasures',
+    expectedChildCount:
+      Object.keys(
+        chartData.measures.filter(measure => measure.section_id === test.sectionIndex + 1)
+      ).length,
+  })
+})
