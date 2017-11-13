@@ -87,10 +87,10 @@ const getMeasureId = function (measureIndex, sectionIndex) {
 }
 
 const childTests = [
-  { measureIndex: 0, sectionIndex: 0 },
-  { measureIndex: 4, sectionIndex: 0 },
-  { measureIndex: 4, sectionIndex: 1 },
-  { measureIndex: 3, sectionIndex: 1 },
+  { chartId: 1, measureIndex: 0, sectionIndex: 0 },
+  { chartId: 1, measureIndex: 4, sectionIndex: 0 },
+  { chartId: 1, measureIndex: 4, sectionIndex: 1 },
+  { chartId: 1, measureIndex: 3, sectionIndex: 1 },
 ]
 
 const childSubTests = [
@@ -102,10 +102,8 @@ const parentType = 'measure'
 const parentClass = 'Measure'
 
 childTests.forEach((test) => {
-  // const measureIdPromise = getMeasureId(test.measureIndex, test.sectionIndex)
-  // const queryFunc = () => 1
   childSubTests.forEach((childSubTest) => {
-    const targetObject = chartData.measures.filter(measure =>
+    const targetObject = chartData[test.chartId - 1].measures.filter(measure =>
       measure.section_id === test.sectionIndex + 1)[test.measureIndex][`${childSubTest.type}s`]
     const expectedChildCount = targetObject ? Object.keys(targetObject).length : 0
 

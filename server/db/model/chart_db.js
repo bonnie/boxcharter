@@ -25,6 +25,8 @@
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
 const { Chart } = require('../../../shared/model/chart.js')
+const { Section } = require('./section_db')
+const { getChildren } = require('../utilities/get_children')
 
 /**
  * Add chart object to the db, and set the object's chartId to be the
@@ -92,8 +94,17 @@ Chart.getById = async function (chartId) {
   }
 }
 
-Chart.prototype.getSections = async function () {
-  await promise.All()
+Chart.prototype.getSections = function () {
+  return getChildren('section', 'chart', this.chartId, 'index')
+    .then((sectionResults) => {
+      this.sections = [] // for sections when there are no sections
+      this.sections = sectionResults.map((sectionData) => {
+        const newSection = new Section(sectionData)
+        newSection.sectionId = sectionData.sectionId
+        return newSection
+      })
+    })
+    .catch(console.error)
 }
 
 Chart.prototype.getUsers = function () {
