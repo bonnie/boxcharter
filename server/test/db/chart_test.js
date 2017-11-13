@@ -23,7 +23,11 @@
  * @module chart_test
  */
 const { addToDbSuccessTests, addToDbFailTests } = require('../utilities/add_db_tests')
+const { getChildrenSuccessTests } = require('../utilities/getchildren_tests')
+const { chartData } = require('../utilities/add_chart')
+
 const { Chart } = require('../../db/model/chart_db')
+const { Section } = require('../../db/model/section_db')
 
 // //////////////////////////////////////////////////////////////////////////////
 // SUCCESS addToDb
@@ -66,3 +70,27 @@ const failureCharts = [
 ]
 
 addToDbFailTests('chart', failureCharts, () => {})
+
+// ///////////////////////////////////////////////////////
+// Get children tests
+// ///////////////////////////////////////////////////////
+
+const childTests = [
+  { chartId: 1 },
+]
+
+childTests.forEach((test) => {
+  // const measureIdPromise = getMeasureId(test.measureIndex, test.sectionIndex)
+  // const queryFunc = () => 1
+  getChildrenSuccessTests({
+    idQueryFunc: () => Object({ chartid: test.chartId }),
+    idQueryArgs: [],
+    parentType: 'chart',
+    parentClass: 'Chart',
+    childType: 'section',
+    childClass: Section,
+    orderBy: 'index',
+    childFunc: 'getSections',
+    expectedChildCount: Object.keys(chartData[test.chartId - 1].sections).length,
+  })
+})

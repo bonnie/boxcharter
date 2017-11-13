@@ -124,8 +124,6 @@ const childTests = [
 ]
 
 childTests.forEach((test) => {
-  // const measureIdPromise = getMeasureId(test.measureIndex, test.sectionIndex)
-  // const queryFunc = () => 1
   getChildrenSuccessTests({
     idQueryFunc: getMeasureId,
     idQueryArgs: [test.sectionIndex, test.chartId],
@@ -137,7 +135,8 @@ childTests.forEach((test) => {
     childFunc: 'getMeasures',
     expectedChildCount:
       Object.keys(
-        chartData.measures.filter(measure => measure.section_id === test.sectionIndex + 1)
+        chartData[test.chartId - 1].measures.filter(
+          measure => measure.section_id === test.sectionIndex + 1)
       ).length,
   })
 })

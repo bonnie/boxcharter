@@ -28,7 +28,7 @@ const { db, pgp } = require('../../db/db_connection')
 const VERBOSE = process.env.NODE_ENV === 'production'
 // const VERBOSE = true
 
-const chartMetaData = {
+const blackbirdMetaData = {
   title: 'Blackbird',
   author: 'bds',
   composer: 'Paul McCartney',
@@ -36,7 +36,7 @@ const chartMetaData = {
   originalKeyCode: 'G',
   printKeyCode: 'A' }
 
-const sections = [
+const blackbirdSections = [
   { chartId: 1,
     index: 0,
     sectionName: null,
@@ -57,7 +57,7 @@ const sections = [
     verseCount: 1 },
 ]
 
-const measures = [
+const blackbirdMeasures = [
   { section_id: 1, index: 0, chords: { 1: { note: 'G' } }, lyrics: { 1: 'Blackbird' } },
   { section_id: 1, index: 1, chords: { 1: { note: 'A', suffix: 'm7' }, 3: { note: 'G', bassNote: 'B' } }, lyrics: { 1: 'singing in the dead of' } },
   { section_id: 1, index: 2, chords: { 1: { note: 'G' } }, lyrics: { 1: 'night' } },
@@ -99,11 +99,13 @@ const measures = [
 
 ]
 
-const chartData = {
-  chartMetaData,
-  sections,
-  measures,
-}
+const chartData = [
+  {
+    chartMetaData: blackbirdMetaData,
+    sections: blackbirdSections,
+    measures: blackbirdMeasures,
+  },
+]
 
 /**
  * Add chart to db
@@ -208,9 +210,13 @@ const addMeasures = async (measureData) => {
  * @return {Promise} - resolution unimportant
  */
 const addEntireChart = async () => {
-  await addChart(chartData.chartMetaData)
-  await addSections(chartData.sections)
-  await addMeasures(chartData.measures)
+  let chart
+  for (let i = 0; i < chartData.length; i += 1) {
+    chart = chartData[i]
+    await addChart(chart.chartMetaData)
+    await addSections(chart.sections)
+    await addMeasures(chart.measures)
+  }
 }
 
 if (!module.parent) {
