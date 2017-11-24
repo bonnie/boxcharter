@@ -94,16 +94,13 @@ Chart.getById = async function (chartId) {
   }
 }
 
+/**
+ * Get chart's sections from database and assign to 'sections' property
+ * @return {Promise} promise whose resolution is irrelevant
+ */
 Chart.prototype.getSections = function () {
-  return getChildren('section', 'chart', this.chartId, 'index')
-    .then((sectionResults) => {
-      this.sections = [] // for sections when there are no sections
-      this.sections = sectionResults.map((sectionData) => {
-        const newSection = new Section(sectionData)
-        newSection.sectionId = sectionData.sectionId
-        return newSection
-      })
-    })
+  return getChildren('section', 'chart', this.chartId, 'index', Section)
+    .then((sections) => { this.sections = sections })
     .catch(console.error)
 }
 

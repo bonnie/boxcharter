@@ -36,18 +36,24 @@ const { instanceFactory } = require('./instance_factory')
  * @param  {string} parentType singular 'type' for the parent (e.g. chart)
  * @param  {string} parentId   id of the parent in the db (e.g. 1)
  * @param  {string} orderBy    column to determine ordering of children (e.g. index)
+ * @param  {class} childClass  class from which to instantiate children
  * @return {Promise}           Promise that resolves to array of children.
  *
  */
-const getChildren = async function (childType, parentType, parentId, orderBy) {
+const getChildren = async function (childType, parentType, parentId, orderBy, ...childClass) {
   const query = `
     SELECT *
     FROM ${childType}s
     WHERE ${parentType}Id = $1
     ORDER BY ${orderBy}`
   try {
-    // clear current list of children
-    return db.any(query, parentId)
+    const children = await db.any(query, parentId)
+    return children.map((childData) => {
+      // convolutions necessary to instantiate a dynamic class
+      const newChild = new childClass[0](childData)
+      newChild[`${childType}Id`] = childData[`${childType}id`]
+      return newChild
+    })
   } catch (e) {
     console.error(e)
     logger.crit(`Could not get ${childType}s for ${this}: ${e.toString()}`)
