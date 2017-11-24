@@ -24,11 +24,7 @@
  */
 const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
-const { instanceFactory } = require('./instance_factory')
 
-
-// NOTE: I wish I could instantiate the children here, but it's not possible to
-// do that because of circular references X(
 /**
  * Get children of a particular type (e.g. get sections for a chart) and add
  * replace the appropriate property of the parent with a list of child objects
@@ -37,7 +33,7 @@ const { instanceFactory } = require('./instance_factory')
  * @param  {string} parentId   id of the parent in the db (e.g. 1)
  * @param  {string} orderBy    column to determine ordering of children (e.g. index)
  * @param  {class} childClass  class from which to instantiate children
- * @return {Promise}           Promise that resolves to array of children.
+ * @return {Promise}           Promise that resolves to array of instantiated children.
  *
  */
 const getChildren = async function (childType, parentType, parentId, orderBy, ...childClass) {
