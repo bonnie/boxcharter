@@ -23,11 +23,14 @@
  * @module user_test
  */
 const { expect } = require('chai')
+const { db } = require('../../db/db_connection.js')
+
 const { initDB } = require('../utilities/db_reset')
 const { userData } = require('../../db/seed/add_user')
+const { addEntireChart } = require('../utilities/add_chart')
+
 const { User } = require('../../db/model/user_db')
 const { Chart } = require('../../db/model/chart_db')
-const { db } = require('../../db/db_connection.js')
 
 const userGetterInputs = [
   { descString: 'User.getByEmail()', method: User.getByEmail, input: userData.email },
@@ -137,5 +140,34 @@ describe('User.prototype.addChart() failures', function () {
     await user.addChart(chart)
       .then(() => expect(false, 'Did not throw').to.be.true)
       .catch(err => expect(err.message).to.contain(failString))
+  })
+})
+
+describe('User.prototype.getCharts()', function () {
+  let user
+  before('Reset the DB', async () => {
+    await initDB()
+    user = await User.getById(1)
+  })
+  context('User has zero charts', async function () {
+    before('Get user charts', () => user.getCharts())
+    it('should result in a "charts" array property', function () {
+      expect(user.charts).to.be.an.instanceof(Array)
+    })
+    it('should result in a "charts" property of length 0', function () {
+      expect(user.charts.length).to.equal(0)
+    })
+  })
+  context('User has more than zero charts', function () {
+    before('Add a chart to the user and get user charts', async () => {
+      await addEntireChart()
+      await user.getCharts()
+    })
+    it('should result in a "charts" array property', function () {
+      expect(user.charts).to.be.an.instanceof(Array)
+    })
+    it('should result in a "charts" property of length 1', function () {
+      expect(user.charts.length).to.equal(1)
+    })
   })
 })

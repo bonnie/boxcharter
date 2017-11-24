@@ -28,6 +28,7 @@ const { chartData } = require('../utilities/add_chart')
 
 const { Chart } = require('../../db/model/chart_db')
 const { Section } = require('../../db/model/section_db')
+const { User } = require('../../db/model/user_db')
 
 // //////////////////////////////////////////////////////////////////////////////
 // SUCCESS addToDb
@@ -80,8 +81,7 @@ const childTests = [
 ]
 
 childTests.forEach((test) => {
-  // const measureIdPromise = getMeasureId(test.measureIndex, test.sectionIndex)
-  // const queryFunc = () => 1
+  // sections
   getChildrenSuccessTests({
     idQueryFunc: () => Object({ chartid: test.chartId }),
     idQueryArgs: [],
@@ -92,5 +92,17 @@ childTests.forEach((test) => {
     orderBy: 'index',
     childFunc: 'getSections',
     expectedChildCount: Object.keys(chartData[test.chartId - 1].sections).length,
+  })
+  // users
+  getChildrenSuccessTests({
+    idQueryFunc: () => Object({ chartid: test.chartId }),
+    idQueryArgs: [],
+    parentType: 'chart',
+    parentClass: 'Chart',
+    childType: 'user',
+    childClass: User,
+    orderBy: 'index',
+    childFunc: 'getUsers',
+    expectedChildCount: chartData[test.chartId - 1].users.length,
   })
 })

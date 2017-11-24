@@ -50,29 +50,23 @@ Measure.prototype.addToDb = async function () {
   }
 }
 
+/**
+ * Get measure's chords from database and assign to 'chords' property
+ * @return {Promise} promise whose resolution is irrelevant
+ */
 Measure.prototype.getChords = function () {
-  return getChildren('chord', 'measure', this.measureId, 'beatIndex')
-    .then((chordResults) => {
-      this.chords = [] // for measures when there are no chords
-      this.chords = chordResults.map((chordData) => {
-        const newChord = new Chord(chordData)
-        newChord.chordId = chordData.chordId
-        return newChord
-      })
-    })
+  return getChildren('chord', 'measure', this.measureId, 'beatIndex', Chord)
+    .then((chords) => { this.chords = chords })
     .catch(console.error)
 }
 
+/**
+ * Get measure's lyrics from database and assign to 'lyrics' property
+ * @return {Promise} promise whose resolution is irrelevant
+ */
 Measure.prototype.getLyrics = function () {
-  return getChildren('lyric', 'measure', this.measureId, 'verseIndex')
-    .then((lyricResults) => {
-      this.lyrics = [] // for measures when there are no lyrics
-      this.lyrics = lyricResults.map((lyricData) => {
-        const newLyric = new Lyric(lyricData)
-        newLyric.lyricId = lyricData.lyricId
-        return newLyric
-      })
-    })
+  return getChildren('lyric', 'measure', this.measureId, 'verseIndex', Lyric)
+    .then((lyrics) => { this.lyrics = lyrics })
     .catch(console.error)
 }
 

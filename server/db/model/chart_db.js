@@ -26,6 +26,7 @@ const { db } = require('../db_connection')
 const { logger } = require('../../utilities/log')
 const { Chart } = require('../../../shared/model/chart.js')
 const { Section } = require('./section_db')
+const { User } = require('./user_db')
 const { getChildren } = require('../utilities/get_children')
 
 /**
@@ -94,21 +95,39 @@ Chart.getById = async function (chartId) {
   }
 }
 
+/**
+ * Get chart's sections from database and assign to 'sections' property
+ * @return {Promise} promise whose resolution is irrelevant
+ */
 Chart.prototype.getSections = function () {
-  return getChildren('section', 'chart', this.chartId, 'index')
-    .then((sectionResults) => {
-      this.sections = [] // for sections when there are no sections
-      this.sections = sectionResults.map((sectionData) => {
-        const newSection = new Section(sectionData)
-        newSection.sectionId = sectionData.sectionId
-        return newSection
-      })
-    })
+  return getChildren('section', 'chart', this.chartId, 'index', Section)
+    .then((sections) => { this.sections = sections })
     .catch(console.error)
 }
 
-Chart.prototype.getUsers = function () {
-
+/**
+ * Get users associated with chart and assign to 'users' property
+ * users property will be an array of objects, with keys:
+ *    user' (user object value), 'permissions' (number value)
+ * @return {Promise} promise whose resolution is irrelelvant
+ */
+Chart.prototype.getUsers = async function () {
+  const userchartsQuery = `
+    SELECT u.*
+    FROM usercharts AS uc
+      JOIN users AS u
+        ON uc.userid = u.userid
+    WHERE uc.chartid = $1
+  `
+  try {
+    const users = await db.any(userchartsQuery, this.chartId)
+    this.users = users.map((userData) => {
+      const user = new User(userData)
+      return { user, permissions: userData.permissions }
+    })
+  } catch (e) {
+    throw new Error(`Could not get users for chartId ${this.chartId}: ${e.toString()}`)
+  }
 }
 
 // ///////////

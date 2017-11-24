@@ -65,16 +65,13 @@ Section.prototype.addToDb = async function () {
   }
 }
 
+/**
+ * Get section's measures from database and assign to 'measures' property
+ * @return {Promise} promise whose resolution is irrelevant
+ */
 Section.prototype.getMeasures = function () {
-  return getChildren('measure', 'section', this.sectionId, 'index')
-    .then((measureResults) => {
-      this.measures = [] // for sections when there are no measures
-      this.measures = measureResults.map((measureData) => {
-        const newMeasure = new Measure(measureData)
-        newMeasure.measureId = measureData.measureId
-        return newMeasure
-      })
-    })
+  return getChildren('measure', 'section', this.sectionId, 'index', Measure)
+    .then((measures) => { this.measures = measures })
     .catch(console.error)
 }
 

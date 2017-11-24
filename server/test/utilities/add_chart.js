@@ -96,7 +96,11 @@ const blackbirdMeasures = [
   { section_id: 3, index: 1, chords: { 1: { note: 'A', suffix: '7' } }, lyrics: { 1: 'waiting for this' } },
   { section_id: 3, index: 2, chords: { 1: { note: 'D', suffix: '7' } }, lyrics: { 1: 'moment to a-' } },
   { section_id: 3, index: 3, chords: { 1: { note: 'G' } }, lyrics: { 1: 'rise' } },
+]
 
+const blackbirdUsers = [
+  // permissions: 0 for owner, 1 for non-owner editor, 2 for non-owner viewer
+  { email: 'bonnie@bonnie', permissions: 0 },
 ]
 
 const chartData = [
@@ -104,6 +108,7 @@ const chartData = [
     chartMetaData: blackbirdMetaData,
     sections: blackbirdSections,
     measures: blackbirdMeasures,
+    users: blackbirdUsers,
   },
 ]
 
@@ -111,7 +116,7 @@ const chartData = [
  * Add chart to db
  * @function
  * @param {object} chart - Object containing chart metadata
- * @return {undefined} - resolves to id of added chart
+ * @return {Promise} - resolves to id of added chart
  */
 const addChart = async (chart) => {
   const query = `
@@ -125,8 +130,9 @@ const addChart = async (chart) => {
     VALUES ($/title/, $/author/, $/composer/, $/lyricistSame/, $/originalKeyCode/, $/printKeyCode/)
     RETURNING chartId`
   try {
-    await db.query(query, chart)
+    const result = await db.one(query, chart)
     if (VERBOSE) console.log('Added chart')
+    return result.chartid
   } catch (err) {
     console.log(`FAILED TO ADD CHART: ${err}`)
     process.exit(1)
@@ -138,7 +144,7 @@ const addChart = async (chart) => {
  * Add sections to db for chart ID 1
  * @function
  * @param {array} sectionData - Array containing objects of section data
- * @return {undefined}
+ * @return {Promise} - Promise whose resolution is unimportant
  */
 const addSections = async (sectionData) => {
   const query = `
@@ -166,7 +172,7 @@ const addSections = async (sectionData) => {
  * Add measures to db for section IDs 1 and 2
  * @function
  * @param {array} measureData - array of objects containing measture data
- * @return {undefined}
+ * @return {Promise} - Promise whose resolution is unimportant
  */
 const addMeasures = async (measureData) => {
   const measureQuery = 'INSERT INTO measures (sectionId, index) VALUES ($1, $2) RETURNING measureId'
@@ -206,6 +212,24 @@ const addMeasures = async (measureData) => {
 }
 
 /**
+ * Associate chart with users
+ * @param  {number}  chartId - Id of chart for which to add users
+ * @param  {array}  users    - array of emails of users to add to chart
+ * @return {Promise}         - resolution unimportant
+ */
+const addUsers = async (chartId, users) => {
+  try {
+    return Promise.all(users.map(async (user) => {
+      const result = await db.one('SELECT userid FROM users WHERE email=$1', [user.email])
+      await db.any('INSERT INTO usercharts (userid, chartid, permissions) VALUES ($1, $2, $3)', [result.userid, chartId, user.permissions])
+    }))
+      .catch(e => console.error('user / chart association failed', e.toString()))
+  } catch (err) {
+    throw err
+  }
+}
+
+/**
  * Add all parts of a chart
  * @return {Promise} - resolution unimportant
  */
@@ -213,9 +237,10 @@ const addEntireChart = async () => {
   let chart
   for (let i = 0; i < chartData.length; i += 1) {
     chart = chartData[i]
-    await addChart(chart.chartMetaData)
+    const chartId = await addChart(chart.chartMetaData)
     await addSections(chart.sections)
     await addMeasures(chart.measures)
+    await addUsers(chartId, chart.users)
   }
 }
 

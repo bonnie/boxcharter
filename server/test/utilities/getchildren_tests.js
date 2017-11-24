@@ -48,7 +48,9 @@ const getChildrenSuccessTests = (testData) => {
     })
     it(`should add the first child as type ${testData.childClass.name}`, function () {
       if (item[`${testData.childType}s`].length > 0) {
-        expect(item[`${testData.childType}s`][0]).to.be.an.instanceof(testData.childClass)
+        let testItem = item[`${testData.childType}s`][0]
+        if (testData.childType === 'user') testItem = testItem.user
+        expect(testItem).to.be.an.instanceof(testData.childClass)
       }
     })
   })
