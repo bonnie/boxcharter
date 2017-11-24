@@ -107,21 +107,24 @@ Chart.prototype.getSections = function () {
 
 /**
  * Get users associated with chart and assign to 'users' property
+ * users property will be an array of objects, with keys:
+ *    user' (user object value), 'permissions' (number value)
  * @return {Promise} promise whose resolution is irrelelvant
  */
 Chart.prototype.getUsers = async function () {
   const userchartsQuery = `
     SELECT u.*
-    FROM charts AS c
-      JOIN usercharts AS uc
-        ON c.chartid = uc.chartid
+    FROM usercharts AS uc
       JOIN users AS u
         ON uc.userid = u.userid
     WHERE uc.chartid = $1
   `
   try {
     const users = await db.any(userchartsQuery, this.chartId)
-    this.users = users.map(userData => new User(userData))
+    this.users = users.map((userData) => {
+      const user = new User(userData)
+      return { user, permissions: userData.permissions }
+    })
   } catch (e) {
     throw new Error(`Could not get users for chartId ${this.chartId}: ${e.toString()}`)
   }

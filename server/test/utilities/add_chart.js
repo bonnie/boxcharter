@@ -99,7 +99,8 @@ const blackbirdMeasures = [
 ]
 
 const blackbirdUsers = [
-  'bonnie@bonnie',
+  // permissions: 0 for owner, 1 for non-owner editor, 2 for non-owner viewer
+  { email: 'bonnie@bonnie', permissions: 0 },
 ]
 
 const chartData = [
@@ -219,8 +220,8 @@ const addMeasures = async (measureData) => {
 const addUsers = async (chartId, users) => {
   try {
     return Promise.all(users.map(async (user) => {
-      const result = await db.one('SELECT userid FROM users WHERE email=$1', [user])
-      await db.any('INSERT INTO usercharts (userid, chartid) VALUES ($1, $2)', [result.userid, chartId])
+      const result = await db.one('SELECT userid FROM users WHERE email=$1', [user.email])
+      await db.any('INSERT INTO usercharts (userid, chartid, permissions) VALUES ($1, $2, $3)', [result.userid, chartId, user.permissions])
     }))
       .catch(e => console.error('user / chart association failed', e.toString()))
   } catch (err) {

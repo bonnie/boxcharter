@@ -109,14 +109,26 @@ User.prototype.update = async function (updateColumn, userData) {
 }
 
 /**
- * Populate a user's charts property.
+ * Populate a user's charts property with an array if chart IDs
+ * charts property will be an array of objects, each with a key 'chartId' and 'permissions'
  * @function
- * @return {undefined} - no return, but the user object has been modified to have
- *                       an array of charts in its charts property.
+ * @return {Promise} - Promise whose resolution is unimportant
  */
-User.prototype.getCharts = function () {
-  // return Chart.getChartsByUser(this.userId)
-  //   .then((charts) => { this.charts = charts })
+User.prototype.getCharts = async function () {
+  const userchartsQuery = `
+    SELECT c.chartid, uc.permissions
+    FROM charts AS c
+      JOIN usercharts AS uc
+        ON c.chartid = uc.chartid
+    WHERE uc.userid = $1
+  `
+  try {
+    const charts = await db.any(userchartsQuery, this.userId)
+    this.charts = charts.map(chartData =>
+      Object({ chartId: chartData.chartid, permissions: chartData.permissions }))
+  } catch (e) {
+    throw new Error(`Could not get charts for userId ${this.userId}: ${e.toString()}`)
+  }
 }
 
 /**
