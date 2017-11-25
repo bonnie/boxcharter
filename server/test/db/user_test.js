@@ -103,13 +103,16 @@ describe('User.prototype.update()', function () {
 describe('User.prototype.addChart() success', function () {
   let record
   let chart
+  let user
+  let chartCountBefore
   const permissions = 0
   const userId = 1
   before('Reset the DB and create a chart', async function () {
     await initDB()
     chart = new Chart({ title: 'new chart' })
     await chart.addToDb()
-    const user = await User.getById(userId)
+    user = await User.getById(userId)
+    chartCountBefore = user.charts ? user.charts.length : 0
     await user.addChart(chart, permissions)
     record = await db.one('SELECT userId, chartId, permissions FROM usercharts WHERE userId = 1')
   })
@@ -121,6 +124,13 @@ describe('User.prototype.addChart() success', function () {
   })
   it('should add permissions properly', function () {
     expect(record.permissions).to.equal(permissions)
+  })
+  it('should update the chart "users" property', function () {
+    // brand new chart, no users before
+    expect(chart.users.length).to.equal(1)
+  })
+  it('should update the user "charts" property', function () {
+    expect(user.charts.length).to.equal(chartCountBefore + 1)
   })
 })
 

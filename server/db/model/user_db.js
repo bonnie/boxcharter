@@ -145,6 +145,11 @@ User.prototype.addChart = async function (chart, permissions) {
     'INSERT INTO usercharts (chartId, userId, permissions) VALUES ($1, $2, $3) returning userChartId',
     [chart.chartId, this.userId, permissions]
   )
+  // update object properties
+  await this.getCharts()
+  await chart.getUsers()
+
+  // probably never used but seems a decent thing to return
   return response.userchartid
 }
 
