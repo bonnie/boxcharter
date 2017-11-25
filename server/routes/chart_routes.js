@@ -18,25 +18,24 @@
  *
  */
 
-var express = require('express');
-var statusStrings = require('../model/status').statusStrings
-var Status = require('../model/status').Status
-var Chart = require('../model/chart')
-var logger = require('../utilities/log').logger
-var procError = require('../utilities/err')
+const express = require('express');
+const statusStrings = require('../model/status').statusStrings
+const Status = require('../model/status').Status
+const Chart = require('../model/chart')
+const logger = require('../utilities/log').logger
+const procError = require('../utilities/err')
 
 // create the router
-var router = express.Router();
+const router = express.Router();
 
-/*********************/
+/** ****************** */
 /* POST create chart */
-/*********************/
-router.put('/create', function(req, res, next) {
-
+/** ****************** */
+router.put('/create', function (req, res, next) {
   const chartData = req.body.chartData
   const userId = req.body.userId
 
-  Chart.createChart(userId, chartData).then(response => {
+  Chart.createChart(userId, chartData).then((response) => {
     console.log('response', response)
     res.status(200).json(response)
   })
