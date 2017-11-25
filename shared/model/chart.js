@@ -52,6 +52,7 @@ Chart.fields = [
   'pageWidth',
   'pageHeight',
   'pageUnits',
+  'sections',
 ]
 
 

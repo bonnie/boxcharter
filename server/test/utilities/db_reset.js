@@ -64,24 +64,14 @@ const resetDB = async function () {
  * @function
  * @returns {Promise} - resolution unimportant
  */
-const seedDB = async () => {
-  try {
-    await addKeys()
-    await addUser()
-  } catch (err) { console.error(err) }
-}
+const seedDB = () => addKeys().then(addUser).catch(console.error)
 
 /**
  * Initialize the db: both reset it, and then seed it.
  * @function
  * @returns {Promise} - resolution unimportant
  */
-const initDB = async () => {
-  try {
-    await resetDB()
-    await seedDB()
-  } catch (err) { console.error(err) }
-}
+const initDB = () => resetDB().then(seedDB).catch(console.error)
 
 // if the file is run as a command (used in npm scripts)
 if (!module.parent) {

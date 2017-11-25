@@ -23,7 +23,7 @@
  * @module base_db
  */
 const { db } = require('../db_connection')
-const { logger } = require('../../utilities/log')
+const { logError } = require('../../utilities/log')
 
 /**
  * Get children of a particular type (e.g. get sections for a chart) and add
@@ -51,9 +51,8 @@ const getChildren = async function (childType, parentType, parentId, orderBy, ..
       return newChild
     })
   } catch (e) {
-    console.error(e)
-    logger.crit(`Could not get ${childType}s for ${this}: ${e.toString()}`)
-    return []
+    const errMsg = `Could not get ${childType}s for ${this}: ${e.toString()}`
+    throw logError(errMsg, e)
   }
 }
 

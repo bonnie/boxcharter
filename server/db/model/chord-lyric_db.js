@@ -23,7 +23,7 @@
   * @module chord-lyric_db
   */
 const { db } = require('../db_connection')
-const { logger } = require('../../utilities/log')
+const { logError } = require('../../utilities/log')
 const { Chord, Lyric } = require('../../../shared/model/chord-lyric')
 
 /**
@@ -32,8 +32,9 @@ const { Chord, Lyric } = require('../../../shared/model/chord-lyric')
  * @param {number} measureId - measureId for the chord
  * @returns {Promise} - Promise resolving to chordId, or throw an error
  */
-Chord.prototype.addToDb = async function () {
+Chord.prototype.addToDb = async function (measureId) {
   try {
+    if (measureId) this.measureId = measureId
     const response = await db.one(
       `INSERT INTO chords (measureId, beatIndex, noteCode, bassNoteCode, suffix)
         VALUES ($1, $2, $3, $4, $5)
@@ -41,10 +42,9 @@ Chord.prototype.addToDb = async function () {
       [this.measureId, this.beatIndex, this.noteCode, this.bassNoteCode, this.suffix])
     this.chordId = response.chordid
     return response.chordid
-  } catch (err) {
-    logger.crit(`Failed to add chord ${this.noteCode} at index ${this.beatIndex} of measure ${this.measureId}`)
-    logger.crit(err)
-    throw new Error(`Chord not added: ${err.message}`)
+  } catch (e) {
+    const errMsg = `Failed to add chord ${this.noteCode} at index ${this.beatIndex} of measure ${this.measureId}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -54,7 +54,8 @@ Chord.prototype.addToDb = async function () {
  * @param {number} measureId - measureId for the lyric
  * @returns {Promise} - Promise resolving to lyricId, or throw an error
  */
-Lyric.prototype.addToDb = async function () {
+Lyric.prototype.addToDb = async function (measureId) {
+  if (measureId) this.measureId = measureId
   try {
     const response = await db.one(
       `INSERT INTO lyrics (measureId, verseIndex, lyricText)
@@ -63,10 +64,9 @@ Lyric.prototype.addToDb = async function () {
       [this.measureId, this.verseIndex, this.lyricText])
     this.lyricId = response.lyricid
     return response.lyricid
-  } catch (err) {
-    logger.crit(`Failed to add lyric ${this.lyricText} at index ${this.verseIndex} of measure ${this.measureId}`)
-    logger.crit(err)
-    throw new Error(`Lyric not added: ${err.message}`)
+  } catch (e) {
+    const errMsg = `Failed to add lyric ${this.lyricText} at index ${this.verseIndex} of measure ${this.measureId}`
+    throw logError(errMsg, e)
   }
 }
 

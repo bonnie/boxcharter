@@ -23,7 +23,7 @@
  * @module section_db
  */
 const { db } = require('../db_connection')
-const { logger } = require('../../utilities/log')
+const { logError } = require('../../utilities/log')
 const { Section } = require('../../../shared/model/section.js')
 const { Measure } = require('./measure_db')
 const { getChildren } = require('../utilities/get_children')
@@ -31,10 +31,12 @@ const { getChildren } = require('../utilities/get_children')
 /**
  * Add section object to the db, and set the object's sectionId to be the
  * resulting sectionId
- * @param {number} sectionId - sectionId for the section
+ * @param {number} chartId - chartId for the section
+ *                         if this argument is not included, will use section object's chartId
  * @returns {Promise} - Promise resolving to sectionId, or throw an error
  */
-Section.prototype.addToDb = async function () {
+Section.prototype.addToDb = async function (chartId) {
+  if (chartId) this.chartId = chartId
   try {
     const response = await db.one(
       `INSERT INTO sections (
@@ -57,11 +59,13 @@ Section.prototype.addToDb = async function () {
         this.pickupMeasureBeats,
       ])
     this.sectionId = response.sectionid
+    if (this.measures) {
+      await Promise.all(this.measures.map(measure => measure.addToDb(this.sectionId)))
+    }
     return response.sectionid
-  } catch (err) {
-    logger.crit(`Failed to add section at index ${this.index} of section ${this.sectionId}`)
-    logger.crit(err)
-    throw new Error(`Section not added: ${err.message}`)
+  } catch (e) {
+    const errMsg = `Failed to add section at index ${this.index} of chart ${this.chatId}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -72,54 +76,8 @@ Section.prototype.addToDb = async function () {
 Section.prototype.getMeasures = function () {
   return getChildren('measure', 'section', this.sectionId, 'index', Measure)
     .then((measures) => { this.measures = measures })
-    .catch(console.error)
+    .catch((e) => { throw e })
 }
-
-
-// ///////////
-// // methods
-//
-// Section.setSection = function(sectionData) {
-//   // create new section for this chart with sectionData
-//
-//   const measures = sectionData.measures
-//   delete sectionData.measures
-//
-//   Section.create(sectionData, {
-//     options: {
-//       logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-//     })
-//     .then(newSection => {
-//       logger.debug(`created new section ${sectionData}`)
-//       measures.forEach(m => {
-//         m.sectionId = newSection.sectionId
-//         measure.Section.setSection(m)
-//       })
-//     })
-//     .catch(err => {
-//       throw (`Could not create section ${sectionData}: ${err}`)
-//     })
-//
-// }
-//
-// Section.getChartSections = function(chartId) {
-//   this.findAll({
-//     where: { chartId: chartId },
-//     options: { order: ['index'] },
-//     attributes: { exclude: ['sectionId'] },
-//     raw: true
-//   }).then(sections => {
-//     sectionsWithSections = sections.map(s => {
-//       s.measures = s.getSections()
-//       return s
-//     })
-//     return Promise.resolve(sectionsWithSections)
-//   })
-// }
-//
-// Section.getSections = function() {
-//   return measure.Section.getSectionSections(this.sectionId)
-// }
 
 module.exports = {
   Section,

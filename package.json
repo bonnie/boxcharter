@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server/app.js",
     "dev:start": "source env/dev.sh && nodemon server/app.js",
-    "lint": "eslint",
+    "lint": "eslint . --fix",
     "test": "source env/test.sh && npm run test:server",
     "test:server": "mocha --recursive server/test --exit --full-trace",
     "test:db:drop": "source env/test.sh && dropdb $DB_NAME",

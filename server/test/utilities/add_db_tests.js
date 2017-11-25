@@ -60,12 +60,10 @@ const addToDbSuccessTests = (type, items, fields, addItem) => {
         })
         fields.forEach((field) => {
           it(`should set the ${field} in the db`, function () {
-            const fromDb = itemFromDb[field.toLowerCase()]
-            let fromItem = item[field]
-            if (fromItem === undefined) {
-              fromItem = null // undefined in the obj comes back as null from the db
+            if (item[field]) {
+              const fromDb = itemFromDb[field.toLowerCase()]
+              expect(fromDb).to.equal(item[field])
             }
-            expect(fromDb).to.equal(fromItem)
           })
         })
       })
@@ -92,7 +90,7 @@ const addToDbFailTests = (type, items, prepare) => {
         it(`should throw an error when ${testData.descString}`, function () {
           return testData.item.addToDb()
             .then(() => expect(false, 'Did not throw').to.be.true)
-            .catch(err => expect(err.message.toLowerCase()).to.contain(`${type} not added`))
+            .catch(err => expect(err.message.toLowerCase()).to.contain(`failed to add ${type}`))
         })
       })
     })

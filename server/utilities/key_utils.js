@@ -20,6 +20,7 @@
 
 /**
  * Utilities for notes and keys
+ * @module key_utils
  */
 
 /**
@@ -30,10 +31,10 @@
  * @param {string} note - note to transpose
  * @returns {string} - transposed note
  */
- const transpose = (origKey, newKey, note) => {
-  return ''
- }
-
-module.exports = {
-  transpose,
-}
+//  const transpose = (origKey, newKey, note) => {
+//   return ''
+//  }
+//
+// module.exports = {
+//   transpose,
+// }

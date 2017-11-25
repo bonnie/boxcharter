@@ -134,8 +134,7 @@ const addChart = async (chart) => {
     if (VERBOSE) console.log('Added chart')
     return result.chartid
   } catch (err) {
-    console.log(`FAILED TO ADD CHART: ${err}`)
-    process.exit(1)
+    throw Error(`FAILED TO ADD CHART: ${err}`)
   }
 }
 

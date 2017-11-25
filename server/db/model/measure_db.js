@@ -23,7 +23,7 @@
  * @module measure_db
  */
 const { db } = require('../db_connection')
-const { logger } = require('../../utilities/log')
+const { logError } = require('../../utilities/log')
 const { Measure } = require('../../../shared/model/measure')
 const { Chord, Lyric } = require('./chord-lyric_db')
 const { getChildren } = require('../utilities/get_children')
@@ -34,7 +34,8 @@ const { getChildren } = require('../utilities/get_children')
  * @param {number} sectionId - sectionId for the measure
  * @returns {Promise} - Promise resolving to measureId, or throw an error
  */
-Measure.prototype.addToDb = async function () {
+Measure.prototype.addToDb = async function (sectionId) {
+  if (sectionId) this.sectionId = sectionId
   try {
     const response = await db.one(
       `INSERT INTO measures (sectionId, index, beatsPerMeasure)
@@ -42,11 +43,16 @@ Measure.prototype.addToDb = async function () {
         RETURNING measureId`,
       [this.sectionId, this.index, this.beatsPerMeasure])
     this.measureId = response.measureid
+    if (this.chords) {
+      await Promise.all(this.chords.map(chord => chord.addToDb(this.measureId)))
+    }
+    if (this.lyrics) {
+      await Promise.all(this.lyrics.map(lyric => lyric.addToDb(this.measureId)))
+    }
     return response.measureid
-  } catch (err) {
-    logger.crit(`Failed to add measure at index ${this.index} of section ${this.sectionId}`)
-    logger.crit(err)
-    throw new Error(`Measure not added: ${err.message}`)
+  } catch (e) {
+    const errMsg = `Failed to add measure at index ${this.index} of section ${this.sectionId}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -57,7 +63,7 @@ Measure.prototype.addToDb = async function () {
 Measure.prototype.getChords = function () {
   return getChildren('chord', 'measure', this.measureId, 'beatIndex', Chord)
     .then((chords) => { this.chords = chords })
-    .catch(console.error)
+    .catch((e) => { throw e })
 }
 
 /**
@@ -67,70 +73,8 @@ Measure.prototype.getChords = function () {
 Measure.prototype.getLyrics = function () {
   return getChildren('lyric', 'measure', this.measureId, 'verseIndex', Lyric)
     .then((lyrics) => { this.lyrics = lyrics })
-    .catch(console.error)
+    .catch((e) => { throw e })
 }
-
-// /**
-//  * Return a measure object from a measureId, including chords and lyrics
-//  * properties, getting data from the db.
-//  * @param {number} id - Measure id.
-//  * @return {Promise} - Promise resolving to a measure object.
-// */
-// Measure.getById = function (id) {
-//
-// }
-//
-// /**
-//  * Add Chord objects to Measure's chords property array by retrieving chords
-//  * from the database.
-//  * @return {undefined}
-// */
-// Measure.prototype.retrieveChords = async function () {
-//   const chordQuery = `
-//     SELECT chordId, beatIndex, noteCode, suffix
-//     FROM chords
-//     WHERE measureId = $1`
-//   // const chords = await db.query(chordQuery, [this.measureId])
-// }
-//
-// /**
-//  * Add chords to the database from the Measure's chord property array.
-//  * @param {array} chords - Array of Chord objects.
-//  * @return {undefined}
-// */
-// Measure.prototype.recordChords = async function (chords) {
-//   // const chordQuery = `
-//   //   SELECT chordId, beatIndex, noteCode, suffix
-//   //   FROM chords
-//   //   WHERE measureId = $1`
-//   // const chords = await db.query(chordQuery, [this.measureId])
-// }
-//
-// /**
-//  * Add Lyric objects to Measure's lyrics property array by retrieving lyrics
-//  * from the database.
-//  * @return {undefined}
-// */
-// Measure.prototype.retrieveLyrics = async function () {
-//   const lyricQuery = `
-//     SELECT lyricId, beatIndex, noteCode, suffix
-//     FROM lyrics
-//     WHERE measureId = $1`
-//   // const lyrics = await db.query(lyricQuery, [this.measureId])
-// }
-//
-// /**
-//  * Add lyrics to the database from the Measure's lyric property array.
-//  * @param {array} lyrics - array of Lyric objects.
-//  * @return {undefined}
-// */
-// Measure.prototype.recordLyrics = async function (lyrics) {
-//   // const lyricQuery = `
-//   //   SELECT lyricId, beatIndex, noteCode, suffix
-//   //   FROM lyrics
-//   //   WHERE measureId = $1`
-//   // const lyrics = await db.query(lyricQuery, [this.measureId])
-// }
 
 module.exports = {
   Measure,

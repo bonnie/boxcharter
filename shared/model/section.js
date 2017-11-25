@@ -47,6 +47,7 @@ Section.fields = [
   'beatsPerMeasure',
   'verseCount',
   'pickupMeasureBeats',
+  'measures',
 ]
 
 module.exports = {

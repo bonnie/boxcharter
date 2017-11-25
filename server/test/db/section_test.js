@@ -43,8 +43,7 @@ const { getChildrenSuccessTests } = require('../utilities/getchildren_tests')
 const addSection = async (section) => {
   // make a fake chart to insert section into
   const chart = await createChart()
-  section.chartId = chart.chartid
-  return section.addToDb()
+  return section.addToDb(chart.chartid)
 }
 
 const successSections = [

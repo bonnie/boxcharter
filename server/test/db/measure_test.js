@@ -42,8 +42,7 @@ const { Chord, Lyric } = require('../../db/model/chord-lyric_db')
 const addMeasure = async (measure) => {
   // make a fake section to insert measure into
   const section = await createSection()
-  measure.sectionId = section.sectionid
-  return measure.addToDb()
+  return measure.addToDb(section.sectionid)
 }
 
 const successMeasures = [
