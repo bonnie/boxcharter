@@ -74,18 +74,6 @@ const logger = new (winston.Logger)({
 
 winston.addColors(customColors)
 
-// Extend logger object to properly log 'Error' types
-const origLog = logger.log
-
-logger.log = function (level, msg) {
-  if (msg instanceof Error) {
-    const args = Array.prototype.slice.call(arguments)
-    args[1] = msg.stack
-    origLog.apply(logger, args)
-  } else {
-    origLog.apply(logger, arguments)
-  }
-}
 /* LOGGER EXAMPLES
   var log = require('./log.js')
   log.trace('testing')
@@ -104,7 +92,7 @@ logger.log = function (level, msg) {
   */
 const logError = function (msg, e) {
   logger.crit(msg)
-  logger.crit(e)
+  logger.log('crit', e.stack)
   return new Error(`${msg}: ${e.toString()}`)
 }
 
