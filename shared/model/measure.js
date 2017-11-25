@@ -39,7 +39,14 @@ class Measure extends Base {
   }
 }
 
-Measure.fields = ['measureId', 'sectionId', 'index', 'beatsPerMeasure']
+Measure.fields = [
+  'measureId',
+  'sectionId',
+  'index',
+  'beatsPerMeasure',
+  'chords',
+  'lyrics',
+]
 
 // var Sequelize = require('Sequelize')
 // var db = require('./db')

@@ -31,10 +31,12 @@ const { getChildren } = require('../utilities/get_children')
 /**
  * Add section object to the db, and set the object's sectionId to be the
  * resulting sectionId
- * @param {number} sectionId - sectionId for the section
+ * @param {number} chartId - chartId for the section
+ *                         if this argument is not included, will use section object's chartId
  * @returns {Promise} - Promise resolving to sectionId, or throw an error
  */
-Section.prototype.addToDb = async function () {
+Section.prototype.addToDb = async function (chartId) {
+  if (chartId) this.chartId = chartId
   try {
     const response = await db.one(
       `INSERT INTO sections (
@@ -57,9 +59,12 @@ Section.prototype.addToDb = async function () {
         this.pickupMeasureBeats,
       ])
     this.sectionId = response.sectionid
+    if (this.measures) {
+      await Promise.all(this.measures.map(measure => measure.addToDb(this.sectionId)))
+    }
     return response.sectionid
   } catch (err) {
-    logger.crit(`Failed to add section at index ${this.index} of section ${this.sectionId}`)
+    logger.crit(`Failed to add section at index ${this.index} of chart ${this.chatId}`)
     logger.crit(err)
     throw new Error(`Section not added: ${err.message}`)
   }

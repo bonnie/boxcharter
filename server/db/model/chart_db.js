@@ -69,9 +69,13 @@ Chart.prototype.addToDb = async function () {
         this.pageUnits,
       ])
     this.chartId = response.chartid
+    if (this.sections) {
+      await Promise.all(this.sections.map(section => section.addToDb(this.chartId)))
+    }
+    // users don't need to be added to the db here
     return response.chartid
   } catch (err) {
-    logger.crit(`Failed to add chart at index ${this.index} of chart ${this.chartId}`)
+    logger.crit(`Failed to add chart "${this.title}"`)
     logger.crit(err)
     throw new Error(`Chart not added: ${err.message}`)
   }
@@ -108,7 +112,7 @@ Chart.prototype.getSections = function () {
 /**
  * Get users associated with chart and assign to 'users' property
  * users property will be an array of objects, with keys:
- *    user' (user object value), 'permissions' (number value)
+ *    'user' (user object value), 'permissions' (number value)
  * @return {Promise} promise whose resolution is irrelelvant
  */
 Chart.prototype.getUsers = async function () {

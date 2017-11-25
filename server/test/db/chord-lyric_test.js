@@ -40,8 +40,7 @@ const types = ['chord', 'lyric']
 const addItem = async (item) => {
   // make a fake chart/section/measure to insert item into
   const measure = await createMeasure()
-  item.measureId = measure.measureid
-  return item.addToDb()
+  return item.addToDb(measure.measureid)
 }
 
 const successItems = {

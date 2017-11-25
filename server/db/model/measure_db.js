@@ -34,7 +34,8 @@ const { getChildren } = require('../utilities/get_children')
  * @param {number} sectionId - sectionId for the measure
  * @returns {Promise} - Promise resolving to measureId, or throw an error
  */
-Measure.prototype.addToDb = async function () {
+Measure.prototype.addToDb = async function (sectionId) {
+  if (sectionId) this.sectionId = sectionId
   try {
     const response = await db.one(
       `INSERT INTO measures (sectionId, index, beatsPerMeasure)
@@ -42,6 +43,12 @@ Measure.prototype.addToDb = async function () {
         RETURNING measureId`,
       [this.sectionId, this.index, this.beatsPerMeasure])
     this.measureId = response.measureid
+    if (this.chords) {
+      await Promise.all(this.chords.map(chord => chord.addToDb(this.measureId)))
+    }
+    if (this.lyrics) {
+      await Promise.all(this.lyrics.map(lyric => lyric.addToDb(this.measureId)))
+    }
     return response.measureid
   } catch (err) {
     logger.crit(`Failed to add measure at index ${this.index} of section ${this.sectionId}`)
