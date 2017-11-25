@@ -23,7 +23,7 @@
  * @module section_db
  */
 const { db } = require('../db_connection')
-const { logger } = require('../../utilities/log')
+const { logError } = require('../../utilities/log')
 const { Section } = require('../../../shared/model/section.js')
 const { Measure } = require('./measure_db')
 const { getChildren } = require('../utilities/get_children')
@@ -63,10 +63,9 @@ Section.prototype.addToDb = async function (chartId) {
       await Promise.all(this.measures.map(measure => measure.addToDb(this.sectionId)))
     }
     return response.sectionid
-  } catch (err) {
-    logger.crit(`Failed to add section at index ${this.index} of chart ${this.chatId}`)
-    logger.crit(err)
-    throw new Error(`Section not added: ${err.message}`)
+  } catch (e) {
+    const errMsg = `Failed to add section at index ${this.index} of chart ${this.chatId}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -77,7 +76,7 @@ Section.prototype.addToDb = async function (chartId) {
 Section.prototype.getMeasures = function () {
   return getChildren('measure', 'section', this.sectionId, 'index', Measure)
     .then((measures) => { this.measures = measures })
-    .catch(console.error)
+    .catch((e) => { throw e })
 }
 
 module.exports = {

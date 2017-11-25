@@ -23,8 +23,7 @@
 const winston = require('winston')
 
 // set default log level.
-// TODO: adjust according to debugging environment
-const logLevel = 'warn'
+const logLevel = process.env.NODE_ENV === 'dev' ? 'debug' : 'warn'
 
 // these constants exportable for use in other logging files
 const logRoot = '/var/log/boxcharter/'
@@ -80,9 +79,11 @@ const origLog = logger.log
 
 logger.log = function (level, msg) {
   if (msg instanceof Error) {
-    origLog.apply(logger, level, msg.stack)
+    const args = Array.prototype.slice.call(arguments)
+    args[1] = msg.stack
+    origLog.apply(logger, args)
   } else {
-    origLog.apply(logger, level, msg)
+    origLog.apply(logger, arguments)
   }
 }
 /* LOGGER EXAMPLES
@@ -95,8 +96,22 @@ logger.log = function (level, msg) {
   log.fatal('testing')
  */
 
+/**
+  * Log an Error
+  * @param  {string} msg context of error
+  * @param  {Error} e   Error to be logged
+  * @return {Error}     Error with revised message
+  */
+const logError = function (msg, e) {
+  logger.crit(msg)
+  logger.crit(e)
+  return new Error(`${msg}: ${e.toString()}`)
+}
+
+
 module.exports = {
   logger,
+  logError,
   logRoot,
   errorLogTransport,
 }

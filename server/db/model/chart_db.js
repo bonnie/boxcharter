@@ -23,7 +23,7 @@
  * @module chart_db
  */
 const { db } = require('../db_connection')
-const { logger } = require('../../utilities/log')
+const { logError } = require('../../utilities/log')
 const { Chart } = require('../../../shared/model/chart.js')
 const { Section } = require('./section_db')
 const { User } = require('./user_db')
@@ -74,10 +74,9 @@ Chart.prototype.addToDb = async function () {
     }
     // users don't need to be added to the db here
     return response.chartid
-  } catch (err) {
-    logger.crit(`Failed to add chart "${this.title}"`)
-    logger.crit(err)
-    throw new Error(`Chart not added: ${err.message}`)
+  } catch (e) {
+    const errMsg = `Failed to add chart "${this.title}"`
+    throw logError(errMsg, e)
   }
 }
 
@@ -95,7 +94,8 @@ Chart.getById = async function (chartId) {
     await chart.getUsers()
     return chart
   } catch (e) {
-    throw new Error(`Could not get chartId ${chartId}: ${e.toString()}`)
+    const errMsg = `Could not get chartId ${chartId}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -106,7 +106,10 @@ Chart.getById = async function (chartId) {
 Chart.prototype.getSections = function () {
   return getChildren('section', 'chart', this.chartId, 'index', Section)
     .then((sections) => { this.sections = sections })
-    .catch(console.error)
+    .catch((e) => {
+      const errMsg = `Failed to get sections for chart id "${this.chartId}"`
+      throw logError(errMsg, e)
+    })
 }
 
 /**
@@ -130,7 +133,8 @@ Chart.prototype.getUsers = async function () {
       return { user, permissions: userData.permissions }
     })
   } catch (e) {
-    throw new Error(`Could not get users for chartId ${this.chartId}: ${e.toString()}`)
+    const errMsg = `Failed to get users for chart id "${this.chartId}"`
+    throw logError(errMsg, e)
   }
 }
 

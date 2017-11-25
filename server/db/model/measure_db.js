@@ -23,7 +23,7 @@
  * @module measure_db
  */
 const { db } = require('../db_connection')
-const { logger } = require('../../utilities/log')
+const { logError } = require('../../utilities/log')
 const { Measure } = require('../../../shared/model/measure')
 const { Chord, Lyric } = require('./chord-lyric_db')
 const { getChildren } = require('../utilities/get_children')
@@ -50,10 +50,9 @@ Measure.prototype.addToDb = async function (sectionId) {
       await Promise.all(this.lyrics.map(lyric => lyric.addToDb(this.measureId)))
     }
     return response.measureid
-  } catch (err) {
-    logger.crit(`Failed to add measure at index ${this.index} of section ${this.sectionId}`)
-    logger.crit(err)
-    throw new Error(`Measure not added: ${err.message}`)
+  } catch (e) {
+    const errMsg = `Failed to add measure at index ${this.index} of section ${this.sectionId}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -64,7 +63,7 @@ Measure.prototype.addToDb = async function (sectionId) {
 Measure.prototype.getChords = function () {
   return getChildren('chord', 'measure', this.measureId, 'beatIndex', Chord)
     .then((chords) => { this.chords = chords })
-    .catch(console.error)
+    .catch((e) => { throw e })
 }
 
 /**
@@ -74,7 +73,7 @@ Measure.prototype.getChords = function () {
 Measure.prototype.getLyrics = function () {
   return getChildren('lyric', 'measure', this.measureId, 'verseIndex', Lyric)
     .then((lyrics) => { this.lyrics = lyrics })
-    .catch(console.error)
+    .catch((e) => { throw e })
 }
 
 module.exports = {

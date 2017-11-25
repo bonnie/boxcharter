@@ -23,6 +23,7 @@
  * @module user
  */
 const { db, pgp } = require('../db_connection')
+const { logError } = require('../../utilities/log')
 const { checkPass } = require('../../utilities/password_utils')
 const { User } = require('../../../shared/model/user')
 // const { Chart } = require('./chart_db.js')
@@ -60,11 +61,12 @@ User.getUser = async function (lookupColumn, userData) {
     const user = User.dbDatatoUser(dbUser)
     user.getCharts()
     return user
-  } catch (err) {
-    if (err.code === pgp.queryResultErrorCode.noData) {
+  } catch (e) {
+    if (e.code === pgp.queryResultErrorCode.noData) {
       return null
     }
-    throw err
+    const errMsg = `Failed to get user by ${lookupColumn} for data ${userData}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -103,8 +105,9 @@ User.prototype.update = async function (updateColumn, userData) {
   try {
     await db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId])
     this[updateColumn] = userData
-  } catch (err) {
-    throw err
+  } catch (e) {
+    const errMsg = `Failed to update column ${updateColumn} for userid ${this.userId}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -127,7 +130,8 @@ User.prototype.getCharts = async function () {
     this.charts = charts.map(chartData =>
       Object({ chartId: chartData.chartid, permissions: chartData.permissions }))
   } catch (e) {
-    throw new Error(`Could not get charts for userId ${this.userId}: ${e.toString()}`)
+    const errMsg = `Failed to get charts for userId ${this.userId}`
+    throw logError(errMsg, e)
   }
 }
 
@@ -138,19 +142,24 @@ User.prototype.getCharts = async function () {
  * @returns {Promise} - Promise resolving to chartuserid of association record
  */
 User.prototype.addChart = async function (chart, permissions) {
-  const errMsg = 'Chart not added to user.'
-  if (!this.userId) throw new Error(`User has no user id. ${errMsg}`)
-  if (!chart.chartId) throw new Error(`Chart has no chart id. ${errMsg}`)
-  const response = await db.one(
-    'INSERT INTO usercharts (chartId, userId, permissions) VALUES ($1, $2, $3) returning userChartId',
-    [chart.chartId, this.userId, permissions]
-  )
-  // update object properties
-  await this.getCharts()
-  await chart.getUsers()
+  try {
+    const errMsg = 'Chart not added to user.'
+    if (!this.userId) throw new Error(`User has no user id. ${errMsg}`)
+    if (!chart.chartId) throw new Error(`Chart has no chart id. ${errMsg}`)
+    const response = await db.one(
+      'INSERT INTO usercharts (chartId, userId, permissions) VALUES ($1, $2, $3) returning userChartId',
+      [chart.chartId, this.userId, permissions]
+    )
+    // update object properties
+    await this.getCharts()
+    await chart.getUsers()
 
-  // probably never used but seems a decent thing to return
-  return response.userchartid
+    // probably never used but seems a decent thing to return
+    return response.userchartid
+  } catch (e) {
+    const errMsg = `Failed to add chartId ${chart.chartId} to userId ${this.userId}`
+    throw logError(errMsg, e)
+  }
 }
 
 
