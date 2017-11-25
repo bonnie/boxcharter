@@ -77,68 +77,6 @@ Measure.prototype.getLyrics = function () {
     .catch(console.error)
 }
 
-// /**
-//  * Return a measure object from a measureId, including chords and lyrics
-//  * properties, getting data from the db.
-//  * @param {number} id - Measure id.
-//  * @return {Promise} - Promise resolving to a measure object.
-// */
-// Measure.getById = function (id) {
-//
-// }
-//
-// /**
-//  * Add Chord objects to Measure's chords property array by retrieving chords
-//  * from the database.
-//  * @return {undefined}
-// */
-// Measure.prototype.retrieveChords = async function () {
-//   const chordQuery = `
-//     SELECT chordId, beatIndex, noteCode, suffix
-//     FROM chords
-//     WHERE measureId = $1`
-//   // const chords = await db.query(chordQuery, [this.measureId])
-// }
-//
-// /**
-//  * Add chords to the database from the Measure's chord property array.
-//  * @param {array} chords - Array of Chord objects.
-//  * @return {undefined}
-// */
-// Measure.prototype.recordChords = async function (chords) {
-//   // const chordQuery = `
-//   //   SELECT chordId, beatIndex, noteCode, suffix
-//   //   FROM chords
-//   //   WHERE measureId = $1`
-//   // const chords = await db.query(chordQuery, [this.measureId])
-// }
-//
-// /**
-//  * Add Lyric objects to Measure's lyrics property array by retrieving lyrics
-//  * from the database.
-//  * @return {undefined}
-// */
-// Measure.prototype.retrieveLyrics = async function () {
-//   const lyricQuery = `
-//     SELECT lyricId, beatIndex, noteCode, suffix
-//     FROM lyrics
-//     WHERE measureId = $1`
-//   // const lyrics = await db.query(lyricQuery, [this.measureId])
-// }
-//
-// /**
-//  * Add lyrics to the database from the Measure's lyric property array.
-//  * @param {array} lyrics - array of Lyric objects.
-//  * @return {undefined}
-// */
-// Measure.prototype.recordLyrics = async function (lyrics) {
-//   // const lyricQuery = `
-//   //   SELECT lyricId, beatIndex, noteCode, suffix
-//   //   FROM lyrics
-//   //   WHERE measureId = $1`
-//   // const lyrics = await db.query(lyricQuery, [this.measureId])
-// }
-
 module.exports = {
   Measure,
 }

@@ -70,7 +70,7 @@ const logger = new (winston.Logger)({
     debug: 4,
     trace: 5,
   },
-  transports
+  transports,
 })
 
 winston.addColors(customColors)
@@ -80,11 +80,9 @@ const origLog = logger.log
 
 logger.log = function (level, msg) {
   if (msg instanceof Error) {
-    var args = Array.prototype.slice.call(arguments)
-    args[1] = msg.stack
-    origLog.apply(logger, args)
+    origLog.apply(logger, level, msg.stack)
   } else {
-    origLog.apply(logger, arguments)
+    origLog.apply(logger, level, msg)
   }
 }
 /* LOGGER EXAMPLES

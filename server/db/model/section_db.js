@@ -80,52 +80,6 @@ Section.prototype.getMeasures = function () {
     .catch(console.error)
 }
 
-
-// ///////////
-// // methods
-//
-// Section.setSection = function(sectionData) {
-//   // create new section for this chart with sectionData
-//
-//   const measures = sectionData.measures
-//   delete sectionData.measures
-//
-//   Section.create(sectionData, {
-//     options: {
-//       logging: msg => { logger.info(`SEQUELIZE ${msg}`) } }
-//     })
-//     .then(newSection => {
-//       logger.debug(`created new section ${sectionData}`)
-//       measures.forEach(m => {
-//         m.sectionId = newSection.sectionId
-//         measure.Section.setSection(m)
-//       })
-//     })
-//     .catch(err => {
-//       throw (`Could not create section ${sectionData}: ${err}`)
-//     })
-//
-// }
-//
-// Section.getChartSections = function(chartId) {
-//   this.findAll({
-//     where: { chartId: chartId },
-//     options: { order: ['index'] },
-//     attributes: { exclude: ['sectionId'] },
-//     raw: true
-//   }).then(sections => {
-//     sectionsWithSections = sections.map(s => {
-//       s.measures = s.getSections()
-//       return s
-//     })
-//     return Promise.resolve(sectionsWithSections)
-//   })
-// }
-//
-// Section.getSections = function() {
-//   return measure.Section.getSectionSections(this.sectionId)
-// }
-
 module.exports = {
   Section,
 }
