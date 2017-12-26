@@ -46,8 +46,8 @@ app.use(expressLog.accessLogger)
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Set our api routes
-app.use('/user', user);
-app.use('/chart', chart);
+app.use('/api/user', user);
+app.use('/api/chart', chart);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
@@ -60,7 +60,7 @@ app.use(expressLog.errorLogger)
 /**
  * Get port from environment and store in Express.
  */
-const port = process.env.PORT || '3000';
+const port = process.env.PORT || '5000';
 app.set('port', port);
 
 /**
