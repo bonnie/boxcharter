@@ -18,27 +18,32 @@
  *
  */
 
-const express = require('express');
-const { statusStrings, Status } = require('../../shared/model/status')
-const { Chart } = require('../db/model/chart_db')
-const logger = require('../utilities/log').logger
-const procError = require('../utilities/err')
+ /* Handle express errors */
 
-// create the router
-const router = express.Router();
-
-/** ****************** */
-/* POST create chart */
-/** ****************** */
-router.put('/create', function (req, res, next) {
-  const chartData = req.body.chartData
-  const userId = req.body.userId
-
-  Chart.createChart(userId, chartData).then((response) => {
-    console.log('response', response)
-    res.status(200).json(response)
-  })
-})
-
-
-module.exports = router;
+ const { statusStrings, Status } = require('../../shared/model/status')
+ var logger = require('../utilities/log').logger
+ 
+ const procError = function(error, msg) {
+   let errString = msg
+ 
+   if (error) {
+     errString += `: ${error.toString()}`
+     if (error.stack) {
+       const secondLine = error.stack.split('\n')[1]
+       if (error.toString() != error.secondLine) {
+         errString += "\n\t" + error.toString()
+       }
+     }
+   }
+ 
+   logger.crit(`${msg}: ${error}`)
+   const response = {
+     status: new Status(
+       statusStrings.danger,
+       `${msg}. ${statusStrings.contactAdmin}`
+     )
+   }
+   return response
+ }
+ 
+ module.exports = procError

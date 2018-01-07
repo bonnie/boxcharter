@@ -44,8 +44,8 @@ class Base {
       value = data[field] || data[field.toLowerCase()]
 
       // sadly, 0 and '' are non-null, but also 'falsy'
-      if (data[field] === 0 || data[field.toLowerCase() === 0]) value = 0
-      if (data[field] === '' || data[field.toLowerCase() === '']) value = ''
+      if (data[field] === 0 || data[field.toLowerCase()] === 0) value = 0
+      if (data[field] === '' || data[field.toLowerCase()] === '') value = ''
       if (value || value === 0 || value === '') this[field] = value
     }
   }

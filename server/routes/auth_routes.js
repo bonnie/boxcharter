@@ -20,7 +20,7 @@
 
 const express = require('express');
 const passUtils = require('../utilities/password_utils')
-const { User } = require('../db/model/user_db')
+const User = require('../db/model/user_db')
 const { statusStrings, Status } = require('../../shared/model/status')
 const logger = require('../utilities/log').logger
 const procError = require('../utilities/err')
@@ -29,40 +29,52 @@ const checkPass = require('../utilities/password_utils').checkPass
 // create the router
 const router = express.Router()
 
-/** *************** */
-/* GET user details */
-/* **************** */
-router.get('/:user_id', (req, res) => {
+/** ****************** */
+/* POST authorize user */
+/* ******************* */
+router.post('/auth', (req, res) => {
+  const email = req.body.email
+  const password = req.body.password
+  const status = new Status()
 
-})
+  User.find({ where: { email } })
+    // can't use findByEmail here because we need hash and salt
+    .then((foundUser) => {
+      if (foundUser === null || !checkPass(foundUser, password)) {
+        // user not in db or password doesn't match
+        status.alertType = statusStrings.danger
+        status.text = 'Invalid email and/or password'
 
-/** *************** */
-/* PUT user details */
-/* **************** */
-router.put('/:user_id', (req, res) => {
+        const response = { status }
+        logger.warn(`${email} loggedin with invalid password`)
+        res.status(200).json(response)
+        return
+      }
 
-})
+      // otherwise, all's rosy
+      const msg = `Successful login for ${email}`
+      status.alertType = statusStrings.success
+      status.text = msg
+      logger.debug(msg)
 
-/** ************** */
-/* GET user charts */
-/* *************** */
-router.get('/:userId/charts', async (req, res) => {
-  const userId = req.params.userId
-  try {
-    const user = await User.getById(userId)
-    const msg = `Charts retrieved for ${user.email}`
-    const response = { charts: user.charts, status: new Status(statusStrings.success, msg) }
-    res.status(200).json(response)
-
-  } catch (error) {
-    const msg = `Unable to get charts for userId [${userId}]`
-    const response = procError(error, msg)
-    res.status(400).json(response)
-  }
+      User.getByEmail(foundUser.email).then((cleanUser) => {
+        const response = {
+          status,
+          user: cleanUser,
+        }
+        res.status(200).json(response)
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+      const msg = `Unable to authenticate user ${email}`
+      const response = procError(error, msg)
+      res.status(200).json(response)
+    })
 })
 
 /* ******************* */
-/* PUT user details.   */
+/* POST new user.      */
 /* ******************* */
 router.post('/add', (req, res) => {
   const userInfo = req.body

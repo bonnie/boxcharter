@@ -59,10 +59,11 @@ User.getUser = async function (lookupColumn, userData) {
   try {
     const dbUser = await db.one(query, [userData])
     const user = User.dbDatatoUser(dbUser)
-    user.getCharts()
+    user.charts = await user.getCharts()
+    console.log('************ user:::', user)
     return user
   } catch (e) {
-    if (e.code === pgp.queryResultErrorCode.noData) {
+    if (e.code === pgp.errors.queryResultErrorCode.noData) {
       return null
     }
     const errMsg = `Failed to get user by ${lookupColumn} for data ${userData}`
@@ -119,7 +120,7 @@ User.prototype.update = async function (updateColumn, userData) {
  */
 User.prototype.getCharts = async function () {
   const userchartsQuery = `
-    SELECT c.chartid, uc.permissions
+    SELECT c.chartid, c.title, uc.permissions
     FROM charts AS c
       JOIN usercharts AS uc
         ON c.chartid = uc.chartid
@@ -127,8 +128,9 @@ User.prototype.getCharts = async function () {
   `
   try {
     const charts = await db.any(userchartsQuery, this.userId)
-    this.charts = charts.map(chartData =>
-      Object({ chartId: chartData.chartid, permissions: chartData.permissions }))
+    return charts.map(({ chartid: chartId, title, permissions }) => {
+      return { chartId, title, permissions }
+    })
   } catch (e) {
     const errMsg = `Failed to get charts for userId ${this.userId}`
     throw logError(errMsg, e)

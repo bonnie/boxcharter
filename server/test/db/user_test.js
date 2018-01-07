@@ -43,6 +43,7 @@ userGetterInputs.forEach(function (testData) {
     before('Reset the DB and get the user', async function () {
       await initDB()
       user = await testData.method(testData.input)
+      console.log('************ user:::', user)
     })
     it('should return a user object', function () {
       expect(user).to.be.an.instanceof(User)

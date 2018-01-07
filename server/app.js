@@ -31,6 +31,7 @@ const expressLog = require('./utilities/express_log')
 
 // Get our API routes
 const user = require('./routes/user_routes');
+const auth = require('./routes/auth_routes');
 const chart = require('./routes/chart_routes');
 
 const app = express();
@@ -43,32 +44,27 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressLog.accessLogger)
 
 // Point static path to dist
-app.use(express.static(path.join(__dirname, '../client/dist')));
+// app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Set our api routes
-app.use('/api/user', user);
-app.use('/api/chart', chart);
+app.use('/api/users', user);
+app.use('/api/auth', auth);
+app.use('/api/charts', chart);
 
-// Catch all other routes and return the index file
+// Catch all other routes and return not found
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  res.status(404).json({"message": "Route not found"})
 });
 
 // error log: after routes
 app.use(expressLog.errorLogger)
 
-/**
- * Get port from environment and store in Express.
- */
+// Get port from environment and store in Express.
 const port = process.env.PORT || '5000';
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+// Create HTTP server.
 const server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+// Listen on provided port, on all network interfaces.
 server.listen(port, () => console.log(`Server running on localhost:${port}`));

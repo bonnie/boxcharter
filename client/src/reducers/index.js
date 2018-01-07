@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux';
+import authReducer from './reducer_auth'
+import chartsReducer from './reducer_charts'
 
 const rootReducer = combineReducers({
-  state: (state = {}) => state
+  userId: authReducer,
+  charts: chartsReducer,
 });
 
 export default rootReducer;
