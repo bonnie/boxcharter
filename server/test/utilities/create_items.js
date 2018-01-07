@@ -22,7 +22,7 @@
  * Utilities to create dummy parent items for testing.
  * @module create_items
  */
-const { db } = require('../../db/db_connection.js')
+const { db } = require('../../src/model/utilities/db_connection')
 
 /**
  * Create a dummy chart for testing

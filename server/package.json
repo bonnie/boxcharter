@@ -1,0 +1,56 @@
+{
+  "name": "boxcharter",
+  "version": "1.0.0-alpha.1",
+  "description": "Web app to create chord / lyric box charts",
+  "scripts": {
+    "start": "node app.js",
+    "lint": "eslint . --fix",
+    "test": "source env/test.sh && npm run test:server",
+    "test:server": "mocha --recursive test --exit --full-trace",
+    "test:db:drop": "source env/test.sh && dropdb $DB_NAME",
+    "test:db:create": "source env/test.sh && createdb $DB_NAME && psql $DB_NAME < src/model/data/schema.sql",
+    "test:db:reset": "npm run test:db:drop && npm run test:db:create",
+    "dev:start": "source env/dev.sh && nodemon src/app.js",
+    "dev:db:drop": "source env/dev.sh && dropdb $DB_NAME",
+    "dev:db:create": "source env/dev.sh && createdb $DB_NAME && psql $DB_NAME < src/model/data/schema.sql",
+    "dev:db:seed": "source env/dev.sh && node ../shared/test/utilities/db_reset.js seed",
+    "dev:db:reset": "npm run db:drop && npm run db:create && npm run db:seed"
+  },
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.1",
+    "express-winston": "^2.4.0",
+    "pg-async": "^3.1.0",
+    "pg-promise": "^6.10.3",
+    "winston": "^2.4.0"
+  },
+  "devDependencies": {
+    "ajv": "^5.2.2",
+    "chai": "^4.1.2",
+    "eslint": "^4.6.1",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.3.0",
+    "mocha": "^4.0.1",
+    "nodemon": "^1.14.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyrightsister/boxcharter.git"
+  },
+  "author": "Bonnie Schulkin",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/flyrightsister/boxcharter/issues"
+  },
+  "homepage": "https://github.com/flyrightsister/boxcharter#readme",
+  "keywords": [
+    "music",
+    "chart",
+    "chord",
+    "lyric",
+    "box chart"
+  ]
+}

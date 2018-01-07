@@ -23,17 +23,15 @@
  * @module getchildren_tests
  */
 const { expect } = require('chai')
-const { db } = require('../../db/db_connection')
-const { initDB } = require('./db_reset')
-const { addEntireChart } = require('./add_chart')
-const { instanceFactory } = require('../../db/utilities/instance_factory')
+const { db } = require('../../src/model/utilities/db_connection')
+const { instanceFactory } = require('../../src/model/utilities/instance_factory')
+const { initDB } = require('../../../shared/test/utilities/db_reset')
 
 const getChildrenSuccessTests = (testData) => {
   describe(`successful ${testData.parentType} prototype.getChildren() ${testData.childType} for ${testData.idQueryArgs}`, function () {
     let item
     before('Reset the DB, add chart, and get the children', async function () {
       await initDB()
-      await addEntireChart()
       const parentId = await testData.idQueryFunc(...testData.idQueryArgs)
       const itemData = await db.one(`
         SELECT *
