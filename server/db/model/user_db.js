@@ -60,7 +60,6 @@ User.getUser = async function (lookupColumn, userData) {
     const dbUser = await db.one(query, [userData])
     const user = User.dbDatatoUser(dbUser)
     user.charts = await user.getCharts()
-    console.log('************ user:::', user)
     return user
   } catch (e) {
     if (e.code === pgp.errors.queryResultErrorCode.noData) {
@@ -153,7 +152,7 @@ User.prototype.addChart = async function (chart, permissions) {
       [chart.chartId, this.userId, permissions]
     )
     // update object properties
-    await this.getCharts()
+    this.charts = await this.getCharts()
     await chart.getUsers()
 
     // probably never used but seems a decent thing to return

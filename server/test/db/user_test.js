@@ -161,7 +161,9 @@ describe('User.prototype.getCharts()', function () {
     user = await User.getById(1)
   })
   context('User has zero charts', async function () {
-    before('Get user charts', () => user.getCharts())
+    before('Get user charts', async () => {
+      user.charts = await user.getCharts()
+    })
     it('should result in a "charts" array property', function () {
       expect(user.charts).to.be.an.instanceof(Array)
     })
@@ -172,7 +174,7 @@ describe('User.prototype.getCharts()', function () {
   context('User has more than zero charts', function () {
     before('Add a chart to the user and get user charts', async () => {
       await addEntireChart()
-      await user.getCharts()
+      user.charts = await user.getCharts()
     })
     it('should result in a "charts" array property', function () {
       expect(user.charts).to.be.an.instanceof(Array)
