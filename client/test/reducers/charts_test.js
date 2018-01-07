@@ -9,7 +9,8 @@ describe('Chart Reducer', () => {
 
   it('handles action of type GET_USERCHARTS', () => {
     const charts = [{ chartId: 1, title: 'Blackbird', permissions: 0 }]
-    const action = { type: GET_USERCHARTS, payload: charts };
-    expect(chartReducer([], action)).to.eql(charts);
+    const payload = { data: { charts } }
+    const action = { type: GET_USERCHARTS, payload };
+    expect(chartReducer([], action)).to.eql(payload.data.charts);
   });
 });
