@@ -1,4 +1,4 @@
-import { Chart } from '../../../shared/model/chart'
+import Chart from '../../../shared/src/model/chart'
 import axios from 'axios'
 
 import { GET_USERCHARTS } from './types'
