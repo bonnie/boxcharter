@@ -1,3 +1,4 @@
 module.exports = {
   AUTH: 'auth',
+  GET_USERCHARTS: 'get_usercharts',
 }

@@ -2,11 +2,14 @@
  * 
  */
 
-import { Chart } from '../../../shared/model/chart'
+import { GET_USERCHARTS } from '../../src/actions/types';
+import axios from 'axios'
 
 export default (state=[], action) => {
-  // eventually, get charts from server. For now, just return charts
-
-  const chart1 = {}
-  return 
+  switch(action.type) {
+    case GET_USERCHARTS:
+      return action.payload
+    default:
+      return state
+  }
 }
