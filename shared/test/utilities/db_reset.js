@@ -63,31 +63,27 @@ const resetDB = async function () {
 /**
  * Seed the database using functions from the db/seed directory.
  * @function
- * @param {object} options - see initDB JSDoc for description
  * @returns {Promise} - resolution unimportant
  */
-const seedDB = (options) => 
+const seedDB = () => 
   addKeys()
     .then(addUser)
-    .then(() => {
-      if (!options.omitCharts) addEntireChart()
-    })
+    .then(addEntireChart)
     .catch(console.error)
 
 /**
  * Initialize the db: both reset it, and then seed it.
  * @function
- * @param {object} options - keys: omitCharts (boolean), whether to add charts
  * @returns {Promise} - resolution unimportant
  */
-const initDB = (options) => resetDB().then(() => seedDB(options)).catch(console.error)
+const initDB = (addCharts=true) => resetDB().then(seedDB).catch(console.error)
 
 // if the file is run as a command (used in npm scripts)
 if (!module.parent) {
   const command = process.argv[2]
   switch (command) {
     case 'seed':
-      seedDB({})
+      seedDB()
       break
     case 'reset':
       resetDB()
