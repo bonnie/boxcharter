@@ -77,7 +77,6 @@ router.post('/auth', (req, res) => {
 /* ******************* */
 /* POST new user.      */
 /* ******************* */
-
 router.post('/add', (req, res) => {
   const userInfo = req.body
 
@@ -123,7 +122,6 @@ router.post('/add', (req, res) => {
 /* ******************* */
 /* GET user existence. */
 /* ******************* */
-
 router.get('/check', (req, res) => {
   const email = req.query.email
 
