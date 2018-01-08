@@ -4,12 +4,13 @@
   "description": "Simple starter package for Redux with React and Babel support",
   "main": "index.js",
   "repository": "git@github.com:StephenGrider/ReduxSimpleStarter.git",
+  "proxy": "http://localhost:5000",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },
-  "author": "",
+  "author": "Bonnie Schulkin",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.2.1",
@@ -33,6 +34,7 @@
     "react-dom": "^0.14.3",
     "react-redux": "4.3.0",
     "react-router": "^2.0.1",
+    "react-router-dom": "^4.2.2",
     "redux": "^3.0.4",
     "redux-promise": "^0.5.3"
   }

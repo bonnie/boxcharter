@@ -3,22 +3,23 @@
   "version": "1.0.0-alpha.1",
   "description": "Web app to create chord / lyric box charts",
   "scripts": {
-    "start": "node app.js",
+    "start": "node src/app.js",
     "lint": "eslint . --fix",
     "test": "source env/test.sh && npm run test:server",
     "test:server": "mocha --recursive test --exit --full-trace",
     "test:db:drop": "source env/test.sh && dropdb $DB_NAME",
-    "test:db:create": "source env/test.sh && createdb $DB_NAME && psql $DB_NAME < src/model/data/schema.sql",
+    "test:db:create": "source env/test.sh && createdb $DB_NAME && psql $DB_NAME < src/model/schema.sql",
     "test:db:reset": "npm run test:db:drop && npm run test:db:create",
     "dev:start": "source env/dev.sh && nodemon src/app.js",
     "dev:db:drop": "source env/dev.sh && dropdb $DB_NAME",
-    "dev:db:create": "source env/dev.sh && createdb $DB_NAME && psql $DB_NAME < src/model/data/schema.sql",
+    "dev:db:create": "source env/dev.sh && createdb $DB_NAME && psql $DB_NAME < src/model/schema.sql",
     "dev:db:seed": "source env/dev.sh && node ../shared/test/utilities/db_reset.js seed",
-    "dev:db:reset": "npm run db:drop && npm run db:create && npm run db:seed"
+    "dev:db:reset": "npm run dev:db:drop && npm run dev:db:create && npm run dev:db:seed"
   },
   "private": true,
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.16.1",
     "express-winston": "^2.4.0",
     "pg-async": "^3.1.0",

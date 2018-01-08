@@ -118,7 +118,7 @@ User.prototype.update = async function (updateColumn, userData) {
  */
 User.prototype.getCharts = async function () {
   const userchartsQuery = `
-    SELECT c.chartid, c.title, uc.permissions
+    SELECT c.chartid, c.title, c.createdAt, c.modifiedAt, uc.permissions
     FROM charts AS c
       JOIN usercharts AS uc
         ON c.chartid = uc.chartid
@@ -126,8 +126,13 @@ User.prototype.getCharts = async function () {
   `
   try {
     const charts = await db.any(userchartsQuery, this.userId)
-    return charts.map(({ chartid: chartId, title, permissions }) => {
-      return { chartId, title, permissions }
+    return charts.map((chart) => {
+      const { chartid: chartId, 
+              title, 
+              permissions, 
+              createdat: createdAt, 
+              modifiedat: modifiedAt } = chart
+      return { chartId, title, permissions, createdAt, modifiedAt }
     })
   } catch (e) {
     const errMsg = `Failed to get charts for userId ${this.userId}`

@@ -3,7 +3,7 @@ import authReducer from './reducer_auth'
 import chartsReducer from './reducer_charts'
 
 const rootReducer = combineReducers({
-  userId: authReducer,
+  user: authReducer,
   charts: chartsReducer,
 });
 

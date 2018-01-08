@@ -28,7 +28,7 @@ const fs = require('fs')
 const VERBOSE = process.env.NODE_ENV === 'production'
 // const VERBOSE = true
 
-// assuming this will be run from an npm script; working dir is top of proj
+// assuming this will be run from an npm script; working dir is top of server dir
 const KEYFILE = './src/model/data/keys.csv'
 
 const DB_COMMANDS = {
@@ -53,7 +53,7 @@ const logError = (err, msg) => {
 /**
  * Add all the notes to the db, so they'll be there for the keys
  * @function
- * @return {array} - an array of promises, containing the resolution of each insert
+ * @return {Promise} - resolves to an array containing the resolution of each insert
  */
 const addNotes = async () => {
   const notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
@@ -62,10 +62,11 @@ const addNotes = async () => {
   notes.forEach(note => accs.forEach(acc => allNotes.push(`${note}${acc}`)))
   allNotes.push('%')
   if (VERBOSE) console.log(allNotes)
-  await Promise.all(allNotes.map(async (note) => {
+  return Promise.all(allNotes.map(async (note) => {
     try {
-      await db.one(DB_COMMANDS.insertNote, note)
+      const prom = await db.one(DB_COMMANDS.insertNote, note)
       if (VERBOSE) console.log(`Added note ${note}`)
+      return prom
     } catch (err) {
       logError(err, `Could not add note ${note}`)
     }
@@ -76,8 +77,8 @@ const addNotes = async () => {
  * Add a key and its corresponding notes to the db
  * @function
  * @param {string} key - the tonic for the key
- * @param {string} notes - the notes for the key
- * @return {undefined}
+ * @param {Array} notes - the notes for the key
+ * @return {Promise}
  */
 const addKeyNotes = async (key, notes) => {
   if (VERBOSE) console.log(`adding notes for ${key}`)
@@ -88,24 +89,23 @@ const addKeyNotes = async (key, notes) => {
     logError(err, `Could not insert key ${key}`)
   }
   return Promise.all(notes.map(async (note, index) => {
-    try {
-      await db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
-    } catch (err) {
-      logError(err, `Could not insert scale note for key ${key}, note: ${note}`)
-    }
+      return db.query(DB_COMMANDS.insertScaleNote, [key, note, index + 1])
+        .catch (err => 
+          logError(err, `Could not insert scale note for key ${key}, note: ${note}`)
+        )
   }))
 }
 
 /**
  * Read scales from file and build keys and scale_notes tables
  * @function
- * @return {undefined}
+ * @return {Promise}
  */
 const addScales = async () => {
   try {
     if (VERBOSE) console.log('adding scales')
     const keyData = fs.readFileSync(KEYFILE, 'ascii')
-    await Promise.all(keyData.split('\n').filter(keyline => keyline).map((keyLine) => {
+    return Promise.all(keyData.split('\n').filter(keyline => keyline).map((keyLine) => {
       // example line: Am,A,B,C,D,E,F,G
       const notes = keyLine.split(',')
       const key = notes[0]
@@ -118,15 +118,13 @@ const addScales = async () => {
 /**
  * Run functions to add notes, scales and keys
  * @function
- * @return {undefined}
+ * @return {Promise} - resolution unimportant
  */
-const addKeys = async () => {
-  try {
-    await addNotes()
-    await addScales()
-  } catch (err) {
-    logError(err, `Adding keys failed: ${err.toString()}`)
-  }
+const addKeys = () => {
+  return addNotes()
+    .then(addScales)
+    .catch(err => logError(err, `Adding keys failed: ${err.toString()}`)
+  )
 }
 
 if (!module.parent) {

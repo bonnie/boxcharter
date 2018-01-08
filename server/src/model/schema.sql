@@ -51,7 +51,9 @@ CREATE TABLE charts(
   minFontsize INTEGER,
   pageWidth REAL,
   pageHeight REAL,
-  pageUnits TEXT
+  pageUnits TEXT,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  modifiedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE sections(

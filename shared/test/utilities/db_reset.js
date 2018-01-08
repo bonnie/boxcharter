@@ -76,7 +76,7 @@ const seedDB = () =>
  * @function
  * @returns {Promise} - resolution unimportant
  */
-const initDB = (addCharts=true) => resetDB().then(seedDB).catch(console.error)
+const initDB = () => resetDB().then(seedDB).catch(console.error)
 
 // if the file is run as a command (used in npm scripts)
 if (!module.parent) {

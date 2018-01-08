@@ -1,5 +1,5 @@
-import Chart from '../../../shared/src/model/chart'
 import axios from 'axios'
+// import Chart from '../../../shared/src/model/chart'
 
 import { GET_USERCHARTS } from './types'
 

@@ -33,8 +33,15 @@ const expressLog = require('./utilities/express_log')
 const user = require('./routes/user_routes')
 const auth = require('./routes/auth_routes')
 const chart = require('./routes/chart_routes')
+const cors = require('cors')
 
 const app = express();
+
+// CORS for react app
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true
+}))
 
 // Parsers for POST data
 app.use(bodyParser.json());
