@@ -1,7 +1,10 @@
 import React from 'react'
 import FormattedDate from './formatted_date'
 
-export default ({ chart }) => {
+export default (props) => {
+  console.log('************ props:::', props)
+
+  const { chart } = props
   return (
     <tr className="chart-row">
       <td>{chart.title}</td>
