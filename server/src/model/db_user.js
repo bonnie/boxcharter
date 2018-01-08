@@ -118,7 +118,7 @@ User.prototype.update = async function (updateColumn, userData) {
  */
 User.prototype.getCharts = async function () {
   const userchartsQuery = `
-    SELECT c.chartid, c.title, c.createdAt, c.modifiedAt, uc.permissions
+    SELECT c.chartid, c.title, c.modifiedAt, uc.permissions
     FROM charts AS c
       JOIN usercharts AS uc
         ON c.chartid = uc.chartid
@@ -130,9 +130,8 @@ User.prototype.getCharts = async function () {
       const { chartid: chartId, 
               title, 
               permissions, 
-              createdat: createdAt, 
               modifiedat: modifiedAt } = chart
-      return { chartId, title, permissions, createdAt, modifiedAt }
+      return { chartId, title, permissions, modifiedAt }
     })
   } catch (e) {
     const errMsg = `Failed to get charts for userId ${this.userId}`

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+
+import ChartRow from './chart_row'
 import { getUserCharts } from '../actions'
 
 class UserCharts extends Component {
@@ -11,21 +13,15 @@ class UserCharts extends Component {
   }
   render() {
     const chartRows = this.props.charts.map((chart) => {
-      return (
-        <tr key={chart.chartId}>
-          <td>{chart.title}</td>
-          <td>{chart.createdAt.toLocaleString()}</td>
-          <td>{chart.modifiedAt.toLocaleString()}</td>
-        </tr>
-      )
+      return (<ChartRow key={chart.chartId} chart={chart} />)
     })
+
     return (
       <div className="user-charts">
         <table className="table">
           <thead>
             <tr>
               <th>Title</th>
-              <th>Created</th>
               <th>Last Updated</th>
             </tr>
           </thead>
