@@ -33,9 +33,16 @@ const blackbirdMetaData = {
   title: 'Blackbird',
   author: 'bds',
   composer: 'Paul McCartney',
+  lyricist: '',
   lyricistSame: true,
   originalKeyCode: 'G',
-  printKeyCode: 'A' }
+  printKeyCode: 'A',
+  maxPages: 1,
+  minFontSize: 10,
+  pageHeight: 8.5,
+  pageWidth: 11,
+  pageUnits: 'inches'
+ }
 
 const blackbirdSections = [
   { chartId: 1,
@@ -125,10 +132,29 @@ const addChart = async (chart) => {
       (title,
       author,
       composer,
+      lyricist,
       lyricistSame,
       originalKeyCode,
-      printKeyCode)
-    VALUES ($/title/, $/author/, $/composer/, $/lyricistSame/, $/originalKeyCode/, $/printKeyCode/)
+      printKeyCode,
+      maxPages,
+      minFontSize,
+      pageHeight,
+      pageWidth,
+      pageUnits)
+    VALUES (
+      $/title/, 
+      $/author/, 
+      $/composer/, 
+      $/lyricist/,
+      $/lyricistSame/, 
+      $/originalKeyCode/, 
+      $/printKeyCode/,
+      $/maxPages/,
+      $/minFontSize/,
+      $/pageHeight/,
+      $/pageWidth/,
+      $/pageUnits/
+    )
     RETURNING chartId`
   try {
     const result = await db.one(query, chart)

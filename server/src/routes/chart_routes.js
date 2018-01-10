@@ -20,12 +20,26 @@
 
 const express = require('express')
 const { statusStrings, Status } = require('../../../shared/src/model/status')
-const { Chart } = require('../model/db_chart')
+const Chart = require('../model/db_chart')
 const { logger } = require('../utilities/log')
 const procError = require('../utilities/err')
 
 // create the router
 const router = express.Router();
+
+/** ****************** */
+/* GET chart */
+/** ****************** */
+router.get('/:chartId', function(req, res, next) {
+  const chartId = req.params.chartId
+  Chart.getById(chartId)
+    .then((chart) => {
+      res.json(chart)
+    })
+    .catch((err) => {
+      res.status(400).json(`Could not get chart id ${chartId}`)
+    })
+})
 
 /** ****************** */
 /* POST create chart */

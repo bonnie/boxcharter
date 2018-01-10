@@ -90,8 +90,8 @@ Chart.getById = async function (chartId) {
     const chartQuery = 'SELECT * FROM charts WHERE chartID = $1'
     const chartData = await db.one(chartQuery, chartId)
     const chart = new Chart(chartData)
-    await chart.getSections()
-    await chart.getUsers()
+    chart.sections = await chart.getSections()
+    chart.users = await chart.getUsers()
     return chart
   } catch (e) {
     const errMsg = `Could not get chartId ${chartId}`
@@ -100,12 +100,11 @@ Chart.getById = async function (chartId) {
 }
 
 /**
- * Get chart's sections from database and assign to 'sections' property
- * @return {Promise} promise whose resolution is irrelevant
+ * Get chart's sections from database
+ * @return {Promise} promise resolving to array of objects, each object containing section data
  */
 Chart.prototype.getSections = function () {
   return getChildren('section', 'chart', this.chartId, 'index', Section)
-    .then((sections) => { this.sections = sections })
     .catch((e) => {
       const errMsg = `Failed to get sections for chart id "${this.chartId}"`
       throw logError(errMsg, e)
@@ -113,29 +112,22 @@ Chart.prototype.getSections = function () {
 }
 
 /**
- * Get users associated with chart and assign to 'users' property
- * users property will be an array of objects, with keys:
- *    'user' (user object value), 'permissions' (number value)
- * @return {Promise} promise whose resolution is irrelelvant
+ * Get users associated with chart
+ * @return {Promise} promise resolving to array of objects, each object containing user data
  */
 Chart.prototype.getUsers = async function () {
   const userchartsQuery = `
-    SELECT u.*
+    SELECT u.userId, u.email, u.firstName, u.lastName
     FROM usercharts AS uc
       JOIN users AS u
         ON uc.userid = u.userid
     WHERE uc.chartid = $1
   `
-  try {
-    const users = await db.any(userchartsQuery, this.chartId)
-    this.users = users.map((userData) => {
-      const user = new User(userData)
-      return { user, permissions: userData.permissions }
-    })
-  } catch (e) {
-    const errMsg = `Failed to get users for chart id "${this.chartId}"`
-    throw logError(errMsg, e)
-  }
+    return db.any(userchartsQuery, this.chartId)
+     .catch ((e) => {
+        const errMsg = `Failed to get users for chart id "${this.chartId}"`
+        throw logError(errMsg, e)
+      })
 }
 
 // /**

@@ -1,7 +1,10 @@
 import axios from 'axios'
 // import Chart from '../../../shared/src/model/chart'
 
-import { GET_USERCHARTS } from './types'
+import { 
+  GET_USERCHARTS, 
+  GET_CHART,
+} from './types'
 
 const serverHost = 'localhost'
 const serverPort = '5000'
@@ -18,6 +21,18 @@ const getUserCharts = (userId) => {
   }
 }
 
+const getChart = (chartId) => {
+  if (!chartId) {
+    return { type: GET_CHART }    
+  }
+  const request = axios.get(`${baseUrl}/charts/${chartId}`)
+  return {
+    type: GET_CHART,
+    payload: request
+  }
+}
+
 module.exports = {
   getUserCharts,
+  getChart,
 }
