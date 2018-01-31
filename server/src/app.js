@@ -25,17 +25,22 @@ const path = require('path')
 const http = require('http')
 const express = require('express')
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
 
 // logging
 const expressLog = require('./utilities/express_log')
 
 // Get our API routes
-const user = require('./routes/user_routes')
-const auth = require('./routes/auth_routes')
-const chart = require('./routes/chart_routes')
+const router = require('./routes')
+
 const cors = require('cors')
 
 const app = express();
+
+// logging incoming requests for debugging
+if (process.env.NODE_ENV === 'dev') {
+  app.use(morgan('combined'))
+}
 
 // CORS for react app
 app.use(cors({
@@ -43,20 +48,14 @@ app.use(cors({
   credentials: true
 }))
 
-// Parsers for POST data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// Parser for POST data
+app.use(bodyParser.json({ type: '*/*' }));
 
 // access log: before routes
 app.use(expressLog.accessLogger)
 
-// Point static path to dist
-// app.use(express.static(path.join(__dirname, '../client/dist')));
-
 // Set our api routes
-app.use('/api/users', user);
-app.use('/api/auth', auth);
-app.use('/api/charts', chart);
+
 
 // Catch all other routes and return not found
 app.get('*', (req, res) => {
@@ -67,7 +66,7 @@ app.get('*', (req, res) => {
 app.use(expressLog.errorLogger)
 
 // Get port from environment and store in Express.
-const port = process.env.PORT || '5000';
+const port = process.env.PORT || '3090';
 app.set('port', port);
 
 // Create HTTP server.
