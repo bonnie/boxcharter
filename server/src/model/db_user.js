@@ -93,6 +93,17 @@ User.getById = function (id) {
 }
 
 /**
+ * 
+ * @param {object} where - object with key as column name to match, and value as value to match
+ * @returns {promise} - promise that resolves to a boolean, depending on whether user exists
+ */
+// TODO: test this method
+User.isInDb = function(where) {
+  return User.findOne({ where })
+    .then(foundUser => foundUser !== null)
+}
+
+/**
  * Update a user's metadata
  * @function
  * @param {string} updateColumn - The column for which the given data applies.
