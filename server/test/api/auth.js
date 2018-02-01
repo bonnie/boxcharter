@@ -44,6 +44,7 @@ describe('Token generation at account creation', () => {
     .then(authRes => { res = authRes })
   })
   it('should result in status of 200', () => {
+    console.log('res.status', res.status)
     expect(res.status).to.equal(200)
   })
   it('should return a token for new user', () => {
@@ -52,37 +53,37 @@ describe('Token generation at account creation', () => {
   it('should return a non-zero length token for the new user', () => {
     expect(res.body.token.length).to.be.greaterThan(0)
   })
-  it('should not allow the an account to be created with duplicate email', () => {
-    let duplicateAccountResponse
-    beforeEach('create account with duplicate email', () => {
-      return sendCredentials('/sign-up', email, password)
-      .then(res => { duplicateAccountResponse = res })
-    })
-    it('should return status 422', () => {
-      expect(duplicateAccountResponse.status).to.equal(422)
-    })
-    it('should return error message', () => {
-      expect(duplicateAccountResponse.body).to.have.property('error')
-    })
-    it('should return the correct error message', () => {
-      expect(duplicateAccountResponse.body.error).to.equal('Email is in use')
-    })
-  })
-  it('should allow access to protected route', () => {
-    let protectedRouteResponse
-    beforeEach('access a protected route', () => {
-      const { id } = userData
-      return chai.request(app)
-        .get('/api/users/1')
-        .end((err, res) => {
-          if (err) throw err
-          protectedRouteResponse = res
-        })
-    })
-    it('should return success status for protected route', () => {
-      expect(protectedRouteResponse.status).to.equal(200)
-    })
-  })
+  // it('should not allow the an account to be created with duplicate email', () => {
+  //   let duplicateAccountResponse
+  //   beforeEach('create account with duplicate email', () => {
+  //     return sendCredentials('/sign-up', email, password)
+  //     .then(res => { duplicateAccountResponse = res })
+  //   })
+  //   it('should return status 422', () => {
+  //     expect(duplicateAccountResponse.status).to.equal(422)
+  //   })
+  //   it('should return error message', () => {
+  //     expect(duplicateAccountResponse.body).to.have.property('error')
+  //   })
+  //   it('should return the correct error message', () => {
+  //     expect(duplicateAccountResponse.body.error).to.equal('Email is in use')
+  //   })
+  // })
+  // it('should allow access to protected route', () => {
+  //   let protectedRouteResponse
+  //   beforeEach('access a protected route', () => {
+  //     const { id } = userData
+  //     return chai.request(app)
+  //       .get('/api/users/1')
+  //       .end((err, res) => {
+  //         if (err) throw err
+  //         protectedRouteResponse = res
+  //       })
+  //   })
+  //   it('should return success status for protected route', () => {
+  //     expect(protectedRouteResponse.status).to.equal(200)
+  //   })
+  // })
 })
 
 // describe('Log in', () => {

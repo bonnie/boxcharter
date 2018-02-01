@@ -66,13 +66,10 @@ const signup = function(req, res, next) {
   userInfo.passwordHash = passData.hash
   userInfo.passwordSalt = passData.salt
   delete userInfo.password
-  console.log('************ userInfo:::', userInfo)
-
 
   // create user
   const { userid, email, firstName, lastName, passwordSalt, passwordHash } = userInfo
   const user = new User(userid, email, firstName, lastName, passwordSalt, passwordHash)
-  console.log('************ user:::', user)
   user.addToDb()
     .then((userId) => {
       const email = userInfo.email
