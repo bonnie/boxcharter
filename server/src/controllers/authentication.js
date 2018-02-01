@@ -1,3 +1,29 @@
+/*
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+ *
+ * This file is part of BoxCharter.
+ *
+ * BoxCharter is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * BoxCharter is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with BoxCharter. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/**
+ * Written with help from Stephen Grider's Advanced React and Redux Udemy Course
+ * @module
+ * authentication
+ */
+
 const passUtils = require('../utilities/password_utils')
 const User = require('../model/db_user')
 const { statusStrings, Status } = require('../../../shared/src/model/status')
@@ -7,7 +33,8 @@ const { checkPass } = require('../utilities/password_utils')
 const { generateToken } = require('../utilities/jwt')
 
 /**
- * 
+ * Callback to an express route to sign a user up
+ * @function
  * @param {object} req - express request object
  * @param {object} res - express response object
  * @param {function} next - next express middleware function 
@@ -71,7 +98,8 @@ const signup = function(req, res, next) {
 }
 
 /**
- * 
+ * Callback to an express route to authorize a user
+ * @function
  * @param {object} req - express request object
  * @param {object} res - express response object
  * @param {function} next - next express middleware function 
@@ -91,8 +119,7 @@ const authorize = (req, res, next) => {
 
         const response = { status }
         logger.warn(`${email} loggedin with invalid password`)
-        res.status(200).json(response)
-        return
+        return res.status(200).json(response)
       }
 
       // otherwise, all's rosy
@@ -101,13 +128,12 @@ const authorize = (req, res, next) => {
       status.text = msg
       logger.debug(msg)
 
-      User.getByEmail(foundUser.email).then((cleanUser) => {
-        const response = {
-          status,
-          user: cleanUser,
-        }
-        res.status(200).json(response)
-      })
+      const response = {
+        status,
+        user: foundUser,
+      }
+      response.user.token = generateToken(foundUser.id)
+      res.status(200).json(response)
     })
     .catch((error) => {
       console.log(error)
@@ -118,7 +144,8 @@ const authorize = (req, res, next) => {
 }
 
 /**
- * 
+ * Callback to an express route to check if a user's email is in the db
+ * @function
  * @param {object} req - express request object
  * @param {object} res - express response object
  * @param {function} next - next express middleware function 
