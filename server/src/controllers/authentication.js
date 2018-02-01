@@ -30,7 +30,6 @@ const { statusStrings, Status } = require('../../../shared/src/model/status')
 const { logger } = require('../utilities/log')
 const procError = require('../utilities/err')
 const { generateToken } = require('../utilities/jwt')
-const { checkPass } = require('../utilities/password_utils')
 
 /**
  * Callback to an express route to sign a user up
@@ -45,19 +44,14 @@ const signup = function(req, res, next) {
   /* { email: 'bonnie@bonnie',
   fname: 'bonnie',
   lname: 'bonnie',
-  password: 'bonnie',
-  password2: 'bonnie' } */
+  password: 'bonnie' } */
 
   // handle error cases
-  if (!userInfo.email || !userInfo.password || !userInfo.password2 ) {
+  if (!userInfo.email || !userInfo.password ) {
     return res.status(422).send({ error: 'Email and password cannot be blank'})
   }
 
-  if (userInfo.password !== userInfo.password2 ) {
-    return res.status(422).send({ error: 'Passwords must match' })
-  }
-
-  User.isInDb({ email: userInfo.email })
+  User.isInDb('email', userInfo.email)
     .then(inDB => { 
       if (inDB) return res.status(422).send({ error: 'Email is in use' })
     }) 
@@ -122,7 +116,7 @@ const signin = (req, res, next) => {
 const checkUser = (req, res, next) => {
   const email = req.query.email
 
-  User.isInDb({ email })
+  User.isInDb('email', email)
     .then((inDB) => {
       const result = { status: { type: statusStrings.success }, inDB }
       res.status(200).json(result)

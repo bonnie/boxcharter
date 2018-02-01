@@ -33,7 +33,7 @@ const router = express.Router()
 /* GET user details */
 /* **************** */
 router.get('/:user_id', (req, res) => {
-
+  res.status(200).send('I am a happy user')
 })
 
 /** *************** */

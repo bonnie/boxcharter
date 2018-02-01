@@ -30,13 +30,18 @@ const LocalStrategy = require('passport-local')
 const User = require('../model/db_user')
 const config = require('../../config')
 
-// create Local strategy
-const localOptions = { usernameField: 'email' }
-const localLogin = new LocalStrategy(localOptions, function(email, password, done) {
-  User.find({ where: { email } })
+/**
+ * Function meant to be used as passport strategy callback for the localStrategy
+ * @param {string} email 
+ * @param {string} password 
+ * @param {function} done 
+ * @returns {promise} - Promise whose resolution is unimportant
+ */
+const checkPassword = function(email, password, done) {
+  return User.find({ where: { email } })
     // can't use findByEmail here because we need hash and salt
     .then((foundUser) => {
-      if (foundUser === null || !checkPass(foundUser, password)) {
+      if (foundUser === null || foundUser.checkPassword(password)) {
         // user not in db or password doesn't match
         status.alertType = statusStrings.danger
         status.text = 'Invalid email and/or password'
@@ -69,8 +74,11 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
       // const response = procError(error, msg)
       // res.status(200).json(response)
     })
+}
 
-})
+// create Local strategy
+const localOptions = { usernameField: 'email' }
+const localLogin = new LocalStrategy(localOptions, checkPassword)
 
 // Set up options for JWT Strategy
 const jwtOptions = {

@@ -24,15 +24,15 @@ const Authentication = require('../controllers/authentication')
 
 // middleware for before signin route -- don't let them in unless they have
 // a correct email / password
-const requireSignin = passport.Authenticate('local', { session: false })
+const requireSignin = passport.authenticate('local', { session: false })
 
 // create the router
 const router = express.Router()
 
 // routes
-router.post('/signin', requireSignin, Authentication.signin)
-router.post('/signup', Authentication.signup)
-router.get('/check', Authentication.checkUser)
+router.post('/sign-in', requireSignin, Authentication.signin)
+router.post('/sign-up', Authentication.signup)
+router.get('/check-email', Authentication.checkUser)
 
 module.exports = router;
 

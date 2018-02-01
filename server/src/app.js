@@ -23,18 +23,16 @@
 // Get dependencies
 const path = require('path')
 const http = require('http')
+const cors = require('cors')
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const router = require('./routes')
 
 // logging
 const expressLog = require('./utilities/express_log')
 
-// Get our API routes
-const router = require('./routes')
-
-const cors = require('cors')
-
+// intantiate app
 const app = express();
 
 // logging incoming requests for debugging
@@ -55,7 +53,7 @@ app.use(bodyParser.json({ type: '*/*' }));
 app.use(expressLog.accessLogger)
 
 // Set our api routes
-
+router(app)
 
 // Catch all other routes and return not found
 app.get('*', (req, res) => {
@@ -74,3 +72,5 @@ const server = http.createServer(app);
 
 // Listen on provided port, on all network interfaces.
 server.listen(port, () => console.log(`Server running on localhost:${port}`));
+
+module.exports = server

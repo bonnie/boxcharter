@@ -98,11 +98,38 @@ User.getById = function (id) {
  * @returns {promise} - promise that resolves to a boolean, depending on whether user exists
  */
 // TODO: test this method
-User.isInDb = function(where) {
-  return User.findOne({ where })
+User.isInDb = function(lookupColumn, userData) {
+  return User.getUser(lookupColumn, userData)
     .then(foundUser => foundUser !== null)
 }
 
+/**
+ * Add User to db
+ * @method
+ */
+User.prototype.addToDb = async function () {
+  try {
+    const response = await db.one(
+      `INSERT INTO users 
+        ( email,
+          firstname,
+          lastname,
+          passwordsalt,
+          passwordhash )
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING userId`,
+      [
+        this.email,
+        this.firstName,
+        this.lastName,
+        this.passwordSalt,
+        this.passwordHash,
+      ])
+    this.userId = response.userid
+  } catch (e) {
+    const errMsg = `Failed to add user "${this.email}"`
+    throw logError(errMsg, e)
+  }
 /**
  * Update a user's metadata
  * @function
