@@ -106,6 +106,7 @@ User.isInDb = function(lookupColumn, userData) {
 /**
  * Add User to db
  * @method
+ * @returns {promise} - Promise that resolves to id of newly added user
  */
 User.prototype.addToDb = async function () {
   try {
@@ -116,20 +117,23 @@ User.prototype.addToDb = async function () {
           lastname,
           passwordsalt,
           passwordhash )
-        VALUES ($1, $2, $3, $4, $5, $6)
+        VALUES ($1, $2, $3, $4, $5)
         RETURNING userId`,
       [
         this.email,
         this.firstName,
         this.lastName,
-        this.passwordSalt,
-        this.passwordHash,
+        this.salt,
+        this.hash,
       ])
     this.userId = response.userid
+    return response.userid
   } catch (e) {
     const errMsg = `Failed to add user "${this.email}"`
     throw logError(errMsg, e)
   }
+}
+
 /**
  * Update a user's metadata
  * @function

@@ -63,31 +63,32 @@ const signup = function(req, res, next) {
   const passData = passUtils.saltHashPassword(userInfo.password)
 
   // massage userInfo obj to contain salted pass hash
-  userInfo.passwordHash = passData.passwordHash
+  userInfo.passwordHash = passData.hash
   userInfo.passwordSalt = passData.salt
   delete userInfo.password
+  console.log('************ userInfo:::', userInfo)
+
 
   // create user
-  User
-    .create(userInfo)
-    .then((newUser) => {
-      const email = newUser.email
+  const { userid, email, firstName, lastName, passwordSalt, passwordHash } = userInfo
+  const user = new User(userid, email, firstName, lastName, passwordSalt, passwordHash)
+  console.log('************ user:::', user)
+  user.addToDb()
+    .then((userId) => {
+      const email = userInfo.email
       const msg = `New user ${email} successfully added.`
       logger.info(msg)
 
-      const response = {}
+      const response = { success: true }
+      response.token = generateToken(userId)
+
       response.status = new Status(statusStrings.success, msg)
-      User.getByEmail(email)
-        .then((newUserJSON) => {
-          response.user = newUserJSON
-          response.user.token = generateToken(newUserJSON.id)
-          res.status(200).json(response);
-        })
+      return res.status(200).json(response);
     })
     .catch((error) => {
       const msg = `Unable to add user ${userInfo.email}`
       const response = procError(error, msg)
-      res.status(200).json(response)
+      return res.status(400).json(response)
     })
 }
 
