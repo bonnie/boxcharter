@@ -29,8 +29,8 @@ const User = require('../model/db_user')
 const { statusStrings, Status } = require('../../../shared/src/model/status')
 const { logger } = require('../utilities/log')
 const procError = require('../utilities/err')
-const { checkPass } = require('../utilities/password_utils')
 const { generateToken } = require('../utilities/jwt')
+const { checkPass } = require('../utilities/password_utils')
 
 /**
  * Callback to an express route to sign a user up
@@ -104,43 +104,12 @@ const signup = function(req, res, next) {
  * @param {object} res - express response object
  * @param {function} next - next express middleware function 
  */
-const authorize = (req, res, next) => {
-  const email = req.body.email
-  const password = req.body.password
-  const status = new Status()
+const signin = (req, res, next) => {
+  // user has already been authorized -- just need to give them a token
 
-  User.find({ where: { email } })
-    // can't use findByEmail here because we need hash and salt
-    .then((foundUser) => {
-      if (foundUser === null || !checkPass(foundUser, password)) {
-        // user not in db or password doesn't match
-        status.alertType = statusStrings.danger
-        status.text = 'Invalid email and/or password'
-
-        const response = { status }
-        logger.warn(`${email} loggedin with invalid password`)
-        return res.status(200).json(response)
-      }
-
-      // otherwise, all's rosy
-      const msg = `Successful login for ${email}`
-      status.alertType = statusStrings.success
-      status.text = msg
-      logger.debug(msg)
-
-      const response = {
-        status,
-        user: foundUser,
-      }
-      response.user.token = generateToken(foundUser.id)
-      res.status(200).json(response)
-    })
-    .catch((error) => {
-      console.log(error)
-      const msg = `Unable to authenticate user ${email}`
-      const response = procError(error, msg)
-      res.status(200).json(response)
-    })
+  // assigned by passport middleware
+  res.send({ token: generateToken(req.userId) })
+  
 }
 
 /**
@@ -167,6 +136,6 @@ const checkUser = (req, res, next) => {
 
 module.exports = {
   signup,
-  authorize,
+  signin,
   checkUser,
 }

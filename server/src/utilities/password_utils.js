@@ -73,6 +73,7 @@ const saltHashPassword = (userpassword) => {
  * @return {object} - Object containing the password salt and hash.
  */
 const checkPass = (user, pass) =>
+  // TODO: incorporate this as a method on the User object!!
   sha512(pass, user.salt).hash === user.hash
 
 module.exports = {

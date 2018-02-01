@@ -33,7 +33,42 @@ const config = require('../../config')
 // create Local strategy
 const localOptions = { usernameField: 'email' }
 const localLogin = new LocalStrategy(localOptions, function(email, password, done) {
-  
+  User.find({ where: { email } })
+    // can't use findByEmail here because we need hash and salt
+    .then((foundUser) => {
+      if (foundUser === null || !checkPass(foundUser, password)) {
+        // user not in db or password doesn't match
+        status.alertType = statusStrings.danger
+        status.text = 'Invalid email and/or password'
+
+        const response = { status }
+        logger.warn(`${email} logged in with invalid password`)
+        return done(null, false)
+        // return res.status(200).json(response)
+      }
+
+      // otherwise, all's rosy
+      const msg = `Successful login for ${email}`
+      status.alertType = statusStrings.success
+      status.text = msg
+      logger.debug(msg)
+
+      const response = {
+        status,
+        user: foundUser,
+      }
+      const userId = foundUser.id
+      done(null, userId)
+      // res.status(200).json(response)
+    })
+    .catch((error) => {
+      console.log(error)
+      const msg = `Unable to authenticate user ${email}`
+      procError(error, msg)
+      done(error)
+      // const response = procError(error, msg)
+      // res.status(200).json(response)
+    })
 
 })
 
@@ -60,5 +95,6 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
     .catch((err) => done(err, false))
 })
 
-// Tell passport to use this strategy
+// Tell passport to use strategies
+passport.use(localLogin)
 passport.use(jwtLogin)
