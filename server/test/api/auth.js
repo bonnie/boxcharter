@@ -37,38 +37,41 @@ chai.use(chaiHttp)
 describe('Token generation at account creation', () => {
   const email = 'testy@test.com'
   const password = 'test123'
-  let res
+  let authResponse
   beforeEach('Init DB and create account', () => {
     return initDB()
     .then(() => sendCredentials('sign-up', email, password))
-    .then(authRes => { res = authRes })
+    .then(res => { authResponse = res })
   })
   it('should result in status of 200', () => {
-    console.log('res.status', res.status)
-    expect(res.status).to.equal(200)
+    console.log('res.status', authResponse.status)
+    expect(authResponse.status).to.equal(200)
   })
   it('should return a token for new user', () => {
-    expect(res.body).to.have.property('token')
+    expect(authResponse.body).to.have.property('token')
   })
   it('should return a non-zero length token for the new user', () => {
-    expect(res.body.token.length).to.be.greaterThan(0)
+    expect(authResponse.body.token.length).to.be.greaterThan(0)
   })
-  // it('should not allow the an account to be created with duplicate email', () => {
-  //   let duplicateAccountResponse
-  //   beforeEach('create account with duplicate email', () => {
-  //     return sendCredentials('/sign-up', email, password)
-  //     .then(res => { duplicateAccountResponse = res })
-  //   })
-  //   it('should return status 422', () => {
-  //     expect(duplicateAccountResponse.status).to.equal(422)
-  //   })
-  //   it('should return error message', () => {
-  //     expect(duplicateAccountResponse.body).to.have.property('error')
-  //   })
-  //   it('should return the correct error message', () => {
-  //     expect(duplicateAccountResponse.body.error).to.equal('Email is in use')
-  //   })
-  // })
+  describe('should not allow the an account to be created with duplicate email', () => {
+    let duplicateAccountResponse
+    beforeEach('create account with duplicate email', () => {
+      // workaround for error response adapted from
+      // https://github.com/chaijs/chai-http/issues/75
+      return sendCredentials('sign-up', email, password)
+      .catch(err => err.response)
+      .then(res => { duplicateAccountResponse = res })
+    })
+    it('should return status 422', () => {
+      expect(duplicateAccountResponse.status).to.equal(422)
+    })
+    it('should return error message', () => {
+      expect(duplicateAccountResponse.body).to.have.property('error')
+    })
+    it('should return the correct error message', () => {
+      expect(duplicateAccountResponse.body.error).to.equal('Email is in use')
+    })
+  })
   // it('should allow access to protected route', () => {
   //   let protectedRouteResponse
   //   beforeEach('access a protected route', () => {

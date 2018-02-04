@@ -39,7 +39,6 @@ chai.use(chaiHttp)
  * @returns {promise} - Promise that resolves to the response of the http request 
  */
 const sendCredentials = (route, email, password) => {
-  console.log(`/api/auth/${route}`)
   return chai.request(app)
     .post(`/api/auth/${route}`)
     .send({ email, password })
