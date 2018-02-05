@@ -12,13 +12,16 @@ export default class App extends Component {
       <BrowserRouter>
         <div>
           <Header />
-          <Switch>
-            <Route path="/users/:id" component={UserDetail} />
-            <Route path="/charts/:id" component={ChartDetail} />
-            <Route path="/" component={SplashPage} />
-          </Switch>
+          {this.props.children}          
         </div>
       </BrowserRouter>
     );
   }
 }
+
+
+/* <Switch>
+<Route path="/users/:id" component={UserDetail} />
+<Route path="/charts/:id" component={ChartDetail} />
+<Route path="/" component={SplashPage} />
+</Switch> */

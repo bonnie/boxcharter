@@ -10,6 +10,19 @@ const serverHost = 'localhost'
 const serverPort = '5000'
 const baseUrl = `http://${serverHost}:${serverPort}/api`
 
+const signinUser = ({ email, password }) => {
+  // submit email/password to server
+
+  // if request is good...
+  // - update state to indicate user is authenticated
+  // - save the JWT token
+  // - redirect to the route "/users/{user_id}"
+
+  // if request is bad...
+  // - Show an error to the user
+
+}
+
 const getUserCharts = (userId) => {
   if (!userId) {
     return { type: GET_USERCHARTS }
@@ -33,6 +46,7 @@ const getChart = (chartId) => {
 }
 
 module.exports = {
+  signinUser,
   getUserCharts,
   getChart,
 }
