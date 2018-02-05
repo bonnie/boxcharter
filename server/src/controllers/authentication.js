@@ -77,7 +77,7 @@ const signup = function(req, res, next) {
       logger.info(msg)
 
       const response = { success: true }
-      response.token = generateToken(userId)
+      response.token = generateToken(user)
 
       response.status = new Status(statusStrings.success, msg)
       return res.status(200).json(response);
@@ -101,7 +101,7 @@ const signin = (req, res, next) => {
   // user has already been authorized -- just need to give them a token
 
   // assigned by passport middleware
-  res.send({ token: generateToken(req.userId) })
+  res.send({ token: generateToken(req.user) })
   
 }
 

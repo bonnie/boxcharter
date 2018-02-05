@@ -44,6 +44,19 @@ const sendCredentials = (route, email, password) => {
     .send({ email, password })
 }
 
+/**
+ * 
+ * @param {string} route - route to access
+ * @param {string} token - JWT for authentication
+ */
+const getProtectedResource = (route, token) => {
+  return chai.request(app)
+    .get(route)
+    .set('authorization', token) // set in the parent beforeEach
+    .catch(err => err.response)
+}
+
 module.exports = {
-  sendCredentials
+  sendCredentials,
+  getProtectedResource,
 }

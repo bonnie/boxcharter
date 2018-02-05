@@ -30,7 +30,7 @@ const LocalStrategy = require('passport-local')
 const User = require('../model/db_user')
 const config = require('../../config')
 const procError = require('../utilities/err')
-const logger = require('../utilities/log')
+const { logger } = require('../utilities/log')
 
 /**
  * Function meant to be used as passport strategy callback for the localStrategy
@@ -40,15 +40,15 @@ const logger = require('../utilities/log')
  * @returns {promise} - Promise whose resolution is unimportant
  */
 const checkPassword = function(email, password, done) {
-  return User.find({ where: { email } })
+  return User.getByEmail(email)
     // can't use findByEmail here because we need hash and salt
     .then((foundUser) => {
-      if (foundUser === null || foundUser.checkPassword(password)) {
+      if (foundUser === null || !foundUser.checkPassword(password)) {
         // user not in db or password doesn't match
         // status.alertType = statusStrings.danger
         // status.text = 'Invalid email and/or password'
 
-        const response = { status }
+        // const response = { status }
         logger.warn(`${email} logged in with invalid password`)
         return done(null, false)
         // return res.status(200).json(response)
@@ -64,14 +64,13 @@ const checkPassword = function(email, password, done) {
       //   status,
       //   user: foundUser,
       // }
-      const userId = foundUser.id
-      done(null, userId)
+      done(null, foundUser)
       // res.status(200).json(response)
     })
     .catch((error) => {
       const msg = `Unable to authenticate user ${email}`
       procError(error, msg)
-      done(error)
+      return done(error)
       // const response = procError(error, msg)
       // res.status(200).json(response)
     })
