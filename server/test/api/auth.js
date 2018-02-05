@@ -72,21 +72,20 @@ describe('Token generation at account creation', () => {
       expect(duplicateAccountResponse.body.error).to.equal('Email is in use')
     })
   })
-  // it('should allow access to protected route', () => {
-  //   let protectedRouteResponse
-  //   beforeEach('access a protected route', () => {
-  //     const { id } = userData
-  //     return chai.request(app)
-  //       .get('/api/users/1')
-  //       .end((err, res) => {
-  //         if (err) throw err
-  //         protectedRouteResponse = res
-  //       })
-  //   })
-  //   it('should return success status for protected route', () => {
-  //     expect(protectedRouteResponse.status).to.equal(200)
-  //   })
-  // })
+  describe('should allow access to protected route', () => {
+    let protectedRouteResponse
+    beforeEach('access a protected route', () => {
+      const { id } = userData
+      return chai.request(app)
+        .get(`/api/users/${id}`)
+        .set('authorization', authResponse.body.token) // set in the parent beforeEach
+        .catch(err => err.response)
+        .then(res => { protectedRouteResponse = res })
+    })
+    it('should return success status for authorized user profile page', () => {
+      expect(protectedRouteResponse.status).to.equal(200)
+    })
+  })
 })
 
 // describe('Log in', () => {

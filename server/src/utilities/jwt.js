@@ -34,9 +34,9 @@ const config = require('../../config')
  * Generate JSON web token for user
  * @param {User} user 
  */
-function generateToken(user) {
+function generateToken(userId) {
   const timestamp = new Date().getTime()
-  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret)
+  return jwt.encode({ sub: userId, iat: timestamp }, config.secret)
 }
 
 module.exports = {

@@ -29,6 +29,8 @@ const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
 const LocalStrategy = require('passport-local')
 const User = require('../model/db_user')
 const config = require('../../config')
+const procError = require('../utilities/err')
+const logger = require('../utilities/log')
 
 /**
  * Function meant to be used as passport strategy callback for the localStrategy
@@ -43,8 +45,8 @@ const checkPassword = function(email, password, done) {
     .then((foundUser) => {
       if (foundUser === null || foundUser.checkPassword(password)) {
         // user not in db or password doesn't match
-        status.alertType = statusStrings.danger
-        status.text = 'Invalid email and/or password'
+        // status.alertType = statusStrings.danger
+        // status.text = 'Invalid email and/or password'
 
         const response = { status }
         logger.warn(`${email} logged in with invalid password`)
@@ -54,20 +56,19 @@ const checkPassword = function(email, password, done) {
 
       // otherwise, all's rosy
       const msg = `Successful login for ${email}`
-      status.alertType = statusStrings.success
-      status.text = msg
+      // status.alertType = statusStrings.success
+      // status.text = msg
       logger.debug(msg)
 
-      const response = {
-        status,
-        user: foundUser,
-      }
+      // const response = {
+      //   status,
+      //   user: foundUser,
+      // }
       const userId = foundUser.id
       done(null, userId)
       // res.status(200).json(response)
     })
     .catch((error) => {
-      console.log(error)
       const msg = `Unable to authenticate user ${email}`
       procError(error, msg)
       done(error)
