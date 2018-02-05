@@ -38,6 +38,8 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.0.4",
     "redux-form": "^7.2.3",
-    "redux-promise": "^0.5.3"
+    "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.2.0",
+    "update": "^0.7.4"
   }
 }
