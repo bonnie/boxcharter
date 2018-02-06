@@ -25,11 +25,15 @@
  */
 
 import axios from 'axios'
+import { browserHistory } from 'react-router'
 // import Chart from '../../../shared/src/model/chart'
 
 import { 
   GET_USERCHARTS, 
   GET_CHART,
+  AUTH_USER,
+  UNAUTH_USER,
+  NO_ACTION,
 } from './types'
 
 const serverHost = 'localhost'
@@ -43,28 +47,43 @@ const signinUser = ({ email, password }) => {
   return function(dispatch) {
     // submit email/password to api server
     axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
-      .then()
+      .then((response) => {
+        // if request is good...
+        // - update state to indicate user is authenticated
+        dispatch({ type: AUTH_USER, payload: { userId: response.data.userId } })
 
+        // - save the JWT in browser "local storage" 
+        // (available even after navigating away and coming back)
+        localStorage.setItem('token', response.data.token)
 
-    // if request is good...
-    // - update state to indicate user is authenticated
-    // - save the JWT token
-    // - redirect to the route "/users/{user_id}"
-    
-    // if request is bad...
-    // - Show an error to the user
-    
+        // - redirect to the route "/users/{user_id}" (programmatic navigation)
+        browserHistory.push(`/users/${response.data.userId}`)
+      })
+      .catch((error) => {
+        // if request is bad...
+        // - Show an error to the user
+        dispatch({ type: UNAUTH_USER })
+      })
   }
 }
 
 const getUserCharts = (userId) => {
-  if (!userId) {
-    return { type: GET_USERCHARTS }
-  }
-  const request = axios.get(`${ROOT_URL}/users/${userId}/charts`)
-  return {
-    type: GET_USERCHARTS,
-    payload: request
+  return function(dispatch) {
+    if (!userId) {
+      // for initial load (necessary?)
+      return
+    }
+    axios.get(`${ROOT_URL}/users/${userId}/charts`)
+    .then(response => {
+      dispatch({
+        type: GET_USERCHARTS,
+        payload: response
+      })
+    })
+    .catch(error => {
+      // TODO: is this really what I want here?
+      dispatch({ type: UNAUTH_USER })
+    })
   }
 }
 

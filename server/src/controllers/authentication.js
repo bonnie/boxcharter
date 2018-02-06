@@ -99,10 +99,11 @@ const signup = function(req, res, next) {
  */
 const signin = (req, res, next) => {
   // user has already been authorized -- just need to give them a token
-
-  // assigned by passport middleware
-  res.send({ token: generateToken(req.user) })
-  
+  console.log('yup')
+  res.send({ 
+    token: generateToken(req.user),
+    userId: req.user.userId,
+  })
 }
 
 /**

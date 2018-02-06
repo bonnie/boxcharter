@@ -9,7 +9,7 @@ class UserCharts extends Component {
     super(props)
   }
   componentWillMount() {
-    this.props.getUserCharts(this.props.user.userId)
+    this.props.getUserCharts(this.props.auth.userId)
   }
   render() {
     const chartRows = this.props.charts.map((chart) => {
@@ -34,8 +34,8 @@ class UserCharts extends Component {
   }
 }
 
-function mapStateToProps({ user, charts }) {
-  return { user, charts }
+function mapStateToProps({ auth, charts }) {
+  return { auth, charts }
 }
 
 export default connect(mapStateToProps, { getUserCharts })(UserCharts);

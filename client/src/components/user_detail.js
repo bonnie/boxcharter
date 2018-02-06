@@ -13,8 +13,8 @@ class UserPage extends Component {
   }
 }
 
-function mapStateToProps({ user }) {
-  return { user }
+function mapStateToProps({ auth }) {
+  return { auth }
 }
 
 export default connect(mapStateToProps)(UserPage);

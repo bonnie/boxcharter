@@ -5,7 +5,7 @@ import chartsReducer from './reducer_charts'
 
 const rootReducer = combineReducers({
   form: formReducer,
-  user: authReducer,
+  auth: authReducer,
   charts: chartsReducer,
 });
 
