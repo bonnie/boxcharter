@@ -25,12 +25,17 @@
  */
 
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import boxcharter36 from '../../public/images/boxcharter-36x36.png'
 
 class Header extends Component {
   render() {
     return (
       <nav className="navbar navbar-light">
         <ul className="nav navbar-nav">
+          <li className="navbar-brand">
+            <img src={boxcharter36} />
+          </li>
           <li className="nav-item">
             Sign in
           </li>
