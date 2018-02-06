@@ -1,5 +1,5 @@
 import axios from 'axios'
-import  from 'redux-thunk'
+// import  from 'redux-thunk'
 // import Chart from '../../../shared/src/model/chart'
 
 import { 

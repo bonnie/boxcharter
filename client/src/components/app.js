@@ -9,19 +9,21 @@ import Header from './header'
 export default class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <div>
-          <Header />
-          {this.props.children}          
-        </div>
-      </BrowserRouter>
-    );
+      <div>
+        <Header />
+        {this.props.children}          
+      </div>
+    )
   }
 }
 
 
-/* <Switch>
-<Route path="/users/:id" component={UserDetail} />
-<Route path="/charts/:id" component={ChartDetail} />
-<Route path="/" component={SplashPage} />
-</Switch> */
+/* 
+<BrowserRouter>
+  <Switch>
+    <Route path="/users/:id" component={UserDetail} />
+    <Route path="/charts/:id" component={ChartDetail} />
+    <Route path="/" component={SplashPage} />
+  </Switch> 
+</BrowserRouter>
+*/
