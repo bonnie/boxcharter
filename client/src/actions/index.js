@@ -31,6 +31,7 @@ import { browserHistory } from 'react-router'
 import { 
   GET_USERCHARTS, 
   GET_CHART,
+  AUTH_ERROR,
   AUTH_USER,
   UNAUTH_USER,
   NO_ACTION,
@@ -62,10 +63,17 @@ const signinUser = ({ email, password }) => {
       .catch((error) => {
         // if request is bad...
         // - Show an error to the user
-        dispatch({ type: UNAUTH_USER })
+        dispatch(authError('Bad login info'))
       })
   }
 }
+
+const authError = (error) => {
+  return {
+    type: AUTH_ERROR,
+    payload: error
+  }
+} 
 
 const getUserCharts = (userId) => {
   return function(dispatch) {
@@ -81,8 +89,7 @@ const getUserCharts = (userId) => {
       })
     })
     .catch(error => {
-      // TODO: is this really what I want here?
-      dispatch({ type: UNAUTH_USER })
+      dispatch(authError('Bad login info'))
     })
   }
 }
@@ -102,4 +109,5 @@ module.exports = {
   signinUser,
   getUserCharts,
   getChart,
+  authError,
 }

@@ -33,6 +33,6 @@ export default (state = {}, action) => {
     case UNAUTH_USER:
       return { ...state, authenticated: false }
     default:
-      return { ...state }
+      return { ...state, error: action.payload }
   }
 }
