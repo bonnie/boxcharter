@@ -25,24 +25,45 @@
  */
 
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
+import NavLink from './nav_link'
 import boxcharter36 from '../../public/images/boxcharter-36x36.png'
 
 class Header extends Component {
   render() {
+
+    const authLinks = () => {
+      if (this.props.auth.authentication) {
+        return (
+          <NavLink linkRoute="/sign-out" linkText="Sign Out" />
+        )
+      } else {
+        return (
+          <span>
+            <NavLink linkRoute="/sign-in" linkText="Sign In" />
+            <NavLink linkRoute="/sign-up" linkText="Sign Up" />
+          </span>
+        )
+      }
+    }
+
     return (
       <nav className="navbar navbar-light">
         <ul className="nav navbar-nav">
           <li className="navbar-brand">
             <Link to="/"><img src={boxcharter36} /></Link>
           </li>
-          <li className="nav-item">
-            <Link to="/sign-in">Sign in</Link>
-          </li>
+          {authLinks()}
         </ul>
       </nav>
     )
   }
 }
 
-export default Header
+
+function mapStateToProps({ auth }) {
+  return { auth }
+}
+
+export default connect(mapStateToProps)(Header);
