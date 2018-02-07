@@ -25,7 +25,7 @@
  */
 
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { BrowserRouter, Link } from 'react-router-dom'
 import boxcharter36 from '../../public/images/boxcharter-36x36.png'
 
 class Header extends Component {
@@ -34,10 +34,10 @@ class Header extends Component {
       <nav className="navbar navbar-light">
         <ul className="nav navbar-nav">
           <li className="navbar-brand">
-            <img src={boxcharter36} />
+            <Link to="/"><img src={boxcharter36} /></Link>
           </li>
           <li className="nav-item">
-            Sign in
+            <Link to="/sign-in">Sign in</Link>
           </li>
         </ul>
       </nav>

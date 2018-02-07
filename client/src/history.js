@@ -19,28 +19,14 @@
  */
 
 /**
- * User detail component
+ * Adapted from https://stackoverflow.com/a/42679052
+ * other possibility: https://stackoverflow.com/a/42124328
  * @module
- * user_detail
+ * history
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import UserCharts from './user_charts'
+import { createBrowserHistory } from 'history'
 
-class UserPage extends Component {
-  render() {
-    return (
-      <div className="user-page">
-        <h3>Charts</h3>
-        <UserCharts />
-      </div>
-    )
-  }
-}
-
-function mapStateToProps({ auth }) {
-  return { auth }
-}
-
-export default connect(mapStateToProps)(UserPage);
+export default createBrowserHistory({
+  /* pass a configuration object here if needed */
+})

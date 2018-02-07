@@ -25,7 +25,7 @@
  */
 
 import axios from 'axios'
-import { browserHistory } from 'react-router'
+import browserHistory from '../history'
 // import Chart from '../../../shared/src/model/chart'
 
 import { 
