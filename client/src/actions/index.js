@@ -44,14 +44,14 @@ const ROOT_URL = `http://${serverHost}:${serverPort}/api`
 const authHandler = (response, dispatch) => {
   // if request is good...
   // - update state to indicate user is authenticated
-  dispatch({ type: AUTH_USER, payload: { userId: response.data.userId } })
+  dispatch({ type: AUTH_USER, payload: { user: response.data.user } })
 
   // - save the JWT in browser "local storage" 
   // (available even after navigating away and coming back)
   localStorage.setItem('token', response.data.token)
 
   // - redirect to the route "/users/{user_id}" (programmatic navigation)
-  browserHistory.push(`/users/${response.data.userId}`)
+  browserHistory.push(`/users/${response.data.user.userId}`)
 }
 
 const signinUser = ({ email, password }) => {

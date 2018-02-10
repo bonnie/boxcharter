@@ -37,10 +37,21 @@ import App from './components/app'
 import Signin from './components/auth/sign_in'
 import reducers from './reducers'
 
+import { AUTH_USER } from './actions/types'
+
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise, reduxThunk)(createStore);
+const store = createStoreWithMiddleware(reducers)
+const state = store.getState()
+
+// check for authentication before any rendering
+const token = localStorage.getItem('token')
+if (token) {
+  // update application state
+  store.dispatch({ type: AUTH_USER, payload: {user: state.auth.user } })
+}
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={store}>
     <Router history={browserHistory}>
       <App />
     </Router>
