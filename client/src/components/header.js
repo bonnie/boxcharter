@@ -33,28 +33,24 @@ import boxcharter36 from '../../public/images/boxcharter-36x36.png'
 class Header extends Component {
   render() {
 
-    const authLinks = () => {
+    const renderLinks = () => {
       if (this.props.auth.authenticated) {
         return (
           <NavLink linkRoute="/sign-out" linkText="Sign Out" />
         )
       } else {
-        return (
-          <span>
-            <NavLink linkRoute="/sign-in" linkText="Sign In" />
-            <NavLink linkRoute="/sign-up" linkText="Sign Up" />
-          </span>
-        )
+        return [
+            <NavLink key="1" linkRoute="/sign-in" linkText="Sign In" />,
+            <NavLink key="2" linkRoute="/sign-up" linkText="Sign Up" />
+          ]
       }
     }
 
     return (
       <nav className="navbar navbar-light">
+        <Link to="/" className="navbar-brand"><img src={boxcharter36} /></Link>
         <ul className="nav navbar-nav">
-          <li className="navbar-brand">
-            <Link to="/"><img src={boxcharter36} /></Link>
-          </li>
-          {authLinks()}
+          {renderLinks()}
         </ul>
       </nav>
     )
