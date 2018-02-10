@@ -29,6 +29,11 @@ import { reduxForm } from 'redux-form'
 import * as actions from '../../actions'
 
 class SignUp extends Component {
+  handleFormSubmit(formProps) {
+    // call action creator to sign up the user
+    this.props.signupUser(formProps)
+  }
+
   generateFields() {
     const { fields } = this.props 
     const fieldElements = []   
@@ -52,7 +57,7 @@ class SignUp extends Component {
   render() {
     const { handleSubmit } = this.props
     return (
-      <form>
+      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
         { this.generateFields() }
         <button action="submit" className="btn btn-primary">Sign up</button>
       </form>
@@ -86,4 +91,4 @@ const formOptions = {
   fields: ['email', 'password', 'passwordConfirm'],
   validate,
 }
-export default reduxForm(formOptions)(SignUp)
+export default reduxForm(formOptions, null, actions)(SignUp)

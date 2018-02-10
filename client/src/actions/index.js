@@ -41,6 +41,22 @@ const serverHost = 'localhost'
 const serverPort = '3090'
 const ROOT_URL = `http://${serverHost}:${serverPort}/api`
 
+const authHandler = (response, dispatch) => {
+  if (response.error) {
+    return dispatch(authError(response.error))
+  }
+  // if request is good...
+  // - update state to indicate user is authenticated
+  dispatch({ type: AUTH_USER, payload: { userId: response.data.userId } })
+
+  // - save the JWT in browser "local storage" 
+  // (available even after navigating away and coming back)
+  localStorage.setItem('token', response.data.token)
+
+  // - redirect to the route "/users/{user_id}" (programmatic navigation)
+  browserHistory.push(`/users/${response.data.userId}`)
+}
+
 const signinUser = ({ email, password }) => {
   // because we have redux-thunk middleware, 
   // instead of returning an object, we can return a function
@@ -48,23 +64,22 @@ const signinUser = ({ email, password }) => {
   return function(dispatch) {
     // submit email/password to api server
     axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
-      .then((response) => {
-        console.log('yay, authenticated!')
-        // if request is good...
-        // - update state to indicate user is authenticated
-        dispatch({ type: AUTH_USER, payload: { userId: response.data.userId } })
-
-        // - save the JWT in browser "local storage" 
-        // (available even after navigating away and coming back)
-        localStorage.setItem('token', response.data.token)
-
-        // - redirect to the route "/users/{user_id}" (programmatic navigation)
-        browserHistory.push(`/users/${response.data.userId}`)
-      })
+      .then((response) => authHandler(response, dispatch))
       .catch((error) => {
         // if request is bad...
         // - Show an error to the user
         dispatch(authError('Bad login info'))
+      })
+  }
+}
+
+
+const signupUser = ({ email, password }) => {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
+      .then((response) => authHandler(response, dispatch))
+      .catch((error) => {
+        dispatch(authError('Sign-up Error'))
       })
   }
 }
@@ -116,8 +131,9 @@ const getChart = (chartId) => {
 
 module.exports = {
   signinUser,
+  signupUser,
+  signoutUser,
   getUserCharts,
   getChart,
   authError,
-  signoutUser,
 }

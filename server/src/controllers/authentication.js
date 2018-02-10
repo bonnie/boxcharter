@@ -76,10 +76,7 @@ const signup = function(req, res, next) {
       const msg = `New user ${email} successfully added.`
       logger.info(msg)
 
-      const response = { success: true }
-      response.token = generateToken(user)
-
-      response.status = new Status(statusStrings.success, msg)
+      const response = { success: true, userId }
       return res.status(200).json(response);
     })
     .catch((error) => {
@@ -99,7 +96,6 @@ const signup = function(req, res, next) {
  */
 const signin = (req, res, next) => {
   // user has already been authorized -- just need to give them a token
-  console.log('yup')
   res.send({ 
     token: generateToken(req.user),
     userId: req.user.userId,
