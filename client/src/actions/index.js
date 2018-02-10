@@ -69,6 +69,14 @@ const signinUser = ({ email, password }) => {
   }
 }
 
+/**
+ * 
+ */
+const signoutUser = () => {
+  localStorage.removeItem('token')
+  return { type: UNAUTH_USER }
+}
+
 const authError = (error) => {
   return {
     type: AUTH_ERROR,
@@ -90,7 +98,7 @@ const getUserCharts = (userId) => {
       })
     })
     .catch(error => {
-      dispatch(authError('Bad login info'))
+      console.error(error)
     })
   }
 }
@@ -111,4 +119,5 @@ module.exports = {
   getUserCharts,
   getChart,
   authError,
+  signoutUser,
 }

@@ -6,7 +6,7 @@ import UserDetail from './user_detail'
 import ChartDetail from './chart_detail'
 import SplashPage from './splash_page'
 import SignIn from './auth/sign_in'
-
+import SignOut from './auth/sign_out'
 
 export default class App extends Component {
   render() {
@@ -17,6 +17,7 @@ export default class App extends Component {
           <Route path="/users/:id" component={UserDetail} />
           <Route path="/charts/:id" component={ChartDetail} />
           <Route path="/sign-in" component={SignIn} />
+          <Route path="/sign-out" component={SignOut} />
           <Route path="/" component={SplashPage} />
         </Switch> 
       </div>
