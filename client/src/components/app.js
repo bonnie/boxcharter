@@ -8,6 +8,7 @@ import SplashPage from './splash_page'
 import SignIn from './auth/sign_in'
 import SignOut from './auth/sign_out'
 import SignUp from './auth/sign_up'
+import RequireAuth from './auth/require_auth'
 
 export default class App extends Component {
   render() {
@@ -15,8 +16,8 @@ export default class App extends Component {
       <div>
         <Header />
         <Switch>
-          <Route path="/users/:id" component={UserDetail} />
-          <Route path="/charts/:id" component={ChartDetail} />
+          <Route path="/users/:id" component={RequireAuth(UserDetail)} />
+          <Route path="/charts/:id" component={RequireAuth(ChartDetail)} />
           <Route path="/sign-in" component={SignIn} />
           <Route path="/sign-up" component={SignUp} />
           <Route path="/sign-out" component={SignOut} />
