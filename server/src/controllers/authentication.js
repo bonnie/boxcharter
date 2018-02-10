@@ -75,8 +75,9 @@ const signup = function(req, res, next) {
       const email = userInfo.email
       const msg = `New user ${email} successfully added.`
       logger.info(msg)
+      const token = generateToken(user)
 
-      const response = { success: true, userId }
+      const response = { token, userId }
       return res.status(200).json(response);
     })
     .catch((error) => {

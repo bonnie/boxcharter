@@ -54,11 +54,22 @@ class SignUp extends Component {
     return fieldElements
   }
 
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div className="alert alert-danger">
+          <strong>Oops!</strong> {this.props.errorMessage}
+        </div>
+      )
+    }
+  }
+
   render() {
     const { handleSubmit } = this.props
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
         { this.generateFields() }
+        { this.renderAlert() }
         <button action="submit" className="btn btn-primary">Sign up</button>
       </form>
     )
@@ -86,9 +97,13 @@ const validate = (formProps) => {
   return errors
 }
 
+function mapStateToProps(state) {
+  return { errorMessage: state.auth.error }
+}
+
 const formOptions = {
   form: 'signup',
   fields: ['email', 'password', 'passwordConfirm'],
   validate,
 }
-export default reduxForm(formOptions, null, actions)(SignUp)
+export default reduxForm(formOptions, mapStateToProps, actions)(SignUp)

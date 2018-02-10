@@ -42,9 +42,6 @@ const serverPort = '3090'
 const ROOT_URL = `http://${serverHost}:${serverPort}/api`
 
 const authHandler = (response, dispatch) => {
-  if (response.error) {
-    return dispatch(authError(response.error))
-  }
   // if request is good...
   // - update state to indicate user is authenticated
   dispatch({ type: AUTH_USER, payload: { userId: response.data.userId } })
@@ -78,9 +75,7 @@ const signupUser = ({ email, password }) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
       .then((response) => authHandler(response, dispatch))
-      .catch((error) => {
-        dispatch(authError('Sign-up Error'))
-      })
+      .catch((response) => dispatch(authError(response.data.error)))
   }
 }
 
