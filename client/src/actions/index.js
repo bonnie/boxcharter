@@ -49,6 +49,7 @@ const signinUser = ({ email, password }) => {
     // submit email/password to api server
     axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
       .then((response) => {
+        console.log('yay, authenticated!')
         // if request is good...
         // - update state to indicate user is authenticated
         dispatch({ type: AUTH_USER, payload: { userId: response.data.userId } })

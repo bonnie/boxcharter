@@ -34,7 +34,7 @@ class Header extends Component {
   render() {
 
     const authLinks = () => {
-      if (this.props.auth.authentication) {
+      if (this.props.auth.authenticated) {
         return (
           <NavLink linkRoute="/sign-out" linkText="Sign Out" />
         )
