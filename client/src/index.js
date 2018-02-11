@@ -29,9 +29,10 @@ import ReactDOM from 'react-dom';
 import { Router, Route, Switch } from 'react-router-dom'
 import browserHistory from './history'
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import ReduxPromise from 'redux-promise'
-import reduxThunk from 'redux-thunk'
+// TODO: figure out why the next line causes "Uncaught TypeError: Super expression must either be null or a function, not undefined"
+// import { PersistGate } from 'redux-persist/integration/react'
+
+import configureStore from './configure_store'
 
 import App from './components/app'
 import Signin from './components/auth/sign_in'
@@ -39,22 +40,23 @@ import reducers from './reducers'
 
 import { AUTH_USER } from './actions/types'
 
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise, reduxThunk)(createStore);
-const store = createStoreWithMiddleware(reducers)
-const state = store.getState()
+const { store, persistor } = configureStore()
 
-// check for authentication before any rendering
-const token = localStorage.getItem('token')
-if (token) {
-  // update application state
-  store.dispatch({ type: AUTH_USER, payload: {user: state.auth.user } })
-}
+// // check for authentication before any rendering
+// const token = localStorage.getItem('token')
+
+// if (token) {
+//   // update application state
+//   store.dispatch({ type: AUTH_USER })
+// }
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
-      <App />
-    </Router>
+    {/* <PersistGate loading={null} persistor={persistor}> */}
+      <Router history={browserHistory}>
+        <App />
+      </Router>
+    {/* </PersistGate> */}
   </Provider>
   , document.querySelector('.container'));
 

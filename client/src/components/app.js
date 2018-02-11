@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Header from './header'
-import UserDetail from './user_detail'
+import UserProfile from './user_profile'
 import ChartDetail from './chart_detail'
 import SplashPage from './splash_page'
 import SignIn from './auth/sign_in'
@@ -16,7 +16,7 @@ export default class App extends Component {
       <div>
         <Header />
         <Switch>
-          <Route path="/users/:id" component={RequireAuth(UserDetail)} />
+          <Route path="/user_profile" component={RequireAuth(UserProfile)} />
           <Route path="/charts/:id" component={RequireAuth(ChartDetail)} />
           <Route path="/sign-in" component={SignIn} />
           <Route path="/sign-up" component={SignUp} />

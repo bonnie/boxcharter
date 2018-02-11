@@ -50,8 +50,8 @@ const authHandler = (response, dispatch) => {
   // (available even after navigating away and coming back)
   localStorage.setItem('token', response.data.token)
 
-  // - redirect to the route "/users/{user_id}" (programmatic navigation)
-  browserHistory.push(`/users/${response.data.user.userId}`)
+  // - redirect to the route "/user_profile" (programmatic navigation)
+  browserHistory.push(`/user_profile`)
 }
 
 const signinUser = ({ email, password }) => {
@@ -96,11 +96,9 @@ const authError = (error) => {
 
 const getUserCharts = (userId) => {
   return function(dispatch) {
-    if (!userId) {
-      // for initial load (necessary?)
-      return
-    }
-    axios.get(`${ROOT_URL}/users/${userId}/charts`)
+    axios.get(`${ROOT_URL}/users/${userId}/charts`, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
     .then(response => {
       dispatch({
         type: GET_USERCHARTS,

@@ -9,7 +9,9 @@ class UserCharts extends Component {
     super(props)
   }
   componentWillMount() {
-    this.props.getUserCharts(this.props.auth.userId)
+    if (this.props.auth && this.props.auth.user && this.props.auth.user.userId) {
+      this.props.getUserCharts(this.props.auth.user.userId)
+    }
   }
   render() {
     const chartRows = this.props.charts.map((chart) => {
