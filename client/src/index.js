@@ -31,6 +31,8 @@ import browserHistory from './history'
 import { Provider } from 'react-redux';
 // TODO: figure out why the next line causes "Uncaught TypeError: Super expression must either be null or a function, not undefined"
 // import { PersistGate } from 'redux-persist/integration/react'
+// import { PersistGate } from 'redux-persist/lib/integration/react'
+// import { PersistGate } from 'redux-persist/es/integration/react' // this one causes "Uncaught SyntaxError: Unexpected identifier"
 
 import configureStore from './configure_store'
 

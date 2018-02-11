@@ -28,7 +28,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
 import NavLink from './nav_link'
-import boxcharter36 from '../../public/images/boxcharter-36x36.png'
+import boxcharter48 from '../../public/images/boxcharter-48.png'
 
 class Header extends Component {
   render() {
@@ -48,7 +48,7 @@ class Header extends Component {
 
     return (
       <nav className="navbar navbar-light">
-        <Link to="/" className="navbar-brand"><img src={boxcharter36} /></Link>
+        <Link to="/" className="navbar-brand"><img src={boxcharter48} /></Link>
         <ul className="nav navbar-nav">
           {renderLinks()}
         </ul>
