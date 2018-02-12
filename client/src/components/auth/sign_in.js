@@ -29,6 +29,11 @@ import { reduxForm } from 'redux-form'
 import * as actions from '../../actions'
 
 class Signin extends Component {
+  componentDidMount() {
+    // clear any errors
+    this.props.setAuthError(null)
+  }
+
   handleFormSubmit({ email, password }) {
     console.log(email, password)
     // log user in

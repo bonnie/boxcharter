@@ -65,7 +65,7 @@ const signinUser = ({ email, password }) => {
       .catch((error) => {
         // if request is bad...
         // - Show an error to the user
-        dispatch(authError('Bad login info'))
+        dispatch(setAuthError('Bad login info'))
       })
   }
 }
@@ -75,7 +75,7 @@ const signupUser = ({ email, password }) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
       .then((response) => authHandler(response, dispatch))
-      .catch((response) => dispatch(authError(response.data.error)))
+      .catch((response) => dispatch(setAuthError(response.data.error)))
   }
 }
 
@@ -87,7 +87,7 @@ const signoutUser = () => {
   return { type: UNAUTH_USER }
 }
 
-const authError = (error) => {
+const setAuthError = (error) => {
   return {
     type: AUTH_ERROR,
     payload: error
@@ -128,5 +128,5 @@ module.exports = {
   signoutUser,
   getUserCharts,
   getChart,
-  authError,
+  setAuthError,
 }

@@ -81,9 +81,7 @@ const signup = function(req, res, next) {
       return res.status(200).json(response);
     })
     .catch((error) => {
-      const msg = `Unable to add user ${userInfo.email}`
-      const response = procError(error, msg)
-      response.error = 'Email is in use'
+      const response = { error: 'Email is in use' }
       return res.status(422).json(response)
     })
 }
