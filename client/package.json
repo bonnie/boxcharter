@@ -1,16 +1,18 @@
 {
-  "name": "redux-simple-starter",
-  "version": "1.0.0",
-  "description": "Simple starter package for Redux with React and Babel support",
-  "main": "index.js",
-  "repository": "git@github.com:StephenGrider/ReduxSimpleStarter.git",
-  "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
-    "test:watch": "npm run test -- --watch"
+  "name": "boxcharter-client",
+  "version": "1.0.0-alpha.1",
+  "author": "Bonnie Schulkin",
+  "description": "Client for web app to create chord / lyric box charts",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyrightsister/boxcharter.git"
   },
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+  "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+  "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
+  "test:watch": "npm run test -- --watch"
+  },
   "devDependencies": {
     "babel-core": "^6.2.1",
     "babel-loader": "^6.2.0",

@@ -1,0 +1,22 @@
+{
+  "name": "boxcharter",
+  "description": "An open-source web application that creates chord/lyric \"box charts\" for jamming. This is currently a work in progress; _eventually_ it will be deployed at http://boxcharter.com.",
+  "version": "1.0.0-alpha.1",
+  "author": "Bonnie Schulkin",
+  "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyrightsister/boxcharter.git"
+  },
+  "scripts": {
+    "dev:start": "npm run dev:start:client; npm run dev:start:server",
+    "dev:start:client": "cd client && npm run dev:start &",
+    "dev:start:server": "cd server && npm run dev:start &",
+    "setup": "npm run setup:client && npm run setup:server",
+    "setup:client": "cd client && npm run setup && cd ..",
+    "setup:server": "cd server && npm run setup && cd ..",
+    "start": "npm start:client; npm start:server",
+    "start:client": "cd client && npm start &",
+    "start:server": "cd server && npm start &"
+  }
+}
