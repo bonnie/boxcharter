@@ -9,14 +9,10 @@
     "url": "git+https://github.com/flyrightsister/boxcharter.git"
   },
   "scripts": {
-    "dev:start": "npm run dev:start:client; npm run dev:start:server",
-    "dev:start:client": "cd client && npm run dev:start &",
-    "dev:start:server": "cd server && npm run dev:start &",
     "setup": "npm run setup:client && npm run setup:server",
     "setup:client": "cd client && npm run setup && cd ..",
     "setup:server": "cd server && npm run setup && cd ..",
-    "start": "npm start:client; npm start:server",
-    "start:client": "cd client && npm start &",
-    "start:server": "cd server && npm start &"
+    "test": "npm test:server && npm test:client",
+    "test:client": "cd client && npm test"
   }
 }
