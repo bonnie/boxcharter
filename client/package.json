@@ -9,9 +9,10 @@
     "url": "git+https://github.com/flyrightsister/boxcharter.git"
   },
   "scripts": {
-  "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-  "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
-  "test:watch": "npm run test -- --watch"
+    "setup": "npm install",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
+    "test:watch": "npm run test -- --watch"
   },
   "devDependencies": {
     "babel-core": "^6.2.1",

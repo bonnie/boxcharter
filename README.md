@@ -7,19 +7,15 @@
 ### Prerequisites
   To run this project, you'll need
 
-  - [https://nodejs.org](Node.js) 8.x
-  - [https://www.postgresql.org/](PostgreSQL) 9.x
+  - (https://nodejs.org)[Node.js] 8.x
+  - (https://www.postgresql.org/)[PostgreSQL] 9.x
 
 ### Installing
   1. Clone or fork repo
 
-  2. __Configuration__
+  2. __Configuration__: `$ cp server/config.js.template server/config.js`
 
-    - `$ cp server/config.js.template server/config.js`
-      Fill out the variables in `config.js`
-
-    - `$ cp server/env/production.sh.template server/env/production.sh`
-      Fill out the environment variables in the template in `production.sh`
+    Fill out the variables in `config.js`
 
   3. __Node setup__: `$ npm run setup`
 
@@ -29,7 +25,7 @@
     b. create and seed the development PostgreSQL database: `boxcharter_dev`
     c. create the test PostgreSQL database: `boxcharter_test`
 
-  4. __Start servers__: `$ npm start`
+  4. __Start servers__: `$ npm run dev:start`
 
     This will use `nodemon` start both the React client and the Node Express server in a way that will reload on changes to the code.
 
@@ -45,14 +41,14 @@
 
 ## Built With
 
-  - [https://www.postgresql.org/](PostgreSQL)
-  - [https://nodejs.org](Node.js)
-  - [https://github.com/vitaly-t/pg-promise](pg-promise)
-  - [https://expressjs.com/](Express)
-  - [https://reactjs.org/](React)
-  - [https://redux.js.org/](Redux)
-  - [https://www.npmjs.com/package/redux-thunk](Redux Thunk)
-  - [https://getbootstrap.com/](Bootstrap)
+  - (https://www.postgresql.org/)[PostgreSQL]
+  - (https://nodejs.org)[Node.js]
+  - (https://github.com/vitaly-t/pg-promise)[pg-promise]
+  - (https://expressjs.com/)[Express]
+  - (https://reactjs.org/)[React]
+  - (https://redux.js.org/)[Redux]
+  - (https://www.npmjs.com/package/redux-thunk)[Redux Thunk]
+  - (https://getbootstrap.com/)[Bootstrap]
 
 ## Contributing
   Coming soon...
@@ -64,13 +60,13 @@
   Coming soon...
 
 ## Authors
-  - [https://github.com/flyrightsister](Bonnie Schulkin) - _Initial work_
+  - (https://github.com/flyrightsister)[Bonnie Schulkin] - _Initial work_
 
 ## License
-  BoxCharter is licensed under the [GNU Affero General Public License](http://www.gnu.org/licenses/).
+  BoxCharter is licensed under the (GNU Affero General Public License)[http://www.gnu.org/licenses/).
 
 ## Project History
   This has been a learning project for me. I started with a Python Flask back end and an AngularJS / Clarity front end to learn AngularJS. Then I switched to using Node.js and React/Redux on the job, and refactored this to have a Node Express back end and React/Redux on the front end to learn those technologies. 
 
 ## Acknowledgments
-  - Many thanks to [https://www.rallycoding.com/](Stephen Grider) for his outstanding React courses on Udemy! 
+  - Many thanks to (https://www.rallycoding.com/)[Stephen Grider] for his outstanding React courses on Udemy! 
