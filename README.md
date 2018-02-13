@@ -8,6 +8,7 @@
   To run this project, you'll need
 
   - (https://nodejs.org)[Node.js] 8.x
+  - (https://github.com/creationix/nvm)[nvm]
   - (https://www.postgresql.org/)[PostgreSQL] 9.x
 
 ### Installing
@@ -17,17 +18,33 @@
 
     Fill out the variables in `config.js`
 
-  3. __Node setup__: `$ npm run setup`
+  3. __Node setup__: 
+  
+    a. `$ nvm use`
+
+    This will use the nvm version assigned for this project. __Note__: nvm may instruct you to install a new version of Node; follow instructions as necessary.
+
+    b. `$ npm run setup`
 
     This will accomplish a number of things: 
-    
-    a. install all node modules and dependencies
-    b. create and seed the development PostgreSQL database: `boxcharter_dev`
-    c. create the test PostgreSQL database: `boxcharter_test`
+  
+    1. install all node modules and dependencies
+    2. create and seed the development PostgreSQL database: `boxcharter_dev`
+    3. create the test PostgreSQL database: `boxcharter_test`
 
-  4. __Start servers__: `$ npm run dev:start`
+  4. __Start servers__: 
 
-    This will use `nodemon` start both the React client and the Node Express server in a way that will reload on changes to the code.
+    a. Start two separate shells
+    b. In one of the shells, cd into the `client` directory; in the other cd into the `server` directory. 
+    c. Run `$ npm run dev:start` in each directory.
+
+    __Notes__: 
+    - The advantage of running these separately is to have separate output for each server.
+    - These scripts use `nodemon` start both the React client / Node Express server in a way that will reload on changes to the code.
+
+### Accessing the server
+
+  Log on to [http://localhost:8080] to access the client front end. The Express server, by default, runs on port 3090.
 
 ### Running the Tests
 
@@ -38,6 +55,9 @@
   - Server tests
   - Client tests
   - End to End tests
+
+### Logs
+  Coming in the future...
 
 ## Built With
 
@@ -51,13 +71,13 @@
   - (https://getbootstrap.com/)[Bootstrap]
 
 ## Contributing
-  Coming soon...
+  Coming in the future...
 
   ### Linting
-    Coming soon...
+    Coming in the future...
 
 ## Versioning
-  Coming soon...
+  Coming in the future...
 
 ## Authors
   - (https://github.com/flyrightsister)[Bonnie Schulkin] - _Initial work_
