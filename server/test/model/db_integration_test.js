@@ -37,14 +37,14 @@ const Lyric = require('../../src/model/db_lyric')
 const CHART_TITLE = 'Integration Test'
 
 const chords = [
-  new Chord({ beatIndex: 0, noteCode: 'G' }),
-  new Chord({ beatIndex: 1, noteCode: 'C#', baseNoteCode: 'E' }),
-  new Chord({ beatIndex: 2, noteCode: 'Bb', suffix: 'dim' }),
+  new Chord({ beatindex: 0, notecode: 'G' }),
+  new Chord({ beatindex: 1, notecode: 'C#', basenotecode: 'E' }),
+  new Chord({ beatindex: 2, notecode: 'Bb', suffix: 'dim' }),
 ]
 
 const lyrics = [
-  new Lyric({ verseIndex: 0, lyricText: 'joy to the world' }),
-  new Lyric({ verseIndex: 1, lyricText: '' }),
+  new Lyric({ verseindex: 0, lyrictext: 'joy to the world' }),
+  new Lyric({ verseindex: 1, lyrictext: '' }),
 ]
 
 const measures = [
@@ -55,16 +55,16 @@ const measures = [
 const sections = [
   new Section({
     index: 0,
-    beatsPerMeasure: 4,
-    verseCount: 1,
+    beatspermeasure: 4,
+    versecount: 1,
     measures: [measures[0], measures[1]] }),
   new Section({
     index: 1,
-    sectionName: 'three word name',
-    sectionDesc: 'description is this',
-    beatsPerMeasure: 4,
-    verseCount: 3,
-    pickupMeasureBeats: 2,
+    sectionname: 'three word name',
+    sectiondesc: 'description is this',
+    beatspermeasure: 4,
+    versecount: 3,
+    pickupmeasurebeats: 2,
     measures: [measures[0], measures[1]] }),
 ]
 
@@ -74,14 +74,14 @@ const charts = [
     author: 'chart auth',
     composer: 'chart comp',
     lyricist: 'chart lyricist',
-    lyricistSame: false,
-    originalKeyCode: 'Bb',
-    printKeyCode: 'F#m',
-    maxPages: 1,
-    minFontsize: 10,
-    pageWidth: 8.5,
-    pageHeight: 11,
-    pageUnits: 'inches',
+    lyricistsame: false,
+    originalkeycode: 'Bb',
+    printkeycode: 'F#m',
+    maxpages: 1,
+    minfontsize: 10,
+    pagewidth: 8.5,
+    pageheight: 11,
+    pageunits: 'inches',
     sections: [sections[0], sections[1]] }),
 ]
 
@@ -91,22 +91,6 @@ charts.forEach((chart) => {
     let dbSections
     let dbMeasures
     before('Clear db and add chart', async function () {
-      // return initDB()
-      //   .then(chart.addToDb)
-      //   .then(() => db.one('SELECT chartid FROM charts WHERE title=$1', [CHART_TITLE]))
-      //   .then((dbChart) => {
-      //     chartId = dbChart.chartid
-      //     return db.any('SELECT sectionid FROM sections WHERE chartId=$1', [chartId])
-      //   })
-      //   .then((sectionResult) => {
-      //     dbSections = sectionResult
-      //     return db.any(
-      //       'SELECT measureId FROM measures WHERE sectionId IN ($1:csv)',
-      //       [dbSections.map(section => section.sectionid)]
-      //     )
-      //   })
-      //   .then((measuresResult) => { dbMeasures = measuresResult })
-      //   .catch(console.error)
       await initDB()
       await chart.addToDb()
       const dbChart = await db.one(

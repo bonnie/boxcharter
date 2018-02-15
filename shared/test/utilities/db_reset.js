@@ -24,7 +24,7 @@
  */
 const { db } = require('../../../server/src/model/utilities/db_connection')
 const { addKeys } = require('../../../server/src/model/data/add_keys')
-const { addUser } = require('./test_data/add_user')
+const { addUsers } = require('./test_data/add_user')
 const { addEntireChart } = require('./test_data/add_chart')
 
 /**
@@ -67,7 +67,7 @@ const resetDB = async function () {
  */
 const seedDB = () => 
   addKeys()
-    .then(addUser)
+    .then(addUsers)
     .then(addEntireChart)
     .catch(console.error)
 

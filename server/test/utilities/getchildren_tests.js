@@ -40,7 +40,6 @@ const getChildrenSuccessTests = (testData) => {
       item = instanceFactory.getInstance(testData.parentClass, itemData)
       await item[testData.childFunc](testData.childClass, testData.childType,
         testData.parentType, testData.orderBy)
-      if (testData.parentType === 'chart') console.log(item)
     })
     it(`should add ${testData.expectedChildCount} ${testData.childType}(s)`, function () {
       expect(item[`${testData.childType}s`].length).to.equal(testData.expectedChildCount)
@@ -48,8 +47,6 @@ const getChildrenSuccessTests = (testData) => {
     it(`should add the first child as type ${testData.childClass.name}`, function () {
       if (item[`${testData.childType}s`].length > 0) {
         let testItem = item[`${testData.childType}s`][0]
-        console.log('************ testItem:::', testItem)
-        if (testData.childType === 'user') testItem = testItem.user
         expect(testItem).to.be.an.instanceof(testData.childClass)
       }
     })

@@ -100,7 +100,7 @@ describe('User.prototype.update()', function () {
 })
 
 describe('User.prototype.addChart() success', function () {
-  let record
+  let records
   let chart
   let user
   let chartCountBefore
@@ -113,16 +113,13 @@ describe('User.prototype.addChart() success', function () {
     user = await DbUser.getById(userId)
     chartCountBefore = user.charts ? user.charts.length : 0
     await user.addChart(chart, permissions)
-    record = await db.one('SELECT userId, chartId, permissions FROM usercharts WHERE userId = 1')
+    records = await db.any('SELECT userId, chartId, permissions FROM usercharts WHERE userId = $1 AND chartId = $2', [userId, chart.chartId])
   })
-  it('should add userId properly', function () {
-    expect(record.userid).to.equal(userId)
-  })
-  it('should add chartId properly', function () {
-    expect(record.chartid).to.equal(chart.chartId)
+  it('should result in a record with the userId and chartId', function () {
+    expect(records.length).to.equal(1)
   })
   it('should add permissions properly', function () {
-    expect(record.permissions).to.equal(permissions)
+    expect(records[0].permissions).to.equal(permissions)
   })
   it('should update the chart "users" property', function () {
     // brand new chart, no users before
@@ -156,10 +153,10 @@ describe('User.prototype.getCharts()', function () {
   let user
   before('Reset the DB', async () => {
     await initDB()
-    user = await DbUser.getById(1)
   })
   context('User has zero charts', async function () {
     before('Get user charts', async () => {
+      user = await DbUser.getById(2) // seed user 2 has no charts
       user.charts = await user.getCharts()
     })
     it('should result in a "charts" array property', function () {
@@ -171,6 +168,7 @@ describe('User.prototype.getCharts()', function () {
   })
   context('User has more than zero charts', function () {
     before('Add a chart to the user and get user charts', async () => {
+      user = await DbUser.getById(1) // seed user 1 has charts
       user.charts = await user.getCharts()
     })
     it('should result in a "charts" array property', function () {

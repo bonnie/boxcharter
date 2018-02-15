@@ -33,22 +33,40 @@ const userData = {
   password: 'bonnie',
 }
 
+const userData2 = {
+  email: 'no@no.com',
+  firstName: 'no',
+  lastName: 'way',
+  password: 'jose',
+}
+
 /**
  * Add seed user to db
  * @function
- * @return {Promise} - Resolution unimportant.
+ * @param {object} data - Data for user to add
+ * @returns {Promise} - Resolution unimportant.
  */
-const addUser = () => {
-  const { hash, salt } = saltHashPassword(userData.password)
+const addUser = (data) => {
+  const { hash, salt } = saltHashPassword(data.password)
   const query = `INSERT INTO users
                   (email, firstName, lastName, passwordHash, passwordSalt)
                   VALUES ($1, $2, $3, $4, $5)`
-  return db.query(query, [userData.email, userData.firstName, userData.lastName, hash, salt])
+  return db.query(query, [data.email, data.firstName, data.lastName, hash, salt])
     .then(() => { if (VERBOSE) console.log('Added seed user') })
     .catch(err => console.log(`FAILED TO ADD USER: ${err}`))
 }
 
+/**
+ * Add seed users to the database
+ * @function
+ * @returns {Promise} - Resolution unimportant
+ */
+const addUsers = async () => {
+  await addUser(userData)
+  await addUser(userData2)
+}
+
 module.exports = {
-  addUser,
+  addUsers,
   userData,
 }
