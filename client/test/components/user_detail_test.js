@@ -1,5 +1,5 @@
 import { renderComponent , expect } from '../test_helper';
-import UserDetail from '../../src/components/user_detail';
+import UserDetail from '../../src/components/user_profile';
 import testData from '../data'
 
 // describe('UserDetail' , () => {
