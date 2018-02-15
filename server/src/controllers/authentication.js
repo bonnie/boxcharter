@@ -94,7 +94,6 @@ const signup = function(req, res, next) {
  * @param {function} next - next express middleware function 
  */
 const signin = (req, res, next) => {
-  console.log(req.user)
   // user has already been authorized -- just need to give them a token
   res.send({ 
     token: generateToken(req.user),

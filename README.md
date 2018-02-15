@@ -11,33 +11,34 @@
   - [nvm](https://github.com/creationix/nvm)
   - [PostgreSQL](https://www.postgresql.org/) 9.x
 
-### Installing
-  1. Clone or fork repo
+### Installation
+  #### Clone or fork repo
 
-  2. __Configuration__: `$ cp server/config.js.template server/config.js`
-
-  Populate the values in `server/config.js`
-
-  3. __Node setup__: 
+  #### Configuration
   
-  a. `$ nvm use`
+  1. `$ cp server/config.js.template server/config.js`
+  2. Populate the values in `server/config.js`
 
-  This will use the nvm version assigned for this project. 
+  #### Node setup 
   
-  __Notes__: 
-  
-  - `nvm` may instruct you to install a new version of Node; follow instructions as necessary. Run `nvm use` again after installing a new version.
-  - You will need to run `nvm use` whenever you open a new shell for this project.
+  1. `$ nvm use`
 
-  b. `$ npm run setup`
+    This will use the nvm version assigned for this project. 
+    
+    __Notes__: 
+    
+    - `nvm` may instruct you to install a new version of Node; follow instructions as necessary. Run `nvm use` again after installing a new version.
+    - You will need to run `nvm use` whenever you open a new shell for this project.
 
-  This will accomplish a number of things: 
+  2. `$ npm run setup`
 
-  1. install all node modules and dependencies
-  2. create and seed the development PostgreSQL database: `boxcharter_dev` __Note__: This database will be _destroyed and overwritten_ if it already exists!
-  3. create the test PostgreSQL database: `boxcharter_test` __Note__: This database will be _destroyed and overwritten_ if it already exists!
+    This will accomplish a number of things: 
 
-  4. __Start servers__: 
+    a. install all node modules and dependencies
+    b. create and seed the development PostgreSQL database: `boxcharter_dev` __Note__: This database will be _destroyed and overwritten_ if it already exists!
+    c. create the test PostgreSQL database: `boxcharter_test` __Note__: This database will be _destroyed and overwritten_ if it already exists!
+
+  #### Start servers 
 
   a. Start two separate shells
   b. In one of the shells, cd into the `client` directory; in the other cd into the `server` directory. 
@@ -52,7 +53,7 @@
 
   Log on to [http://localhost:8080](http://localhost:8080) to access the client front end. The Express server, by default, runs on port 3090.
 
-### Running the Tests
+### Running tests
 
   `$ npm test`
 
@@ -63,6 +64,7 @@
   - End to End tests
 
 ### Logs
+
   Coming in the future...
 
 ## Built With

@@ -7,7 +7,7 @@
     "setup": "npm install && npm run test:db:init && npm run dev:db:init",
     "lint": "eslint . --fix",
     "test": "source env/test.sh && npm run test:server",
-    "test:server": "mocha --recursive test --exit --full-trace",
+    "test:server": "mocha --reporter dot --recursive test --exit",
     "test:db:drop": "source env/test.sh && dropdb --if-exists $DB_NAME",
     "test:db:create": "source env/test.sh && createdb $DB_NAME && psql $DB_NAME < src/model/schema.sql",
     "test:db:init": "npm run test:db:drop && npm run test:db:create",

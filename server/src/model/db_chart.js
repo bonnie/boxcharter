@@ -90,8 +90,8 @@ Chart.getById = async function (chartId) {
     const chartQuery = 'SELECT * FROM charts WHERE chartID = $1'
     const chartData = await db.one(chartQuery, chartId)
     const chart = new Chart(chartData)
-    chart.sections = await chart.getSections()
-    chart.users = await chart.getUsers()
+    await chart.getSections()
+    await chart.getUsers()
     return chart
   } catch (e) {
     const errMsg = `Could not get chartId ${chartId}`
@@ -105,6 +105,7 @@ Chart.getById = async function (chartId) {
  */
 Chart.prototype.getSections = function () {
   return getChildren('section', 'chart', this.chartId, 'index', Section)
+    .then(sections => this.sections = sections)
     .catch((e) => {
       const errMsg = `Failed to get sections for chart id "${this.chartId}"`
       throw logError(errMsg, e)
@@ -124,6 +125,10 @@ Chart.prototype.getUsers = async function () {
     WHERE uc.chartid = $1
   `
     return db.any(userchartsQuery, this.chartId)
+    .then(users => {
+      const userObjects = users.map(data => User.dbDatatoUser(data))
+      this.users = userObjects
+    })
      .catch ((e) => {
         const errMsg = `Failed to get users for chart id "${this.chartId}"`
         throw logError(errMsg, e)
