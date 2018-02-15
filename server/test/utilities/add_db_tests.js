@@ -23,8 +23,8 @@
  * @module fields
  */
 const { expect } = require('chai')
-const { db } = require('../../db/db_connection')
-const { initDB } = require('./db_reset')
+const { db } = require('../../src/model/utilities/db_connection')
+const { initDB } = require('../../../shared/test/utilities/db_reset')
 
 /**
  * Create a query to select an item from the database by ID

@@ -1,3 +1,5 @@
 node_modules
-env
+production.sh
 .DS_Store
+config.js
+dist
