@@ -19,33 +19,22 @@
  */
 
 /**
- * User detail component
+ * Written with help from Stephen Grider's Advanced React and Redux Udemy Course
  * @module
- * user_detail
+ * auth_reducer
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import UserCharts from './user_charts'
-import { USER_PROFILE } from './header/tab_names'
-import * as actions from '../actions'
+import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from '../actions/types'
 
-class UserPage extends Component {
-  componentDidMount() {
-    this.props.setActiveNavTab(USER_PROFILE)
-  }
-  render() {
-    return (
-      <div className="user-page">
-        <h3>Charts</h3>
-        <UserCharts />
-      </div>
-    )
+export default (state = {}, action) => {
+  switch(action.type) {
+    case AUTH_USER: 
+      return { ...state, authenticated: true, user: action.payload.user, error: null }
+    case UNAUTH_USER:
+      return { ...state, authenticated: false }
+    case AUTH_ERROR:
+      return { ...state, error: action.payload }
+    default:
+      return { ...state }
   }
 }
-
-function mapStateToProps({ auth }) {
-  return { auth }
-}
-
-export default connect(mapStateToProps, actions)(UserPage)

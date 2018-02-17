@@ -26,37 +26,22 @@
 
 import React, { Component } from 'react'
 import { reduxForm } from 'redux-form'
+import { SIGN_UP } from '../header/tab_names'
+import FormInput from '../form_input'
 import * as actions from '../../actions'
 
 class SignUp extends Component {
   componentDidMount() {
     // clear any errors
     this.props.setAuthError(null)
+
+    // set the tab
+    this.props.setActiveNavTab(SIGN_UP)
   }
 
   handleFormSubmit(formProps) {
     // call action creator to sign up the user
     this.props.signupUser(formProps)
-  }
-
-  generateFields() {
-    const { fields } = this.props 
-    const fieldElements = []   
-    for (let fieldName in fields) {
-      const label = fieldName[0].toUpperCase() + fieldName.slice(1)
-      const field = fields[fieldName]
-      const type = (fieldName.startsWith('password')) ? 'password' : ''
-      fieldElements.push(
-        <fieldset key={fieldName} className="form-group">
-          <label>{label}</label>
-          <input className="form-control" type={type} {...field} />
-          {field.touched 
-            && field.error 
-            && <div className="error">{field.error}</div>}
-        </fieldset>
-      )
-    }
-    return fieldElements
   }
 
   renderAlert() {
@@ -71,9 +56,12 @@ class SignUp extends Component {
 
   render() {
     const { handleSubmit } = this.props
+    const { email, password, passwordConfirm } = this.props.fields
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        { this.generateFields() }
+        <FormInput type="text" label="Email" required={true} field={email}/>
+        <FormInput type="password" label="Password" required={true} field={password}/>
+        <FormInput type="password" label="Confirm Password" required={true} field={passwordConfirm}/>
         { this.renderAlert() }
         <button action="submit" className="btn btn-primary">Sign up</button>
       </form>
