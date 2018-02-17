@@ -35,9 +35,10 @@ class Header extends Component {
 
     const renderLinks = () => {
       if (this.props.auth.authenticated) {
-        return (
+        return [
+          <NavLink linkRoute="/user-profile" linkText="User Profile" />,
           <NavLink linkRoute="/sign-out" linkText="Sign Out" />
-        )
+        ]
       } else {
         return [
             <NavLink key="1" linkRoute="/sign-in" linkText="Sign In" />,
@@ -47,12 +48,17 @@ class Header extends Component {
     }
 
     return (
-      <nav className="navbar navbar-light">
-        <Link to="/" className="navbar-brand"><img src={boxcharter48} /></Link>
-        <ul className="nav navbar-nav">
+      <header className="header header-6">
+        <div className="branding">
+          <Link to="/" className="logo-and-title">
+            <img src={boxcharter48} />
+            <span className="title">BoxCharter</span>
+          </Link>
+        </div>
+        <div className="header-nav">
           {renderLinks()}
-        </ul>
-      </nav>
+        </div>
+      </header>
     )
   }
 }

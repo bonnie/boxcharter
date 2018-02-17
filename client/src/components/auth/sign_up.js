@@ -45,7 +45,7 @@ class SignUp extends Component {
     for (let fieldName in fields) {
       const label = fieldName[0].toUpperCase() + fieldName.slice(1)
       const field = fields[fieldName]
-      const type = (fieldName.startsWith('password')) ? 'password' : ''
+      const type = (fieldName.startsWith('password')) ? 'password' : 'text'
       fieldElements.push(
         <fieldset key={fieldName} className="form-group">
           <label>{label}</label>

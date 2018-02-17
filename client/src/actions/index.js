@@ -50,8 +50,8 @@ const authHandler = (response, dispatch) => {
   // (available even after navigating away and coming back)
   localStorage.setItem('token', response.data.token)
 
-  // - redirect to the route "/user_profile" (programmatic navigation)
-  browserHistory.push(`/user_profile`)
+  // - redirect to the route "/user-profile" (programmatic navigation)
+  browserHistory.push(`/user-profile`)
 }
 
 const signinUser = ({ email, password }) => {
