@@ -35,6 +35,7 @@ import {
   AUTH_USER,
   UNAUTH_USER,
   NO_ACTION,
+  NAV_TAB,
 } from './types'
 
 const serverHost = 'localhost'
@@ -90,7 +91,7 @@ const signoutUser = () => {
 const setAuthError = (error) => {
   return {
     type: AUTH_ERROR,
-    payload: error
+    payload: error,
   }
 } 
 
@@ -102,7 +103,7 @@ const getUserCharts = (userId) => {
     .then(response => {
       dispatch({
         type: GET_USERCHARTS,
-        payload: response
+        payload: response,
       })
     })
     .catch(error => {
@@ -118,7 +119,14 @@ const getChart = (chartId) => {
   const request = axios.get(`${ROOT_URL}/charts/${chartId}`)
   return {
     type: GET_CHART,
-    payload: request
+    payload: request,
+  }
+}
+
+const setActiveNavTab = (navTabName) => {
+  return {
+    type: NAV_TAB,
+    payload: navTabName,
   }
 }
 
@@ -129,4 +137,5 @@ module.exports = {
   getUserCharts,
   getChart,
   setAuthError,
+  setActiveNavTab,
 }

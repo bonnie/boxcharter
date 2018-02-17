@@ -27,36 +27,42 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
-import NavLink from './nav_link'
-import boxcharter48 from '../../public/images/boxcharter-48.png'
+import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE, } from './tab_names'
+import NavLink from '../nav_link'
+import * as actions from '../../actions'
+import boxcharter48 from '../../../public/images/boxcharter-48.png'
 
 class Header extends Component {
-  render() {
-
-    const renderLinks = () => {
-      if (this.props.auth.authenticated) {
-        return [
-          <NavLink linkRoute="/user-profile" linkText="User Profile" />,
-          <NavLink linkRoute="/sign-out" linkText="Sign Out" />
+  renderLinks() {
+    if (this.props.auth.authenticated) {
+      return [
+        <NavLink key="1" linkRoute="/user-profile" linkText={USER_PROFILE} />,
+        <NavLink key="2" linkRoute="/sign-out" linkText={SIGN_OUT} />
+      ]
+    } else {
+      return [
+          <NavLink key="1" linkRoute="/sign-in" linkText={SIGN_IN} />,
+          <NavLink key="2" linkRoute="/sign-up" linkText={SIGN_UP} />
         ]
-      } else {
-        return [
-            <NavLink key="1" linkRoute="/sign-in" linkText="Sign In" />,
-            <NavLink key="2" linkRoute="/sign-up" linkText="Sign Up" />
-          ]
-      }
     }
+  }
 
+  brandClickHandler() {
+    // clear active nav tab
+    this.setActiveNavTab('')
+  }
+
+  render() {  
     return (
-      <header className="header header-6">
+      <header className="header header-5">
         <div className="branding">
-          <Link to="/" className="logo-and-title">
+          <Link to="/" className="logo-and-title" onClick={this.brandClickHandler}>
             <img src={boxcharter48} />
             <span className="title">BoxCharter</span>
           </Link>
         </div>
         <div className="header-nav">
-          {renderLinks()}
+          {this.renderLinks()}
         </div>
       </header>
     )
@@ -68,4 +74,4 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, actions)(Header);

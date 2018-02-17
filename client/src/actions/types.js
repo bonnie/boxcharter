@@ -5,4 +5,5 @@ module.exports = {
   GET_USERCHARTS: 'get_usercharts',
   GET_CHART: 'get_chart',
   NO_ACTION: 'no_action',
+  NAV_TAB: 'nav_tab',
 }

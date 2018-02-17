@@ -19,21 +19,17 @@
  */
 
 /**
- * Written with help from Stephen Grider's Advanced React and Redux Udemy Course
+ * Controlling state of the navbar
  * @module
- * reducer_auth
+ * nav_reducer
  */
 
-import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from '../actions/types'
+import { NAV_TAB } from '../actions/types'
 
 export default (state = {}, action) => {
   switch(action.type) {
-    case AUTH_USER: 
-      return { ...state, authenticated: true, user: action.payload.user, error: null }
-    case UNAUTH_USER:
-      return { ...state, authenticated: false }
-    case AUTH_ERROR:
-      return { ...state, error: action.payload }
+    case NAV_TAB: 
+      return { ...state, activeNavTab: action.payload }
     default:
       return { ...state }
   }

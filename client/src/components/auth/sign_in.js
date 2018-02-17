@@ -26,12 +26,16 @@
 
 import React, { Component } from 'react'
 import { reduxForm } from 'redux-form'
+import { SIGN_IN } from '../header/tab_names'
 import * as actions from '../../actions'
 
 class Signin extends Component {
   componentDidMount() {
     // clear any errors
     this.props.setAuthError(null)
+
+    // set the tab
+    this.props.setActiveNavTab(SIGN_IN)
   }
 
   handleFormSubmit({ email, password }) {
