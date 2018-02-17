@@ -1,53 +1,76 @@
-# Boxcharter
-  An open-source web application that creates chord/lyric "box charts" for jamming. This is currently a work in progress; it will eventually be deployed at http://boxcharter.com.
+# BoxCharter
+
+### An open-source web application that creates chord/lyric "box charts" for songwriting and jamming. 
+
+## Contents
+
+1. [Deployed Site](#deployed-site)
+2. [Overview](#overview)
+3. [Getting Started](#getting-started)
+4. [Built With](#built-with)
+5. [Contributing](#contributing)
+6. [Versioning](#versioning)
+7. [Authors](#authors)
+8. [License](#license)
+9. [Project History](#project-history)
+10. [Acknowledgements](#acknowledgments)
+
+## Deployed Site
+  
+__This is currently a work in progress__; it will eventually be deployed at http://boxcharter.com.
 
 ## Getting Started
-  These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
 
 ### Prerequisites
-  To run this project, you'll need
+To run this project, you'll need
 
-  - [Node.js](https://nodejs.org) 8.x
-  - [nvm](https://github.com/creationix/nvm)
-  - [PostgreSQL](https://www.postgresql.org/) 9.x
+- [Node.js](https://nodejs.org) 8.x
+- [nvm](https://github.com/creationix/nvm)
+- [PostgreSQL](https://www.postgresql.org/) 9.x
 
 ### Installation
-  #### Clone or fork repo
+  1. Clone or fork repo
 
-  #### Configuration
+  2. Configuration
   
-  1. `$ cp server/config.js.template server/config.js`
-  2. Populate the values in `server/config.js`
+      1. `$ cp server/config.js.template server/config.js`
+      2. Populate the values in `server/config.js`
 
-  #### Node setup 
+  3. Node setup 
   
-  1. `$ nvm use`
+      1. `$ nvm use`
 
-    This will use the nvm version assigned for this project. 
-    
-    __Notes__: 
-    
-    - `nvm` may instruct you to install a new version of Node; follow instructions as necessary. Run `nvm use` again after installing a new version.
-    - You will need to run `nvm use` whenever you open a new shell for this project.
+          This will use the nvm version assigned for this project. 
+          
+          __Notes__: 
+          
+          - `nvm` may instruct you to install a new version of Node; follow instructions as necessary. Run `nvm use` again after installing a new version.
+          - You will need to run `nvm use` whenever you open a new shell for this project.
 
-  2. `$ npm run setup`
+      2. `$ npm run setup`
 
-    This will accomplish a number of things: 
+          This will accomplish a number of things: 
 
-    a. install all node modules and dependencies
-    b. create and seed the development PostgreSQL database: `boxcharter_dev` __Note__: This database will be _destroyed and overwritten_ if it already exists!
-    c. create the test PostgreSQL database: `boxcharter_test` __Note__: This database will be _destroyed and overwritten_ if it already exists!
+          1. install all node modules and dependencies
 
-  #### Start servers 
+          2. create and seed the development PostgreSQL database: `boxcharter_dev` __Note__: This database will be _destroyed and overwritten_ if it already exists!
 
-  a. Start two separate shells
-  b. In one of the shells, cd into the `client` directory; in the other cd into the `server` directory. 
-  c. In each directory, run `$ nvm use`
-  d. In each directory, run `$ npm run dev:start`.
+          3. create the test PostgreSQL database: `boxcharter_test` __Note__: This database will be _destroyed and overwritten_ if it already exists!
 
-  __Notes__: 
-  - The advantage of running these separately is to have separate output for each server.
-  - These scripts use `nodemon` start both the React client / Node Express server in a way that will reload on changes to the code.
+  4. Start servers 
+
+      1. Start two separate shells
+
+      2. In one of the shells, cd into the `client` directory; in the other cd into the `server` directory. 
+
+      3. In each directory, run `$ nvm use`
+
+      4. In each directory, run `$ npm run dev:start`
+
+      __Notes__: 
+      - The advantage of running these separately is to have separate output for each server.
+      - These scripts use `nodemon` start both the React client / Node Express server in a way that will reload on changes to the code.
 
 ### Accessing the application
 
@@ -76,16 +99,16 @@
   - [React](https://reactjs.org/)
   - [Redux](https://redux.js.org/)
   - [Redux Thunk](https://www.npmjs.com/package/redux-thunk)
-  - [Bootstrap](https://getbootstrap.com/)
+  - [Clarity](https://vmware.github.io/clarity)
 
 ## Contributing
-Coming in the future...
+  Coming in the future...
 
-  ### Linting
+### Linting
   Coming in the future...
 
 ## Versioning
-Coming in the future...
+  Coming in the future...
 
 ## Authors
   - [Bonnie Schulkin](https://github.com/flyrightsister) - _Initial work_
