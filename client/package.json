@@ -12,8 +12,8 @@
     "dev:start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "setup": "npm install",
     "start": "npm run dev:start",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
-    "test:watch": "npm run test -- --watch"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "devDependencies": {
     "babel-core": "^6.2.1",
@@ -22,6 +22,7 @@
     "babel-preset-react": "^6.1.18",
     "chai": "^3.5.0",
     "chai-jquery": "^2.0.0",
+    "jest": "^22.3.0",
     "jquery": "^2.2.1",
     "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
