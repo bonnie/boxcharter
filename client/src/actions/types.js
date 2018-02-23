@@ -1,8 +1,8 @@
 module.exports = {
-  AUTH_USER: 'auth_user',
-  UNAUTH_USER: 'unauth_user',
   AUTH_ERROR: 'auth_error',
-  GET_USERCHARTS: 'get_usercharts',
+  AUTH_USER: 'auth_user',
   GET_CHART: 'get_chart',
+  GET_USERCHARTS: 'get_usercharts',
   NO_ACTION: 'no_action',
+  UNAUTH_USER: 'unauth_user',
 }

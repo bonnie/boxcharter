@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import ChartRow from './chart_row'
-import { getUserCharts } from '../actions'
+import ChartRow from '../chart_row'
+import { getUserCharts } from '../../../actions'
 
 class UserCharts extends Component {
   constructor(props) {

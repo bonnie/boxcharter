@@ -1,5 +1,5 @@
 import React from 'react'
-import FormattedDate from './formatted_date'
+import FormattedDate from '../../utils/formatted_date'
 
 export default (props) => {
   const { chart } = props
