@@ -19,9 +19,9 @@
  */
 
 /**
- * User detail component
+ * User profile component
  * @module
- * user_detail
+ * UserProfile
  */
 
 import React, { Component } from 'react'

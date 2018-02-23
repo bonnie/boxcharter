@@ -21,7 +21,7 @@
 /**
  * Written with help from Stephen Grider's Advanced React and Redux Udemy Course
  * @module
- * reducer_auth
+ * authReducer
  */
 
 import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from '../actions/types'

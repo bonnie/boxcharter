@@ -21,7 +21,7 @@
 /**
  * Written with help from Stephen Grider's Advanced React and Redux Udemy Course
  * @module
- * sign_up
+ * SignOut
  */
 
  import React, { Component } from 'react'

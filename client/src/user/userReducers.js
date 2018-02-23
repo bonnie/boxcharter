@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,29 +19,18 @@
  */
 
 /**
- * Actions for the chart feature
+ * Reducers for the user feature
  * @module
- * chartActions
+ * userReducers
  */
 
-import axios from 'axios'
-import { ROOT_URL } from '../../config'
+import { GET_USERCHARTS } from '../../src/actions/types';
 
-import { 
-  GET_CHART,
-} from './chartActionTypes'
-
-const getChart = (chartId) => {
-  if (!chartId) {
-    return { type: GET_CHART }    
+export default (state=[], action) => {
+  switch(action.type) {
+    case GET_USERCHARTS:
+      return action.payload.data.charts
+    default:
+      return state
   }
-  const request = axios.get(`${ROOT_URL}/charts/${chartId}`)
-  return {
-    type: GET_CHART,
-    payload: request
-  }
-}
-
-module.exports = {
-  getChart,
 }

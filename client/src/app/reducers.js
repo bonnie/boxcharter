@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,29 +19,20 @@
  */
 
 /**
- * Actions for the chart feature
+ * Reducers for the app
  * @module
- * chartActions
+ * reducers
  */
 
-import axios from 'axios'
-import { ROOT_URL } from '../../config'
+import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form'
+import authReducer from './reducer_auth'
+import chartsReducer from './reducer_charts'
 
-import { 
-  GET_CHART,
-} from './chartActionTypes'
+const rootReducer = combineReducers({
+  form: formReducer,
+  auth: authReducer,
+  charts: chartsReducer,
+});
 
-const getChart = (chartId) => {
-  if (!chartId) {
-    return { type: GET_CHART }    
-  }
-  const request = axios.get(`${ROOT_URL}/charts/${chartId}`)
-  return {
-    type: GET_CHART,
-    payload: request
-  }
-}
-
-module.exports = {
-  getChart,
-}
+export default rootReducer;
