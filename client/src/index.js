@@ -27,30 +27,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, Switch } from 'react-router-dom'
-import browserHistory from './history'
+import browserHistory from './app/history'
 import { Provider } from 'react-redux';
 // TODO: figure out why the next line causes "Uncaught TypeError: Super expression must either be null or a function, not undefined"
 // import { PersistGate } from 'redux-persist/integration/react'
 // import { PersistGate } from 'redux-persist/lib/integration/react'
 // import { PersistGate } from 'redux-persist/es/integration/react' // this one causes "Uncaught SyntaxError: Unexpected identifier"
 
-import configureStore from './configure_store'
+import configureStore from './app/configure_store'
 
-import App from './components/app'
-import Signin from './components/auth/sign_in'
-import reducers from './reducers'
-
-import { AUTH_USER } from './actions/types'
-
+import App from './app/App'
+import reducers from './app/reducers'
 const { store, persistor } = configureStore()
 
-// // check for authentication before any rendering
-// const token = localStorage.getItem('token')
-
-// if (token) {
-//   // update application state
-//   store.dispatch({ type: AUTH_USER })
-// }
+// TODO: persist state upon refresh 
 
 ReactDOM.render(
   <Provider store={store}>
@@ -60,25 +50,4 @@ ReactDOM.render(
       </Router>
     {/* </PersistGate> */}
   </Provider>
-  , document.querySelector('.container'));
-
-  /* 
-<BrowserRouter>
-  <Switch>
-    <Route path="/users/:id" component={UserDetail} />
-    <Route path="/charts/:id" component={ChartDetail} />
-    <Route path="/" component={SplashPage} />
-  </Switch> 
-</BrowserRouter>
-*/
-
-/*
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <BrowserRouter history={history}>
-      <Route path="/" component={App}>
-        <Route path="sign-in" component={Signin} />
-        <Route path="/users/:id" component={UserDetail} />
-      </Route>
-    </BrowserRouter>
-  </Provider>
-*/
+  , document.querySelector('.container'))

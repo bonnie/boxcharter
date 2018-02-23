@@ -23,3 +23,5 @@
  * @module
  * Routes-spec
  */
+
+import Routes from './Routes'

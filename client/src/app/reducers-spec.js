@@ -23,3 +23,5 @@
  * @module
  * appReducers-spec
  */
+
+import reducers from './reducers'

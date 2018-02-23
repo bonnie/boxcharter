@@ -24,6 +24,8 @@
  * SplashPage-spec
  */
 
+import SplashPage from './SplashPage'
+
  // import { renderComponent, expect } from '../test_helper'
 // import SplashPage from '../../src/components/splash_page'
 // import testData from '../data'

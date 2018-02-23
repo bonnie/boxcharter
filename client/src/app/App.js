@@ -26,15 +26,15 @@
 
 import React, { Component } from 'react';
 
-import Header from '../../nav/header'
-import Router from '../router'
+import Header from '../nav/header'
+import Routes from './Routes'
 
 export default class App extends Component {
   render() {
     return (
       <div>
         <Header />
-        <Router />
+        <Routes />
       </div>
     )
   }

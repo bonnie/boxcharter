@@ -26,13 +26,13 @@
 
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form'
-import authReducer from './reducer_auth'
-import chartsReducer from './reducer_charts'
+import authReducer from '../auth/authReducer'
+import userChartsReducer from '../user/userChartsReducer'
 
 const rootReducer = combineReducers({
   form: formReducer,
   auth: authReducer,
-  charts: chartsReducer,
+  charts: userChartsReducer,
 });
 
-export default rootReducer;
+export default rootReducer

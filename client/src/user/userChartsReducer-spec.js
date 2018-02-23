@@ -19,7 +19,7 @@
  */
 
 /**
- * Reducers for the chart feature
+ * Tests for the user reducers
  * @module
- * chartReducers
+ * userChartsReducer-spec
  */
