@@ -52,6 +52,6 @@ const getUserCharts = (userId) => {
   }
 }
 
-module.export = {
+module.exports = {
   getUserCharts
 }

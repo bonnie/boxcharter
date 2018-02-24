@@ -23,3 +23,5 @@
  * @module
  * userChartsReducer-spec
  */
+
+import userChartsReducer from './userChartsReducer'

@@ -25,7 +25,7 @@
  */
 
 import React from 'react'
-import FormattedDate from '../../utils/formatted_date'
+import { FormattedDate } from '../utils'
 
 export default (props) => {
   const { chart } = props

@@ -23,3 +23,5 @@
  * @module
  * userActions-spec
  */
+
+import * as actions from './userActions'

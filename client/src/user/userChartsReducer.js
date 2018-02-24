@@ -24,7 +24,7 @@
  * userChartsReducer
  */
 
-import { GET_USERCHARTS } from '../../src/actions/types';
+import { GET_USERCHARTS } from './userActionTypes';
 
 export default (state=[], action) => {
   switch(action.type) {

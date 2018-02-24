@@ -19,9 +19,9 @@
  */
 
 /**
- * Written with help from Stephen Grider's Advanced React and Redux Udemy Course
+ * Header component
  * @module
- * header
+ * Header
  */
 
 import React, { Component } from 'react'

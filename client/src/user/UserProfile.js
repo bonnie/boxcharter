@@ -26,7 +26,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import UserCharts from './user_charts'
+import UserCharts from './UserCharts'
 
 class UserPage extends Component {
   render() {

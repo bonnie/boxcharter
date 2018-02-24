@@ -24,9 +24,7 @@
  * UserCharts-spec
  */
 
- import { renderComponent, expect } from '../test_helper';
-import UserCharts from '../../src/components/user_charts';
-import testData from '../data'
+import UserCharts from './UserCharts'
 
 // describe('UserCharts', () => {
 //   let component

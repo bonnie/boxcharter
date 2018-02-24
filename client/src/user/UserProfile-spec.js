@@ -23,3 +23,5 @@
  * @module
  * UserProfile-spec
  */
+
+import UserProfile from './UserProfile'
