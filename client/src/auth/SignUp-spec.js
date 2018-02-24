@@ -23,3 +23,5 @@
  * @module
  * SignUp-spec
  */
+
+import SignUp from './SignUp'

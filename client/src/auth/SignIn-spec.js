@@ -23,3 +23,5 @@
  * @module
  * SignIn-spec
  */
+
+import SignIn from './SignIn'

@@ -23,3 +23,5 @@
  * @module
  * SignOut-spec
  */
+
+import SignOut from './SignOut'
