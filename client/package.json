@@ -28,8 +28,12 @@
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
+    "@clr/icons": "^0.11.5",
+    "@clr/ui": "^0.11.5",
+    "@webcomponents/custom-elements": "^1.0.0",
     "axios": "^0.9.1",
     "babel-preset-stage-1": "^6.1.18",
+    "bootstrap": "^4.0.0-alpha.5",
     "history": "^4.7.2",
     "lodash": "^3.10.1",
     "moment": "^2.20.1",

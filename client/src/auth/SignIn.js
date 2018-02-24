@@ -27,11 +27,16 @@
 import React, { Component } from 'react'
 import { reduxForm } from 'redux-form'
 import * as actions from './authActions'
+import { tabNames } from '../nav'
+import FormInput from '../utils'
 
 class Signin extends Component {
   componentDidMount() {
     // clear any errors
     this.props.setAuthError(null)
+
+    // set the tab
+    this.props.setActiveNavTab(tabNames.SIGN_IN)
   }
 
   handleFormSubmit({ email, password }) {
@@ -56,14 +61,8 @@ class Signin extends Component {
     // const { handleSubmit, fields: { email, password } } = this.props
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <fieldset className="form-group">
-          <label>Email:</label>
-          <input {...email} className="form-control" type="text"/>
-        </fieldset>
-        <fieldset className="form-group">
-          <label>Password:</label>
-          <input {...password} type="password" className="form-control" />
-        </fieldset>
+        <FormInput type="text" label="Email" required={true} field={email}/>
+        <FormInput type="password" label="Password" required={true} field={password}/>
         {this.renderAlert()}
         <button action="submit" className="btn btn-primary">
           Sign in

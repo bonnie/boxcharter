@@ -19,33 +19,18 @@
  */
 
 /**
- * User profile component
+ * Controlling state of the navbar
  * @module
- * UserProfile
+ * nav_reducer
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import UserCharts from './UserCharts'
-import { tabNames } from '../nav'
-import * as actions from '../actions'
+import { NAV_TAB } from '../actions/types'
 
-class UserPage extends Component {
-  componentDidMount() {
-    this.props.setActiveNavTab(tabNames.USER_PROFILE)
-  }
-  render() {
-    return (
-      <div className="user-page">
-        <h3>Charts</h3>
-        <UserCharts />
-      </div>
-    )
+export default (state = {}, action) => {
+  switch(action.type) {
+    case NAV_TAB: 
+      return { ...state, activeNavTab: action.payload }
+    default:
+      return { ...state }
   }
 }
-
-function mapStateToProps({ auth }) {
-  return { auth }
-}
-
-export default connect(mapStateToProps, actions)(UserPage)

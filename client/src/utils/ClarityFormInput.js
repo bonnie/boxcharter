@@ -19,33 +19,24 @@
  */
 
 /**
- * User profile component
+ * Clarity form input component
  * @module
- * UserProfile
+ * form_input
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import UserCharts from './UserCharts'
-import { tabNames } from '../nav'
-import * as actions from '../actions'
+import React from 'react'
 
-class UserPage extends Component {
-  componentDidMount() {
-    this.props.setActiveNavTab(tabNames.USER_PROFILE)
-  }
-  render() {
-    return (
-      <div className="user-page">
-        <h3>Charts</h3>
-        <UserCharts />
-      </div>
-    )
-  }
+export default (props) => {
+  const { type, label, required, field }  = props
+  const requiredClass = required ? 'required' : ''
+  const invalidClass = field.touched && field.error ? 'invalid' : ''
+  return (
+    <fieldset key={field.name} className="form-group">
+        <label className={requiredClass}>{label}</label>
+        <label className={`tooltip tooltip-validation ${invalidClass}`}>
+          <input className="form-control" type={type} {...field} />
+          <span className="tooltip-content">{field.error}</span>
+        </label>
+    </fieldset>
+  )
 }
-
-function mapStateToProps({ auth }) {
-  return { auth }
-}
-
-export default connect(mapStateToProps, actions)(UserPage)

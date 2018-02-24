@@ -25,7 +25,9 @@
  */
 
 import FormattedDate from './FormattedDate'
+import ClarityFormInput from './ClarityFormInput'
 
 module.exports = {
-  FormattedDate
+  FormattedDate,
+  ClarityFormInput,
 }

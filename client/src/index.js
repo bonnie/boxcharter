@@ -51,4 +51,5 @@ ReactDOM.render(
       </Router>
     {/* </PersistGate> */}
   </Provider>
-  , document.querySelector('.container'))
+  , document.querySelector('.main-container'));
+
