@@ -23,3 +23,5 @@
  * @module
  * RequireAuth-spec
  */
+
+import RequireAuth from './RequireAuth'

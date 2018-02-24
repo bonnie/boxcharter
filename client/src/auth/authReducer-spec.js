@@ -23,3 +23,5 @@
  * @module
  * authReducers-spec
  */
+
+import authReducer from './authReducer'

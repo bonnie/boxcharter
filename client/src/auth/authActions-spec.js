@@ -23,3 +23,5 @@
  * @module
  * authActions-spec
  */
+
+import actions from './authActions'
