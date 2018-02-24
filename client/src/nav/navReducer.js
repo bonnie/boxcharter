@@ -24,10 +24,12 @@
  * navReducer
  */
 
-import {  } from './navActionTypes'
+import { NAV_TAB } from './navActionTypes'
 
 export default (state = {}, action) => {
   switch(action.type) {
+    case NAV_TAB: 
+      return { ...state, activeNavTab: action.payload }
     default:
       return { ...state }
   }

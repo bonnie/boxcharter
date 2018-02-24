@@ -23,3 +23,7 @@
  * @module
  * navActionTypes
  */
+
+module.exports = {
+  NAV_TAB: 'nav_tab',
+}

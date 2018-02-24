@@ -26,9 +26,10 @@
 
 import React, { Component } from 'react'
 import { reduxForm } from 'redux-form'
-import * as actions from './authActions'
+import { signInUser, setAuthError } from './authActions'
+import { navActions } from '../nav'
 import { tabNames } from '../nav'
-import FormInput from '../utils'
+import { ClarityFormInput } from '../utils'
 
 class Signin extends Component {
   componentDidMount() {
@@ -40,16 +41,27 @@ class Signin extends Component {
   }
 
   handleFormSubmit({ email, password }) {
-    console.log(email, password)
     // log user in
-    this.props.signinUser({ email, password })
+    this.props.signInUser({ email, password })
   }
 
   renderAlert() {
     if (this.props.errorMessage) {
       return (
         <div className="alert alert-danger">
-          <strong>Oops!</strong> {this.props.errorMessage}
+          <div className="alert-items">
+              <div className="alert-item static">
+                  <div className="alert-icon-wrapper">
+                      <clr-icon className="alert-icon" shape="exclamation-circle"></clr-icon>
+                  </div>
+                  <span className="alert-text">
+                    {this.props.errorMessage}
+                  </span>
+              </div>
+          </div>
+          <button type="button" className="close" aria-label="Close">
+              <clr-icon aria-hidden="true" shape="close"></clr-icon>
+          </button>
         </div>
       )
     }
@@ -60,14 +72,16 @@ class Signin extends Component {
 
     // const { handleSubmit, fields: { email, password } } = this.props
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <FormInput type="text" label="Email" required={true} field={email}/>
-        <FormInput type="password" label="Password" required={true} field={password}/>
+      <div>
+        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+          <ClarityFormInput type="text" label="Email" required={true} field={email}/>
+          <ClarityFormInput type="password" label="Password" required={true} field={password}/>
+          <button action="submit" className="btn btn-primary">
+            Sign in
+          </button>
+        </form>
         {this.renderAlert()}
-        <button action="submit" className="btn btn-primary">
-          Sign in
-        </button>
-      </form>
+      </div>
     )
   }
 }
@@ -79,6 +93,12 @@ const formOptions = {
 
 function mapStateToProps(state) {
   return { errorMessage: state.auth.error }
+}
+
+const actions = {
+  signInUser, 
+  setAuthError,
+  setActiveNavTab: navActions.setActiveNavTab,
 }
 
 export default reduxForm(formOptions, mapStateToProps, actions)(Signin)

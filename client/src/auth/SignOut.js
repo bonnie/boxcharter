@@ -30,7 +30,7 @@ import * as actions from './authActions'
 
 class SignOut extends Component {
   componentWillMount() {
-    this.props.signoutUser()
+    this.props.signOutUser()
   }
   render() {
     return <div>Signed out!</div>

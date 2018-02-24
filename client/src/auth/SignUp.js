@@ -26,22 +26,23 @@
 
 import React, { Component } from 'react'
 import { reduxForm } from 'redux-form'
-import * as actions from './authActions'
+import { signUpUser, setAuthError } from './authActions'
+import { navActions } from '../nav'
 import { tabNames } from '../nav'
-import FormInput from '../utils'
+import { ClarityFormInput } from '../utils'
 
 class SignUp extends Component {
   componentDidMount() {
     // clear any errors
     this.props.setAuthError(null)
 
-    // set the tab
+    // set the tab -- in case of loading page in some way other than clicking tab
     this.props.setActiveNavTab(tabNames.SIGN_UP)
   }
 
   handleFormSubmit(formProps) {
     // call action creator to sign up the user
-    this.props.signupUser(formProps)
+    this.props.signUpUser(formProps)
   }
 
   renderAlert() {
@@ -59,9 +60,9 @@ class SignUp extends Component {
     const { email, password, passwordConfirm } = this.props.fields
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <FormInput type="text" label="Email" required={true} field={email}/>
-        <FormInput type="password" label="Password" required={true} field={password}/>
-        <FormInput type="password" label="Confirm Password" required={true} field={passwordConfirm}/>
+        <ClarityFormInput type="text" label="Email" required={true} field={email}/>
+        <ClarityFormInput type="password" label="Password" required={true} field={password}/>
+        <ClarityFormInput type="password" label="Confirm Password" required={true} field={passwordConfirm}/>
         { this.renderAlert() }
         <button action="submit" className="btn btn-primary">Sign up</button>
       </form>
@@ -90,13 +91,20 @@ const validate = (formProps) => {
   return errors
 }
 
-function mapStateToProps(state) {
-  return { errorMessage: state.auth.error }
-}
-
 const formOptions = {
   form: 'signup',
   fields: ['email', 'password', 'passwordConfirm'],
   validate,
 }
+
+function mapStateToProps(state) {
+  return { errorMessage: state.auth.error }
+}
+
+const actions = {
+  signUpUser, 
+  setAuthError,
+  setActiveNavTab: navActions.setActiveNavTab,
+}
+
 export default reduxForm(formOptions, mapStateToProps, actions)(SignUp)

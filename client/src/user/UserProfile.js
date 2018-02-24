@@ -19,16 +19,16 @@
  */
 
 /**
- * User profile component
+ * User detail component
  * @module
- * UserProfile
+ * UserDetail
  */
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import UserCharts from './UserCharts'
 import { tabNames } from '../nav'
-import * as actions from '../actions'
+import { setActiveNavTab } from '../nav/navActions'
 
 class UserPage extends Component {
   componentDidMount() {
@@ -48,4 +48,4 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-export default connect(mapStateToProps, actions)(UserPage)
+export default connect(mapStateToProps, { setActiveNavTab })(UserPage)

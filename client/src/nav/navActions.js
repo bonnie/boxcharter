@@ -23,3 +23,17 @@
  * @module
  * navActions
  */
+
+import browserHistory from '../app/history'
+import { NAV_TAB } from './navActionTypes'
+
+const setActiveNavTab = (navTabName) => {
+  return {
+    type: NAV_TAB,
+    payload: navTabName,
+  }
+}
+
+module.exports = {
+  setActiveNavTab,
+}

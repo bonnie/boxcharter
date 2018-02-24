@@ -47,7 +47,7 @@ const authHandler = (response, dispatch) => {
   browserHistory.push(`/user-profile`)
 }
 
-const signinUser = ({ email, password }) => {
+const signInUser = ({ email, password }) => {
   // because we have redux-thunk middleware, 
   // instead of returning an object, we can return a function
   // redux-thunk gives arbitrary access to dispatch method
@@ -63,7 +63,7 @@ const signinUser = ({ email, password }) => {
   }
 }
 
-const signupUser = ({ email, password }) => {
+const signUpUser = ({ email, password }) => {
   return function(dispatch) {
     axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
       .then((response) => authHandler(response, dispatch))
@@ -74,7 +74,7 @@ const signupUser = ({ email, password }) => {
 /**
  * 
  */
-const signoutUser = () => {
+const signOutUser = () => {
   localStorage.removeItem('token')
   return { type: UNAUTH_USER }
 }
@@ -87,8 +87,8 @@ const setAuthError = (error) => {
 } 
 
 module.exports = {
-  signinUser,
-  signupUser,
-  signoutUser,
+  signInUser,
+  signUpUser,
+  signOutUser,
   setAuthError,
 }

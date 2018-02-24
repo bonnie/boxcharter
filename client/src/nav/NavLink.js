@@ -24,14 +24,32 @@
  * NavLink
  */
 
-import React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import * as actions from './navActions'
 
-// TODO: prop-types!!
-export default (props) => {
-  return (
-    <li className="nav-link nav-item">
-      <Link key="props.key" to={props.linkRoute}>{props.linkText}</Link>
-    </li> 
-  ) 
+class NavLink extends Component {
+  clickHandler() {
+    this.props.setActiveNavTab(this.props.linkText)
+  }
+  render() {
+    const activeClass = (this.props.activeNavTab === this.props.linkText) ? 'active' : ''
+    return (
+      <Link 
+        className={`nav-link nav-text ${activeClass}`}
+        key="{props.key}"
+        onClick={this.clickHandler.bind(this)}
+        to={this.props.linkRoute}
+      >
+        {this.props.linkText}
+      </Link>
+    ) 
+  }
 }
+
+function mapStateToProps({nav}) {
+  return { activeNavTab: nav.activeNavTab }
+}
+
+export default connect(mapStateToProps, actions)(NavLink);

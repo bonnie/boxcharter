@@ -27,40 +27,51 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
+import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE, } from './tabNames'
 import NavLink from './NavLink'
+import { setActiveNavTab } from './navActions'
 import boxcharter48 from '../../public/images/boxcharter-48.png'
 
 class Header extends Component {
-  render() {
-
-    const renderLinks = () => {
-      if (this.props.auth.authenticated) {
-        return (
-          <NavLink linkRoute="/sign-out" linkText="Sign Out" />
-        )
-      } else {
-        return [
-            <NavLink key="1" linkRoute="/sign-in" linkText="Sign In" />,
-            <NavLink key="2" linkRoute="/sign-up" linkText="Sign Up" />
-          ]
-      }
+  renderLinks() {
+    if (this.props.auth.authenticated) {
+      return [
+        <NavLink key="1" linkRoute="/user-profile" linkText={USER_PROFILE} />,
+        <NavLink key="2" linkRoute="/sign-out" linkText={SIGN_OUT} />
+      ]
+    } else {
+      return [
+          <NavLink key="1" linkRoute="/sign-in" linkText={SIGN_IN} />,
+          <NavLink key="2" linkRoute="/sign-up" linkText={SIGN_UP} />
+        ]
     }
+  }
 
+  brandClickHandler() {
+    // clear active nav tab
+    this.props.setActiveNavTab('')
+  }
+
+  render() {  
     return (
-      <nav className="navbar navbar-light">
-        <Link to="/" className="navbar-brand"><img src={boxcharter48} /></Link>
-        <ul className="nav navbar-nav">
-          {renderLinks()}
-        </ul>
-      </nav>
+      <header className="header header-5">
+        <div className="branding">
+          <Link to="/" className="logo-and-title" onClick={this.brandClickHandler.bind(this)}>
+            <img src={boxcharter48} />
+            <span className="title">BoxCharter</span>
+          </Link>
+        </div>
+        <div className="header-nav">
+          {this.renderLinks()}
+        </div>
+      </header>
     )
   }
 }
-
 
 function mapStateToProps({ auth }) {
   return { auth }
 }
 
-export { Header as Component } // for unit testing
-export default connect(mapStateToProps)(Header);
+
+export default connect(mapStateToProps, { setActiveNavTab })(Header);
