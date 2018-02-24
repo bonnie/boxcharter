@@ -3,3 +3,4 @@ production.sh
 .DS_Store
 config.js
 dist
+coverage

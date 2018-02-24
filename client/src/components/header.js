@@ -62,4 +62,5 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
+export { Header as Component } // for unit testing
 export default connect(mapStateToProps)(Header);
