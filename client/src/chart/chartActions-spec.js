@@ -23,3 +23,5 @@
  * @module
  * chartActions-spec
  */
+
+import * as actions from './chartActions'

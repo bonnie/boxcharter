@@ -24,9 +24,7 @@
  * ChartDetail-spec
  */
 
-import { renderComponent, expect } from '../test_helper'
-import ChartDetail from '../../src/components/chart_detail'
-import testData from '../data'
+import ChartDetail from './ChartDetail'
 
 // describe('ChartDetail', () => {
 //   let component

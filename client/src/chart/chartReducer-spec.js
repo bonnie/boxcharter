@@ -23,3 +23,5 @@
  * @module
  * chartReducer-spec
  */
+
+import chartReducer from './chartReducer'

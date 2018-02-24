@@ -23,3 +23,12 @@
  * @module
  * chartReducer
  */
+
+import {  } from './chartActionTypes'
+
+export default (state = {}, action) => {
+  switch(action.type) {
+    default:
+      return { ...state }
+  }
+}
