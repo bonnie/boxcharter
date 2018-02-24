@@ -40,6 +40,7 @@ import App from './app/App'
 import reducers from './app/reducers'
 const { store, persistor } = configureStore()
 
+
 // TODO: persist state upon refresh 
 
 ReactDOM.render(

@@ -25,7 +25,7 @@
  */
 
 import React, { Component } from 'react'
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 import UserProfile from '../user/UserProfile'
 import ChartDetail from '../chart/ChartDetail'

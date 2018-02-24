@@ -27,8 +27,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
-import NavLink from '../nav_link'
-import boxcharter48 from '../../../public/images/boxcharter-48.png'
+import NavLink from './NavLink'
+import boxcharter48 from '../../public/images/boxcharter-48.png'
 
 class Header extends Component {
   render() {
