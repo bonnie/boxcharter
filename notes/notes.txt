@@ -1,13 +1,7 @@
-npm WARN deprecated minimatch@2.0.10: Please update to minimatch 3.0.2 or higher to avoid a RegExp DoS issue
-
-npm WARN clarity-icons@0.9.12 requires a peer of @webcomponents/custom-elements@1.0.0 but none was installed.
-
-Sequelize not updated for pg 7.0; causes DeprecationWarning
-https://github.com/sequelize/sequelize/issues/7818
-
-examples:
-    (node:16893) DeprecationWarning: Using the automatically created return value from client.query as an event emitter is deprecated and will be removed in pg@7.0. Please see the upgrade guide at https://node-postgres.com/guides/upgrading
-    (node:15039) DeprecationWarning: Using the automatically created return value from client.query as an event emitter is deprecated and will be removed in pg@7.0. Please see the upgrade guide at https://node-postgres.com/guides/upgrading
-    
 REACT / EXPRESS:
 https://daveceddia.com/create-react-app-express-production/
+
+React / Redus code organization: 
+https://jaysoo.ca/2016/02/28/organizing-redux-application/#rule-1-organize-by-feature
+https://marmelab.com/blog/2015/12/17/react-directory-structure.html
+https://medium.com/@yejodido/atomic-components-managing-dynamic-react-components-using-atomic-design-part-1-5f07451f261f

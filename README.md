@@ -36,6 +36,8 @@ To run this project, you'll need
   
       1. `$ cp server/config.js.template server/config.js`
       2. Populate the values in `server/config.js`
+      3. `$ cp client/config.js.template client/config.js`
+      4. Populate the values in `client/config.js`
 
   3. Node setup 
   

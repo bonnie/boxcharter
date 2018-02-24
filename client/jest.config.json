@@ -1,0 +1,8 @@
+{
+  "testPathIgnorePatterns": [
+    "/helper/"
+  ],
+  "snapshotSerializers": [
+    "enzyme-to-json/serializer"
+  ]
+}
