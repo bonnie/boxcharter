@@ -24,7 +24,18 @@
  * FormattedDate-spec
  */
 
+import React from 'react'
+import { shallow } from 'enzyme'
 import FormattedDate from './FormattedDate'
+
+describe('FormattedDate', () => {
+  test('renders the default date format without the year for the current year', () => {
+    const currentYear = new Date().getFullYear().toString()
+    const dateJSX = <FormattedDate date={new Date(`${currentYear}-01-07T21:14:00`)} />
+    const renderedDate = shallow(dateJSX)
+    expect(renderedDate).toMatchSnapshot()
+  })
+})
 
 // import { renderComponent, expect } from '../test_helper'
 // import FormattedDate from '../../src/components/formatted_date'
