@@ -1,6 +1,6 @@
 # BoxCharter
 
-### An open-source web application that creates chord/lyric "box charts" for songwriting and jamming. 
+### WIP: An open-source web application that creates chord/lyric "box charts" for songwriting and jamming. 
 
 ## Contents
 
@@ -94,14 +94,20 @@ To run this project, you'll need
 
 ## Built With
 
-  - [PostgreSQL](https://www.postgresql.org/)
-  - [Node.js](https://nodejs.org)
-  - [pg-promise](https://github.com/vitaly-t/pg-promise)
-  - [Express](https://expressjs.com/)
-  - [React](https://reactjs.org/)
-  - [Redux](https://redux.js.org/)
-  - [Redux Thunk](https://www.npmjs.com/package/redux-thunk)
-  - [Clarity](https://vmware.github.io/clarity)
+  - Back End
+    - [PostgreSQL](https://www.postgresql.org/)
+    - [Node.js](https://nodejs.org)
+    - [pg-promise](https://github.com/vitaly-t/pg-promise)
+    - [Express](https://expressjs.com/)
+    - [Mocha](https://mochajs.org/)
+    - [Chai](http://chaijs.com/)
+  - Front End
+    - [React](https://reactjs.org/)
+    - [Redux](https://redux.js.org/)
+    - [Redux Thunk](https://www.npmjs.com/package/redux-thunk)
+    - [Clarity](https://vmware.github.io/clarity)
+    - [Jest](https://facebook.github.io/jest/)
+    - [Enzyme](http://airbnb.io/enzyme/)
 
 ## Contributing
   Coming in the future...
