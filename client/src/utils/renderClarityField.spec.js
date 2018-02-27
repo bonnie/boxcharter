@@ -27,9 +27,46 @@
 
 import React from 'react'
 import { shallow } from 'enzyme'
+import '../../jest/setupTests'
 import renderClarityField from './renderClarityField'
 
+// const { input, type, label, required }  = props
+// const { touched, error, warning } = props.meta
+
 describe('renderClarityField', () => {
-  test('renders', () => {
+  test('renders a text field correctly', () => {
+    const props = {
+      type: 'text',
+      label: 'Test',
+      name: 'test',
+      meta: {},
+      input: {},
+    }
+    const renderedField = shallow(renderClarityField(props))
+    expect(renderedField).toMatchSnapshot()
+  })
+  test('renders a required field correctly', () => {
+    const props = {
+      type: 'text',
+      label: 'Test',
+      name: 'test',
+      required: true,
+      meta: {},
+      input: {},
+    }
+    const renderedField = shallow(renderClarityField(props))
+    expect(renderedField).toMatchSnapshot()
+  })
+  test('renders an invalid field correctly', () => {
+    const props = {
+      type: 'text',
+      label: 'Test',
+      name: 'test',
+      required: true,
+      meta: { touched: true, error: 'bad field' },
+      input: {},
+    }
+    const renderedField = shallow(renderClarityField(props))
+    expect(renderedField).toMatchSnapshot()
   })
 })
