@@ -26,6 +26,7 @@
 
 import React from 'react'
 import { shallow } from 'enzyme'
+import '../../jest/setupTests'
 import FormattedDate from './FormattedDate'
 
 describe('FormattedDate', () => {
