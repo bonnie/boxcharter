@@ -9,7 +9,7 @@
  * any later version.
  *
  * BoxCharter is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * ANY WARRANTY without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
  * for more details.
  *
@@ -24,32 +24,32 @@
  * ErrorBoundary
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = ({
       hasError: false,
-    });
+    })
   }
 
   componentDidCatch(error, info) {
     this.setState({
       hasError: true,
-    });
+    })
 
-    console.error(error, info);
+    console.error(error, info)
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <img src="https://c1.staticflickr.com/8/7001/6509400855_aaaf915871_b.jpg" />
-      );
+      )
     }
 
-    return this.props.children;
+    return this.props.children
   }
 }
