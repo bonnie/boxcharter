@@ -19,28 +19,37 @@
  */
 
 /**
- * Main component for BoxCharter
+ * adapted from https://github.com/LearnersGuild/talent/blob/master/src/client/components/errorBoundary/index.jsx
  * @module
- * App
+ * ErrorBoundary
  */
 
 import React, { Component } from 'react';
 
-import Header from '../nav/header'
-import Routes from './Routes'
-import ErrorBoundary from './ErrorBoundary'
+export default class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
 
-export default class App extends Component {
+    this.state = ({
+      hasError: false,
+    });
+  }
+
+  componentDidCatch(error, info) {
+    this.setState({
+      hasError: true,
+    });
+
+    console.error(error, info);
+  }
+
   render() {
-    return (
-      <div>
-        <ErrorBoundary>
-          <Header />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Routes />
-        </ErrorBoundary>
-      </div>
-    )
+    if (this.state.hasError) {
+      return (
+        <img src="https://c1.staticflickr.com/8/7001/6509400855_aaaf915871_b.jpg" />
+      );
+    }
+
+    return this.props.children;
   }
 }

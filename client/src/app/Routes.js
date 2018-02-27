@@ -40,9 +40,9 @@ export default class App extends Component {
     return (
       <div className="content-container">
         <Switch>
-          <Route path="/user-profile" component={RequireAuth(UserProfile)} />
+          {/* <Route path="/user-profile" component={RequireAuth(UserProfile)} />
           <Route path="/charts/:id" component={RequireAuth(ChartDetail)} />
-          <Route path="/sign-in" component={SignIn} />
+          <Route path="/sign-in" component={SignIn} /> */}
           <Route path="/sign-up" component={SignUp} />
           <Route path="/sign-out" component={SignOut} />
           <Route path="/" component={SplashPage} />

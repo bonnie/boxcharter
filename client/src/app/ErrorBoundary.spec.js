@@ -19,28 +19,16 @@
  */
 
 /**
- * Main component for BoxCharter
+ * Tests for the ErrorBoundary component
  * @module
- * App
+ * ErrorBoundary-spec
  */
 
-import React, { Component } from 'react';
-
-import Header from '../nav/header'
-import Routes from './Routes'
+import React from 'react'
+import { shallow } from 'enzyme'
 import ErrorBoundary from './ErrorBoundary'
 
-export default class App extends Component {
-  render() {
-    return (
-      <div>
-        <ErrorBoundary>
-          <Header />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Routes />
-        </ErrorBoundary>
-      </div>
-    )
-  }
-}
+describe('ErrorBoundary', () => {
+  test('renders', () => {
+  })
+})
