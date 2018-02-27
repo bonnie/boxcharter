@@ -45,6 +45,7 @@
     "history": "^4.7.2",
     "lodash": "^3.10.1",
     "moment": "^2.20.1",
+    "prop-types": "^15.6.1",
     "react": "^16",
     "react-dom": "^16",
     "react-redux": "^5.0.7",

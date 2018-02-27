@@ -26,12 +26,13 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
 import browserHistory from '../app/history'
 
 export default function(ComposedComponent) {
   class Authentication extends Component {
     static contextTypes = {
-      router: React.PropTypes.object
+      router: PropTypes.object
     }
 
     componentWillMount() {
