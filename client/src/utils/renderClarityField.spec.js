@@ -19,17 +19,17 @@
  */
 
 /**
- * Tests for the ClarityFormInput component
+ * Tests for the renderClarityField component
  * @module
- * ClarityFormInput-spec
+ * renderClarityField-spec
  */
 
 
 import React from 'react'
 import { shallow } from 'enzyme'
-import ClarityFormInput from './ClarityFormInput'
+import renderClarityField from './renderClarityField'
 
-describe('ClarityFormInput', () => {
+describe('renderClarityField', () => {
   test('renders', () => {
   })
 })
