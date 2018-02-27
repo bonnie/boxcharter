@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,8 +19,16 @@
  */
 
 /**
- * Tests for the NavLink component
+ * Tests for the RequireAuth component
  * @module
- * NavLink-spec
+ * RequireAuth-spec
  */
 
+import React from 'react'
+import { shallow } from 'enzyme'
+import RequireAuth from './RequireAuth'
+
+describe('RequireAuth', () => {
+  test('renders', () => {
+  })
+})

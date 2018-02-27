@@ -19,9 +19,16 @@
  */
 
 /**
- * Tests for the auth actions
+ * Tests for the Header component
  * @module
- * authActions-spec
+ * Header-spec
  */
 
-import actions from './authActions'
+import React from 'react'
+import { shallow } from 'enzyme'
+import Header from './Header'
+
+describe('Header', () => {
+  test('renders', () => {
+  })
+})

@@ -19,9 +19,16 @@
  */
 
 /**
- * Tests for the user reducers
+ * Tests for the UserProfile component
  * @module
- * userChartsReducer-spec
+ * UserProfile-spec
  */
 
-import userChartsReducer from './userChartsReducer'
+import React from 'react'
+import { shallow } from 'enzyme'
+import UserProfile from './UserProfile'
+
+describe('UserProfile', () => {
+  test('renders', () => {
+  })
+})

@@ -19,9 +19,16 @@
  */
 
 /**
- * Tests for the SignUp component
+ * Tests for the NavLink component
  * @module
- * SignUp-spec
+ * NavLink-spec
  */
 
-import SignUp from './SignUp'
+import React from 'react'
+import { shallow } from 'enzyme'
+import NavLink from './NavLink'
+
+describe('NavLink', () => {
+  test('renders', () => {
+  })
+})

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,9 +19,16 @@
  */
 
 /**
- * Tests for the SignOut component
+ * Tests for the SignIn component
  * @module
- * SignOut-spec
+ * SignIn-spec
  */
 
-import SignOut from './SignOut'
+import React from 'react'
+import { shallow } from 'enzyme'
+import SignIn from './SignIn'
+
+describe('SignIn', () => {
+  test('renders', () => {
+  })
+})

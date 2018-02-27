@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,24 +19,16 @@
  */
 
 /**
- * Clarity form input component
+ * Tests for the SignUp component
  * @module
- * form_input
+ * SignUp-spec
  */
 
 import React from 'react'
+import { shallow } from 'enzyme'
+import SignUp from './SignUp'
 
-export default (props) => {
-  const { type, label, required, field }  = props
-  const requiredClass = required ? 'required' : ''
-  const invalidClass = field.touched && field.error ? 'invalid' : ''
-  return (
-    <fieldset key={field.name} className="form-group">
-        <label className={requiredClass}>{label}</label>
-        <label className={`tooltip tooltip-validation ${invalidClass}`}>
-          <input className="form-control" type={type} {...field} />
-          <span className="tooltip-content">{field.error}</span>
-        </label>
-    </fieldset>
-  )
-}
+describe('SignUp', () => {
+  test('renders', () => {
+  })
+})

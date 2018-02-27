@@ -19,9 +19,31 @@
  */
 
 /**
- * Tests for the SignIn component
+ * Tests for the App component
  * @module
- * SignIn-spec
+ * App-spec
  */
 
-import SignIn from './SignIn'
+
+import React from 'react'
+import { shallow } from 'enzyme'
+import App from './App'
+
+describe('App', () => {
+  test('renders', () => {
+  })
+})
+
+ // import { renderComponent , expect } from '../test_helper'
+
+// describe('App' , () => {
+//   let component
+
+//   beforeEach(() => {
+//     component = renderComponent(App)
+//   })
+
+//   it('renders something', () => {
+//     expect(component).to.exist
+//   })
+// })

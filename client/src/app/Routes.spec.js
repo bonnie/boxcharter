@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,9 +19,16 @@
  */
 
 /**
- * Tests for the UserProfile component
+ * Tests for the Routes component
  * @module
- * UserProfile-spec
+ * Routes-spec
  */
 
-import UserProfile from './UserProfile'
+import React from 'react'
+import { shallow } from 'enzyme'
+import Routes from './Routes'
+
+describe('Routes', () => {
+  test('renders', () => {
+  })
+})

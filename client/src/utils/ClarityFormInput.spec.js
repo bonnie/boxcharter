@@ -19,9 +19,17 @@
  */
 
 /**
- * Tests for the auth reducers
+ * Tests for the ClarityFormInput component
  * @module
- * authReducers-spec
+ * ClarityFormInput-spec
  */
 
-import authReducer from './authReducer'
+
+import React from 'react'
+import { shallow } from 'enzyme'
+import ClarityFormInput from './ClarityFormInput'
+
+describe('ClarityFormInput', () => {
+  test('renders', () => {
+  })
+})

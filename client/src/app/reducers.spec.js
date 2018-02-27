@@ -19,9 +19,14 @@
  */
 
 /**
- * Tests for the nav actions
+ * Tests for the App reducers
  * @module
- * navActions-spec
+ * appReducers-spec
  */
 
-import * as actions from './navActions'
+import reducers from './reducers'
+
+describe('reducers', () => {
+  test('', () => {
+  })
+})

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,28 +19,15 @@
  */
 
 /**
- * Main component for BoxCharter
+ * Tests for the nav actions
  * @module
- * App
+ * navActions-spec
  */
 
-import React, { Component } from 'react';
+import * as actions from './navActions'
+import { } from './navActionTypes'
 
-import Header from '../nav/header'
-import Routes from './Routes'
-import ErrorBoundary from './ErrorBoundary'
-
-export default class App extends Component {
-  render() {
-    return (
-      <div>
-        <ErrorBoundary>
-          <Header />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Routes />
-        </ErrorBoundary>
-      </div>
-    )
-  }
-}
+describe('navActions', () => {
+  test('', () => {
+  })
+})

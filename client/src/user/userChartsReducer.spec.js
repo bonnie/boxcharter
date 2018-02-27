@@ -19,20 +19,14 @@
  */
 
 /**
- * Tests for the ChartDetail component
+ * Tests for the user reducers
  * @module
- * ChartDetail-spec
+ * userChartsReducer-spec
  */
 
-import ChartDetail from './ChartDetail'
+import userChartsReducer from './userChartsReducer'
 
-// describe('ChartDetail', () => {
-//   let component
-//   beforeEach(() => {
-//     const props = { }
-//     component = renderComponent(ChartDetail, null, props)
-//   })
-  
-//   it('has the correct class', () => {
-//     expect(component).to.have.class('chart-detail')
-//   })
+describe('userChartsReducer', () => {
+  test('', () => {
+  })
+})

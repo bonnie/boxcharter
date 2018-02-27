@@ -19,9 +19,32 @@
  */
 
 /**
- * Tests for the chart reducers
+ * Tests for the UserCharts component
  * @module
- * chartReducer-spec
+ * UserCharts-spec
  */
 
-import chartReducer from './chartReducer'
+import React from 'react'
+import { shallow } from 'enzyme'
+import UserCharts from './UserCharts'
+
+describe('UserCharts', () => {
+  test('renders', () => {
+  })
+})
+
+// describe('UserCharts', () => {
+//   let component
+//   beforeEach(() => {
+//     const props = { 
+//       user: testData.users[0],
+//       charts: testData.userCharts
+//     }
+//     component = renderComponent(UserCharts, null, props)
+//   });
+  
+//   it('has the correct class', () => {
+//     expect(component).to.have.class('user-charts')
+//   });
+
+// });

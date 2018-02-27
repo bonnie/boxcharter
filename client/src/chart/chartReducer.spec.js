@@ -19,9 +19,14 @@
  */
 
 /**
- * Tests for the App reducers
+ * Tests for the chart reducers
  * @module
- * appReducers-spec
+ * chartReducer-spec
  */
 
-import reducers from './reducers'
+import chartReducer from './chartReducer'
+
+describe('chartReducer', () => {
+  test('', () => {
+  })
+})

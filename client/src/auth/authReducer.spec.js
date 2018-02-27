@@ -19,9 +19,14 @@
  */
 
 /**
- * Tests for the chart reducers
+ * Tests for the auth reducers
  * @module
- * navReducer-spec
+ * authReducers-spec
  */
 
-import navReducer from './navReducer'
+import authReducer from './authReducer'
+
+describe('authReducer', () => {
+  test('', () => {
+  })
+})

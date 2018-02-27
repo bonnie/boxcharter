@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,25 +19,16 @@
  */
 
 /**
- * Tests for the UserCharts component
+ * Tests for the ErrorBoundary component
  * @module
- * UserCharts-spec
+ * ErrorBoundary-spec
  */
 
-import UserCharts from './UserCharts'
+import React from 'react'
+import { shallow } from 'enzyme'
+import ErrorBoundary from './ErrorBoundary'
 
-// describe('UserCharts', () => {
-//   let component
-//   beforeEach(() => {
-//     const props = { 
-//       user: testData.users[0],
-//       charts: testData.userCharts
-//     }
-//     component = renderComponent(UserCharts, null, props)
-//   });
-  
-//   it('has the correct class', () => {
-//     expect(component).to.have.class('user-charts')
-//   });
-
-// });
+describe('ErrorBoundary', () => {
+  test('renders', () => {
+  })
+})

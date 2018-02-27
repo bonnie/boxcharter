@@ -19,7 +19,27 @@
  */
 
 /**
- * Tests for the Header component
+ * Tests for the ChartDetail component
  * @module
- * Header-spec
+ * ChartDetail-spec
  */
+
+import React from 'react'
+import { shallow } from 'enzyme'
+import ChartDetail from './ChartDetail'
+
+describe('ChartDetail', () => {
+  test('renders', () => {
+  })
+})
+
+// describe('ChartDetail', () => {
+//   let component
+//   beforeEach(() => {
+//     const props = { }
+//     component = renderComponent(ChartDetail, null, props)
+//   })
+  
+//   it('has the correct class', () => {
+//     expect(component).to.have.class('chart-detail')
+//   })

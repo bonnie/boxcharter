@@ -25,11 +25,14 @@
  */
 
 import React, { Component } from 'react'
-import { reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
+import { Field, reduxForm } from 'redux-form'
 import { signUpUser, setAuthError } from './authActions'
 import { navActions } from '../nav'
 import { tabNames } from '../nav'
-import { ClarityFormInput } from '../utils'
+import { renderClarityField } from '../utils'
+
+const fields = ['email', 'password', 'passwordConfirm']
 
 class SignUp extends Component {
   componentDidMount() {
@@ -57,14 +60,13 @@ class SignUp extends Component {
 
   render() {
     const { handleSubmit } = this.props
-    const { email, password, passwordConfirm } = this.props.fields
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <ClarityFormInput type="text" label="Email" required={true} field={email}/>
-        <ClarityFormInput type="password" label="Password" required={true} field={password}/>
-        <ClarityFormInput type="password" label="Confirm Password" required={true} field={passwordConfirm}/>
-        { this.renderAlert() }
+        <Field name="email" type="text" label="Email" required={true} component={renderClarityField}/>
+        <Field name="password" type="password" label="Password" required={true} component={renderClarityField}/>
+        <Field name="passwordConfirm" type="password" label="Confirm Password" required={true} component={renderClarityField}/>
         <button action="submit" className="btn btn-primary">Sign up</button>
+        { this.renderAlert() }
       </form>
     )
   }
@@ -78,7 +80,7 @@ class SignUp extends Component {
 const validate = (formProps) => {
   const errors = {}
 
-  Object.keys(formProps).forEach(formProp => {
+  fields.forEach(formProp => {
     if (!formProps[formProp]) {
       errors[formProp] = 'This field can\'t be blank'
     }
@@ -93,7 +95,7 @@ const validate = (formProps) => {
 
 const formOptions = {
   form: 'signup',
-  fields: ['email', 'password', 'passwordConfirm'],
+  fields,
   validate,
 }
 
@@ -107,4 +109,5 @@ const actions = {
   setActiveNavTab: navActions.setActiveNavTab,
 }
 
-export default reduxForm(formOptions, mapStateToProps, actions)(SignUp)
+const SignUpForm = reduxForm(formOptions)(SignUp)
+export default connect(mapStateToProps, actions)(SignUpForm)

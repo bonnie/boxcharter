@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,22 +19,15 @@
  */
 
 /**
- * Tests for the App component
+ * Tests for the user actions
  * @module
- * App-spec
+ * userActions-spec
  */
 
- // import { renderComponent , expect } from '../test_helper'
-import App from './App'
+import * as actions from './userActions'
+import { } from './userActionTypes'
 
-// describe('App' , () => {
-//   let component
-
-//   beforeEach(() => {
-//     component = renderComponent(App)
-//   })
-
-//   it('renders something', () => {
-//     expect(component).to.exist
-//   })
-// })
+describe('userActions', () => {
+  test('', () => {
+  })
+})

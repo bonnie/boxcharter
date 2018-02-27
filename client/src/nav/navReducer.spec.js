@@ -19,9 +19,14 @@
  */
 
 /**
- * Tests for the chart actions
+ * Tests for the chart reducers
  * @module
- * chartActions-spec
+ * navReducer-spec
  */
 
-import * as actions from './chartActions'
+import navReducer from './navReducer'
+
+describe('navReducer', () => {
+  test('', () => {
+  })
+})

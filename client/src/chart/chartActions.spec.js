@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,9 +19,15 @@
  */
 
 /**
- * Tests for the RequireAuth component
+ * Tests for the chart actions
  * @module
- * RequireAuth-spec
+ * chartActions-spec
  */
 
-import RequireAuth from './RequireAuth'
+import * as actions from './chartActions'
+import { } from './chartActionTypes'
+
+describe('chartActions', () => {
+  test('', () => {
+  })
+})

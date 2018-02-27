@@ -19,9 +19,16 @@
  */
 
 /**
- * Tests for the user actions
+ * Tests for the SignOut component
  * @module
- * userActions-spec
+ * SignOut-spec
  */
 
-import * as actions from './userActions'
+import React from 'react'
+import { shallow } from 'enzyme'
+import SignOut from './SignOut'
+
+describe('SignOut', () => {
+  test('renders', () => {
+  })
+})

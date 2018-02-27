@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,26 +19,15 @@
  */
 
 /**
- * Tests for the SplashPage component
+ * Tests for the auth actions
  * @module
- * SplashPage-spec
+ * authActions-spec
  */
 
-import SplashPage from './SplashPage'
+import actions from './authActions'
+import { } from './authActionTypes'
 
- // import { renderComponent, expect } from '../test_helper'
-// import SplashPage from '../../src/components/splash_page'
-// import testData from '../data'
-
-// describe('SplashPage', () => {
-//   let component
-//   beforeEach(() => {
-//     const props = { }
-//     component = renderComponent(SplashPage, null, props)
-//   })
-  
-//   it('has the correct class', () => {
-//     expect(component).to.have.class('splash-page')
-//   })
-
-// })
+describe('authActions', () => {
+  test('', () => {
+  })
+})

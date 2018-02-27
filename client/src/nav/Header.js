@@ -30,7 +30,6 @@ import { BrowserRouter, Link } from 'react-router-dom'
 import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE, } from './tabNames'
 import NavLink from './NavLink'
 import { setActiveNavTab } from './navActions'
-import boxcharter48 from '../../public/images/boxcharter-48.png'
 
 class Header extends Component {
   renderLinks() {
@@ -57,7 +56,7 @@ class Header extends Component {
       <header className="header header-5">
         <div className="branding">
           <Link to="/" className="logo-and-title" onClick={this.brandClickHandler.bind(this)}>
-            <img src={boxcharter48} />
+            <img src='/public/images/boxcharter-48.png' />
             <span className="title">BoxCharter</span>
           </Link>
         </div>
