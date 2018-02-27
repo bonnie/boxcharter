@@ -24,4 +24,12 @@
  * ClarityFormInput-spec
  */
 
-import { Component } from './ClarityFormInput'
+
+import React from 'react'
+import { shallow } from 'enzyme'
+import ClarityFormInput from './ClarityFormInput'
+
+describe('ClarityFormInput', () => {
+  test('renders', () => {
+  })
+})

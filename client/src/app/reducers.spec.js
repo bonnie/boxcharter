@@ -25,3 +25,8 @@
  */
 
 import reducers from './reducers'
+
+describe('reducers', () => {
+  test('', () => {
+  })
+})

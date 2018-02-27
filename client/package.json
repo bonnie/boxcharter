@@ -12,8 +12,9 @@
     "dev:start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "setup": "npm install",
     "start": "npm run dev:start",
-    "test": "jest src/**/*-spec.js --coverage",
-    "test:watch": "jest --watch"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "devDependencies": {
     "babel-core": "^6.2.1",

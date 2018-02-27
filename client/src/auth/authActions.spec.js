@@ -25,3 +25,9 @@
  */
 
 import actions from './authActions'
+import { } from './authActionTypes'
+
+describe('authActions', () => {
+  test('', () => {
+  })
+})

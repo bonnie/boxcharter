@@ -25,3 +25,8 @@
  */
 
 import navReducer from './navReducer'
+
+describe('navReducer', () => {
+  test('', () => {
+  })
+})

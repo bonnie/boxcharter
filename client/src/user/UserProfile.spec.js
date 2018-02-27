@@ -24,4 +24,11 @@
  * UserProfile-spec
  */
 
+import React from 'react'
+import { shallow } from 'enzyme'
 import UserProfile from './UserProfile'
+
+describe('UserProfile', () => {
+  test('renders', () => {
+  })
+})

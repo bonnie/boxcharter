@@ -25,3 +25,8 @@
  */
 
 import authReducer from './authReducer'
+
+describe('authReducer', () => {
+  test('', () => {
+  })
+})

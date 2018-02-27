@@ -25,3 +25,8 @@
  */
 
 import chartReducer from './chartReducer'
+
+describe('chartReducer', () => {
+  test('', () => {
+  })
+})

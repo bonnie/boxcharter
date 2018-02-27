@@ -24,7 +24,14 @@
  * ChartDetail-spec
  */
 
+import React from 'react'
+import { shallow } from 'enzyme'
 import ChartDetail from './ChartDetail'
+
+describe('ChartDetail', () => {
+  test('renders', () => {
+  })
+})
 
 // describe('ChartDetail', () => {
 //   let component

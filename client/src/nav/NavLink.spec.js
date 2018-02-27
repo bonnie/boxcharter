@@ -24,3 +24,11 @@
  * NavLink-spec
  */
 
+import React from 'react'
+import { shallow } from 'enzyme'
+import NavLink from './NavLink'
+
+describe('NavLink', () => {
+  test('renders', () => {
+  })
+})

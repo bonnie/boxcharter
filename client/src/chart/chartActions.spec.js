@@ -25,3 +25,9 @@
  */
 
 import * as actions from './chartActions'
+import { } from './chartActionTypes'
+
+describe('chartActions', () => {
+  test('', () => {
+  })
+})

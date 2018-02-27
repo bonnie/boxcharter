@@ -24,7 +24,14 @@
  * UserCharts-spec
  */
 
+import React from 'react'
+import { shallow } from 'enzyme'
 import UserCharts from './UserCharts'
+
+describe('UserCharts', () => {
+  test('renders', () => {
+  })
+})
 
 // describe('UserCharts', () => {
 //   let component

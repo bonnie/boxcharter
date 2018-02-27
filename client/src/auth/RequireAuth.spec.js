@@ -24,4 +24,11 @@
  * RequireAuth-spec
  */
 
+import React from 'react'
+import { shallow } from 'enzyme'
 import RequireAuth from './RequireAuth'
+
+describe('RequireAuth', () => {
+  test('renders', () => {
+  })
+})

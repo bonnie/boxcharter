@@ -25,3 +25,9 @@
  */
 
 import * as actions from './navActions'
+import { } from './navActionTypes'
+
+describe('navActions', () => {
+  test('', () => {
+  })
+})

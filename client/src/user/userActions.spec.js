@@ -25,3 +25,9 @@
  */
 
 import * as actions from './userActions'
+import { } from './userActionTypes'
+
+describe('userActions', () => {
+  test('', () => {
+  })
+})
