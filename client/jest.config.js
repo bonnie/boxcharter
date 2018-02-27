@@ -1,11 +1,11 @@
 module.exports = {
-  testMatch: [
-    'src/**/*-spec.js',
-  ],
   testPathIgnorePatterns: [
     '/node_modules/',
     '/helper/',
   ],
+  globals: {
+    // put globals here
+  },
   snapshotSerializers: [
     'enzyme-to-json/serializer',
   ],
