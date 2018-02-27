@@ -25,13 +25,16 @@
  */
 
 import React, { Component } from 'react'
-import { reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
+import { Field, reduxForm } from 'redux-form'
 import { signInUser, setAuthError } from './authActions'
 import { navActions } from '../nav'
 import { tabNames } from '../nav'
-import { ClarityFormInput } from '../utils'
+import { renderClarityField } from '../utils'
 
-class Signin extends Component {
+const fields = ['email', 'password']
+
+class SignIn extends Component {
   componentDidMount() {
     // clear any errors
     this.props.setAuthError(null)
@@ -68,14 +71,13 @@ class Signin extends Component {
   }
 
   render() {
-    const { handleSubmit, fields: { email, password }} = this.props;
+    const { handleSubmit } = this.props;
 
-    // const { handleSubmit, fields: { email, password } } = this.props
     return (
       <div>
         <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-          <ClarityFormInput type="text" label="Email" required={true} field={email}/>
-          <ClarityFormInput type="password" label="Password" required={true} field={password}/>
+          <Field name="email" type="text" label="Email" required={true} component={renderClarityField} />
+          <Field name="password" type="password" label="Password" required={true} component={renderClarityField} />
           <button action="submit" className="btn btn-primary">
             Sign in
           </button>
@@ -88,7 +90,7 @@ class Signin extends Component {
 
 const formOptions = {
   form: 'signin',
-  fields: ['email', 'password']
+  fields,
 }
 
 function mapStateToProps(state) {
@@ -101,4 +103,5 @@ const actions = {
   setActiveNavTab: navActions.setActiveNavTab,
 }
 
-export default reduxForm(formOptions, mapStateToProps, actions)(Signin)
+const SignInForm = reduxForm(formOptions)(SignIn)
+export default connect(mapStateToProps, actions)(SignInForm)

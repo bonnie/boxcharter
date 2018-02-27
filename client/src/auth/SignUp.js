@@ -65,8 +65,8 @@ class SignUp extends Component {
         <Field name="email" type="text" label="Email" required={true} component={renderClarityField}/>
         <Field name="password" type="password" label="Password" required={true} component={renderClarityField}/>
         <Field name="passwordConfirm" type="password" label="Confirm Password" required={true} component={renderClarityField}/>
-        { this.renderAlert() }
         <button action="submit" className="btn btn-primary">Sign up</button>
+        { this.renderAlert() }
       </form>
     )
   }
@@ -110,5 +110,4 @@ const actions = {
 }
 
 const SignUpForm = reduxForm(formOptions)(SignUp)
-
 export default connect(mapStateToProps, actions)(SignUpForm)
