@@ -35,24 +35,24 @@ describe('NavLink', () => {
   const linkText = SIGN_IN
   let renderedNav
   beforeEach('render component', () => {
-    const navJSX = <NavLink linkRoute={linkRoute} linkText={linkText} />
-    renderedNav = shallow(navJSX)
+    // const navJSX = <NavLink linkRoute={linkRoute} linkText={linkText} />
+    // renderedNav = shallow(navJSX)
   })
   test('renders correctly', () => {
     // expect(renderedNav).toMatchSnapshot()
   })
   describe('after click', () => {
-    beforeEach('click the tab', () => {
-      renderedNav.simulate('click')
-    })
-    test('links correctly when clicked', () => {
-      console.log('renderedNavAfterClick', renderedNav)
-    })
-    test('becomes active when clicked', () => {
-      // expect(renderedNav).toMatchSnapshot()
-    })
-    test('becomes inactive when another tab is clicked', () => {
+    // beforeEach('click the tab', () => {
+    //   renderedNav.simulate('click')
+    // })
+    // test('links correctly when clicked', () => {
+    //   console.log('renderedNavAfterClick', renderedNav)
+    // })
+    // test('becomes active when clicked', () => {
+    //   // expect(renderedNav).toMatchSnapshot()
+    // })
+    // test('becomes inactive when another tab is clicked', () => {
   
-    })
+    // })
   })
 })

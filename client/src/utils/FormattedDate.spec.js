@@ -29,24 +29,36 @@ import { shallow } from 'enzyme'
 import '../../jest/setupTests'
 import FormattedDate from './FormattedDate'
 
+const currentYear = new Date().getFullYear().toString()
+const lastYear = Number(currentYear) - 1
+const givenDate = '01-07'
+const givenHour = '21'
+const givenMinutes = '14'
+const givenMinutesSeconds = `:${givenMinutes}:00`
+const givenDateTime = `${givenDate}T${givenHour}${givenMinutesSeconds}`
+const givenDateMinusYear = `${givenDate}T${givenHour}${givenMinutesSeconds}`
+
+const expectedDate = 'Jan 7'
+const expectedTime = `(1[012]|[1-9]):${givenMinutes} [ap]m`
+const currentYearMatch = expect.stringMatching(`^${expectedDate}, ${expectedTime}$`)
+const lastYearMatch = expect.stringMatching(`^${expectedDate}, ${lastYear}, ${expectedTime}`)
+
 describe('FormattedDate', () => {
-  const currentYear = new Date().getFullYear().toString()
   test('renders the default date format without the year for the current year', () => {
-    const dateJSX = <FormattedDate date={new Date(`${currentYear}-01-07T21:14:00`)} />
+    const dateJSX = <FormattedDate date={new Date(`${currentYear}-${givenDateMinusYear}`)} />
     const renderedDate = shallow(dateJSX)
     const formattedDate = 'Jan 7, 9:14 pm'
-    expect(renderedDate.text()).toEqual(formattedDate)
+    expect(renderedDate.text()).toEqual(currentYearMatch)
   })
   test('renders the default date format with the year for a previous year', () => {
-    const dateJSX = <FormattedDate date={new Date(`${currentYear - 1}-01-07T21:14:00`)} />
+    const dateJSX = <FormattedDate date={new Date(`${lastYear}-${givenDateMinusYear}`)} />
     const renderedDate = shallow(dateJSX)
-    const formattedDate = `Jan 7, ${currentYear - 1}, 9:14 pm`
-    expect(renderedDate.text()).toEqual(formattedDate)
+    expect(renderedDate.text()).toEqual(lastYearMatch)
   })
   test('renders a different date format', () => {
-    const formatProps = { date: '2018-01-07T21:14:00', format: 'YYYY-MM-DD'}
+    const formatProps = { date: `${currentYear}-${givenDateMinusYear}`, format: 'YYYY-MM-DD'}
     const renderedDate = shallow(<FormattedDate {...formatProps} />)
-    const formattedDate = '2018-01-07'
+    const formattedDate = `${currentYear}-${givenDate}`
     expect(renderedDate.text()).toEqual(formattedDate)
   })
 })
