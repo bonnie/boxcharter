@@ -26,9 +26,33 @@
 
 import React from 'react'
 import { shallow } from 'enzyme'
-import NavLink from './NavLink'
+import '../../jest/setupTests'
+import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE } from './tabNames'
+import { NavLink } from './NavLink'
 
 describe('NavLink', () => {
-  test('renders', () => {
+  const linkRoute = "/sign-in"
+  const linkText = SIGN_IN
+  let renderedNav
+  beforeEach('render component', () => {
+    const navJSX = <NavLink linkRoute={linkRoute} linkText={linkText} />
+    renderedNav = shallow(navJSX)
+  })
+  test('renders correctly', () => {
+    // expect(renderedNav).toMatchSnapshot()
+  })
+  describe('after click', () => {
+    beforeEach('click the tab', () => {
+      renderedNav.simulate('click')
+    })
+    test('links correctly when clicked', () => {
+      console.log('renderedNavAfterClick', renderedNav)
+    })
+    test('becomes active when clicked', () => {
+      // expect(renderedNav).toMatchSnapshot()
+    })
+    test('becomes inactive when another tab is clicked', () => {
+  
+    })
   })
 })

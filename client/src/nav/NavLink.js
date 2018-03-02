@@ -52,4 +52,7 @@ function mapStateToProps({nav}) {
   return { activeNavTab: nav.activeNavTab }
 }
 
-export default connect(mapStateToProps, actions)(NavLink);
+export default connect(mapStateToProps, actions)(NavLink)
+
+// for testing
+export { NavLink }
