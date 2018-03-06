@@ -25,7 +25,9 @@
  */
 
 import React from 'react'
-import { shallow } from 'enzyme'
+import { connect } from 'react-redux'
+import { shallowWithStore } from 'enzyme-redux'
+import { createMockStore } from 'redux-test-utils'
 import '../../jest/setupTests'
 import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE } from './tabNames'
 import { NavLink } from './NavLink'
@@ -34,25 +36,29 @@ describe('NavLink', () => {
   const linkRoute = "/sign-in"
   const linkText = SIGN_IN
   let renderedNav
-  beforeEach('render component', () => {
-    // const navJSX = <NavLink linkRoute={linkRoute} linkText={linkText} />
-    // renderedNav = shallow(navJSX)
+  beforeEach(() => {
+    const inactiveState = { activeNavTab: NO_TAB }
+    const mapStateToProps = (state) => (state)
+    const ConnectedNavLink = connect(mapStateToProps)(NavLink);
+    renderedNav = shallowWithStore(<ConnectedNavLink />, createMockStore(inactiveState));    
   })
   test('renders correctly', () => {
-    // expect(renderedNav).toMatchSnapshot()
+    expect(renderedNav).toMatchSnapshot()
   })
-  describe('after click', () => {
-    // beforeEach('click the tab', () => {
-    //   renderedNav.simulate('click')
-    // })
-    // test('links correctly when clicked', () => {
-    //   console.log('renderedNavAfterClick', renderedNav)
-    // })
-    // test('becomes active when clicked', () => {
-    //   // expect(renderedNav).toMatchSnapshot()
-    // })
-    // test('becomes inactive when another tab is clicked', () => {
+  // describe('after click', () => {
+  //   // beforeEach(() => {
+  //   //   const navJSX = <NavLink linkRoute={linkRoute} linkText={linkText} />
+  //   //   renderedNav = shallow(navJSX)
+  //   //   renderedNav.simulate('click')
+  //   // })
+  //   test('links correctly when clicked', () => {
+  //     console.log('renderedNavAfterClick', renderedNav)
+  //   })
+  //   test('becomes active when clicked', () => {
+  //     // expect(renderedNav).toMatchSnapshot()
+  //   })
+  //   test('becomes inactive when another tab is clicked', () => {
   
-    // })
-  })
+  //   })
+  // })
 })

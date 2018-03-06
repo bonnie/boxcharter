@@ -27,11 +27,13 @@
     "chai-jquery": "^2.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-redux": "^0.1.7",
     "enzyme-to-json": "^3.3.1",
     "jest": "^22.4.2",
     "jquery": "^2.2.1",
     "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
+    "redux-test-utils": "^0.2.2",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   },
