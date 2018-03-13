@@ -19,18 +19,7 @@ exports[`NavLink brand NavLink renders correctly 1`] = `
   onClick={[Function]}
   replace={false}
   to="/"
->
-  <span>
-    <img
-      src="/public/images/boxcharter-48.png"
-    />
-    <span
-      className="title"
-    >
-      BoxCharter
-    </span>
-  </span>
-</Link>
+/>
 `;
 
 exports[`NavLink inactive NavLink renders correctly 1`] = `

@@ -38,10 +38,7 @@ export class NavLink extends Component {
     const classes = this.props.brand ? 'logo-and-title' : `nav-link nav-text ${activeClass}`
 
     const linkDisplay = this.props.brand 
-      ? (<span>
-          <img src='/public/images/boxcharter-48.png' />
-          <span className="title">BoxCharter</span>
-        </span>)
+      ? this.props.linkDisplay
       : this.props.linkText
 
     return (

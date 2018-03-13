@@ -29,6 +29,7 @@ import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
 import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE, } from './tabNames'
 import NavLink from './NavLink'
+import NavBrand from './NavBrand'
 import { setActiveNavTab } from './navActions'
 
 export class Header extends Component {
@@ -54,9 +55,7 @@ export class Header extends Component {
   render() {  
     return (
       <header className="header header-5">
-        <div className="branding">
-          <NavLink linkRoute="/" brand={true} />
-        </div>
+        <NavBrand />
         <div className="header-nav">
           {this.renderLinks()}
         </div>

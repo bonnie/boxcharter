@@ -49,7 +49,7 @@ describe('NavLink', () => {
       const renderedNav = shallow(activeNav)
       expect(renderedNav).toMatchSnapshot()
     })
-    test('dispatch action upon click', () => {
+    test('dispatch action upon click with the correct arg', () => {
       const setActiveNavTabMock = jest.fn()
       const inactiveNav = 
         <NavLink
@@ -60,7 +60,7 @@ describe('NavLink', () => {
         />
       const renderedNav = shallow(inactiveNav)
       renderedNav.simulate('click')
-      expect(setActiveNavTabMock.mock.calls.length).toBe(1)
+      expect(setActiveNavTabMock).toHaveBeenCalledWith(linkText)
     })
   })
 
@@ -75,7 +75,7 @@ describe('NavLink', () => {
       const renderedNav = shallow(inactiveNav)
       expect(renderedNav).toMatchSnapshot()
     })
-    test('dispatch action upon click', () => {
+    test('dispatch action upon click with the correct arg', () => {
       const setActiveNavTabMock = jest.fn()
       const inactiveNav = 
         <NavLink
@@ -86,7 +86,7 @@ describe('NavLink', () => {
         />
       const renderedNav = shallow(inactiveNav)
       renderedNav.simulate('click')
-      expect(setActiveNavTabMock.mock.calls.length).toBe(1)
+      expect(setActiveNavTabMock).toHaveBeenCalledWith(linkText)
     })
   })
 
@@ -101,18 +101,19 @@ describe('NavLink', () => {
       const renderedNav = shallow(brandNav)
       expect(renderedNav).toMatchSnapshot()
     })
-    test('dispatch action upon click', () => {
+    test('dispatch action upon click with the correct arg', () => {
       const setActiveNavTabMock = jest.fn()
       const brandNav = 
         <NavLink
           linkRoute="/"
+          linkText={NO_TAB}
           brand={true}
           activeNavTab={SIGN_UP}
           setActiveNavTab={setActiveNavTabMock}
         />
       const renderedNav = shallow(brandNav)
       renderedNav.simulate('click')
-      expect(setActiveNavTabMock.mock.calls.length).toBe(1)
+      expect(setActiveNavTabMock).toHaveBeenCalledWith(NO_TAB)
     })
   })
   

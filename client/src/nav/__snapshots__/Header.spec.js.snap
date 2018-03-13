@@ -4,14 +4,7 @@ exports[`Header renders the correct links when user is authenticated 1`] = `
 <header
   className="header header-5"
 >
-  <div
-    className="branding"
-  >
-    <Connect(NavLink)
-      brand={true}
-      linkRoute="/"
-    />
-  </div>
+  <Component />
   <div
     className="header-nav"
   >
@@ -33,14 +26,7 @@ exports[`Header renders the correct links when user is not authenticated 1`] = `
 <header
   className="header header-5"
 >
-  <div
-    className="branding"
-  >
-    <Connect(NavLink)
-      brand={true}
-      linkRoute="/"
-    />
-  </div>
+  <Component />
   <div
     className="header-nav"
   >
