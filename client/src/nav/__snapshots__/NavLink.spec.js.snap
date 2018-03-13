@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NavLink active NavLink component renders correctly 1`] = `
+exports[`NavLink active NavLink renders correctly 1`] = `
 <Link
   className="nav-link nav-text active"
   key="{props.key}"
@@ -12,7 +12,28 @@ exports[`NavLink active NavLink component renders correctly 1`] = `
 </Link>
 `;
 
-exports[`NavLink inactive NavLink component renders correctly 1`] = `
+exports[`NavLink brand NavLink renders correctly 1`] = `
+<Link
+  className="logo-and-title"
+  key="{props.key}"
+  onClick={[Function]}
+  replace={false}
+  to="/"
+>
+  <span>
+    <img
+      src="/public/images/boxcharter-48.png"
+    />
+    <span
+      className="title"
+    >
+      BoxCharter
+    </span>
+  </span>
+</Link>
+`;
+
+exports[`NavLink inactive NavLink renders correctly 1`] = `
 <Link
   className="nav-link nav-text "
   key="{props.key}"

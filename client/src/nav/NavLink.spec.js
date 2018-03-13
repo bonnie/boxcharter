@@ -38,53 +38,84 @@ describe('NavLink', () => {
   const linkRoute = "/sign-in"
   const linkText = SIGN_IN
 
-  const activeNav =
-    <NavLink 
-      linkRoute={linkRoute}
-      linkText={linkText} 
-      activeNavTab={linkText}
-    />
-  const inactiveNav = 
-    <NavLink 
-      linkRoute={linkRoute}
-      linkText={linkText} 
-      activeNavTab={SIGN_UP}
-    />
+  describe('active NavLink', () => {
+    test('renders correctly', () => {
+      const activeNav =
+        <NavLink 
+          linkRoute={linkRoute}
+          linkText={linkText} 
+          activeNavTab={linkText}
+        />
+      const renderedNav = shallow(activeNav)
+      expect(renderedNav).toMatchSnapshot()
+    })
+    test('dispatch action upon click', () => {
+      const setActiveNavTabMock = jest.fn()
+      const inactiveNav = 
+        <NavLink
+          linkRoute={linkRoute}
+          linkText={linkText} 
+          activeNavTab={linkText}
+          setActiveNavTab={setActiveNavTabMock}
+        />
+      const renderedNav = shallow(inactiveNav)
+      renderedNav.simulate('click')
+      expect(setActiveNavTabMock.mock.calls.length).toBe(1)
+    })
+  })
 
-  test('active NavLink component renders correctly', () => {
-    const renderedNav = shallow(activeNav)
-    expect(renderedNav).toMatchSnapshot()
+  describe('inactive NavLink', () => {
+    test('renders correctly', () => {
+      const inactiveNav = 
+        <NavLink 
+          linkRoute={linkRoute}
+          linkText={linkText} 
+          activeNavTab={SIGN_UP}
+        />
+      const renderedNav = shallow(inactiveNav)
+      expect(renderedNav).toMatchSnapshot()
+    })
+    test('dispatch action upon click', () => {
+      const setActiveNavTabMock = jest.fn()
+      const inactiveNav = 
+        <NavLink
+          linkRoute={linkRoute}
+          linkText={linkText} 
+          activeNavTab={SIGN_UP}
+          setActiveNavTab={setActiveNavTabMock}
+        />
+      const renderedNav = shallow(inactiveNav)
+      renderedNav.simulate('click')
+      expect(setActiveNavTabMock.mock.calls.length).toBe(1)
+    })
   })
-  test('inactive NavLink component renders correctly', () => {
-    const renderedNav = shallow(inactiveNav)
-    expect(renderedNav).toMatchSnapshot()
+
+  describe('brand NavLink', () => {
+    test('renders correctly', () => {
+      const brandNav = 
+        <NavLink 
+          linkRoute="/"
+          brand={true}
+          activeNavTab={SIGN_UP}
+        />
+      const renderedNav = shallow(brandNav)
+      expect(renderedNav).toMatchSnapshot()
+    })
+    test('dispatch action upon click', () => {
+      const setActiveNavTabMock = jest.fn()
+      const brandNav = 
+        <NavLink
+          linkRoute="/"
+          brand={true}
+          activeNavTab={SIGN_UP}
+          setActiveNavTab={setActiveNavTabMock}
+        />
+      const renderedNav = shallow(brandNav)
+      renderedNav.simulate('click')
+      expect(setActiveNavTabMock.mock.calls.length).toBe(1)
+    })
   })
-  test('dispatch action when clicking inactive NavLink', () => {
-    const setActiveNavTabMock = jest.fn()
-    const inactiveNav = 
-      <NavLink
-        linkRoute={linkRoute}
-        linkText={linkText} 
-        activeNavTab={SIGN_UP}
-        setActiveNavTab={setActiveNavTabMock}
-      />
-    const renderedNav = shallow(inactiveNav)
-    renderedNav.simulate('click')
-    expect(setActiveNavTabMock.mock.calls.length).toBe(1)
-  })
-  test('dispatch action when clicking active NavLink', () => {
-    const setActiveNavTabMock = jest.fn()
-    const inactiveNav = 
-      <NavLink
-        linkRoute={linkRoute}
-        linkText={linkText} 
-        activeNavTab={linkText}
-        setActiveNavTab={setActiveNavTabMock}
-      />
-    const renderedNav = shallow(inactiveNav)
-    renderedNav.simulate('click')
-    expect(setActiveNavTabMock.mock.calls.length).toBe(1)
-  })
+  
   // test('clicking inactive NavLink turns the link active', () => {
   //   const inactiveState = { activeNavTab: SIGN_UP }
   //   const mapStateToProps = (state) => ({state})

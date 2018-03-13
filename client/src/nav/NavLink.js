@@ -29,20 +29,29 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import * as actions from './navActions'
 
-class NavLink extends Component {
+export class NavLink extends Component {
   clickHandler() {
     this.props.setActiveNavTab(this.props.linkText)
   }
   render() {
     const activeClass = (this.props.activeNavTab === this.props.linkText) ? 'active' : ''
+    const classes = this.props.brand ? 'logo-and-title' : `nav-link nav-text ${activeClass}`
+
+    const linkDisplay = this.props.brand 
+      ? (<span>
+          <img src='/public/images/boxcharter-48.png' />
+          <span className="title">BoxCharter</span>
+        </span>)
+      : this.props.linkText
+
     return (
       <Link 
-        className={`nav-link nav-text ${activeClass}`}
+        className={classes}
         key="{props.key}"
         onClick={this.clickHandler.bind(this)}
         to={this.props.linkRoute}
       >
-        {this.props.linkText}
+        {linkDisplay}
       </Link>
     ) 
   }
@@ -52,5 +61,4 @@ function mapStateToProps({nav}) {
   return { activeNavTab: nav.activeNavTab }
 }
 
-export { NavLink }
 export default connect(mapStateToProps, actions)(NavLink)
