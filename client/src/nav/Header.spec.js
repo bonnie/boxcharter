@@ -26,9 +26,18 @@
 
 import React from 'react'
 import { shallow } from 'enzyme'
-import Header from './Header'
+import '../../jest/setupTests'
+import { Header } from './Header'
 
 describe('Header', () => {
-  test('renders', () => {
+  test('renders the correct links when user is authenticated', () => {
+    const header = <Header auth={{authenticated: true}}/>
+    const renderedHeader = shallow(header)
+    expect(renderedHeader).toMatchSnapshot()
+  })
+  test('renders the correct links when user is not authenticated', () => {
+    const header = <Header auth={{authenticated: false}}/>
+    const renderedHeader = shallow(header)
+    expect(renderedHeader).toMatchSnapshot()
   })
 })
