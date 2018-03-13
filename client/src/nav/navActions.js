@@ -24,7 +24,6 @@
  * navActions
  */
 
-import browserHistory from '../app/history'
 import { NAV_TAB } from './navActionTypes'
 
 const setActiveNavTab = (navTabName) => {
