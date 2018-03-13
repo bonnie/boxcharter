@@ -1,8 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`NavLink renders correctly 1`] = `
-<NavLink
-  activeNavTab=""
-  dispatch={[Function]}
-/>
+exports[`NavLink active NavLink component renders correctly 1`] = `
+<Link
+  className="nav-link nav-text active"
+  key="{props.key}"
+  onClick={[Function]}
+  replace={false}
+  to="/sign-in"
+>
+  Sign In
+</Link>
+`;
+
+exports[`NavLink inactive NavLink component renders correctly 1`] = `
+<Link
+  className="nav-link nav-text "
+  key="{props.key}"
+  onClick={[Function]}
+  replace={false}
+  to="/sign-in"
+>
+  Sign In
+</Link>
 `;

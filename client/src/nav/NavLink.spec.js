@@ -26,25 +26,94 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
+import { shallow } from 'enzyme'
 import { shallowWithStore } from 'enzyme-redux'
 import { createMockStore } from 'redux-test-utils'
 import '../../jest/setupTests'
 import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE } from './tabNames'
+import { NAV_TAB } from './navActionTypes'
 import { NavLink } from './NavLink'
 
 describe('NavLink', () => {
   const linkRoute = "/sign-in"
   const linkText = SIGN_IN
-  let renderedNav
-  beforeEach(() => {
-    const inactiveState = { activeNavTab: NO_TAB }
-    const mapStateToProps = (state) => (state)
-    const ConnectedNavLink = connect(mapStateToProps)(NavLink);
-    renderedNav = shallowWithStore(<ConnectedNavLink />, createMockStore(inactiveState));    
-  })
-  test('renders correctly', () => {
+
+  const activeNav =
+    <NavLink 
+      linkRoute={linkRoute}
+      linkText={linkText} 
+      activeNavTab={linkText}
+    />
+  const inactiveNav = 
+    <NavLink 
+      linkRoute={linkRoute}
+      linkText={linkText} 
+      activeNavTab={SIGN_UP}
+    />
+
+  test('active NavLink component renders correctly', () => {
+    const renderedNav = shallow(activeNav)
     expect(renderedNav).toMatchSnapshot()
   })
+  test('inactive NavLink component renders correctly', () => {
+    const renderedNav = shallow(inactiveNav)
+    expect(renderedNav).toMatchSnapshot()
+  })
+  test('dispatch action when clicking inactive NavLink', () => {
+    const setActiveNavTabMock = jest.fn()
+    const inactiveNav = 
+      <NavLink
+        linkRoute={linkRoute}
+        linkText={linkText} 
+        activeNavTab={SIGN_UP}
+        setActiveNavTab={setActiveNavTabMock}
+      />
+    const renderedNav = shallow(inactiveNav)
+    renderedNav.simulate('click')
+    expect(setActiveNavTabMock.mock.calls.length).toBe(1)
+  })
+  test('dispatch action when clicking active NavLink', () => {
+    const setActiveNavTabMock = jest.fn()
+    const inactiveNav = 
+      <NavLink
+        linkRoute={linkRoute}
+        linkText={linkText} 
+        activeNavTab={linkText}
+        setActiveNavTab={setActiveNavTabMock}
+      />
+    const renderedNav = shallow(inactiveNav)
+    renderedNav.simulate('click')
+    expect(setActiveNavTabMock.mock.calls.length).toBe(1)
+  })
+  // test('clicking inactive NavLink turns the link active', () => {
+  //   const inactiveState = { activeNavTab: SIGN_UP }
+  //   const mapStateToProps = (state) => ({state})
+  //   const ConnectedNavLink = connect(mapStateToProps)(NavLink)
+  //   const store = createMockStore(inactiveState)
+  //   const renderedNav = shallowWithStore(<ConnectedNavLink />, store)
+
+  //   console.log('before click', renderedNav.props())
+  //   renderedNav.simulate('click')
+
+  //   // should only need .update() here
+  //   // workaround courtesy of https://github.com/airbnb/enzyme/issues/1229
+  //   renderedNav.instance().forceUpdate()
+  //   renderedNav.update()
+
+  //   console.log('after click', renderedNav.props())
+  //   expect(renderedNav.props().state.activeNavTab).toEqual(linkText)
+
+  //   // console.log('store', store)
+
+  //   // expect(store.isActionDispatched({
+  //   //   type: NAV_TAB,
+  //   //   payload: linkText,
+  //   // })).toBe(true)
+  // })
+  // })
+  // test('renders correctly', () => {
+  //   expect(renderedNav).toMatchSnapshot()
+  // })
   // describe('after click', () => {
   //   // beforeEach(() => {
   //   //   const navJSX = <NavLink linkRoute={linkRoute} linkText={linkText} />
