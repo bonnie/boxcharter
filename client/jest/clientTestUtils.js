@@ -44,13 +44,13 @@ function findWrapperNodeByTestId(wrapper, id) {
 // adapted from 
 // https://hackernoon.com/low-effort-high-value-integration-tests-in-redux-apps-d3a590bd9fd5
 function renderAppWithState(state) {
-  const store = createStore(state);
+  const store = createStore(state)
   const wrapper = mount(
     <Provider store={store}>
       <App />
     </Provider>
-  );
-  return [store, wrapper];
+  )
+  return [store, wrapper]
 }
 
 export {
