@@ -3,9 +3,14 @@
 
 import React from 'react'
 import {Router} from 'react-router-dom'
-import {mount} from 'enzyme'
-import {createMemoryHistory} from 'history'
-import * as generate from 'til-shared/generate'
+import { Provider } from 'react-redux';
+import { mount } from 'enzyme'
+import { createMemoryHistory } from 'history'
+import { createStore } from 'redux';
+import App from '../src/app/App'
+// import * as generate from 'til-shared/generate'
+
+export default 
 
 function mountWithRouter(ui, {route = '/'} = {}) {
   const history = createMemoryHistory({initialEntries: [route]})
@@ -36,11 +41,23 @@ function findWrapperNodeByTestId(wrapper, id) {
   return findNodes(wrapper, sel(id))
 }
 
+// adapted from 
+// https://hackernoon.com/low-effort-high-value-integration-tests-in-redux-apps-d3a590bd9fd5
+function renderAppWithState(state) {
+  const store = createStore(state);
+  const wrapper = mount(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+  return [store, wrapper];
+}
+
 export {
   mountWithRouter,
   findWrapperNodeByTestId,
   sel,
   flushAllPromises,
   findNodes,
-  generate,
+  // generate,
 }
