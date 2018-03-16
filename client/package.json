@@ -58,6 +58,7 @@
     "redux-form": "^7",
     "redux-persist": "^5.9.1",
     "redux-promise": "^0.5.3",
+    "redux-router": "^2.1.2",
     "redux-thunk": "^2.2.0",
     "url-loader": "^0.6.2"
   }

@@ -3,6 +3,7 @@
 exports[`NavLink active NavLink renders correctly 1`] = `
 <Link
   className="nav-link nav-text active"
+  data-test="navlink-Sign In"
   key="{props.key}"
   onClick={[Function]}
   replace={false}
@@ -12,24 +13,15 @@ exports[`NavLink active NavLink renders correctly 1`] = `
 </Link>
 `;
 
-exports[`NavLink brand NavLink renders correctly 1`] = `
-<Link
-  className="logo-and-title"
-  key="{props.key}"
-  onClick={[Function]}
-  replace={false}
-  to="/"
-/>
-`;
-
 exports[`NavLink inactive NavLink renders correctly 1`] = `
 <Link
   className="nav-link nav-text "
+  data-test="navlink-Sign Up"
   key="{props.key}"
   onClick={[Function]}
   replace={false}
-  to="/sign-in"
+  to="/sign-up"
 >
-  Sign In
+  Sign Up
 </Link>
 `;

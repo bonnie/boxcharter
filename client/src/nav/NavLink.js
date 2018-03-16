@@ -47,6 +47,7 @@ export class NavLink extends Component {
         key="{props.key}"
         onClick={this.clickHandler.bind(this)}
         to={this.props.linkRoute}
+        data-test={`navlink-${this.props.linkText}`}
       >
         {linkDisplay}
       </Link>

@@ -105,3 +105,4 @@ const actions = {
 
 const SignInForm = reduxForm(formOptions)(SignIn)
 export default connect(mapStateToProps, actions)(SignInForm)
+export { SignIn } // for unit testing

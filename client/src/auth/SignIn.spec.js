@@ -22,13 +22,28 @@
  * Tests for the SignIn component
  * @module
  * SignIn-spec
+ * 
+ * Note: Integration test adapted from process laid out in
+ * https://medium.freecodecamp.org/real-integration-tests-with-react-redux-and-react-router-417125212638
  */
 
-import React from 'react'
-import { shallow } from 'enzyme'
-import SignIn from './SignIn'
+import React from 'react';
+import { Provider } from 'react-redux';
+import { mount } from 'enzyme';
+import authReducer from './authReducer';
+import SignInConnected, { SignIn } from './SignIn'
+// import configureStore from '../app/configure_store'
+// import { setupIntegrationTest } from '../../jest/clientTestUtils'
 
 describe('SignIn', () => {
+  // describe('Integration tests')
+  // let store
+  // let dispatchSpy
+  // let router
+  // beforeEach(() => {
+  //   router = { params: { } };
+  //   ({ store, dispatchSpy } = setupIntegrationTest({ authReducer }, router))
+  // })
   test('renders', () => {
   })
 })
