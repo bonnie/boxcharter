@@ -33,3 +33,6 @@ http://engineering.pivotal.io/post/react-integration-tests-with-enzyme/
 https://github.com/ReactTraining/react-router/blob/v4.0.0-alpha.6/modules/__tests__/integration-test.js
 https://stackoverflow.com/questions/46651092/enzyme-integration-testing-testing-with-react-router-testing-components-update
 https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-with-redux-and-enzyme
+
+https://medium.com/@visualskyrim/test-your-redux-container-with-enzyme-a0e10c0574ec
+https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c
