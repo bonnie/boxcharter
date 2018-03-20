@@ -26,26 +26,37 @@
 
 
 import React from 'react'
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import '../../jest/setupTests'
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
 import renderClarityField from './renderClarityField'
 
-// const { input, type, label, required }  = props
-// const { touched, error, warning } = props.meta
+const label = 'Test'
+const name = 'test'
 
 describe('renderClarityField', () => {
-  test('renders a text field correctly', () => {
+  describe('renders text field', () => {
     const props = {
       type: 'text',
-      label: 'Test',
-      name: 'test',
+      label,
+      name,
       meta: {},
       input: {},
     }
-    const renderedField = shallow(renderClarityField(props))
-    expect(renderedField).toMatchSnapshot()
+    const wrapper = mount(renderClarityField(props))
+    test('renders the field set', () => {
+      expect(wrapper.find('fieldset.form-group').length).toBe(1)
+    })
+    test('renders the label correctly', () => {
+      const labelText = findWrapperNodeByTestId(wrapper, 'field-label').text()
+      expect(labelText).toBe(label)
+    })
+    test('contains no tooltip text', () => {
+      const tooltipText = findWrapperNodeByTestId(wrapper, 'tooltip-label').text()
+      expect(tooltipText).toBe('')
+    })
   })
-  test('renders a required field correctly', () => {
+  describe('renders a required field correctly', () => {
     const props = {
       type: 'text',
       label: 'Test',
@@ -54,19 +65,27 @@ describe('renderClarityField', () => {
       meta: {},
       input: {},
     }
-    const renderedField = shallow(renderClarityField(props))
-    expect(renderedField).toMatchSnapshot()
+    const wrapper = mount(renderClarityField(props))
+    test('renders the label with the correct class', () => {
+      const label = findWrapperNodeByTestId(wrapper, 'field-label')
+      const labelHasRequiredClass = label.hasClass('required')
+      expect(labelHasRequiredClass).toBe(true)
+    })  
   })
-  test('renders an invalid field correctly', () => {
+  describe('renders an invalid field correctly', () => {
+    const errorText = 'bad field'
     const props = {
       type: 'text',
       label: 'Test',
       name: 'test',
       required: true,
-      meta: { touched: true, error: 'bad field' },
+      meta: { touched: true, error: errorText },
       input: {},
     }
-    const renderedField = shallow(renderClarityField(props))
-    expect(renderedField).toMatchSnapshot()
+    const wrapper = mount(renderClarityField(props))
+    test('renders the tooltip label with the correct text', () => {
+      const labelText = findWrapperNodeByTestId(wrapper, 'tooltip-label').text()
+      expect(labelText).toBe(errorText)
+    })  
   })
 })

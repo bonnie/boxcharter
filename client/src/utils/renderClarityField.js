@@ -34,8 +34,8 @@ export default (props) => {
   const invalidClass = touched && error ? 'invalid' : ''
   return (
     <fieldset key={input.name} className="form-group">
-        <label className={requiredClass}>{label}</label>
-        <label className={`tooltip tooltip-validation ${invalidClass}`}>
+        <label className={requiredClass} data-test="field-label">{label}</label>
+        <label className={`tooltip tooltip-validation ${invalidClass}`} data-test="tooltip-label">
           <input className="form-control" type={type} {...input} />
           <span className="tooltip-content">{error}</span>
         </label>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {mount} from 'enzyme';
-import {App} from '../App';
+import App from '../../src/app/App';
 import {click, setValue, submit} from '.';
 
 export class AppTestHelper {
