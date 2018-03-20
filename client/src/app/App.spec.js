@@ -34,9 +34,9 @@ import App from './App'
 import mockStore from 'redux-mock-store'
 // import {shoppingListMiddleware} from "./shoppingListMiddleware";
 import {appendItem, createItem, replaceItems} from './actions'
-import {asyncFlush, mockApi} from '../jest/testSupport'
+import {asyncFlush, mockApi} from '../../jest/testSupport'
 import {push} from 'react-router-redux'
-import {locationChange} from '../utils/locationChange'
+import {locationChange} from '../../jest/utils/locationChange'
 // end: from 
 
 
