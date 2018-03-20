@@ -20,6 +20,7 @@
 
 /**
  * Tests for the App component
+ *  Including integration tests for the application as a whole
  * @module
  * App-spec
  */
@@ -29,10 +30,37 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import App from './App'
 
+// from https://github.com/jacek-rzrz/react-integration-tests-enzyme/blob/master/src/shopping_list/shoppingListMiddleware.test.js
+import mockStore from 'redux-mock-store'
+// import {shoppingListMiddleware} from "./shoppingListMiddleware";
+import {appendItem, createItem, replaceItems} from './actions'
+import {asyncFlush, mockApi} from '../jest/testSupport'
+import {push} from 'react-router-redux'
+import {locationChange} from '../utils/locationChange'
+// end: from 
+
+
+// from http://engineering.pivotal.io/post/react-integration-tests-with-enzyme/
+const asyncFlush = () => new Promise(resolve => setTimeout(resolve, 0));
+
 describe('App', () => {
   test('renders', () => {
   })
 })
+
+describe('App integration', () => {
+  let wrapper
+  beforeEach(async () => {
+    wrapper = mount(<App />);
+  })
+  describe('store', () => {
+
+  })
+  describe('router', () => {
+
+  })
+})
+
 
  // import { renderComponent , expect } from '../test_helper'
 

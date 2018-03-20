@@ -47,11 +47,12 @@ function mountWithStore(Component, store) {
 };
 // end adapted from enzyme-redux
 
+const activeLinkRoute = "/sign-in"
+const inactiveLinkRoute = "/sign-up"
+const activeLinkText = SIGN_IN
+const inactiveLinkText = SIGN_UP
+
 describe('NavLink component', () => {
-  const activeLinkRoute = "/sign-in"
-  const inactiveLinkRoute = "/sign-up"
-  const activeLinkText = SIGN_IN
-  const inactiveLinkText = SIGN_UP
 
   describe('active NavLink', () => {
     describe('renders correctly', () => {
@@ -101,11 +102,6 @@ describe('NavLink component', () => {
       expect(setActiveNavTabMock).toHaveBeenCalledWith(inactiveLinkText)
     })
   })
-})
-
-describe('NavLink routing', () => {
-  
-
 })
 
   // test('clicking inactive NavLink turns the link active', () => {

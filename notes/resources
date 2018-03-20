@@ -28,7 +28,8 @@ https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/
 React / Redux integration testing
 https://hackernoon.com/low-effort-high-value-integration-tests-in-redux-apps-d3a590bd9fd5
 https://medium.freecodecamp.org/real-integration-tests-with-react-redux-and-react-router-417125212638
-http://engineering.pivotal.io/post/react-integration-tests-with-enzyme/
+**** ---> http://engineering.pivotal.io/post/react-integration-tests-with-enzyme/
+	https://github.com/jacek-rzrz/react-integration-tests-enzyme/tree/master/src
 
 https://github.com/ReactTraining/react-router/blob/v4.0.0-alpha.6/modules/__tests__/integration-test.js
 https://stackoverflow.com/questions/46651092/enzyme-integration-testing-testing-with-react-router-testing-components-update
