@@ -36,3 +36,18 @@ https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-wit
 
 https://medium.com/@visualskyrim/test-your-redux-container-with-enzyme-a0e10c0574ec
 https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c
+https://stackoverflow.com/questions/43921183/passing-an-event-object-to-enzyme-simulate
+
+https://redux.js.org/recipes/writing-tests
+https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
+https://www.codementor.io/rukayatodukoya/writing-and-testing-async-redux-action-creators-with-jest-fr4if4it7
+
+https://github.com/node-nock/nock#read-this---about-interceptors
+https://stackoverflow.com/questions/46651092/enzyme-integration-testing-testing-with-react-router-testing-components-update
+
+https://github.com/airbnb/enzyme/blob/master/docs/api/ShallowWrapper/simulate.md#common-gotchas
+
+https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-with-redux-and-enzyme
+It is not useful to test the functionality of React Router and Redux. Exporting the plain React component made the test much simpler.
+
+

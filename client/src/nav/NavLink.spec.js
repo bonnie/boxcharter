@@ -34,7 +34,8 @@ import '../../jest/setupTests'
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
 import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE } from './tabNames'
 import { NAV_TAB } from './navActionTypes'
-import authReducer from './navReducer'
+import navReducer from './navReducer'
+import rootReducer from '../app/reducers'
 import { setActiveNavTab } from './navActions'
 import { NavLink } from './NavLink'
 import App from '../app/App'
@@ -46,14 +47,14 @@ function mountWithStore(Component, store) {
 };
 // end adapted from enzyme-redux
 
-describe('NavLink', () => {
+describe('NavLink component', () => {
   const activeLinkRoute = "/sign-in"
   const inactiveLinkRoute = "/sign-up"
   const activeLinkText = SIGN_IN
   const inactiveLinkText = SIGN_UP
 
   describe('active NavLink', () => {
-    test('renders correctly', () => {
+    describe('renders correctly', () => {
       const activeNav =
         <NavLink 
           linkRoute={activeLinkRoute}
@@ -61,33 +62,30 @@ describe('NavLink', () => {
           activeNavTab={activeLinkText}
         />
       const renderedNav = shallow(activeNav)
-      expect(renderedNav).toMatchSnapshot()
+      test('component includes a Link', () => {
+        expect(renderedNav.find('Link').length).toBe(1)
+      })
+      test('component includes active class', () => {
+        expect(renderedNav.hasClass('active')).toBe(true)
+      })
     })
-    // test('dispatch action upon click with the correct arg', () => {
-    //   const setActiveNavTabMock = jest.fn()
-    //   const inactiveNav = 
-    //     <NavLink
-    //       linkRoute=activeL
-    //       linkText={activeLinkText} 
-    //       activeNavTab={activeLinkText}
-    //       setActiveNavTab={setActiveNavTabMock}
-    //     />
-    //   const renderedNav = shallow(inactiveNav)
-    //   renderedNav.simulate('click')
-    //   expect(setActiveNavTabMock).toHaveBeenCalledWith(linkText)
-    // })
   })
 
   describe('inactive NavLink', () => {
-    test('renders correctly', () => {
-      const inactiveNav = 
-        <NavLink 
-          linkRoute={inactiveLinkRoute}
-          linkText={inactiveLinkText} 
-          activeNavTab={activeLinkText}
-        />
-      const renderedNav = shallow(inactiveNav)
-      expect(renderedNav).toMatchSnapshot()
+    describe('renders correctly', () => {
+      let renderedNav
+      beforeEach(() => {
+        const inactiveNav = 
+          <NavLink 
+            linkRoute={inactiveLinkRoute}
+            linkText={inactiveLinkText} 
+            activeNavTab={activeLinkText}
+          />
+        renderedNav = shallow(inactiveNav)
+      })
+      test('component does not include active class', () => {
+        expect(renderedNav.hasClass('active')).toBe(false)
+      })
     })
     test('dispatch action upon click with the correct arg', () => {
       const setActiveNavTabMock = jest.fn()
@@ -103,7 +101,13 @@ describe('NavLink', () => {
       expect(setActiveNavTabMock).toHaveBeenCalledWith(inactiveLinkText)
     })
   })
+})
+
+describe('NavLink routing', () => {
   
+
+})
+
   // test('clicking inactive NavLink turns the link active', () => {
   //   const inactiveState = { activeNavTab: SIGN_UP }
   //   const mapStateToProps = (state) => ({state})
@@ -150,87 +154,111 @@ describe('NavLink', () => {
   //   })
   // })
 
-  describe('Integration tests', () => {
-    let store
-    let dispatchSpy
-    let wrapper
-    let inactiveLinkNode
-    const initialState = { activeNavTab: activeLinkText, auth: { authenticated: false } }
-    beforeEach(() => {
-      // initialState = { activeNavTab: activeLinkText };
-      // ({ store, dispatchSpy } = setupIntegrationTest({ authReducer }, initialState))
+  // describe('Integration tests', () => {
+  //   let store
+  //   let dispatchSpy
+  //   let wrapper
+  //   let inactiveLinkNode
+  //   const initialState = { nav: { activeNavTab: activeLinkText }, auth: { authenticated: false } }
+  //   beforeEach(() => {
+  //     // initialState = { activeNavTab: activeLinkText };
+  //     // ({ store, dispatchSpy } = setupIntegrationTest({ authReducer }, initialState))
 
-      // const mockStore = configureMockStore([]);
-      // const store = mockStore({initalState});
-      // const wrapper = mount(
-      //   <Provider store={store}>
-      //     <App />
-      //   </Provider>
-      // );
-
-
-      // const mapStateToProps = (state) => ({state})
-      // const ConnectedApp = connect(mapStateToProps)(App)
-      // const store = createMockStore(initialState)
-      // const renderedNav = shallowWithStore(<ConnectedApp />, store)
-      // wrapper = mount(
-      //   <Provider store={store}>
-      //     <ConnectedApp />
-      //   </Provider>
-      // )
-
-      const mapStateToProps = (state) => ({state})
-      const ConnectedNavLink = connect(mapStateToProps)(NavLink)
-      const store = createMockStore(initialState)
-      const component =  (
-        <MemoryRouter>
-              <ConnectedNavLink 
-                            linkRoute={inactiveLinkRoute}
-                            linkText={inactiveLinkText} 
-                            activeNavTab={activeLinkText}
-                          /> 
-        </MemoryRouter>
-      )
-      wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[activeLinkRoute]}>
-            <ConnectedNavLink 
-              linkRoute={inactiveLinkRoute}
-              linkText={inactiveLinkText} 
-              activeNavTab={activeLinkText}
-              setActiveNavTab={setActiveNavTab.bind(null, inactiveLinkText)}
-            /> 
-          </MemoryRouter>
-        </Provider>
-      )
-    })
-    describe('Inactive link click', () => {
-      beforeEach(() => {
-        // inactiveLinkNode = findWrapperNodeByTestId(wrapper, `navlink-${inactiveLinkText}`)
-        console.log('state before', wrapper.instance().store.getState())
-        // console.log('context', wrapper.instance().context)
-        // console.log('children html', wrapper.children().html())
+  //     // const mockStore = configureMockStore([]);
+  //     // const store = mockStore({initalState});
+  //     // const wrapper = mount(
+  //     //   <Provider store={store}>
+  //     //     <App />
+  //     //   </Provider>
+  //     // );
 
 
-        // console.log('**************wrapper html before', wrapper.html())
+  //     // const mapStateToProps = (state) => ({state})
+  //     // const ConnectedApp = connect(mapStateToProps)(App)
+  //     // const store = createMockStore(initialState)
+  //     // const renderedNav = shallowWithStore(<ConnectedApp />, store)
+  //     // wrapper = mount(
+  //     //   <Provider store={store}>
+  //     //     <ConnectedApp />
+  //     //   </Provider>
+  //     // )
+
+  //     const mapStateToProps = (state) => ({state})
+  //     const ConnectedNavLink = connect(mapStateToProps, { setActiveNavTab })(NavLink)
+  //     const store = configureMockStore(initialState)
+  //     // const component =  (
+  //     //   <MemoryRouter>
+  //     //         <ConnectedNavLink 
+  //     //                       linkRoute={inactiveLinkRoute}
+  //     //                       linkText={inactiveLinkText} 
+  //     //                       activeNavTab={activeLinkText}
+  //     //                     /> 
+  //     //   </MemoryRouter>
+  //     // )
+  //     wrapper = mount(
+  //       <Provider store={store}>
+  //         <MemoryRouter initialEntries={[activeLinkRoute]}>
+  //           <ConnectedNavLink 
+  //             linkRoute={inactiveLinkRoute}
+  //             linkText={inactiveLinkText} 
+  //           /> 
+  //         </MemoryRouter>
+  //       </Provider>
+  //     )
+  //   })
+  //   describe('Inactive link click', () => {
+  //     beforeEach(() => {
+  //       // inactiveLinkNode = findWrapperNodeByTestId(wrapper, `navlink-${inactiveLinkText}`)
+  //       console.log('state before', wrapper.instance().store.getState())
+  //       // console.log('context', wrapper.instance().context)
+  //       // console.log('children html', wrapper.children().html())
+
+  //       // const memRouter = wrapper.find('MemoryRouter')
+  //       // console.log('*****MemoryRouter props before', memRouter.props())
+
+  //       // console.log('**************wrapper html before', wrapper.html())
         
-        // const inactiveLinkNodeWrapper = wrapper.childAt(0)
-        const inactiveLinkNodeWrapper = wrapper.find('Link')
-        // const anchorElement = inactiveLinkNodeWrapper.getDOMNode()
-        inactiveLinkNodeWrapper.simulate('click')
-        // console.log('************ inactiveLinkNodeWrapper:::', inactiveLinkNodeWrapper.debug())
+  //       // from https://github.com/ReactTraining/react-router/blob/v4.0.0-alpha.6/modules/__tests__/integration-test.js
+  //       const leftClickEvent = {
+  //         defaultPrevented: false,
+  //         preventDefault() { this.defaultPrevented = true },
+  //         metaKey: null,
+  //         altKey: null,
+  //         ctrlKey: null,
+  //         shiftKey: null,
+  //         button: 0
+  //       }
+        
+  //       // const inactiveLinkNodeWrapper = wrapper.childAt(0)
+  //       const inactiveLinkNodeWrapper = wrapper.find('NavLink')
+  //       console.log('**************inactivelink props before', inactiveLinkNodeWrapper.props())
+  //       // // console.log('**************inactivelink instance before', inactiveLinkNodeWrapper.instance())
+  //       console.log('**************inactivelink activeNavTab before', inactiveLinkNodeWrapper.prop('activeNavTab'))
 
-        inactiveLinkNodeWrapper.instance().forceUpdate()
-        // inactiveLinkNodeWrapper.update()
-        // console.log('inactivenodelinkWrapper debug after', inactiveLinkNodeWrapper.debug())
-        console.log('state after', wrapper.instance().store.getState())
-        // console.log('wrapper debug', wrapper.debug())
-        // console.log('**************wrapper html after', wrapper.html())
+        
+  //       // { className: 'nav-link nav-text ',
+  //       //   onClick: [Function: bound clickHandler],
+  //       //   to: '/sign-up',
+  //       //   'data-test': 'navlink-Sign Up',
+  //       //   children: 'Sign Up',
+  //       //   replace: false }
 
-      })
-      test('clicking inactive NavLink turns the link active', () => {
-        expect(wrapper.hasClass('active')).toBe(true)
-      })
-    })
-  })
-})
+  //       const anchorElement = wrapper.find('a')
+  //       inactiveLinkNodeWrapper.simulate('click', leftClickEvent)
+  //       // console.log('************ inactiveLinkNodeWrapper:::', inactiveLinkNodeWrapper.debug())
+
+  //       wrapper.instance().forceUpdate()
+  //       wrapper.update()
+  //       // console.log('inactivenodelinkWrapper debug after', inactiveLinkNodeWrapper.debug())
+  //       console.log('state after', wrapper.instance().store.getState())
+  //       console.log('**************inactivelink props after', inactiveLinkNodeWrapper.props())
+  //       // console.log('*****MemoryRouter props after', memRouter.props())
+  //       // console.log('wrapper debug', wrapper.debug())
+  //       // console.log('**************wrapper html after', wrapper.html())
+
+  //     })
+  //     test('clicking inactive NavLink turns the link active', () => {
+  //       expect(wrapper.hasClass('active')).toBe(true)
+  //     })
+  //   })
+  // })
