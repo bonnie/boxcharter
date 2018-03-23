@@ -25,15 +25,16 @@ function mountWithRouter(ui, {route = '/'} = {}) {
     findNodeByTestId: findWrapperNodeByTestId.bind(null, wrapper),
   }
 }
-/** end Kent dodds (?) */
 
 function sel(id) {
   return `[data-test="${id}"]`
 }
 
 function findNodes(wrapper, query) {
-  return wrapper.find(query).hostNodes()
+  // return wrapper.find(query).hostNodes()
+  return wrapper.find(query)
 }
+/** end Kent dodds */
 
 // this returns a new promise and is just a simple way to
 // wait until the next tick so resolved promises chains will continue

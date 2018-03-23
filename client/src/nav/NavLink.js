@@ -36,6 +36,7 @@ export class NavLink extends Component {
   render() {
     const activeClass = (this.props.activeNavTab === this.props.linkText) ? 'active' : ''
     const classes = this.props.brand ? 'logo-and-title' : `nav-link nav-text ${activeClass}`
+    const dataId = 'navlink-' + (this.props.brand ? 'brand' : this.props.linkText)
 
     const linkDisplay = this.props.brand 
       ? this.props.linkDisplay
@@ -47,7 +48,7 @@ export class NavLink extends Component {
         key="{props.key}"
         onClick={this.clickHandler.bind(this)}
         to={this.props.linkRoute}
-        data-test={`navlink-${this.props.linkText}`}
+        data-test={dataId}
       >
         {linkDisplay}
       </Link>

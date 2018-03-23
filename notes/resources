@@ -52,3 +52,4 @@ https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-wit
 It is not useful to test the functionality of React Router and Redux. Exporting the plain React component made the test much simpler.
 
 
+https://blog.kentcdodds.com/testing-%EF%B8%8F-components-using-render-props-5623ab1814c

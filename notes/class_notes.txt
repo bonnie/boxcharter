@@ -1,0 +1,3 @@
+Testing strategy: 
+	* test only stuff you care about (no snapshots!!)
+	* make tests robust enough that implementation detail changes won't cause tests to fail

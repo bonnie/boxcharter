@@ -47,16 +47,16 @@ export class Header extends Component {
     }
   }
 
-  brandClickHandler() {
-    // clear active nav tab
-    this.props.setActiveNavTab('')
-  }
+  // brandClickHandler() {
+  //   // clear active nav tab
+  //   this.props.setActiveNavTab('')
+  // }
 
   render() {  
     return (
       <header className="header header-5">
-        <NavBrand />
-        <div className="header-nav">
+        <NavBrand data-test="navbrand-component"/>
+        <div className="header-nav" data-test="header-nav">
           {this.renderLinks()}
         </div>
       </header>

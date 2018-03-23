@@ -32,14 +32,29 @@ import { NAV_TAB } from './navActionTypes'
 import NavBrand from './NavBrand'
 
 describe('NavBrand', () => {
-  test('renders correctly', () => {
+  describe('renders correctly', () => {      
     const renderedNav = shallow(<NavBrand />)
-    expect(renderedNav).toMatchSnapshot()
+    test('component includes a div with class "branding"', () => {
+      expect(renderedNav.find('.branding').length).toBe(1)
+    })
+    describe('brand NavLink', () => {
+      const navLink = renderedNav.childAt(0)
+      test('has the correct link', () => {
+        expect(navLink.prop('linkRoute')).toBe('/')
+      })
+      test('sets "brand" to true', () => {
+        expect(navLink.prop('brand')).toBe(true)
+      })
+      describe('link display', () => {
+        // linkDisplay is raw jsx; need to render it in order to test
+        const linkDisplay = shallow(navLink.prop('linkDisplay'))
+        test('has image', () => {
+          expect(linkDisplay.find('img').length).toBe(1)
+        })
+        test('has brand name', () => {
+          expect(linkDisplay.find('span.title').text()).toBe('BoxCharter')
+        })
+      })
+    })
   })
-  // test('dispatch action upon click with the correct arg', () => {
-  //   const setActiveNavTabMock = jest.fn()
-  //   const renderedNav = mount(<NavBrand />)
-  //   renderedNav.simulate('click')
-  //   expect(setActiveNavTabMock).toHaveBeenCalledWith(NO_TAB)
-  // })
 })

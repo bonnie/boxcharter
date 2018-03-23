@@ -38,7 +38,7 @@ export default (props) => {
     </span>
   )
   return (
-    <div className="branding">
+    <div className="branding" data-test="navBrand-div">
       <NavLink linkRoute="/" linkText={NO_TAB} linkDisplay={linkDisplay} brand={true} />
     </div>
   )
