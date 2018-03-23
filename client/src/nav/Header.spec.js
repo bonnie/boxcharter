@@ -30,8 +30,6 @@ import '../../jest/setupTests'
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
 import { Header } from './Header'
 
-// TODO: don't love these tests. Relies on children positions (childAt)...
-
 describe('Header', () => {
   describe('when user is authenticated', () => {
     const header = <Header auth={{ authenticated: true }}/>
