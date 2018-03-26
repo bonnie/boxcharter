@@ -53,3 +53,7 @@ It is not useful to test the functionality of React Router and Redux. Exporting 
 
 
 https://blog.kentcdodds.com/testing-%EF%B8%8F-components-using-render-props-5623ab1814c
+
+
+****** the end of redux?
+https://medium.freecodecamp.org/replacing-redux-with-the-new-react-context-api-8f5d01a00e8c

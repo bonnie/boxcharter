@@ -25,25 +25,23 @@
  */
 
 import React from 'react'
+import '../../jest/setupTests'
 import { shallow } from 'enzyme'
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
 import ChartRow from './ChartRow'
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
 
 describe('ChartRow', () => {
-  test('renders', () => {
+  let wrapper
+  const chart = chartData[0].chartMetaData // the ChartRow only gets the metadata
+  beforeEach(() => {
+    wrapper = shallow(<ChartRow chart={chart} />)
+  })
+  test('renders the correct number of cells', () => {
+    expect(wrapper.find('td').length).toBe(2)
+  })
+  test('renders the chart title', () => {
+    const foundTitle = findWrapperNodeByTestId(wrapper, 'chart-title').text()    
+    expect(foundTitle).toBe(chart.title)
   })
 })
-
-// TODO: not sure how to test this, as I get: 
-// Invariant Violation: findComponentRoot(..., .24yqof5frgu): Unable to find element. This probably means the DOM was unexpectedly mutated (e.g., by the browser), usually due to forgetting a <tbody> when using tables, nesting tags like <form>, <p>, or <a>, or using non-SVG elements in an <svg> parent. Try inspecting the child nodes ofthe element with React ID ``.
-
-// describe('ChartRow', () => {
-//   let component
-//   beforeEach(() => {
-//     const props = { chart: testData.userCharts[0] }
-//     component = renderComponent(ChartRow, props)
-//   })
-  
-//   it('has the correct class', () => {
-//     expect(component).to.have.class('chart-row')
-//   })
-// })

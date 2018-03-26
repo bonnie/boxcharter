@@ -31,7 +31,7 @@ export default (props) => {
   const { chart } = props
   return (
     <tr className="chart-row">
-      <td>{chart.title}</td>
+      <td data-test="chart-title">{chart.title}</td>
       <td><FormattedDate date={chart.modifiedAt} /></td>
     </tr>
   )
