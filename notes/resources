@@ -54,6 +54,15 @@ It is not useful to test the functionality of React Router and Redux. Exporting 
 
 https://blog.kentcdodds.com/testing-%EF%B8%8F-components-using-render-props-5623ab1814c
 
+##########
+snapshot testing: https://blog.kentcdodds.com/effective-snapshot-testing-e0d1a2c28eca
 
 ****** the end of redux?
 https://medium.freecodecamp.org/replacing-redux-with-the-new-react-context-api-8f5d01a00e8c
+
+******* New in react 16.3
+(including "strict mode")
+https://medium.com/@baphemot/whats-new-in-react-16-3-d2c9b7b6193b
+
+#### evolving patterns in React
+https://medium.freecodecamp.org/evolving-patterns-in-react-116140e5fe8f

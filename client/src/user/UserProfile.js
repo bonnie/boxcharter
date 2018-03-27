@@ -30,6 +30,8 @@ import UserCharts from './UserCharts'
 import { tabNames } from '../nav'
 import { setActiveNavTab } from '../nav/navActions'
 
+// TODO: bindActionCreators from react-redux
+
 class UserPage extends Component {
   componentDidMount() {
     this.props.setActiveNavTab(tabNames.USER_PROFILE)

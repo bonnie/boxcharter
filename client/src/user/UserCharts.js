@@ -30,7 +30,7 @@ import { connect } from 'react-redux'
 import ChartRow from './ChartRow'
 import { getUserCharts } from './userActions'
 
-class UserCharts extends Component {
+export class UserCharts extends Component {
   constructor(props) {
     super(props)
   }
@@ -45,7 +45,7 @@ class UserCharts extends Component {
     })
 
     return (
-      <div className="user-charts">
+      <div className="user-charts" data-test='user-charts-table'>
         <table className="table">
           <thead>
             <tr>
@@ -53,7 +53,7 @@ class UserCharts extends Component {
               <th>Last Updated</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody data-test='charts-container'>
             {chartRows}
           </tbody>
         </table>
