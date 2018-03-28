@@ -34,18 +34,25 @@ export class UserCharts extends Component {
   constructor(props) {
     super(props)
   }
-  componentWillMount() {
+  componentDidMount() {
+    // TODO: put loading message until this is finished
     if (this.props.auth && this.props.auth.user && this.props.auth.user.userId) {
       this.props.getUserCharts(this.props.auth.user.userId)
     }
   }
   render() {
+    if (this.props.charts.length === 0) {
+      return (
+        <div data-test="no-charts-message">No charts saved</div>
+      )
+    }
+
     const chartRows = this.props.charts.map((chart) => {
       return (<ChartRow key={chart.chartId} chart={chart} />)
     })
 
     return (
-      <div className="user-charts" data-test='user-charts-table'>
+      <div className="user-charts" data-test="user-charts-table">
         <table className="table">
           <thead>
             <tr>

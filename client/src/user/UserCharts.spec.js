@@ -53,17 +53,15 @@ describe('UserCharts', () => {
   })
 
   describe('empty charts list', () => {
+    const charts = []
     const wrapper = shallow(<UserCharts charts={charts} />)
+    const tbody = findWrapperNodeByTestId(wrapper, 'user-charts-table')
+    const noChartsMessage = findWrapperNodeByTestId(wrapper, 'no-charts-message')
     test('zero rows should not render charts table', () => {
-      const charts = []
-      const tbody = findWrapperNodeByTestId(wrapper, 'charts-container')
-      expect(tbody.children().length).toBe(0)
+      expect(tbody.length).toBe(0)
     })
     test('zero rows should display statement about "no charts"', () => {
-      const charts = []
-      const wrapper = shallow(<UserCharts charts={charts} />)
-      const tbody = findWrapperNodeByTestId(wrapper, 'charts-container')
-      expect(tbody.children().length).toBe(0)
+      expect(noChartsMessage.length).toBe(1)
     })
   })
 })
