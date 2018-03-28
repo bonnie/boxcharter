@@ -25,10 +25,18 @@
  */
 
 import React from 'react'
+import '../../jest/setupTests'
 import { shallow } from 'enzyme'
-import UserProfile from './UserProfile'
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
+import { UserProfile } from './UserProfile'
+import { userData } from '../../../shared/test/utilities/test_data/add_user'
+
+// More tests to come as this component gets built out...
 
 describe('UserProfile', () => {
-  test('renders', () => {
+  test('displays user charts', () => {
+    const wrapper = shallow(<UserProfile auth={{ authenticated: true }} />)
+    const userCharts = findWrapperNodeByTestId(wrapper, 'user-charts-section')
+    expect(userCharts.length).toBe(1)
   })
 })
