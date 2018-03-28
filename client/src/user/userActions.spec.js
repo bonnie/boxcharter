@@ -25,7 +25,7 @@
  */
 
 import * as actions from './userActions'
-import { } from './userActionTypes'
+import { GET_USERCHARTS } from './userActionTypes'
 
 describe('userActions', () => {
   test('', () => {

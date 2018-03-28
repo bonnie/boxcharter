@@ -39,7 +39,12 @@ https://medium.com/@visualskyrim/test-your-redux-container-with-enzyme-a0e10c057
 https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c
 https://stackoverflow.com/questions/43921183/passing-an-event-object-to-enzyme-simulate
 
+****** redux testing documentation
 https://redux.js.org/recipes/writing-tests
+reducers: https://redux.js.org/recipes/writing-tests#reducers
+
+***** async actions
+--> https://facebook.github.io/jest/docs/en/asynchronous.html
 https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
 https://www.codementor.io/rukayatodukoya/writing-and-testing-async-redux-action-creators-with-jest-fr4if4it7
 
