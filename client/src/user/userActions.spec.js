@@ -24,10 +24,69 @@
  * userActions-spec
  */
 
+
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import moxios from 'moxios'
+// import axios from 'axios'
+
+import '../../jest/setupTests'
 import * as actions from './userActions'
 import { GET_USERCHARTS } from './userActionTypes'
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
+import { userData } from '../../../shared/test/utilities/test_data/add_user'
 
-describe('userActions', () => {
-  test('', () => {
-  })
-})
+const charts = chartData.map(chart => chart.chartMetaData)
+
+// var instance = axios.create({
+//   baseURL: 'https://some-domain.com/api/',
+//   timeout: 1000,
+//   headers: {'X-Custom-Header': 'foobar'}
+// });
+
+// const axiosMock = new MockAdapter(instance);
+
+const mockStore = configureMockStore([thunk]);
+// const middlewares = [thunk];
+// const mockStore = configureMockStore(middlewares);
+
+describe('User actions', () => {
+
+  beforeEach(function () {
+    moxios.install();
+  });
+
+  afterEach(function () {
+    moxios.uninstall();
+  });
+
+  describe('getUserCharts', () => {
+    it('creates GET_USERCHARTS after successfuly fetching charts', () => {
+    // axiosMock.onGet(/.*/).reply(200, chartData)
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: { },
+      });
+    });
+
+      const expectedActions = [
+        // { type: actions.GET_POSTS_START }, // TODO: loading!!
+        { type: GET_USERCHARTS, payload: charts },
+      ];
+
+      const store = mockStore({ charts: {} })
+
+      // use "fake" userID 1
+      return store.dispatch(actions.getUserCharts(1)).then(() => {
+        // return of async actions
+        // const firedActions = store.getActions().map(action => action.type)
+        const firedActions = store.getActions()
+        // const expectedActions = [GET_USERCHARTS]
+        expect(firedActions).toEqual(expectedActions);
+      });
+    });
+  });
+});

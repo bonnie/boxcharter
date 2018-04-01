@@ -37,7 +37,7 @@ import {
  */
 const getUserCharts = (userId) => {
   return function(dispatch) {
-    axios.get(`${ROOT_URL}/users/${userId}/charts`, {
+    return axios.get(`${ROOT_URL}/users/${userId}/charts`, {
       headers: { authorization: localStorage.getItem('token') }
     })
     .then(response => {

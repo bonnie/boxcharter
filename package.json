@@ -14,5 +14,6 @@
     "setup:server": "cd server && npm run setup && cd ..",
     "test": "npm test:server && npm test:client",
     "test:client": "cd client && npm test"
-  }
+  },
+  "devDependencies": {}
 }

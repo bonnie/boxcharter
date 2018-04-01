@@ -33,7 +33,7 @@
     "jquery": "^2.2.1",
     "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
-    "nock": "^9.2.3",
+    "moxios": "^0.4.0",
     "redux-test-utils": "^0.2.2",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
