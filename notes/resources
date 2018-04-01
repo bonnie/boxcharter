@@ -40,7 +40,6 @@ https://stackoverflow.com/questions/43921183/passing-an-event-object-to-enzyme-s
   https://stackoverflow.com/questions/46651092/enzyme-integration-testing-testing-with-react-router-testing-components-update
   https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-with-redux-and-enzyme
 
-
 ****** redux testing documentation
 https://redux.js.org/recipes/writing-tests
 reducers: https://redux.js.org/recipes/writing-tests#reducers

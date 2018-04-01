@@ -1,0 +1,10 @@
+to do before forging on: 
+
+* clarity alert component (tdd!)
+* proptypes
+* eslint (semicolons!!)
+* axios instance / token header
+* component loading states
+* error boundaries / error handling
+* data-test => test-id
+* terminology: wrapper? dom? other??

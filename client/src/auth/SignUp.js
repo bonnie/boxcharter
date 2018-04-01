@@ -34,7 +34,7 @@ import { renderClarityField } from '../utils'
 
 const fields = ['email', 'password', 'passwordConfirm']
 
-class SignUp extends Component {
+export class SignUp extends Component {
   componentDidMount() {
     // clear any errors
     this.props.setAuthError(null)
@@ -51,7 +51,7 @@ class SignUp extends Component {
   renderAlert() {
     if (this.props.errorMessage) {
       return (
-        <div className="alert alert-danger">
+        <div data-test='error-alert' className="alert alert-danger">
           <strong>Oops!</strong> {this.props.errorMessage}
         </div>
       )
@@ -61,7 +61,7 @@ class SignUp extends Component {
   render() {
     const { handleSubmit } = this.props
     return (
-      <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+      <form data-test='signup-form' onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
         <Field name="email" type="text" label="Email" required={true} component={renderClarityField}/>
         <Field name="password" type="password" label="Password" required={true} component={renderClarityField}/>
         <Field name="passwordConfirm" type="password" label="Confirm Password" required={true} component={renderClarityField}/>
