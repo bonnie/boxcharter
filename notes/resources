@@ -67,6 +67,9 @@ https://github.com/reactjs/redux/issues/1972
 ****** redux forms
 https://github.com/tylercollier/redux-form-test
 
+******* jest mocks
+https://medium.com/@deanslamajr/jest-fn-all-the-things-d26f3b929986
+
 **** Dodds
 https://blog.kentcdodds.com/testing-%EF%B8%8F-components-using-render-props-5623ab1814c
 https://github.com/kentcdodds/testing-workshop

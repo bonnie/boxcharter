@@ -62,17 +62,21 @@ describe('SignUp', () => {
       expect(findWrapperNodeByTestId(wrapper, 'error-alert').length).toBe(1);
     });
   });
-  test('calls signUpUser on submit', () => {
-    const handleSubmitMock = jest.fn();
-    const props = {
-      handleSubmit: handleSubmitMock,
-    };
-    const wrapper = shallow(<SignUpComponent {...props} />);
-    const submitButton = findWrapperNodeByTestId(wrapper, 'signup-submit');
+  describe('SignUp component functionality', () => {
+    test('calls signUpUser on submit', () => {
+      const handleSubmitMock = jest.fn();
+      const props = {
+        handleSubmit: handleSubmitMock,
+      };
+      const wrapper = shallow(<SignUpComponent {...props} />);
+      const submitButton = findWrapperNodeByTestId(wrapper, 'signup-submit');
 
-    submitButton.simulate('click')
-    expect(handleSubmitMock.mock.calls.length).toBe(1)
+      submitButton.simulate('click')
+      expect(handleSubmitMock.mock.calls.length).toBe(1)
+    });
   });
+});
+
   /// NOTE: can't get the below to work (modeling on mocha example here: https://github.com/tylercollier/redux-form-test)
   // decided (conveniently?) that this is testing the inner workings of redux-form and can be omitted ;-) 
   // possibility: use mockReturnThis...?
@@ -125,4 +129,3 @@ describe('SignUp', () => {
 
   //   })
   // })
-})
