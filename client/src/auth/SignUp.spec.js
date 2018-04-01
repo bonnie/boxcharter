@@ -30,11 +30,11 @@
 // TODO: however, it might be a good idea to test that our form validation config is doing what we want...
 
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 
 import '../../jest/setupTests';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
-import SignUp, { SignUp as SignUpComponent } from './SignUp';
+import { SignUp } from './SignUp';
 
 describe('SignUp', () => {
   describe('SignUp Component rendering', () => {
@@ -43,14 +43,14 @@ describe('SignUp', () => {
       const props = {
         handleSubmit: handleSubmitMock,
       };
-      const wrapper = shallow(<SignUpComponent {...props} />);
+      const wrapper = shallow(<SignUp {...props} />);
       expect(findWrapperNodeByTestId(wrapper, 'signup-form').length).toBe(1);
     });
     test('displays no error if there is no error', () => {
       const props = {
         handleSubmit: handleSubmitMock,
       };
-      const wrapper = shallow(<SignUpComponent {...props} />);
+      const wrapper = shallow(<SignUp {...props} />);
       expect(findWrapperNodeByTestId(wrapper, 'error-alert').length).toBe(0);
     });
     test('displays an error if there is an error', () => {
@@ -58,7 +58,7 @@ describe('SignUp', () => {
         handleSubmit: handleSubmitMock,
         errorMessage: 'not good',
       };
-      const wrapper = shallow(<SignUpComponent {...props} />);
+      const wrapper = shallow(<SignUp {...props} />);
       expect(findWrapperNodeByTestId(wrapper, 'error-alert').length).toBe(1);
     });
   });
@@ -68,7 +68,7 @@ describe('SignUp', () => {
       const props = {
         handleSubmit: handleSubmitMock,
       };
-      const wrapper = shallow(<SignUpComponent {...props} />);
+      const wrapper = shallow(<SignUp {...props} />);
       const submitButton = findWrapperNodeByTestId(wrapper, 'signup-submit');
 
       submitButton.simulate('click')
@@ -114,7 +114,7 @@ describe('SignUp', () => {
   //       handleSubmit: handleSubmitMock,
   //       fields,
   //     };
-  //     const wrapper = shallow(<SignUpComponent {...props} />);
+  //     const wrapper = shallow(<SignUp {...props} />);
   //     // const submitButton = findWrapperNodeByTestId(wrapper, 'signup-submit');
 
   //     // submitButton.simulate('click')

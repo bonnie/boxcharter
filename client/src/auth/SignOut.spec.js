@@ -26,9 +26,25 @@
 
 import React from 'react'
 import { shallow } from 'enzyme'
-import SignOut from './SignOut'
+
+import '../../jest/setupTests';
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
+import { SignOut } from './SignOut'
 
 describe('SignOut', () => {
+  const signOutUserMock = jest.fn()
+  let wrapper
+  beforeEach(() => {
+    signOutUserMock.mockClear()
+    const props = {
+      signOutUser: signOutUserMock,
+    };
+    wrapper = shallow(<SignOut {...props} />);
+  })
   test('renders', () => {
+    expect(findWrapperNodeByTestId(wrapper, 'signout-component').length).toBe(1);
+  })
+  test('signs user out', () => {
+    expect(signOutUserMock).toHaveBeenCalledTimes(1)
   })
 })
