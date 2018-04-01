@@ -20,25 +20,17 @@
 
 /**
  * Tests for the SignUp component
- * Draws heavily from https://github.com/tylercollier/redux-form-test
  * @module
  * SignUp-spec
  */
 
-// from https://github.com/tylercollier/redux-form-test
-// To test the entire component (integration tests), we're going to use Enzyme's `mount` method,
-// which is the opposite of shallow rendering. To use `mount`, we need to have a DOM, so we use
-// jsdom. You can alternatively run these tests in a browser to get a DOM, but that's more
-// complicated to set up and usually slower.
-// This setup needs to happen before React is loaded. See: http://stackoverflow.com/a/32996395/135101.
-import jsdom from 'jsdom'
-document = jsdom.jsdom('<!doctype html><html><body></body></html>')
-window = document.defaultView
-navigator = window.navigator
+// NOTE: see https://github.com/tylercollier/redux-form-test for more detailed test possibilities
+// Most of his tests seemed to be testing whether react-form was working properly, and seemed unnecessary
+
+// TODO: however, it might be a good idea to test that our form validation config is doing what we want...
 
 import React from 'react'
-import { shallow } from 'enzyme'
-import { SubmissionError } from 'redux-form'
+import { shallow, mount } from 'enzyme'
 
 import '../../jest/setupTests';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
@@ -68,7 +60,6 @@ describe('SignUp', () => {
       };
       const wrapper = shallow(<SignUpComponent {...props} />);
       expect(findWrapperNodeByTestId(wrapper, 'error-alert').length).toBe(1);
-
     });
   });
   test('calls signUpUser on submit', () => {
@@ -82,6 +73,10 @@ describe('SignUp', () => {
     submitButton.simulate('click')
     expect(handleSubmitMock.mock.calls.length).toBe(1)
   });
+  /// NOTE: can't get the below to work (modeling on mocha example here: https://github.com/tylercollier/redux-form-test)
+  // decided (conveniently?) that this is testing the inner workings of redux-form and can be omitted ;-) 
+  // possibility: use mockReturnThis...?
+
   //   test('throws a SubmissionError on error in the form submit handler', () => {
   //     // let promiseReturnedFromFormHandler
   //     const fields = {
