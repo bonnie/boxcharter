@@ -62,28 +62,30 @@ describe('User actions', () => {
 
   describe('getUserCharts', () => {
     it('creates GET_USERCHARTS after successfuly fetching charts', () => {
-    // axiosMock.onGet(/.*/).reply(200, chartData)
-
     moxios.wait(() => {
       const request = moxios.requests.mostRecent();
       request.respondWith({
         status: 200,
-        response: { },
+        response: charts,
       });
     });
 
       const expectedActions = [
         // { type: actions.GET_POSTS_START }, // TODO: loading!!
-        { type: GET_USERCHARTS, payload: charts },
+        { type: GET_USERCHARTS, data: charts },
       ];
 
-      const store = mockStore({ charts: {} })
+      const store = mockStore({ charts: [] })
 
       // use "fake" userID 1
       return store.dispatch(actions.getUserCharts(1)).then(() => {
         // return of async actions
-        // const firedActions = store.getActions().map(action => action.type)
-        const firedActions = store.getActions()
+
+        // TODO: why can't I test whole action, like 
+        // https://github.com/reactjs/redux/issues/1972
+        // https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
+        const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
+        // const firedActions = store.getActions()
         // const expectedActions = [GET_USERCHARTS]
         expect(firedActions).toEqual(expectedActions);
       });
