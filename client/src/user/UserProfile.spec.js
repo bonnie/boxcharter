@@ -31,7 +31,7 @@ import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
 import { UserProfile } from './UserProfile'
 import { userData } from '../../../shared/test/utilities/test_data/add_user'
 
-// More tests to come as this component gets built out...
+// TODO: More tests to come as this component gets built out...
 
 describe('UserProfile', () => {
   test('displays user charts', () => {

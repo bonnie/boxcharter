@@ -28,27 +28,17 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moxios from 'moxios'
-// import axios from 'axios'
 
 import '../../jest/setupTests'
 import * as actions from './userActions'
 import { GET_USERCHARTS } from './userActionTypes'
 import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
-import { userData } from '../../../shared/test/utilities/test_data/add_user'
 
+// massage charts data into format that would be received from server for user charts query
 const charts = chartData.map(chart => chart.chartMetaData)
 
-// var instance = axios.create({
-//   baseURL: 'https://some-domain.com/api/',
-//   timeout: 1000,
-//   headers: {'X-Custom-Header': 'foobar'}
-// });
-
-// const axiosMock = new MockAdapter(instance);
-
+// create a mock store for redux testing
 const mockStore = configureMockStore([thunk]);
-// const middlewares = [thunk];
-// const mockStore = configureMockStore(middlewares);
 
 describe('User actions', () => {
 
@@ -85,8 +75,6 @@ describe('User actions', () => {
         // https://github.com/reactjs/redux/issues/1972
         // https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
         const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
-        // const firedActions = store.getActions()
-        // const expectedActions = [GET_USERCHARTS]
         expect(firedActions).toEqual(expectedActions);
       });
     });
