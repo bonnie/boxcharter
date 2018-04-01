@@ -71,12 +71,63 @@ describe('SignUp', () => {
 
     });
   });
-  describe('SignUp Component submission', () => {
-    test('calls signUpUser on submit', () => {
+  test('calls signUpUser on submit', () => {
+    const handleSubmitMock = jest.fn();
+    const props = {
+      handleSubmit: handleSubmitMock,
+    };
+    const wrapper = shallow(<SignUpComponent {...props} />);
+    const submitButton = findWrapperNodeByTestId(wrapper, 'signup-submit');
 
-    })
-    test('throws a SubmissionError on error in the form submit handler', () => {
+    submitButton.simulate('click')
+    expect(handleSubmitMock.mock.calls.length).toBe(1)
+  });
+  //   test('throws a SubmissionError on error in the form submit handler', () => {
+  //     // let promiseReturnedFromFormHandler
+  //     const fields = {
+  //       email: {
+  //         value: '',
+  //         touched: true,
+  //         error: 'not good'
+  //       }
+  //     }
 
-    })
-  })
+  //     const handleSubmitMock = jest.fn()
+
+  //     // const handleSubmitMock = jest.fn((fn) => {
+  //     //   return function() {
+  //     //     promiseReturnedFromFormHandler = fn(arguments)
+  //     //     console.log('************ promiseReturnedFromFormHandler:::', promiseReturnedFromFormHandler)
+  //     //   }
+  //     // })
+
+  //     // const handleSubmitMock = jest.fn.mockImplementation(() => {
+  //     //   return function() {
+  //     //     // In this test, we know arguments will be empty because we
+  //     //     // control it in our test when we simulate the submit, and
+  //     //     // don't pass it any arguments. But it's just good practice to
+  //     //     // pass them along.
+  //     //     promiseReturnedFromFormHandler = fn(arguments)
+  //     //   };
+  //     // });
+
+  //     const props = {
+  //       handleSubmit: handleSubmitMock,
+  //       fields,
+  //     };
+  //     const wrapper = shallow(<SignUpComponent {...props} />);
+  //     // const submitButton = findWrapperNodeByTestId(wrapper, 'signup-submit');
+
+  //     // submitButton.simulate('click')
+
+  //     const promiseReturnedFromFormHandler = wrapper.simulate('submit', { email: 'you@you.com' })
+
+  //     return promiseReturnedFromFormHandler.then(() => {
+  //       throw new Error("Submission error should have been checked but wasn't")
+  //     }).catch(error => {
+  //       expect(error).toBeInstanceOf(SubmissionError)
+  //     })
+
+  //   })
+  // })
 })
