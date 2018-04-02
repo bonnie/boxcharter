@@ -31,7 +31,7 @@ export default (state = {}, action) => {
     case AUTH_USER: 
       return { ...state, authenticated: true, user: action.payload.user, error: null }
     case UNAUTH_USER:
-      return { ...state, authenticated: false }
+      return { ...state, authenticated: false, user: null }
     case AUTH_ERROR:
       return { ...state, error: action.payload }
     default:
