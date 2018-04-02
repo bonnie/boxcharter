@@ -27,6 +27,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import ReduxPromise from 'redux-promise'
 import reduxThunk from 'redux-thunk'
+import { logger } from 'redux-logger';
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
@@ -38,7 +39,7 @@ const persistConfig = {
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise, reduxThunk)(createStore);
+const createStoreWithMiddleware = applyMiddleware(ReduxPromise, reduxThunk, logger)(createStore);
 
 export default () => {
   let store = createStoreWithMiddleware(persistedReducer)

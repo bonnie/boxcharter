@@ -34,15 +34,13 @@ import { Provider } from 'react-redux';
 // import { PersistGate } from 'redux-persist/lib/integration/react'
 // import { PersistGate } from 'redux-persist/es/integration/react' // this one causes "Uncaught SyntaxError: Unexpected identifier"
 
-import configureStore from './app/configure_store'
+import configureStore from './config/configureStore'
 
 import App from './app/App'
 import reducers from './app/reducers'
 const { store, persistor } = configureStore()
 
-console.log('===================>running index.js!!!')
-
-// TODO: persist state upon refresh 
+// TODO: persist state upon refresh (for auth)
 
 ReactDOM.render(
   <Provider store={store}>

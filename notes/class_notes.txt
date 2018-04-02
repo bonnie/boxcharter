@@ -1,3 +1,7 @@
 Testing strategy: 
 	* test only stuff you care about (no snapshots!!)
 	* make tests robust enough that implementation detail changes won't cause tests to fail
+
+
+Tools:
+	* Moxios seems good, but it isn't working for me (TypeError: Cannot read property 'adapter' of undefined) and hasn't been updated in over a year.

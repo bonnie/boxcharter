@@ -24,10 +24,52 @@
  * userActions-spec
  */
 
-import * as actions from './userActions'
-import { GET_USERCHARTS } from './userActionTypes'
+// adapted from https://medium.com/the-andela-way/async-actions-and-tests-with-redux-promise-middleware-3b6bda8aa83d
+
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import moxios from 'moxios';
+import * as actions from './userActions';
+import { GET_USERCHARTS } from './userActionTypes';
+// import instance from '../config/axiosConfig'
+
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
+import { userData } from '../../../shared/test/utilities/test_data/add_user';
 
 describe('userActions', () => {
-  test('', () => {
-  })
-})
+  const middlewares = [thunk];
+  const mockStore = configureMockStore(middlewares);
+
+  beforeEach(() => {
+    moxios.install();
+  });
+  afterEach(() => {
+    moxios.uninstall();
+  });
+
+  describe('getUserCharts', () => {
+    const charts = [chartData[0].chartMetaData]
+    it('it dispatches GET_USERCHARTS', () => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: charts,
+        });
+      });
+      const expectedActions = [GET_USERCHARTS];
+
+      // configure Mock store
+      const store = mockStore({ charts });
+      
+      // call the getUserCharts async action creator
+      return store.dispatch(actions.getUserCharts(1)).then(() => {
+        
+        const dispatchedActions = store.getActions();
+        const actionTypes = dispatchedActions.map(action => action.type);
+        
+        expect(actionTypes).toEqual(expectedActions);
+      });
+    });   
+  });
+});

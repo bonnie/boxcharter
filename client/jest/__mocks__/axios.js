@@ -1,26 +1,26 @@
 // adapted from Kent Dodds' testing workshop:
 // https://github.com/kentcdodds/testing-workshop/blob/master/client/src/__mocks__/axios.js
 
-const defaultResponse = {data: {}}
+// const defaultResponse = {data: {}}
 
-const __mock = {
-  reset() {
-    Object.assign(__mock.instance, {
-      get: jest.fn(() => Promise.resolve(defaultResponse)),
-      put: jest.fn(() => Promise.resolve(defaultResponse)),
-      post: jest.fn(() => Promise.resolve(defaultResponse)),
-      delete: jest.fn(() => Promise.resolve(defaultResponse)),
-      defaults: {headers: {common: {}}},
-    })
-  },
-  instance: {},
-}
+// const __mock = {
+//   reset() {
+//     Object.assign(__mock.instance, {
+//       get: jest.fn(() => Promise.resolve(defaultResponse)),
+//       put: jest.fn(() => Promise.resolve(defaultResponse)),
+//       post: jest.fn(() => Promise.resolve(defaultResponse)),
+//       delete: jest.fn(() => Promise.resolve(defaultResponse)),
+//       defaults: {headers: {common: {}}},
+//     })
+//   },
+//   instance: {},
+// }
 
-__mock.reset()
+// __mock.reset()
 
-module.exports = {
-  __mock,
-  create() {
-    return __mock.instance
-  },
-}
+// module.exports = {
+//   __mock,
+//   create() {
+//     return __mock.instance
+//   },
+// }
