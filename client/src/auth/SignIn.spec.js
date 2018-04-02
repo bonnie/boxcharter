@@ -28,22 +28,49 @@
  */
 
 import React from 'react';
-import { Provider } from 'react-redux';
-import { mount } from 'enzyme';
-import authReducer from './authReducer';
-import SignInConnected, { SignIn } from './SignIn'
-// import configureStore from '../app/configure_store'
-// import { setupIntegrationTest } from '../../jest/clientTestUtils'
+import { shallow } from 'enzyme';
+
+import '../../jest/setupTests';
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
+import { SignIn } from './SignIn'
 
 describe('SignIn', () => {
-  // describe('Integration tests')
-  // let store
-  // let dispatchSpy
-  // let router
-  // beforeEach(() => {
-  //   router = { params: { } };
-  //   ({ store, dispatchSpy } = setupIntegrationTest({ authReducer }, router))
-  // })
-  test('renders', () => {
-  })
-})
+  describe('SignIn Component rendering', () => {
+    const handleSubmitMock = jest.fn();
+    test('renders a form', () => {
+      const props = {
+        handleSubmit: handleSubmitMock,
+      };
+      const wrapper = shallow(<SignIn {...props} />);
+      expect(findWrapperNodeByTestId(wrapper, 'signin-form').length).toBe(1);
+    });
+    test('displays no error if there is no error', () => {
+      const props = {
+        handleSubmit: handleSubmitMock,
+      };
+      const wrapper = shallow(<SignIn {...props} />);
+      expect(findWrapperNodeByTestId(wrapper, 'alert').length).toBe(0);
+    });
+    test('displays an error if there is an error', () => {
+      const props = {
+        handleSubmit: handleSubmitMock,
+        errorMessage: 'not good',
+      };
+      const wrapper = shallow(<SignIn {...props} />);
+      expect(findWrapperNodeByTestId(wrapper, 'alert').length).toBe(1);
+    });
+  });
+  describe('SignIn component functionality', () => {
+    test('calls SignInUser on submit', () => {
+      const handleSubmitMock = jest.fn();
+      const props = {
+        handleSubmit: handleSubmitMock,
+      };
+      const wrapper = shallow(<SignIn {...props} />);
+      const submitButton = findWrapperNodeByTestId(wrapper, 'signin-submit');
+
+      submitButton.simulate('click')
+      expect(handleSubmitMock.mock.calls.length).toBe(1)
+    });
+  });
+});

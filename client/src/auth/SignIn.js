@@ -51,7 +51,7 @@ class SignIn extends Component {
   renderAlert() {
     if (this.props.errorMessage) {
       return (
-        <div className="alert alert-danger">
+        <div data-test="alert" className="alert alert-danger">
           <div className="alert-items">
               <div className="alert-item static">
                   <div className="alert-icon-wrapper">
@@ -75,10 +75,10 @@ class SignIn extends Component {
 
     return (
       <div>
-        <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+        <form data-test="signin-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           <Field name="email" type="text" label="Email" required={true} component={renderClarityField} />
           <Field name="password" type="password" label="Password" required={true} component={renderClarityField} />
-          <button action="submit" className="btn btn-primary">
+          <button data-test="signin-submit" action="submit" className="btn btn-primary">
             Sign in
           </button>
         </form>

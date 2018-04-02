@@ -51,7 +51,7 @@ export class SignUp extends Component {
   renderAlert() {
     if (this.props.errorMessage) {
       return (
-        <div data-test='error-alert' className="alert alert-danger">
+        <div data-test='alert' className="alert alert-danger">
           <strong>Oops!</strong> {this.props.errorMessage}
         </div>
       )

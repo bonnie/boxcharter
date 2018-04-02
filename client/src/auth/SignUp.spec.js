@@ -51,7 +51,7 @@ describe('SignUp', () => {
         handleSubmit: handleSubmitMock,
       };
       const wrapper = shallow(<SignUp {...props} />);
-      expect(findWrapperNodeByTestId(wrapper, 'error-alert').length).toBe(0);
+      expect(findWrapperNodeByTestId(wrapper, 'alert').length).toBe(0);
     });
     test('displays an error if there is an error', () => {
       const props = {
@@ -59,7 +59,7 @@ describe('SignUp', () => {
         errorMessage: 'not good',
       };
       const wrapper = shallow(<SignUp {...props} />);
-      expect(findWrapperNodeByTestId(wrapper, 'error-alert').length).toBe(1);
+      expect(findWrapperNodeByTestId(wrapper, 'alert').length).toBe(1);
     });
   });
   describe('SignUp component functionality', () => {
