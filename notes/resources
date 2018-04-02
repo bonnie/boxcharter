@@ -25,44 +25,78 @@ React authentication:
 React + Node backend:
 https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/
 
-React / Redux integration testing
+/********************************************/
+/* Testing */
+/********************************************/
+
+***** general
+https://medium.com/@netxm/how-to-get-started-with-software-testing-9fa1ce4f2a64
+
+***** React / Redux integration testing
 https://hackernoon.com/low-effort-high-value-integration-tests-in-redux-apps-d3a590bd9fd5
 https://medium.freecodecamp.org/real-integration-tests-with-react-redux-and-react-router-417125212638
 **** ---> http://engineering.pivotal.io/post/react-integration-tests-with-enzyme/
 	https://github.com/jacek-rzrz/react-integration-tests-enzyme/tree/master/src
 http://engineering.pivotal.io/post/tdding-react-and-redux/
 https://medium.com/@visualskyrim/test-your-redux-container-with-enzyme-a0e10c0574ec
-https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c
 https://stackoverflow.com/questions/43921183/passing-an-event-object-to-enzyme-simulate
 
-**** react router testing
-  https://github.com/ReactTraining/react-router/blob/v4.0.0-alpha.6/modules/__tests__/integration-test.js
-  https://stackoverflow.com/questions/46651092/enzyme-integration-testing-testing-with-react-router-testing-components-update
-  https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-with-redux-and-enzyme
+***** redux
+https://ericnish.io/blog/how-to-unit-test-react-redux-components/
+https://medium.com/@visualskyrim/test-your-redux-container-with-enzyme-a0e10c0574ec
+https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c
+https://medium.com/@netxm/testing-redux-reducers-with-jest-6653abbfe3e1
 
 ****** redux testing documentation
 https://redux.js.org/recipes/writing-tests
 reducers: https://redux.js.org/recipes/writing-tests#reducers
 
-***** async actions
---> https://facebook.github.io/jest/docs/en/asynchronous.html
-https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
-https://www.codementor.io/rukayatodukoya/writing-and-testing-async-redux-action-creators-with-jest-fr4if4it7
-https://www.ximedes.com/test-redux-action-creators-with-jest/
-https://densitylabs.io/blog/recipes-for-testing-redux-actions-and-reducers
-
-https://github.com/ctimmerm/axios-mock-adapter
-
-https://github.com/node-nock/nock#read-this---about-interceptors
-https://stackoverflow.com/questions/46651092/enzyme-integration-testing-testing-with-react-router-testing-components-update
-
+******* enzyme
+https://stackoverflow.com/questions/43921183/passing-an-event-object-to-enzyme-simulate
 https://github.com/airbnb/enzyme/blob/master/docs/api/ShallowWrapper/simulate.md#common-gotchas
 
+******** enzyme-redux
+https://github.com/knegusen/enzyme-redux
+https://www.npmjs.com/package/enzyme-redux
+
+***** snapshot
+https://dev.bleacherreport.com/react-and-redux-testing-with-jest-how-some-jokers-learned-to-take-snapshots-c186c7e419e6
+
+****** react router
+https://github.com/ReactTraining/react-router/blob/v4.0.0-alpha.6/modules/__tests__/integration-test.js
+https://stackoverflow.com/questions/46651092/enzyme-integration-testing-testing-with-react-router-testing-components-update
+https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-with-redux-and-enzyme
+
+***** async actions (basic, same stuff as mocha)
+https://facebook.github.io/jest/docs/en/asynchronous.html
+
+***** moxios example
+https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
+https://medium.com/the-andela-way/async-actions-and-tests-with-redux-promise-middleware-3b6bda8aa83d
+
+***** moxios vs. nock
+https://dev.to/hawicaesar/moxios-or-nock-to-mock-che
+
+****** mocking axios directly
+https://github.com/kentcdodds/testing-workshop/blob/master/client/src/__mocks__/axios.js
+
+**** testing authentication actions
+https://www.codementor.io/rukayatodukoya/writing-and-testing-async-redux-action-creators-with-jest-fr4if4it7
+https://github.com/reactjs/redux/issues/1972
+
+https://github.com/node-nock/nock#read-this---about-interceptors
+
+******** "it's not useful"
 https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-with-redux-and-enzyme
 It is not useful to test the functionality of React Router and Redux. Exporting the plain React component made the test much simpler.
 
-***** token testing with moxios
-https://github.com/reactjs/redux/issues/1972
+https://blog.kentcdodds.com/testing-%EF%B8%8F-components-using-render-props-5623ab1814c
+
+########## snapshot testing
+https://blog.kentcdodds.com/effective-snapshot-testing-e0d1a2c28eca
+
+******* localstorage
+https://www.npmjs.com/package/jest-localstorage-mock
 
 ****** redux forms
 https://github.com/tylercollier/redux-form-test
@@ -74,8 +108,10 @@ https://medium.com/@deanslamajr/jest-fn-all-the-things-d26f3b929986
 https://blog.kentcdodds.com/testing-%EF%B8%8F-components-using-render-props-5623ab1814c
 https://github.com/kentcdodds/testing-workshop
 
-##########
-snapshot testing: https://blog.kentcdodds.com/effective-snapshot-testing-e0d1a2c28eca
+
+/********************************************/
+/* End: Testing */
+/********************************************/
 
 ****** the end of redux?
 https://medium.freecodecamp.org/replacing-redux-with-the-new-react-context-api-8f5d01a00e8c
@@ -86,5 +122,23 @@ https://medium.com/@baphemot/whats-new-in-react-16-3-d2c9b7b6193b
 https://reactjs.org/blog/2018/03/29/react-v-16-3.html
 https://reactjs.org/blog/2018/03/01/sneak-peek-beyond-react-16.html
 
+******** loading
+https://medium.com/javascript-inside/slaying-a-ui-antipattern-in-react-64a3b98242c
+https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
+
+/*******************************/
+/* Best practices */
+/*******************************/
+
 #### evolving patterns in React
 https://medium.freecodecamp.org/evolving-patterns-in-react-116140e5fe8f
+
+******* readable react code
+https://medium.freecodecamp.org/10-points-to-remember-thatll-help-you-master-coding-in-reactjs-library-d0520d8c73d8
+
+/*******************************/
+/* End: Best practices */
+/*******************************/
+
+**** error boundaries
+https://reactjs.org/blog/2017/07/26/error-handling-in-react-16.html#where-to-place-error-boundaries
