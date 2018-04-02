@@ -21,7 +21,7 @@
 /**
  * Tests for the SignIn component
  * @module
- * SignIn-spec
+ * signin-spec
  * 
  * Note: Integration test adapted from process laid out in
  * https://medium.freecodecamp.org/real-integration-tests-with-react-redux-and-react-router-417125212638
@@ -35,34 +35,41 @@ import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { SignIn } from './SignIn'
 
 describe('SignIn', () => {
-  describe('SignIn Component rendering', () => {
-    const handleSubmitMock = jest.fn();
+  const handleSubmitMock = jest.fn();
+  describe('SignIn Component non-error rendering', () => {
+    let wrapper
+    beforeEach(() => {
+      handleSubmitMock.mockClear()
+      const props = {
+        handleSubmit: handleSubmitMock,
+      };
+      wrapper = shallow(<SignIn {...props} />);
+    })
     test('renders a form', () => {
-      const props = {
-        handleSubmit: handleSubmitMock,
-      };
-      const wrapper = shallow(<SignIn {...props} />);
-      expect(findWrapperNodeByTestId(wrapper, 'signin-form').length).toBe(1);
+      expect(findWrapperNodeByTestId(wrapper, 'signin-form')).toHaveLength(1);
     });
+    test('renders the correct fields', () => {
+      const renderedFields =  wrapper.find('Field').map(field => field.prop('name'));
+      expect(renderedFields).toEqual(['email', 'password']);
+    })
     test('displays no error if there is no error', () => {
-      const props = {
-        handleSubmit: handleSubmitMock,
-      };
-      const wrapper = shallow(<SignIn {...props} />);
-      expect(findWrapperNodeByTestId(wrapper, 'alert').length).toBe(0);
+      expect(findWrapperNodeByTestId(wrapper, 'alert')).toHaveLength(0);
     });
+  });
+  describe('SignIn Component error rendering', () => {
     test('displays an error if there is an error', () => {
+      handleSubmitMock.mockClear()
       const props = {
         handleSubmit: handleSubmitMock,
         errorMessage: 'not good',
       };
       const wrapper = shallow(<SignIn {...props} />);
-      expect(findWrapperNodeByTestId(wrapper, 'alert').length).toBe(1);
+      expect(findWrapperNodeByTestId(wrapper, 'alert')).toHaveLength(1);
     });
   });
   describe('SignIn component functionality', () => {
     test('calls SignInUser on submit', () => {
-      const handleSubmitMock = jest.fn();
+      handleSubmitMock.mockClear()
       const props = {
         handleSubmit: handleSubmitMock,
       };
