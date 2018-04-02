@@ -26,7 +26,6 @@
 
 import '../../jest/setupTests'
 import userChartsReducer from './userChartsReducer'
-import * as actions from './userActions'
 import { GET_USERCHARTS } from './userActionTypes'
 import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
  
