@@ -51,14 +51,14 @@ describe('User actions', () => {
   });
 
   describe('getUserCharts', () => {
-    it('creates GET_USERCHARTS after successfuly fetching charts', () => {
-    moxios.wait(() => {
-      const request = moxios.requests.mostRecent();
-      request.respondWith({
-        status: 200,
-        response: charts,
+    test('creates GET_USERCHARTS after successfuly fetching charts', () => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: charts,
+        });
       });
-    });
 
       const expectedActions = [
         // { type: actions.GET_POSTS_START }, // TODO: loading!!

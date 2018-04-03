@@ -47,6 +47,14 @@ https://medium.com/@visualskyrim/test-your-redux-container-with-enzyme-a0e10c057
 https://hackernoon.com/unit-testing-redux-connected-components-692fa3c4441c
 https://medium.com/@netxm/testing-redux-reducers-with-jest-6653abbfe3e1
 
+
+****** redux thunk
+https://github.com/reactjs/redux/issues/546
+https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md (search for thunk)
+https://michalzalecki.com/testing-redux-thunk-like-you-always-want-it/
+https://medium.com/@dave.draper20/a-way-of-testing-redux-thunks-62926277efa4
+https://medium.com/@ferrannp/unit-testing-with-jest-redux-async-actions-fetch-9054ca28cdcd
+
 ****** redux testing documentation
 https://redux.js.org/recipes/writing-tests
 reducers: https://redux.js.org/recipes/writing-tests#reducers

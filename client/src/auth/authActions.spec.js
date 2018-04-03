@@ -48,22 +48,20 @@ describe('authActions', () => {
 
   describe('signInUser', () => {
     describe('successful login', () => {
-      let store
       const successArgs = { email: userData.email, password: userData.password }
-      beforeEach(() => {
-        store = mockStore({ })
-        return moxios.wait(() => {
-          const request = moxios.requests.mostRecent();
-          request.respondWith({
-            status: 200,
-            response: { user: userData },
-          });
+      const moxiosCall = () => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 200,
+          response: { user: userData },
         });
-        
-      });
+      }
 
-      it('dispatches AUTH_USER after successful authentication', () => {
+      test('dispatches AUTH_USER after successful authentication', () => {
+        moxios.wait(moxiosCall);
         const expectedActions = { type: AUTH_USER, payload: { user: userData }}
+        const store = mockStore()
+
 
         return store.dispatch(actions.signInUser(successArgs)).then(() => {
           const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
