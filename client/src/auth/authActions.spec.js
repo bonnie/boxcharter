@@ -24,10 +24,78 @@
  * authActions-spec
  */
 
-import actions from './authActions'
-import { } from './authActionTypes'
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import moxios from 'moxios'
+
+import '../../jest/setupTests'
+import * as actions from './authActions'
+import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes'
+import { userData } from '../../../shared/test/utilities/test_data/add_user'
+
+// create a mock store for redux testing
+const mockStore = configureMockStore([thunk]);
 
 describe('authActions', () => {
-  test('', () => {
-  })
-})
+
+  beforeEach(function () {
+    moxios.install();
+  });
+
+  afterEach(function () {
+    moxios.uninstall();
+  });
+
+  describe('signInUser', () => {
+    describe('successful login', () => {
+      let store
+      const successArgs = { email: userData.email, password: userData.password }
+      beforeEach(() => {
+        store = mockStore({ })
+        return moxios.wait(() => {
+          const request = moxios.requests.mostRecent();
+          request.respondWith({
+            status: 200,
+            response: { user: userData },
+          });
+        });
+        
+      });
+
+      it('dispatches AUTH_USER after successful authentication', () => {
+        const expectedActions = { type: AUTH_USER, payload: { user: userData }}
+
+        return store.dispatch(actions.signInUser(successArgs)).then(() => {
+          const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
+          expect(firedActions).toEqual(expectedActions);
+
+        });
+      });
+      it('updates localStorage after successful authentication', () => {
+
+      });
+      it('redirects to `/user-profile` after successful authentication', () => {
+
+      });
+    });
+  });
+});
+  //     const expectedActions = [
+  //       // { type: actions.GET_POSTS_START }, // TODO: loading!!
+  //       { type: GET_USERCHARTS, data: charts },
+  //     ];
+
+  //     const store = mockStore({ charts: [] })
+
+  //     // use "fake" userID 1
+  //     return store.dispatch(actions.getUserCharts(1)).then(() => {
+  //       // return of async actions
+
+  //       // TODO: why can't I test whole action, like 
+  //       // https://github.com/reactjs/redux/issues/1972
+  //       // https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
+  //       const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
+  //       expect(firedActions).toEqual(expectedActions);
+  //     });
+  //   });
+  // });
