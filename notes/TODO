@@ -2,7 +2,9 @@ to do before forging on:
 
 * clarity alert component (tdd!)
 * proptypes
-* eslint (semicolons!!)
+* eslint 
+  * semicolons!!
+  * make sure all functions have jsdoc
 * axios instance / token header
 * component loading states
 * error boundaries / error handling
