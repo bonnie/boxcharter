@@ -51,44 +51,56 @@ describe('authActions', () => {
   describe('signInUser', () => {
     const initialStore = { authenticated: {}, error: null, user: null }
     const token = 'this is a token'
+    let store
+    let dispatchPromise
+
     describe('successful login', () => {
       const successArgs = { email: userData.email, password: userData.password }
-      const moxiosCall = () => {
-        // const request = moxios.requests.mostRecent();
-        const request = moxios.requests.first();
-        request.respondWith({
-          status: 200,
-          response: { token, user: userData },
+      
+      beforeEach(() => {
+        // mock browserHistory.push to test routing and avoid errors due to lack of router
+        // Do this before every test for a clean mock function for each test
+        browserHistory.push = jest.fn()
+
+        // set up moxios
+        moxios.wait(() => {
+          const request = moxios.requests.mostRecent();
+          // const request = moxios.requests.first();
+          request.respondWith({
+            status: 200,
+            response: { token, user: userData },
+          });
         });
-      }
+
+        // set up mock store
+        store = mockStore(initialStore);
+
+        // store the call as a promise
+        dispatchPromise = store.dispatch(actions.signInUser(successArgs))
+      });
 
       test('dispatches AUTH_USER after successful authentication', () => {
 
-        // mock browserHistory.push to avoid error due to lack of router
-        browserHistory.push = jest.fn()
-
-        moxios.wait(moxiosCall);
         const expectedActions = [
           { type: AUTH_USER, payload: { user: userData }}
         ]
-        const store = mockStore(initialStore)
 
-        return store.dispatch(actions.signInUser(successArgs)).then(() => {
+        return dispatchPromise.then(() => {
           const firedActions = store.getActions().map(action => ({ type: action.type, payload: action.payload }))
           expect(firedActions).toEqual(expectedActions);
 
         });
       });
       it('updates localStorage after successful authentication', () => {
-        moxios.wait(moxiosCall);
-        const store = mockStore(initialStore)
 
-        return store.dispatch(actions.signInUser(successArgs)).then(() => {
+        return dispatchPromise.then(() => {
           expect(localStorage.getItem('token')).toBe(token);
         });
       });
       it('redirects to `/user-profile` after successful authentication', () => {
-        
+        return dispatchPromise.then(() => {
+          expect(browserHistory.push).toBeCalledWith('/user-profile')
+        });
       });
     });
   });
