@@ -74,6 +74,7 @@ describe('User actions', () => {
         // TODO: why can't I test whole action, like 
         // https://github.com/reactjs/redux/issues/1972
         // https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
+        // https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md
         const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
         expect(firedActions).toEqual(expectedActions);
       });

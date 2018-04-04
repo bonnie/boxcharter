@@ -29,6 +29,7 @@ import thunk from 'redux-thunk';
 import moxios from 'moxios'
 
 import '../../jest/setupTests'
+import browserHistory from '../app/history'
 import * as actions from './authActions'
 import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes'
 import { userData } from '../../../shared/test/utilities/test_data/add_user'
@@ -39,6 +40,7 @@ const mockStore = configureMockStore([thunk]);
 describe('authActions', () => {
 
   beforeEach(function () {
+    localStorage.removeItem('token');
     moxios.install();
   });
 
@@ -47,53 +49,47 @@ describe('authActions', () => {
   });
 
   describe('signInUser', () => {
+    const initialStore = { authenticated: {}, error: null, user: null }
+    const token = 'this is a token'
     describe('successful login', () => {
       const successArgs = { email: userData.email, password: userData.password }
       const moxiosCall = () => {
-        const request = moxios.requests.mostRecent();
+        // const request = moxios.requests.mostRecent();
+        const request = moxios.requests.first();
         request.respondWith({
           status: 200,
-          response: { user: userData },
+          response: { token, user: userData },
         });
       }
 
       test('dispatches AUTH_USER after successful authentication', () => {
-        moxios.wait(moxiosCall);
-        const expectedActions = { type: AUTH_USER, payload: { user: userData }}
-        const store = mockStore()
 
+        // mock browserHistory.push to avoid error due to lack of router
+        browserHistory.push = jest.fn()
+
+        moxios.wait(moxiosCall);
+        const expectedActions = [
+          { type: AUTH_USER, payload: { user: userData }}
+        ]
+        const store = mockStore(initialStore)
 
         return store.dispatch(actions.signInUser(successArgs)).then(() => {
-          const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
+          const firedActions = store.getActions().map(action => ({ type: action.type, payload: action.payload }))
           expect(firedActions).toEqual(expectedActions);
 
         });
       });
       it('updates localStorage after successful authentication', () => {
+        moxios.wait(moxiosCall);
+        const store = mockStore(initialStore)
 
+        return store.dispatch(actions.signInUser(successArgs)).then(() => {
+          expect(localStorage.getItem('token')).toBe(token);
+        });
       });
       it('redirects to `/user-profile` after successful authentication', () => {
-
+        
       });
     });
   });
 });
-  //     const expectedActions = [
-  //       // { type: actions.GET_POSTS_START }, // TODO: loading!!
-  //       { type: GET_USERCHARTS, data: charts },
-  //     ];
-
-  //     const store = mockStore({ charts: [] })
-
-  //     // use "fake" userID 1
-  //     return store.dispatch(actions.getUserCharts(1)).then(() => {
-  //       // return of async actions
-
-  //       // TODO: why can't I test whole action, like 
-  //       // https://github.com/reactjs/redux/issues/1972
-  //       // https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
-  //       const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
-  //       expect(firedActions).toEqual(expectedActions);
-  //     });
-  //   });
-  // });

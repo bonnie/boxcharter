@@ -53,7 +53,7 @@ const signInUser = ({ email, password }) => {
   // redux-thunk gives arbitrary access to dispatch method
   return function(dispatch) {
     // submit email/password to api server
-    axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
+    return axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
       .then((response) => authHandler(response, dispatch))
       .catch((error) => {
         // if request is bad...
