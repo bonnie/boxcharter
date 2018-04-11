@@ -28,7 +28,7 @@ import React from 'react'
 
 import '../../jest/setupTests'
 import { shallow } from 'enzyme'
-import { checkProps, generateRequiredError, checkForErrors } from '../../jest/utils';
+import { checkProps, generateRequiredError } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
 import ChartRow from './ChartRow'
 import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
@@ -60,17 +60,21 @@ describe('ChartRow', () => {
     })
   });
   describe('prop-types', () => {
+    test('no error for correct props', () => {
+      const propTypesError = checkProps(ChartRow, { chart });
+      expect(propTypesError).toBeFalsy();
+    });
     test('error when chart is not included', () => {
-      const result = checkProps(ChartRow, {});
-      expect(result).toBe(generateRequiredError('chart', ChartRow));
+      const propTypesError = checkProps(ChartRow, {});
+      expect(propTypesError).toBe(generateRequiredError('chart', ChartRow));
     });
     describe('error when chart does not have the correct shape', () => {
       requiredChartProps.forEach(propName => {
         const missingChart = { ...chart }
         delete missingChart[propName]
-        const result = checkProps(ChartRow, { chart: missingChart });
+        const propTypesError = checkProps(ChartRow, { chart: missingChart });
         test(`error when chart does not contain ${propName}`, () => {
-          expect(result).toBe(generateRequiredError(`chart.${propName}`, ChartRow))
+          expect(propTypesError).toBe(generateRequiredError(`chart.${propName}`, ChartRow))
         });
       });
     });

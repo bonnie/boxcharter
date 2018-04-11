@@ -25,13 +25,14 @@
  * FormattedDate
  */
 
-import React from 'react'
-import moment from 'moment'
+import React from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 
 /**
  * Simple functional react component to format a date
  */
-export default (props) => {
+const FormattedDate = (props) => {
   let format
   if (props.format) {
     format = props.format
@@ -44,4 +45,14 @@ export default (props) => {
   }
   const formattedDate = moment(props.date).format(format)
   return (<span className="formatted-date">{formattedDate}</span>)
-}
+};
+
+FormattedDate.propTypes = {
+  format: PropTypes.string,
+  date: PropTypes.oneOfType([
+    PropTypes.instanceOf(Date),
+    PropTypes.string,
+  ]).isRequired,
+};
+
+export default FormattedDate

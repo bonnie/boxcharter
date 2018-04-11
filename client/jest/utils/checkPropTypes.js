@@ -13,3 +13,7 @@ export const checkProps = (component, props) => {
 export const generateRequiredError = (propName, component) => {
   return `Failed prop type: The prop \`${propName}\` is marked as required in \`${component.name}\`, but its value is \`undefined\`.`;
 }
+
+export const generateTypeError = (propName, component, correctType, incorrectType) => {
+  return `Failed prop type: Invalid prop \`${propName}\` of type \`${incorrectType}\` supplied to \`${component.name}\`, expected \`${correctType}\`.`;
+}
