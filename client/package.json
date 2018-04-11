@@ -27,11 +27,14 @@
     "chai-jquery": "^2.0.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-redux": "^0.1.7",
     "enzyme-to-json": "^3.3.1",
     "jest": "^22.4.2",
     "jquery": "^2.2.1",
     "jsdom": "^8.1.0",
     "mocha": "^2.4.5",
+    "moxios": "^0.4.0",
+    "redux-test-utils": "^0.2.2",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0"
   },
@@ -51,10 +54,13 @@
     "react-redux": "^5.0.7",
     "react-router": "^4",
     "react-router-dom": "^4.2.2",
+    "react-router-redux": "^4.0.8",
     "redux": "^3.7.2",
     "redux-form": "^7",
+    "redux-mock-store": "^1.5.1",
     "redux-persist": "^5.9.1",
     "redux-promise": "^0.5.3",
+    "redux-router": "^2.1.2",
     "redux-thunk": "^2.2.0",
     "url-loader": "^0.6.2"
   }

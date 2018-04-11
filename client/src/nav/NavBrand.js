@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,17 +19,27 @@
  */
 
 /**
- * Tests for the ClarityFormInput component
+ * NavBrand component
  * @module
- * ClarityFormInput-spec
+ * NavBrand
  */
 
-
 import React from 'react'
-import { shallow } from 'enzyme'
-import ClarityFormInput from './ClarityFormInput'
+import { NO_TAB } from './tabNames'
+import NavLink from './NavLink'
 
-describe('ClarityFormInput', () => {
-  test('renders', () => {
-  })
-})
+
+// brand is just a NavLink with some hard coded properties
+export default (props) => {
+  const linkDisplay = (
+    <span>
+      <img src='/public/images/boxcharter-48.png' />
+      <span className="title">BoxCharter</span>
+    </span>
+  )
+  return (
+    <div className="branding" data-test="navBrand-div">
+      <NavLink linkRoute="/" linkText={NO_TAB} linkDisplay={linkDisplay} brand={true} />
+    </div>
+  )
+}

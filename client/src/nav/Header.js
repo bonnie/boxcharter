@@ -29,9 +29,10 @@ import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
 import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE, } from './tabNames'
 import NavLink from './NavLink'
+import NavBrand from './NavBrand'
 import { setActiveNavTab } from './navActions'
 
-class Header extends Component {
+export class Header extends Component {
   renderLinks() {
     if (this.props.auth.authenticated) {
       return [
@@ -46,21 +47,16 @@ class Header extends Component {
     }
   }
 
-  brandClickHandler() {
-    // clear active nav tab
-    this.props.setActiveNavTab('')
-  }
+  // brandClickHandler() {
+  //   // clear active nav tab
+  //   this.props.setActiveNavTab('')
+  // }
 
   render() {  
     return (
       <header className="header header-5">
-        <div className="branding">
-          <Link to="/" className="logo-and-title" onClick={this.brandClickHandler.bind(this)}>
-            <img src='/public/images/boxcharter-48.png' />
-            <span className="title">BoxCharter</span>
-          </Link>
-        </div>
-        <div className="header-nav">
+        <NavBrand data-test="navbrand-component"/>
+        <div className="header-nav" data-test="header-nav">
           {this.renderLinks()}
         </div>
       </header>
@@ -71,6 +67,5 @@ class Header extends Component {
 function mapStateToProps({ auth }) {
   return { auth }
 }
-
 
 export default connect(mapStateToProps, { setActiveNavTab })(Header);

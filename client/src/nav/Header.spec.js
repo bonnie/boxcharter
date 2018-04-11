@@ -26,9 +26,34 @@
 
 import React from 'react'
 import { shallow } from 'enzyme'
-import Header from './Header'
+import '../../jest/setupTests'
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
+import { Header } from './Header'
 
 describe('Header', () => {
-  test('renders', () => {
+  describe('when user is authenticated', () => {
+    const header = <Header auth={{ authenticated: true }}/>
+    const renderedHeader = shallow(header)
+    test('renders the brand', () => {
+      const navBrand = findWrapperNodeByTestId(renderedHeader, 'navbrand-component')
+      expect(navBrand.length).toBe(1)
+    })
+    test('renders the tabs', () => {
+      const navLinks = findWrapperNodeByTestId(renderedHeader, 'header-nav').children().map(link => link.prop('linkText'))
+      expect(navLinks).toEqual(['User Profile', 'Sign Out'])
+    })
+  })
+  describe('when user is not authenticated', () => {
+    const header = <Header auth={{ authenticated: false }}/>
+    const renderedHeader = shallow(header)
+    test('renders the brand', () => {
+      const navBrand = findWrapperNodeByTestId(renderedHeader, 'navbrand-component')
+      expect(navBrand.length).toBe(1)
+    })
+    test('renders the tabs', () => {
+      // childAt(1) is the div for the navlinks. Its children are the navlink components.
+      const navLinks = findWrapperNodeByTestId(renderedHeader, 'header-nav').children().map(link => link.prop('linkText'))
+      expect(navLinks).toEqual(['Sign In', 'Sign Up'])
+    })  
   })
 })

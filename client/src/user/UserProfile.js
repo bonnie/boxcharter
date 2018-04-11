@@ -30,14 +30,16 @@ import UserCharts from './UserCharts'
 import { tabNames } from '../nav'
 import { setActiveNavTab } from '../nav/navActions'
 
-class UserPage extends Component {
+// TODO: bindActionCreators from react-redux
+
+export class UserProfile extends Component {
   componentDidMount() {
     this.props.setActiveNavTab(tabNames.USER_PROFILE)
   }
   render() {
     return (
       <div className="user-page">
-        <h3>Charts</h3>
+        <h3 data-test="user-charts-section">Charts</h3>
         <UserCharts />
       </div>
     )
@@ -48,4 +50,4 @@ function mapStateToProps({ auth }) {
   return { auth }
 }
 
-export default connect(mapStateToProps, { setActiveNavTab })(UserPage)
+export default connect(mapStateToProps, { setActiveNavTab })(UserProfile)

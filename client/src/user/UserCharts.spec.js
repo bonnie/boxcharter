@@ -25,26 +25,43 @@
  */
 
 import React from 'react'
+import '../../jest/setupTests'
 import { shallow } from 'enzyme'
-import UserCharts from './UserCharts'
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
+import { UserCharts } from './UserCharts'
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
+import { userData } from '../../../shared/test/utilities/test_data/add_user'
 
 describe('UserCharts', () => {
-  test('renders', () => {
+  // make three charts for the user; these would ordinarily be stored in state
+  const chart = chartData[0].chartMetaData
+  describe('non-empty charts list', () => {
+    test('table should have non-zero rows', () => {
+      const chartCount = 3
+      const charts = []
+      let newChart
+      for (let i=0; i<chartCount; i++) {
+        newChart = {...chart}
+        newChart.chartId = i
+        charts.push(newChart)
+      }
+      const wrapper = shallow(<UserCharts charts={charts} />)
+      const tbody = findWrapperNodeByTestId(wrapper, 'charts-container')
+      expect(tbody.children().length).toBe(chartCount)
+
+    })
+  })
+
+  describe('empty charts list', () => {
+    const charts = []
+    const wrapper = shallow(<UserCharts charts={charts} />)
+    const tbody = findWrapperNodeByTestId(wrapper, 'user-charts-table')
+    const noChartsMessage = findWrapperNodeByTestId(wrapper, 'no-charts-message')
+    test('zero rows should not render charts table', () => {
+      expect(tbody.length).toBe(0)
+    })
+    test('zero rows should display statement about "no charts"', () => {
+      expect(noChartsMessage.length).toBe(1)
+    })
   })
 })
-
-// describe('UserCharts', () => {
-//   let component
-//   beforeEach(() => {
-//     const props = { 
-//       user: testData.users[0],
-//       charts: testData.userCharts
-//     }
-//     component = renderComponent(UserCharts, null, props)
-//   });
-  
-//   it('has the correct class', () => {
-//     expect(component).to.have.class('user-charts')
-//   });
-
-// });

@@ -1,0 +1,13 @@
+Testing strategy: 
+	* test only stuff you care about (no snapshots!!)
+	* make tests robust enough that implementation detail changes won't cause tests to fail
+
+from https://github.com/tylercollier/redux-form-test:
+First, make sure you understand the general idea of testing connected components from the Redux "Writing Tests" doc. Search for the section called Connected Components.
+
+So, you should have a "dumb" (aka presentational) React component that is separate from any connection to Redux and Redux-Form. It takes props. That's it. You test that with unit tests.
+
+You should also have a container React component that connects the presentational component to Redux and Redux-Form. To test this, your test becomes an integration test because you're hooking up your presentational component to redux's store. You're integrating them.
+
+To make this separation clear, I named the presentational component ContactFormComponent, and the container ContactFormContainer, in 2 different files, although you could also set it up so they are in one file.
+*****

@@ -28,6 +28,8 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import RequireAuth from './RequireAuth'
 
+// TODO: testing higher order components...?
+
 describe('RequireAuth', () => {
   test('renders', () => {
   })

@@ -24,10 +24,17 @@
  * navActions-spec
  */
 
-import * as actions from './navActions'
-import { } from './navActionTypes'
+import { setActiveNavTab } from './navActions'
+import { NAV_TAB } from './navActionTypes'
+import { SIGN_UP } from './tabNames'
 
 describe('navActions', () => {
-  test('', () => {
+  test('action creator returns expected action', () => {
+    const expectedAction = {
+      type: NAV_TAB,
+      payload: SIGN_UP,
+    }
+    const action = setActiveNavTab(SIGN_UP)
+    expect(action).toMatchObject(expectedAction)
   })
 })

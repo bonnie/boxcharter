@@ -22,13 +22,121 @@
  * Tests for the NavLink component
  * @module
  * NavLink-spec
- */
+*/
 
 import React from 'react'
+// import { connect, Provider } from 'react-redux'
 import { shallow } from 'enzyme'
-import NavLink from './NavLink'
+// import { shallowWithStore } from 'enzyme-redux' 
+// import { configureMockStore, createMockStore } from 'redux-test-utils'
+// import { MemoryRouter } from 'react-router-dom';
+import '../../jest/setupTests'
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
+import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE } from './tabNames'
+// import { NAV_TAB } from './navActionTypes'
+// import navReducer from './navReducer'
+// import rootReducer from '../app/reducers'
+// import { setActiveNavTab } from './navActions'
+import { NavLink } from './NavLink'
+// import App from '../app/App'
 
-describe('NavLink', () => {
-  test('renders', () => {
+// adapted from enzyme-redux
+// function mountWithStore(Component, store) {
+//   const context = { store }
+//   return (0, mount)(Component, { context })
+// };
+// end adapted from enzyme-redux
+
+const activeLinkRoute = "/sign-in"
+const inactiveLinkRoute = "/sign-up"
+const activeLinkText = SIGN_IN
+const inactiveLinkText = SIGN_UP
+
+describe('NavLink component', () => {
+
+  describe('active NavLink', () => {
+    describe('renders correctly', () => {
+      const activeNav =
+        <NavLink 
+          linkRoute={activeLinkRoute}
+          linkText={activeLinkText} 
+          activeNavTab={activeLinkText}
+        />
+      const renderedNav = shallow(activeNav)
+      test('component includes a Link', () => {
+        expect(renderedNav.find('Link').length).toBe(1)
+      })
+      test('component Link should include the correct "to" prop', () => {
+        expect(renderedNav.find('Link').prop('to')).toBe(activeLinkRoute)
+      })
+      test('component Link should include the correct text', () => {
+        // Don't think there's any way around childAt(0) here...
+        expect(renderedNav.find('Link').childAt(0).text()).toBe(activeLinkText)
+      })
+      test('component includes active class', () => {
+        expect(renderedNav.hasClass('active')).toBe(true)
+      })
+    })
+  })
+
+  describe('inactive NavLink', () => {
+    describe('renders correctly', () => {
+      let renderedNav
+      beforeEach(() => {
+        const inactiveNav = 
+          <NavLink 
+            linkRoute={inactiveLinkRoute}
+            linkText={inactiveLinkText} 
+            activeNavTab={activeLinkText}
+          />
+        renderedNav = shallow(inactiveNav)
+      })
+      // no need to re-test stuff that was tested with the active link
+      test('component does not include active class', () => {
+        expect(renderedNav.hasClass('active')).toBe(false)
+      })
+    })
+  })
+
+  describe('brand NavLink', () => {
+    describe('renders correctly', () => {
+      let renderedNav
+      const linkDisplay = <span className="linkDisplay">Brand</span>
+      beforeEach(() => {
+        const brandNav = 
+          <NavLink 
+            linkRoute="/" 
+            linkText={NO_TAB} 
+            linkDisplay={linkDisplay}
+            brand={true}
+          />
+        renderedNav = shallow(brandNav)
+      })
+      test('component includes a Link', () => {
+        expect(renderedNav.find('Link').length).toBe(1)
+      })
+      test('expect link html to be display prop', () => {
+        // If you try to look at the renderedNav.find('Link').html(), you get this error: 
+        //     Invariant Violation: You should not use <Link> outside a <Router>
+
+        const renderedLinkHtml = renderedNav.find('Link').find('.linkDisplay').html()
+        const expectedLinkHtml = shallow(linkDisplay).html()
+        expect(renderedLinkHtml).toBe(expectedLinkHtml)
+      })
+    })
+    test('dispatch action upon click with the correct arg', () => {
+      const setActiveNavTabMock = jest.fn()
+      const brandNav = 
+        <NavLink 
+          linkRoute="/" 
+          linkText={NO_TAB} 
+          linkDisplay="<span>Brand</span>" 
+          brand={true}
+          setActiveNavTab={setActiveNavTabMock}
+        />
+      const renderedNav = shallow(brandNav)
+      renderedNav.simulate('click')
+      expect(setActiveNavTabMock).toHaveBeenCalledWith("")
+    })
   })
 })

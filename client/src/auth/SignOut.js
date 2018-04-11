@@ -28,12 +28,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from './authActions'
 
-class SignOut extends Component {
+export class SignOut extends Component {
   componentWillMount() {
     this.props.signOutUser()
   }
   render() {
-    return <div>Signed out!</div>
+    return <div data-test="signout-component">Signed out!</div>
   }
 }
 
