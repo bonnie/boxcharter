@@ -21,12 +21,12 @@
 /**
  * Clarity form input component
  * @module
- * renderClarityField
+ * ClarityField
  */
 
 import React from 'react'
 
-export default (props) => {
+const ClarityField = (props) => {
   const { input, type, label, required }  = props
   const { touched, error, warning } = props.meta
 
@@ -41,6 +41,9 @@ export default (props) => {
         </label>
     </fieldset>
   )
+
+
+  export default ClarityField
   // <div>
   //   <label>{label}</label>
   //   <div>
