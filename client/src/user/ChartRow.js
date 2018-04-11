@@ -25,9 +25,10 @@
  */
 
 import React from 'react'
+import PropTypes from 'prop-types'
 import { FormattedDate } from '../utils'
 
-export default (props) => {
+const ChartRow = (props) => {
   const { chart } = props
   return (
     <tr className="chart-row">
@@ -36,3 +37,12 @@ export default (props) => {
     </tr>
   )
 }
+
+ChartRow.propTypes = {
+  chart: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    modifiedAt: PropTypes.string.isRequired,
+  }).isRequired,
+}
+
+export default ChartRow

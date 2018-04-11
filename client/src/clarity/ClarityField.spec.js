@@ -19,22 +19,23 @@
  */
 
 /**
- * Tests for the renderClarityField component
+ * Tests for the ClarityField component
  * @module
- * renderClarityField-spec
+ * ClarityField-spec
  */
 
 
 import React from 'react'
 import { mount } from 'enzyme'
 import '../../jest/setupTests'
+import { checkProps, generateRequiredError, generateTypeError } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
-import renderClarityField from './renderClarityField'
+import ClarityField from './ClarityField'
 
 const label = 'Test'
 const name = 'test'
 
-describe('renderClarityField', () => {
+describe('ClarityField', () => {
   describe('renders text field', () => {
     const props = {
       type: 'text',
@@ -43,7 +44,7 @@ describe('renderClarityField', () => {
       meta: {},
       input: {},
     }
-    const wrapper = mount(renderClarityField(props))
+    const wrapper = mount(ClarityField(props))
     test('renders the field set', () => {
       expect(wrapper.find('fieldset.form-group').length).toBe(1)
     })
@@ -65,7 +66,7 @@ describe('renderClarityField', () => {
       meta: {},
       input: {},
     }
-    const wrapper = mount(renderClarityField(props))
+    const wrapper = mount(ClarityField(props))
     test('renders the label with the correct class', () => {
       const label = findWrapperNodeByTestId(wrapper, 'field-label')
       const labelHasRequiredClass = label.hasClass('required')
@@ -82,10 +83,53 @@ describe('renderClarityField', () => {
       meta: { touched: true, error: errorText },
       input: {},
     }
-    const wrapper = mount(renderClarityField(props))
+    const wrapper = mount(ClarityField(props))
     test('renders the tooltip label with the correct text', () => {
       const labelText = findWrapperNodeByTestId(wrapper, 'tooltip-label').text()
       expect(labelText).toBe(errorText)
     })  
-  })
+  });
+  describe('prop-types', () => {
+    const goodProps = {
+      input: {},
+      type: '', 
+      label: '', 
+      required: true,
+      meta: { 
+        touched: false,
+        error: '', 
+        warning: '',
+      }
+    };
+    const requiredProps = [
+      'type',
+      'label',
+      'input',
+    ];
+    const requiredMetaProps = [
+      'touched',
+      'error',
+    ];
+    test('no error for correct props', () => {
+      const propTypesError = checkProps(ClarityField, goodProps);
+      expect(propTypesError).toBeUndefined();
+    });
+    requiredProps.forEach(propName => {
+      test(`error when required ${propName} is not included`, () => {
+        const badProps = { ...goodProps }
+        delete badProps[propName]
+        const propTypesError = checkProps(ClarityField, badProps);
+        expect(propTypesError).toBe(generateRequiredError(propName, ClarityField));
+      });
+    });
+    requiredMetaProps.forEach(propName => {
+      const fullPropName = `meta.${propName}`
+      test(`error when required ${fullPropName} is not included`, () => {
+        const badProps = JSON.parse(JSON.stringify(goodProps)) // deep copy
+        delete badProps['meta'][propName]
+        const propTypesError = checkProps(ClarityField, badProps);
+        expect(propTypesError).toBe(generateRequiredError(fullPropName, ClarityField));
+      });
+    });
+  });
 })

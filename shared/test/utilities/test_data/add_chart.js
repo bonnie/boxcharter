@@ -41,7 +41,9 @@ const blackbirdMetaData = {
   minFontSize: 10,
   pageHeight: 8.5,
   pageWidth: 11,
-  pageUnits: 'inches'
+  pageUnits: 'inches',
+  createdAt: Date(),
+  modifiedAt: Date(),
  }
 
 const blackbirdSections = [

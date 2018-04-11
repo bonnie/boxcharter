@@ -1,15 +1,17 @@
 to do before forging on: 
 
-* clarity alert component (tdd!)
 * proptypes
 * eslint 
   * semicolons!!
   * make sure all functions have jsdoc
 * axios instance / token header
 * component loading states
+* persist login on refresh
 * error boundaries / error handling
 * data-test => test-id
 * terminology: wrapper? dom? other??
 * call setup.js automatically before every test (or just once before all tests...?)
 * signin and signup have identical tests. Should they be the same component...?
+* circleCI continuous integration
 * send errors back to the server to log (middleware to do this...?)
+* clarity alert component (tdd!)

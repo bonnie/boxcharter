@@ -40,8 +40,6 @@ import App from './app/App'
 import reducers from './app/reducers'
 const { store, persistor } = configureStore()
 
-console.log('===================>running index.js!!!')
-
 // TODO: persist state upon refresh 
 
 ReactDOM.render(

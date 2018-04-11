@@ -30,7 +30,7 @@ import { Field, reduxForm } from 'redux-form'
 import { signInUser, setAuthError } from './authActions'
 import { navActions } from '../nav'
 import { tabNames } from '../nav'
-import { renderClarityField } from '../utils'
+import ClarityField from '../clarity/ClarityField'
 
 const fields = ['email', 'password']
 
@@ -76,8 +76,8 @@ class SignIn extends Component {
     return (
       <div>
         <form data-test="signin-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-          <Field name="email" type="text" label="Email" required={true} component={renderClarityField} />
-          <Field name="password" type="password" label="Password" required={true} component={renderClarityField} />
+          <Field name="email" type="text" label="Email" required={true} component={ClarityField} />
+          <Field name="password" type="password" label="Password" required={true} component={ClarityField} />
           <button data-test="signin-submit" action="submit" className="btn btn-primary">
             Sign in
           </button>
