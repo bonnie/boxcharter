@@ -24,8 +24,10 @@
  * ClarityField
  */
 
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
+// Note: this needs to be invoked as the component for a redux-form Field component
 const ClarityField = (props) => {
   const { input, type, label, required }  = props
   const { touched, error, warning } = props.meta
@@ -41,31 +43,17 @@ const ClarityField = (props) => {
         </label>
     </fieldset>
   )
-
-  // <div>
-  //   <label>{label}</label>
-  //   <div>
-  //     <input {...input} placeholder={label} type={type} />
-  //     {touched &&
-  //       ((error && <span>{error}</span>) ||
-  //         (warning && <span>{warning}</span>))}
-  //   </div>
-  // </div>
 }
 
-export default ClarityField
+ClarityField.propTypes = {
+  input: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  meta: PropTypes.shape({
+    touched: PropTypes.bool.isRequired,
+    error: PropTypes.string.isRequired,
+  }),
+};
 
-//  (props) => {
-//   const { type, label, required, field }  = props
-//   const requiredClass = required ? 'required' : ''
-//   const invalidClass = field.touched && field.error ? 'invalid' : ''
-//   return (
-//     <fieldset key={field.name} className="form-group">
-//         <label className={requiredClass}>{label}</label>
-//         <label className={`tooltip tooltip-validation ${invalidClass}`}>
-//           <input className="form-control" type={type} {...field} />
-//           <span className="tooltip-content">{field.error}</span>
-//         </label>
-//     </fieldset>
-//   )
-// }
+export default ClarityField

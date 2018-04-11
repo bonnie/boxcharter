@@ -90,18 +90,46 @@ describe('ClarityField', () => {
     })  
   });
   describe('prop-types', () => {
-    // test('no error for correct props', () => {
-    //   const propTypesError = checkProps(ClarityField, { format: 'hi', date: Date() });
-    //   expect(propTypesError).toBeFalsy();
-    // });
-    // test('error when required date is not included', () => {
-    //   const propTypesError = checkProps(FormattedDate, { format: 'hi' });
-    //   expect(propTypesError).toBe(generateRequiredError('date', FormattedDate));
-    // });
-    // test('error when format is not a string', () => {
-    //   const badFormat = 123
-    //   const propTypesError = checkProps(FormattedDate, { format: badFormat });
-    //   expect(propTypesError).toBe(generateTypeError('format', FormattedDate, 'string', 'number'));
-    // });
+    const goodProps = {
+      input: {},
+      type: '', 
+      label: '', 
+      required: true,
+      meta: { 
+        touched: false,
+        error: '', 
+        warning: '',
+      }
+    };
+    const requiredProps = [
+      'type',
+      'label',
+      'input',
+    ];
+    const requiredMetaProps = [
+      'touched',
+      'error',
+    ];
+    test('no error for correct props', () => {
+      const propTypesError = checkProps(ClarityField, goodProps);
+      expect(propTypesError).toBeUndefined();
+    });
+    requiredProps.forEach(propName => {
+      test(`error when required ${propName} is not included`, () => {
+        const badProps = { ...goodProps }
+        delete badProps[propName]
+        const propTypesError = checkProps(ClarityField, badProps);
+        expect(propTypesError).toBe(generateRequiredError(propName, ClarityField));
+      });
+    });
+    requiredMetaProps.forEach(propName => {
+      const fullPropName = `meta.${propName}`
+      test(`error when required ${fullPropName} is not included`, () => {
+        const badProps = JSON.parse(JSON.stringify(goodProps)) // deep copy
+        delete badProps['meta'][propName]
+        const propTypesError = checkProps(ClarityField, badProps);
+        expect(propTypesError).toBe(generateRequiredError(fullPropName, ClarityField));
+      });
+    });
   });
 })
