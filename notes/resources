@@ -78,6 +78,11 @@ https://github.com/ReactTraining/react-router/blob/v4.0.0-alpha.6/modules/__test
 https://stackoverflow.com/questions/46651092/enzyme-integration-testing-testing-with-react-router-testing-components-update
 https://stackoverflow.com/questions/47025477/how-to-test-react-router-params-with-redux-and-enzyme
 
+******* proptypes
+https://stackoverflow.com/questions/26124914/how-to-test-react-proptypes-through-jest
+https://stackoverflow.com/questions/41916992/why-does-my-jest-test-of-react-proptypes-break-when-using-multiple-unacceptable/41916993#41916993
+https://daveceddia.com/testing-for-proptypes-errors/
+
 ***** async actions (basic, same stuff as mocha)
 https://facebook.github.io/jest/docs/en/asynchronous.html
 

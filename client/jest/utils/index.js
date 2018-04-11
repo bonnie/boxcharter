@@ -2,3 +2,5 @@
 
 export * from './actionCreatorFactory';
 export * from './locationChange';
+export * from './checkErrors';
+export * from './checkPropTypes';
