@@ -30,7 +30,7 @@ import { Field, reduxForm } from 'redux-form'
 import { signInUser, setAuthError } from './authActions'
 import { navActions } from '../nav'
 import { tabNames } from '../nav'
-import { ClarityField } from '../utils'
+import ClarityField from '../clarity/ClarityField'
 
 const fields = ['email', 'password']
 

@@ -42,8 +42,6 @@ const ClarityField = (props) => {
     </fieldset>
   )
 
-
-  export default ClarityField
   // <div>
   //   <label>{label}</label>
   //   <div>
@@ -55,6 +53,7 @@ const ClarityField = (props) => {
   // </div>
 }
 
+export default ClarityField
 
 //  (props) => {
 //   const { type, label, required, field }  = props
