@@ -24,71 +24,67 @@
  * authActions
  */
 
-import axios from 'axios'
-import browserHistory from '../app/history'
-import { ROOT_URL } from '../../config'
+import axios from 'axios';
+import browserHistory from '../app/history';
+import { ROOT_URL } from '../../config';
 
-import { 
+import {
   AUTH_ERROR,
   AUTH_USER,
   UNAUTH_USER,
-} from './authActionTypes'
+} from './authActionTypes';
 
 const authHandler = (response, dispatch) => {
   // if request is good...
   // - update state to indicate user is authenticated
-  dispatch({ type: AUTH_USER, payload: { user: response.data.user } })
+  dispatch({ type: AUTH_USER, payload: { user: response.data.user } });
 
-  // - save the JWT in browser "local storage" 
+  // - save the JWT in browser "local storage"
   // (available even after navigating away and coming back)
-  localStorage.setItem('token', response.data.token)
+  localStorage.setItem('token', response.data.token);
 
   // - redirect to the route "/user-profile" (programmatic navigation)
-  browserHistory.push(`/user-profile`)
-}
+  browserHistory.push('/user-profile');
+};
 
-const signInUser = ({ email, password }) => {
-  // because we have redux-thunk middleware, 
+const signInUser = ({ email, password }) =>
+  // because we have redux-thunk middleware,
   // instead of returning an object, we can return a function
   // redux-thunk gives arbitrary access to dispatch method
-  return function(dispatch) {
+  function (dispatch) {
     // submit email/password to api server
     return axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
-      .then((response) => authHandler(response, dispatch))
+      .then(response => authHandler(response, dispatch))
       .catch((error) => {
         // if request is bad...
         // - Show an error to the user
-        dispatch(setAuthError('Bad login info'))
-      })
-  }
-}
+        dispatch(setAuthError('Bad login info'));
+      });
+  };
 
-const signUpUser = ({ email, password }) => {
-  return function(dispatch) {
-    return axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
-      .then((response) => authHandler(response, dispatch))
-      .catch((error) => dispatch(setAuthError(error.response.data.error)))
-  }
-}
+
+const signUpUser = ({ email, password }) => function (dispatch) {
+  return axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
+    .then(response => authHandler(response, dispatch))
+    .catch(error => dispatch(setAuthError(error.response.data.error)));
+};
 
 /**
- * 
+ *
  */
 const signOutUser = () => {
-  localStorage.removeItem('token')
-  return { type: UNAUTH_USER }
-}
+  localStorage.removeItem('token');
+  return { type: UNAUTH_USER };
+};
 
-const setAuthError = (error) => {
-  return {
-    type: AUTH_ERROR,
-    payload: error,
-  }
-} 
+const setAuthError = error => ({
+  type: AUTH_ERROR,
+  payload: error,
+});
 
 module.exports = {
   signInUser,
   signUpUser,
   signOutUser,
   setAuthError,
-}
+};

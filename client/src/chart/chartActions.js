@@ -24,24 +24,22 @@
  * chartActions
  */
 
-import axios from 'axios'
-import { ROOT_URL } from '../../config'
+import axios from 'axios';
+import { ROOT_URL } from '../../config';
 
-import { 
-  GET_CHART,
-} from './chartActionTypes'
+import { GET_CHART } from './chartActionTypes';
 
 const getChart = (chartId) => {
   if (!chartId) {
-    return { type: GET_CHART }    
+    return { type: GET_CHART };
   }
-  const request = axios.get(`${ROOT_URL}/charts/${chartId}`)
+  const request = axios.get(`${ROOT_URL}/charts/${chartId}`);
   return {
     type: GET_CHART,
-    payload: request
-  }
-}
+    payload: request,
+  };
+};
 
 module.exports = {
   getChart,
-}
+};

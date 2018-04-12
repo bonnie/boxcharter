@@ -26,29 +26,31 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Switch } from 'react-router-dom'
-import browserHistory from './app/history'
+import { Router, Route, Switch } from 'react-router-dom';
+import browserHistory from './app/history';
 import { Provider } from 'react-redux';
 // TODO: figure out why the next line causes "Uncaught TypeError: Super expression must either be null or a function, not undefined"
 // import { PersistGate } from 'redux-persist/integration/react'
 // import { PersistGate } from 'redux-persist/lib/integration/react'
 // import { PersistGate } from 'redux-persist/es/integration/react' // this one causes "Uncaught SyntaxError: Unexpected identifier"
 
-import configureStore from './app/configure_store'
+import configureStore from './app/configure_store';
 
-import App from './app/App'
-import reducers from './app/reducers'
-const { store, persistor } = configureStore()
+import App from './app/App';
+import reducers from './app/reducers';
 
-// TODO: persist state upon refresh 
+const { store, persistor } = configureStore();
+
+// TODO: persist state upon refresh
 
 ReactDOM.render(
   <Provider store={store}>
     {/* <PersistGate loading={null} persistor={persistor}> */}
-      <Router history={browserHistory}>
-        <App />
-      </Router>
+    <Router history={browserHistory}>
+      <App />
+    </Router>
     {/* </PersistGate> */}
   </Provider>
-  , document.querySelector('.main-container'));
+  , document.querySelector('.main-container')
+);
 

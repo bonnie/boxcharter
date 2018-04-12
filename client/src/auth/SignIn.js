@@ -24,85 +24,124 @@
  * SignIn
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
-import { signInUser, setAuthError } from './authActions'
-import { navActions } from '../nav'
-import { tabNames } from '../nav'
-import ClarityField from '../clarity/ClarityField'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
+import { signInUser, setAuthError } from './authActions';
+import { navActions, tabNames } from '../nav';
+import ClarityField from '../clarity/ClarityField';
 
-const fields = ['email', 'password']
+const fields = ['email', 'password'];
 
-class SignIn extends Component {
+/**
+ * @class SignInComponent
+*/
+export class SignInComponent extends Component {
+  /**
+   * @method componentDidMount
+   * @returns {undefined}
+  */
   componentDidMount() {
     // clear any errors
-    this.props.setAuthError(null)
+    this.props.setAuthError(null);
 
     // set the tab
-    this.props.setActiveNavTab(tabNames.SIGN_IN)
+    this.props.setActiveNavTab(tabNames.SIGN_IN);
   }
 
+  /**
+   * @method handleFormSubmit
+   * @param {object} formFields - Form fields.
+   * @param {string} formFields.email - Email field.
+   * @param {string} formFields.password - Password field.
+   * @returns {undefined}
+   */
   handleFormSubmit({ email, password }) {
     // log user in
-    this.props.signInUser({ email, password })
+    this.props.signInUser({ email, password });
   }
 
+  /**
+   * Generate alert JSX if needed.
+   * @method renderAlert
+   * @returns {any} - Alert JSX (or undefined if no error).
+  */
   renderAlert() {
     if (this.props.errorMessage) {
       return (
         <div data-test="alert" className="alert alert-danger">
           <div className="alert-items">
-              <div className="alert-item static">
-                  <div className="alert-icon-wrapper">
-                      <clr-icon className="alert-icon" shape="exclamation-circle"></clr-icon>
-                  </div>
-                  <span className="alert-text">
-                    {this.props.errorMessage}
-                  </span>
+            <div className="alert-item static">
+              <div className="alert-icon-wrapper">
+                <clr-icon className="alert-icon" shape="exclamation-circle" />
               </div>
+              <span className="alert-text">
+                {this.props.errorMessage}
+              </span>
+            </div>
           </div>
           <button type="button" className="close" aria-label="Close">
-              <clr-icon aria-hidden="true" shape="close"></clr-icon>
+            <clr-icon aria-hidden="true" shape="close" />
           </button>
         </div>
-      )
+      );
     }
   }
 
+  /**
+   * @method render
+   * @returns {JSX.Element} - Rendered component.
+  */
   render() {
     const { handleSubmit } = this.props;
 
     return (
       <div>
         <form data-test="signin-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-          <Field name="email" type="text" label="Email" required={true} component={ClarityField} />
-          <Field name="password" type="password" label="Password" required={true} component={ClarityField} />
+          <Field name="email" type="text" label="Email" required component={ClarityField} />
+          <Field name="password" type="password" label="Password" required component={ClarityField} />
           <button data-test="signin-submit" action="submit" className="btn btn-primary">
             Sign in
           </button>
         </form>
         {this.renderAlert()}
       </div>
-    )
+    );
   }
 }
+
+SignInComponent.defaultProps = {
+  errorMessage: undefined,
+};
+
+SignInComponent.propTypes = {
+  setAuthError: PropTypes.func.isRequired,
+  setActiveNavTab: PropTypes.func.isRequired,
+  signInUser: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
+};
 
 const formOptions = {
   form: 'signin',
   fields,
-}
+};
 
+/**
+ * @function mapStateToProps
+ * @param {object} state - Redux state.
+ * @returns {object} - Object containing errorMessage from state.
+ */
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.error }
+  return { errorMessage: state.auth.error };
 }
 
 const actions = {
-  signInUser, 
+  signInUser,
   setAuthError,
   setActiveNavTab: navActions.setActiveNavTab,
-}
+};
 
-const SignInForm = reduxForm(formOptions)(SignIn)
-export default connect(mapStateToProps, actions)(SignInForm)
-export { SignIn } // for unit testing
+const SignInForm = reduxForm(formOptions)(SignInComponent);
+export default connect(mapStateToProps, actions)(SignInForm);

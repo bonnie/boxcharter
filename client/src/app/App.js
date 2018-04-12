@@ -24,23 +24,24 @@
  * App
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 
-import Header from '../nav/header'
-import Routes from './Routes'
-import ErrorBoundary from './ErrorBoundary'
+import Header from '../nav/Header';
+import Routes from './Routes';
+import ErrorBoundary from './ErrorBoundary';
 
-export default class App extends Component {
-  render() {
-    return (
-      <div>
-        <ErrorBoundary>
-          <Header />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Routes />
-        </ErrorBoundary>
-      </div>
-    )
-  }
-}
+/**
+ * Application component
+ * @returns {JSX.Element} - JSX for App component
+ */
+export default () =>
+  (
+    <div>
+      <ErrorBoundary>
+        <Header />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Routes />
+      </ErrorBoundary>
+    </div>
+  );

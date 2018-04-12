@@ -24,21 +24,21 @@
  * navReducer-spec
  */
 
-import navReducer from './navReducer'
-import { NAV_TAB } from './navActionTypes'
-import { SIGN_UP } from './tabNames'
+import navReducer from './navReducer';
+import { NAV_TAB } from './navActionTypes';
+import { SIGN_UP } from './tabNames';
 
 describe('navReducer', () => {
   test('return empty object for undefined initial state', () => {
-    expect(navReducer(undefined, {})).toEqual({})
-  })
+    expect(navReducer(undefined, {})).toEqual({});
+  });
   test('handle NAV_TAB action', () => {
     const action = {
       type: NAV_TAB,
       payload: SIGN_UP,
-    }
-    const expectedResult = { activeNavTab: SIGN_UP }
-    const result = navReducer({}, action)
-    expect(result).toMatchObject(expectedResult)
-  })
-})
+    };
+    const expectedResult = { activeNavTab: SIGN_UP };
+    const result = navReducer({}, action);
+    expect(result).toMatchObject(expectedResult);
+  });
+});

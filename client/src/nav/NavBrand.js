@@ -24,22 +24,22 @@
  * NavBrand
  */
 
-import React from 'react'
-import { NO_TAB } from './tabNames'
-import NavLink from './NavLink'
+import React from 'react';
+import { NO_TAB } from './tabNames';
+import NavLink from './NavLink';
 
 
 // brand is just a NavLink with some hard coded properties
 export default (props) => {
   const linkDisplay = (
     <span>
-      <img src='/public/images/boxcharter-48.png' />
+      <img src="/public/images/boxcharter-48.png" />
       <span className="title">BoxCharter</span>
     </span>
-  )
+  );
   return (
     <div className="branding" data-test="navBrand-div">
-      <NavLink linkRoute="/" linkText={NO_TAB} linkDisplay={linkDisplay} brand={true} />
+      <NavLink linkRoute="/" linkText={NO_TAB} linkDisplay={linkDisplay} brand />
     </div>
-  )
-}
+  );
+};

@@ -24,24 +24,24 @@
  * configure_store
  */
 
-import { createStore, applyMiddleware } from 'redux'
-import ReduxPromise from 'redux-promise'
-import reduxThunk from 'redux-thunk'
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import { createStore, applyMiddleware } from 'redux';
+import ReduxPromise from 'redux-promise';
+import reduxThunk from 'redux-thunk';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
-import rootReducer from './reducers'
+import rootReducer from './reducers';
 
 const persistConfig = {
   key: 'root',
   storage,
-}
+};
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise, reduxThunk)(createStore);
 
 export default () => {
-  let store = createStoreWithMiddleware(persistedReducer)
-  let persistor = persistStore(store)
-  return { store, persistor }
-}
+  const store = createStoreWithMiddleware(persistedReducer);
+  const persistor = persistStore(store);
+  return { store, persistor };
+};

@@ -24,16 +24,16 @@
  * SplashPage-spec
  */
 
-import React from 'react'
-import { shallow } from 'enzyme'
-import SplashPage from './SplashPage'
+import React from 'react';
+import { shallow } from 'enzyme';
+import SplashPage from './SplashPage';
 
 describe('SplashPage', () => {
   test('renders', () => {
-  })
-})
+  });
+});
 
- // import { renderComponent, expect } from '../test_helper'
+// import { renderComponent, expect } from '../test_helper'
 // import SplashPage from '../../src/components/splash_page'
 // import testData from '../data'
 
@@ -43,7 +43,7 @@ describe('SplashPage', () => {
 //     const props = { }
 //     component = renderComponent(SplashPage, null, props)
 //   })
-  
+
 //   it('has the correct class', () => {
 //     expect(component).to.have.class('splash-page')
 //   })

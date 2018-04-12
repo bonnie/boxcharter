@@ -29,21 +29,23 @@ import PropTypes from 'prop-types';
 
 // Note: this needs to be invoked as the component for a redux-form Field component
 const ClarityField = (props) => {
-  const { input, type, label, required }  = props
-  const { touched, error, warning } = props.meta
+  const {
+    input, type, label, required,
+  } = props;
+  const { touched, error, warning } = props.meta;
 
-  const requiredClass = required ? 'required' : ''
-  const invalidClass = touched && error ? 'invalid' : ''
+  const requiredClass = required ? 'required' : '';
+  const invalidClass = touched && error ? 'invalid' : '';
   return (
     <fieldset key={input.name} className="form-group">
-        <label className={requiredClass} data-test="field-label">{label}</label>
-        <label className={`tooltip tooltip-validation ${invalidClass}`} data-test="tooltip-label">
-          <input className="form-control" type={type} {...input} />
-          <span className="tooltip-content">{error}</span>
-        </label>
+      <label className={requiredClass} data-test="field-label">{label}</label>
+      <label className={`tooltip tooltip-validation ${invalidClass}`} data-test="tooltip-label">
+        <input className="form-control" type={type} {...input} />
+        <span className="tooltip-content">{error}</span>
+      </label>
     </fieldset>
-  )
-}
+  );
+};
 
 ClarityField.propTypes = {
   input: PropTypes.object.isRequired,
@@ -56,4 +58,4 @@ ClarityField.propTypes = {
   }),
 };
 
-export default ClarityField
+export default ClarityField;

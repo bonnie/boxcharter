@@ -24,19 +24,38 @@
  * UserProfile-spec
  */
 
-import React from 'react'
-import '../../jest/setupTests'
-import { shallow } from 'enzyme'
-import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
-import { UserProfile } from './UserProfile'
-import { userData } from '../../../shared/test/utilities/test_data/add_user'
+import React from 'react';
+import { shallow } from 'enzyme';
+
+import '../../jest/setupTests';
+import { checkProps } from '../../jest/utils';
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
+import { UserProfileComponent } from './UserProfile';
 
 // TODO: More tests to come as this component gets built out...
 
 describe('UserProfile', () => {
   test('displays user charts', () => {
-    const wrapper = shallow(<UserProfile auth={{ authenticated: true }} />)
-    const userCharts = findWrapperNodeByTestId(wrapper, 'user-charts-section')
-    expect(userCharts.length).toBe(1)
-  })
-})
+    const component =
+      (<UserProfileComponent
+        auth={{ authenticated: true }}
+        setActiveNavTab={() => {}}
+      />);
+    const wrapper = shallow(component);
+    const userCharts = findWrapperNodeByTestId(wrapper, 'user-charts-section');
+    expect(userCharts.length).toBe(1);
+  });
+  describe('prop-types', () => {
+    test('no error with correct props', () => {
+      const props = {
+        auth: {
+          authenticated: true,
+          user: {},
+        },
+        setActiveNavTab: () => {},
+      };
+      const propTypesError = checkProps(UserProfileComponent, props);
+      expect(propTypesError).toBeUndefined();
+    });
+  });
+});

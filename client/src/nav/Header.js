@@ -24,27 +24,35 @@
  * Header
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { BrowserRouter, Link } from 'react-router-dom'
-import { NO_TAB, SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE, } from './tabNames'
-import NavLink from './NavLink'
-import NavBrand from './NavBrand'
-import { setActiveNavTab } from './navActions'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE } from './tabNames';
+import NavLink from './NavLink';
+import NavBrand from './NavBrand';
+import { setActiveNavTab } from './navActions';
 
-export class Header extends Component {
+/**
+ * HeaderComponent to be connected to Redux
+ * @class HeaderComponent
+*/
+export class HeaderComponent extends Component {
+  /**
+   * Render links according to auth state
+   * @method renderLinks
+   * @returns {array} - Array of NavLink elements
+  */
   renderLinks() {
     if (this.props.auth.authenticated) {
       return [
         <NavLink key="1" linkRoute="/user-profile" linkText={USER_PROFILE} />,
-        <NavLink key="2" linkRoute="/sign-out" linkText={SIGN_OUT} />
-      ]
-    } else {
-      return [
-          <NavLink key="1" linkRoute="/sign-in" linkText={SIGN_IN} />,
-          <NavLink key="2" linkRoute="/sign-up" linkText={SIGN_UP} />
-        ]
+        <NavLink key="2" linkRoute="/sign-out" linkText={SIGN_OUT} />,
+      ];
     }
+    return [
+      <NavLink key="1" linkRoute="/sign-in" linkText={SIGN_IN} />,
+      <NavLink key="2" linkRoute="/sign-up" linkText={SIGN_UP} />,
+    ];
   }
 
   // brandClickHandler() {
@@ -52,20 +60,40 @@ export class Header extends Component {
   //   this.props.setActiveNavTab('')
   // }
 
-  render() {  
+  /**
+   * Render component
+   * @method render
+   * @returns {JSX.Element} - JSX for component
+   */
+  render() {
     return (
       <header className="header header-5">
-        <NavBrand data-test="navbrand-component"/>
+        <NavBrand data-test="navbrand-component" />
         <div className="header-nav" data-test="header-nav">
           {this.renderLinks()}
         </div>
       </header>
-    )
+    );
   }
 }
 
+HeaderComponent.propTypes = {
+  auth: PropTypes.shape({
+    authenticated: PropTypes.bool,
+    user: PropTypes.shape({
+      email: PropTypes.string,
+      userId: PropTypes.number,
+    }),
+  }).isRequired,
+};
+
+/**
+ * Map state to props for redux
+ * @function mapStateToProps
+ * @returns {object} - object containing auth state
+ */
 function mapStateToProps({ auth }) {
-  return { auth }
+  return { auth };
 }
 
-export default connect(mapStateToProps, { setActiveNavTab })(Header);
+export default connect(mapStateToProps, { setActiveNavTab })(HeaderComponent);

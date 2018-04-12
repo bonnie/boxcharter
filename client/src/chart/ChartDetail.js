@@ -25,7 +25,7 @@
  */
 
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 class ChartDetail extends Component {
   render() {
@@ -33,8 +33,8 @@ class ChartDetail extends Component {
       <div className="chart-detail">
         <h1>Chart Detail</h1>
       </div>
-    )
+    );
   }
 }
 
-export default connect()(ChartDetail)
+export default connect()(ChartDetail);

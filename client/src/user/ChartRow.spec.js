@@ -24,14 +24,14 @@
  * ChartRow-spec
  */
 
-import React from 'react'
+import React from 'react';
+import { shallow } from 'enzyme';
 
-import '../../jest/setupTests'
-import { shallow } from 'enzyme'
+import '../../jest/setupTests';
 import { checkProps, generateRequiredError } from '../../jest/utils';
-import { findWrapperNodeByTestId } from '../../jest/clientTestUtils'
-import ChartRow from './ChartRow'
-import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
+import ChartRow from './ChartRow';
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
 
 // TODO: enhance tests as component grows
 
@@ -42,22 +42,22 @@ const requiredChartProps = [
 ];
 
 describe('ChartRow', () => {
-  let wrapper
+  let wrapper;
 
   // the ChartRow only receives the metadata in props
-  const chart = chartData[0].chartMetaData 
-  
+  const chart = chartData[0].chartMetaData;
+
   beforeEach(() => {
-    wrapper = shallow(<ChartRow chart={chart} />)
-  })
+    wrapper = shallow(<ChartRow chart={chart} />);
+  });
   describe('render', () => {
     test('renders the correct number of cells', () => {
-      expect(wrapper.find('td').length).toBe(2)
-    })
+      expect(wrapper.find('td').length).toBe(2);
+    });
     test('renders the chart title', () => {
-      const foundTitle = findWrapperNodeByTestId(wrapper, 'chart-title').text()    
-      expect(foundTitle).toBe(chart.title)
-    })
+      const foundTitle = findWrapperNodeByTestId(wrapper, 'chart-title').text();
+      expect(foundTitle).toBe(chart.title);
+    });
   });
   describe('prop-types', () => {
     test('no error for correct props', () => {
@@ -69,12 +69,12 @@ describe('ChartRow', () => {
       expect(propTypesError).toBe(generateRequiredError('chart', ChartRow));
     });
     describe('error when chart does not have the correct shape', () => {
-      requiredChartProps.forEach(propName => {
-        const missingChart = { ...chart }
-        delete missingChart[propName]
+      requiredChartProps.forEach((propName) => {
+        const missingChart = { ...chart };
+        delete missingChart[propName];
         const propTypesError = checkProps(ChartRow, { chart: missingChart });
         test(`error when chart does not contain ${propName}`, () => {
-          expect(propTypesError).toBe(generateRequiredError(`chart.${propName}`, ChartRow))
+          expect(propTypesError).toBe(generateRequiredError(`chart.${propName}`, ChartRow));
         });
       });
     });

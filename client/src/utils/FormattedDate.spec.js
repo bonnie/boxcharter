@@ -24,44 +24,43 @@
  * FormattedDate-spec
  */
 
-import React from 'react'
-import { shallow } from 'enzyme'
-import '../../jest/setupTests'
+import React from 'react';
+import { shallow } from 'enzyme';
+import '../../jest/setupTests';
 import { checkProps, generateRequiredError, generateTypeError } from '../../jest/utils';
-import FormattedDate from './FormattedDate'
+import FormattedDate from './FormattedDate';
 
-const currentYear = new Date().getFullYear().toString()
-const lastYear = Number(currentYear) - 1
-const givenDate = '01-07'
-const givenHour = '21'
-const givenMinutes = '14'
-const givenMinutesSeconds = `:${givenMinutes}:00`
-const givenDateTime = `${givenDate}T${givenHour}${givenMinutesSeconds}`
-const givenDateMinusYear = `${givenDate}T${givenHour}${givenMinutesSeconds}`
+const currentYear = new Date().getFullYear().toString();
+const lastYear = Number(currentYear) - 1;
+const givenDate = '01-07';
+const givenHour = '21';
+const givenMinutes = '14';
+const givenMinutesSeconds = `:${givenMinutes}:00`;
+const givenDateMinusYear = `${givenDate}T${givenHour}${givenMinutesSeconds}`;
 
-const expectedDate = 'Jan 7'
-const expectedTime = `(1[012]|[1-9]):${givenMinutes} [ap]m`
-const currentYearMatch = expect.stringMatching(`^${expectedDate}, ${expectedTime}$`)
-const lastYearMatch = expect.stringMatching(`^${expectedDate}, ${lastYear}, ${expectedTime}`)
+const expectedDate = 'Jan 7';
+const expectedTime = `(1[012]|[1-9]):${givenMinutes} [ap]m`;
+const currentYearMatch = expect.stringMatching(`^${expectedDate}, ${expectedTime}$`);
+const lastYearMatch = expect.stringMatching(`^${expectedDate}, ${lastYear}, ${expectedTime}`);
 
 describe('FormattedDate', () => {
   describe('render', () => {
     test('renders the default date format without the year for the current year', () => {
-      const dateJSX = <FormattedDate date={new Date(`${currentYear}-${givenDateMinusYear}`)} />
-      const renderedDate = shallow(dateJSX)
-      const formattedDate = 'Jan 7, 9:14 pm'
-      expect(renderedDate.text()).toEqual(currentYearMatch)
+      const dateJSX = <FormattedDate date={new Date(`${currentYear}-${givenDateMinusYear}`)} />;
+      const renderedDate = shallow(dateJSX);
+      const formattedDate = 'Jan 7, 9:14 pm';
+      expect(renderedDate.text()).toEqual(currentYearMatch);
     });
     test('renders the default date format with the year for a previous year', () => {
-      const dateJSX = <FormattedDate date={new Date(`${lastYear}-${givenDateMinusYear}`)} />
-      const renderedDate = shallow(dateJSX)
-      expect(renderedDate.text()).toEqual(lastYearMatch)
+      const dateJSX = <FormattedDate date={new Date(`${lastYear}-${givenDateMinusYear}`)} />;
+      const renderedDate = shallow(dateJSX);
+      expect(renderedDate.text()).toEqual(lastYearMatch);
     });
     test('renders a different date format', () => {
-      const formatProps = { date: `${currentYear}-${givenDateMinusYear}`, format: 'YYYY-MM-DD'}
-      const renderedDate = shallow(<FormattedDate {...formatProps} />)
-      const formattedDate = `${currentYear}-${givenDate}`
-      expect(renderedDate.text()).toEqual(formattedDate)
+      const formatProps = { date: `${currentYear}-${givenDateMinusYear}`, format: 'YYYY-MM-DD' };
+      const renderedDate = shallow(<FormattedDate {...formatProps} />);
+      const formattedDate = `${currentYear}-${givenDate}`;
+      expect(renderedDate.text()).toEqual(formattedDate);
     });
   });
   describe('prop-types', () => {
@@ -74,7 +73,7 @@ describe('FormattedDate', () => {
       expect(propTypesError).toBe(generateRequiredError('date', FormattedDate));
     });
     test('error when format is not a string', () => {
-      const badFormat = 123
+      const badFormat = 123;
       const propTypesError = checkProps(FormattedDate, { format: badFormat });
       expect(propTypesError).toBe(generateTypeError('format', FormattedDate, 'string', 'number'));
     });

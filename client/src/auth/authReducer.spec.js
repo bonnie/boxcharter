@@ -25,17 +25,17 @@
  */
 
 
-import '../../jest/setupTests'
-import authReducer from './authReducer'
-import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes'
-import { userData } from '../../../shared/test/utilities/test_data/add_user'
+import '../../jest/setupTests';
+import authReducer from './authReducer';
+import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes';
+import { userData } from '../../../shared/test/utilities/test_data/add_user';
 
 describe('authReducer', () => {
-  const errString = 'not looking good'
+  const errString = 'not looking good';
   const actions = {
     authUser: {
       type: AUTH_USER,
-      payload: { user: userData }
+      payload: { user: userData },
     },
     unAuthUser: {
       type: UNAUTH_USER,
@@ -46,15 +46,15 @@ describe('authReducer', () => {
     },
 
   };
-  const authErrorAction = 
+  const authErrorAction =
   test('return the initial state', () => {
     expect(authReducer(undefined, {})).toEqual({});
   });
- 
+
   test('handle AUTH_USER when state is empty', () => {
     const reducerOutput = authReducer({}, actions.authUser);
     expect(reducerOutput).toEqual({ user: userData, authenticated: true, error: null });
-   });
+  });
 
   test('handle UNAUTH_USER with empty state', () => {
     const reducerOutput = authReducer({}, actions.unAuthUser);
@@ -62,21 +62,21 @@ describe('authReducer', () => {
   });
 
   describe('handle UNAUTH_USER with authenticated state', () => {
-    const authenticatedState = { user: userData, authenticated: true, error: null }
+    const authenticatedState = { user: userData, authenticated: true, error: null };
     const reducerOutput = authReducer(authenticatedState, actions.unAuthUser);
     test('authenticated state is false', () => {
       expect(reducerOutput.authenticated).toEqual(false);
-    })
+    });
     test('user state is null', () => {
       expect(reducerOutput.user).toBeNull();
-    })
+    });
     test('error state is falsy', () => {
       expect(reducerOutput.error).toBeFalsy();
-    })
+    });
   });
 
   test('handle error', () => {
     const reducerOutput = authReducer({}, actions.authError);
-    expect(reducerOutput).toEqual({ error: errString })
+    expect(reducerOutput).toEqual({ error: errString });
   });
-})
+});

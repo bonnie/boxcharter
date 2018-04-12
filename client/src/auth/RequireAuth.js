@@ -26,32 +26,64 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types'
-import browserHistory from '../app/history'
+import PropTypes from 'prop-types';
+import browserHistory from '../app/history';
 
-export default function(ComposedComponent) {
+
+// TODO: understand HOC better.
+/**
+ * @function
+ * @param {React.Component} ComposedComponent - Composed component.
+ * @returns {JSX.Element} - Composed component.
+ */
+export default function (ComposedComponent) {
+  /**
+   * @class Authentication
+  */
   class Authentication extends Component {
-    static contextTypes = {
-      router: PropTypes.object
-    }
-
+    /**
+     * @method componentWillMount
+     * @returns {undefined}
+    */
     componentWillMount() {
       if (!this.props.authenticated) {
         browserHistory.push('/sign-in');
       }
     }
 
+    /**
+     * @method componentWillUpdate
+     * @param {object} nextProps - Next props
+     * @returns {undefined}
+     */
     componentWillUpdate(nextProps) {
       if (!nextProps.authenticated) {
         browserHistory.push('/sign-in');
       }
     }
 
+    /**
+     * @method render
+     * @returns {JSX.Element} - Composed component.
+    */
     render() {
-      return <ComposedComponent {...this.props} />
+      return <ComposedComponent {...this.props} />;
     }
   }
 
+  Authentication.propTypes = {
+    authenticated: PropTypes.bool.isRequired,
+  };
+
+  Authentication.contextTypes = {
+    router: PropTypes.object,
+  };
+
+  /**
+   * @function mapStateToProps
+   * @param {object} state - Redux state.
+   * @returns {object} - Object containing "authenticated" piece of state.
+   */
   function mapStateToProps(state) {
     return { authenticated: state.auth.authenticated };
   }

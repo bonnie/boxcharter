@@ -19,10 +19,9 @@
  */
 
 /**
- * Component to take a js moment date and format it (custom or default)
+ * Component to take a js moment date and format it (custom or default).
  * Custom format is MMM D, [YYYY, ]h:mm a (year only displayed if it's not the current year)
- * @module
- * FormattedDate
+ * @module FormattedDate
  */
 
 import React from 'react';
@@ -30,21 +29,26 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 /**
- * Simple functional react component to format a date
+ * Simple functional react component to format a date.
+ * @function FormattedDate
+ * @param {object} props - Props handed to component.
+ * @returns {JSX.Element} - JSX for component.
  */
 const FormattedDate = (props) => {
-  let format
-  if (props.format) {
-    format = props.format
-  } else {
+  let { format } = props;
+  if (!format) {
     // leave off year if it's this year
-    const currentYear = new Date().getFullYear().toString()
-    const dateYear = moment(props.date).format('YYYY')
-    const year = (dateYear === currentYear) ? '' : 'YYYY, '
-    format = `MMM D, ${year}h:mm a`
+    const currentYear = new Date().getFullYear().toString();
+    const dateYear = moment(props.date).format('YYYY');
+    const year = (dateYear === currentYear) ? '' : 'YYYY, ';
+    format = `MMM D, ${year}h:mm a`;
   }
-  const formattedDate = moment(props.date).format(format)
-  return (<span className="formatted-date">{formattedDate}</span>)
+  const formattedDate = moment(props.date).format(format);
+  return (<span className="formatted-date">{formattedDate}</span>);
+};
+
+FormattedDate.defaultProps = {
+  format: undefined,
 };
 
 FormattedDate.propTypes = {
@@ -55,4 +59,4 @@ FormattedDate.propTypes = {
   ]).isRequired,
 };
 
-export default FormattedDate
+export default FormattedDate;

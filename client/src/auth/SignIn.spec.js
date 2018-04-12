@@ -22,7 +22,7 @@
  * Tests for the SignIn component
  * @module
  * signin-spec
- * 
+ *
  * Note: Integration test adapted from process laid out in
  * https://medium.freecodecamp.org/real-integration-tests-with-react-redux-and-react-router-417125212638
  */
@@ -31,53 +31,71 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import '../../jest/setupTests';
+import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
-import { SignIn } from './SignIn'
+import { SignInComponent } from './SignIn';
+
+// for prop types requirements
+const defaultProps = {
+  setAuthError: () => {},
+  setActiveNavTab: () => {},
+  signInUser: () => {},
+  handleSubmit: () => {},
+};
 
 describe('SignIn', () => {
   const handleSubmitMock = jest.fn();
   describe('SignIn Component non-error rendering', () => {
-    let wrapper
+    let wrapper;
     beforeEach(() => {
-      handleSubmitMock.mockClear()
+      handleSubmitMock.mockClear();
       const props = {
+        ...defaultProps,
         handleSubmit: handleSubmitMock,
       };
-      wrapper = shallow(<SignIn {...props} />);
-    })
+      wrapper = shallow(<SignInComponent {...props} />);
+    });
     test('renders a form', () => {
       expect(findWrapperNodeByTestId(wrapper, 'signin-form')).toHaveLength(1);
     });
     test('renders the correct fields', () => {
-      const renderedFields =  wrapper.find('Field').map(field => field.prop('name'));
+      const renderedFields = wrapper.find('Field').map(field => field.prop('name'));
       expect(renderedFields).toEqual(['email', 'password']);
-    })
+    });
     test('displays no error if there is no error', () => {
       expect(findWrapperNodeByTestId(wrapper, 'alert')).toHaveLength(0);
     });
   });
   describe('SignIn Component error rendering', () => {
     test('displays an error if there is an error', () => {
-      handleSubmitMock.mockClear()
+      handleSubmitMock.mockClear();
       const props = {
+        ...defaultProps,
         handleSubmit: handleSubmitMock,
         errorMessage: 'not good',
       };
-      const wrapper = shallow(<SignIn {...props} />);
+      const wrapper = shallow(<SignInComponent {...props} />);
       expect(findWrapperNodeByTestId(wrapper, 'alert')).toHaveLength(1);
     });
   });
   describe('SignIn component functionality', () => {
     test('calls SignInUser on submit', () => {
-      handleSubmitMock.mockClear()
+      handleSubmitMock.mockClear();
       const props = {
+        ...defaultProps,
         handleSubmit: handleSubmitMock,
       };
-      const wrapper = shallow(<SignIn {...props} />);
+      const wrapper = shallow(<SignInComponent {...props} />);
       const submitButton = findWrapperNodeByTestId(wrapper, 'signin-submit');
 
-      submitButton.simulate('click')
-      expect(handleSubmitMock.mock.calls.length).toBe(1)
+      submitButton.simulate('click');
+      expect(handleSubmitMock.mock.calls.length).toBe(1);
+    });
+  });
+  describe('prop-types', () => {
+    test('no error with correct props', () => {
+      const propError = checkProps(SignInComponent, defaultProps);
+      expect(propError).toBeUndefined();
     });
   });
 });

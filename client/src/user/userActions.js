@@ -24,34 +24,30 @@
  * userActions
  */
 
-import axios from 'axios'
-import { ROOT_URL } from '../../config'
+import axios from 'axios';
+import { ROOT_URL } from '../../config';
 
-import { 
-  GET_USERCHARTS,
-} from './userActionTypes'
+import { GET_USERCHARTS } from './userActionTypes';
 
 /**
  * Get charts for user
- * @param {number} userId 
+ * @param {number} userId - user ID for which to retrieve charts
+ * @returns {function} - function that processes axios and dispatches an action
  */
-const getUserCharts = (userId) => {
-  return function(dispatch) {
-    return axios.get(`${ROOT_URL}/users/${userId}/charts`, {
-      headers: { authorization: localStorage.getItem('token') }
-    })
-    .then(response => {
+const getUserCharts = userId => dispatch =>
+  axios.get(`${ROOT_URL}/users/${userId}/charts`, {
+    headers: { authorization: localStorage.getItem('token') },
+  })
+    .then((response) => {
       dispatch({
         type: GET_USERCHARTS,
-        payload: response
-      })
+        payload: response,
+      });
     })
-    .catch(error => {
-      console.error(error)
-    })
-  }
-}
+    .catch((error) => {
+      console.error(error);
+    });
 
 module.exports = {
-  getUserCharts
-}
+  getUserCharts,
+};

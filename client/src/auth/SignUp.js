@@ -24,90 +24,130 @@
  * SignUp
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
-import { signUpUser, setAuthError } from './authActions'
-import { navActions } from '../nav'
-import { tabNames } from '../nav'
-import ClarityField from '../clarity/ClarityField'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 
-const fields = ['email', 'password', 'passwordConfirm']
+import { signUpUser, setAuthError } from './authActions';
+import { navActions, tabNames } from '../nav';
+import ClarityField from '../clarity/ClarityField';
 
-export class SignUp extends Component {
+const fields = ['email', 'password', 'passwordConfirm'];
+
+/**
+ * @class SignUpComponent
+*/
+export class SignUpComponent extends Component {
+  /**
+   * @method componentDidMount
+   * @returns {undefined}
+  */
   componentDidMount() {
     // clear any errors
-    this.props.setAuthError(null)
+    this.props.setAuthError(null);
 
     // set the tab -- in case of loading page in some way other than clicking tab
-    this.props.setActiveNavTab(tabNames.SIGN_UP)
+    this.props.setActiveNavTab(tabNames.SIGN_UP);
   }
 
+  /**
+   * @method handleFormSubmit
+   * @param {object} formProps - Form properties.
+   * @returns {undefined}
+   */
   handleFormSubmit(formProps) {
     // call action creator to sign up the user
-    this.props.signUpUser(formProps)
+    this.props.signUpUser(formProps);
   }
 
+  /**
+   * Generate alert JSX if necessary
+   * @method renderAlert
+   * @returns {any} - JSX alert if there's an error message; undefined otherwise
+  */
   renderAlert() {
     if (this.props.errorMessage) {
       return (
-        <div data-test='alert' className="alert alert-danger">
+        <div data-test="alert" className="alert alert-danger">
           <strong>Oops!</strong> {this.props.errorMessage}
         </div>
-      )
+      );
     }
   }
 
+  /**
+   * @method render
+   * @returns {JSX.Element} - Rendered component.
+  */
   render() {
-    const { handleSubmit } = this.props
+    const { handleSubmit } = this.props;
     return (
-      <form data-test='signup-form' onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
-        <Field name="email" type="text" label="Email" required={true} component={ClarityField}/>
-        <Field name="password" type="password" label="Password" required={true} component={ClarityField}/>
-        <Field name="passwordConfirm" type="password" label="Confirm Password" required={true} component={ClarityField}/>
+      <form data-test="signup-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
+        <Field name="email" type="text" label="Email" required component={ClarityField} />
+        <Field name="password" type="password" label="Password" required component={ClarityField} />
+        <Field name="passwordConfirm" type="password" label="Confirm Password" required component={ClarityField} />
         <button data-test="signup-submit" action="submit" className="btn btn-primary">Sign up</button>
         { this.renderAlert() }
       </form>
-    )
+    );
   }
 }
+
+SignUpComponent.defaultProps = {
+  errorMessage: undefined,
+};
+
+SignUpComponent.propTypes = {
+  setAuthError: PropTypes.func.isRequired,
+  setActiveNavTab: PropTypes.func.isRequired,
+  signUpUser: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
+};
 
 /**
  * Validate form input
  * @param {object} formProps - form fields and values
- * @returns {object} - object with keys of invalid form fields, and values of errors for those fields
+ * @returns {object} - object with keys of invalid form fields,
+ *                     and values of errors for those fields
  */
 const validate = (formProps) => {
-  const errors = {}
+  const errors = {};
 
-  fields.forEach(formProp => {
+  fields.forEach((formProp) => {
     if (!formProps[formProp]) {
-      errors[formProp] = 'This field can\'t be blank'
+      errors[formProp] = 'This field can\'t be blank';
     }
-  })
+  });
 
   if (formProps.password !== formProps.passwordConfirm) {
-    errors.password = 'Passwords must match'
+    errors.password = 'Passwords must match';
   }
 
-  return errors
-}
+  return errors;
+};
 
 const formOptions = {
   form: 'signup',
   fields,
   validate,
-}
+};
 
+/**
+ * @function mapStateToProps
+ * @param {object} state - Redux state.
+ * @returns {object} - Object containing errorMessage from state.
+ */
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.error }
+  return { errorMessage: state.auth.error };
 }
 
 const actions = {
-  signUpUser, 
+  signUpUser,
   setAuthError,
   setActiveNavTab: navActions.setActiveNavTab,
-}
+};
 
-const SignUpForm = reduxForm(formOptions)(SignUp)
-export default connect(mapStateToProps, actions)(SignUpForm)
+const SignUpForm = reduxForm(formOptions)(SignUpComponent);
+export default connect(mapStateToProps, actions)(SignUpForm);

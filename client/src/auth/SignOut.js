@@ -24,17 +24,34 @@
  * SignOut
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import * as actions from './authActions'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import * as actions from './authActions';
 
-export class SignOut extends Component {
+/**
+ * @class SignOut
+*/
+export class SignOutComponent extends Component {
+  /**
+   * @method componentWillMont
+   * @returns {undefined}
+  */
   componentWillMount() {
-    this.props.signOutUser()
+    this.props.signOutUser();
   }
+
+  /**
+   * @method render
+   * @returns {JSX.Element} - Rendered component
+  */
   render() {
-    return <div data-test="signout-component">Signed out!</div>
+    return <div data-test="signout-component">Signed out!</div>;
   }
 }
 
-export default connect(null, actions)(SignOut)
+SignOutComponent.propTypes = {
+  signOutUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, actions)(SignOutComponent);

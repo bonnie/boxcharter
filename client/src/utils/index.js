@@ -24,8 +24,8 @@
  * utils
  */
 
-import FormattedDate from './FormattedDate'
+import FormattedDate from './FormattedDate';
 
 module.exports = {
   FormattedDate,
-}
+};

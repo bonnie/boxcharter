@@ -27,26 +27,25 @@
 
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import moxios from 'moxios'
+import moxios from 'moxios';
 
-import '../../jest/setupTests'
-import * as actions from './userActions'
-import { GET_USERCHARTS } from './userActionTypes'
-import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
+import '../../jest/setupTests';
+import * as actions from './userActions';
+import { GET_USERCHARTS } from './userActionTypes';
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
 
 // massage charts data into format that would be received from server for user charts query
-const charts = chartData.map(chart => chart.chartMetaData)
+const charts = chartData.map(chart => chart.chartMetaData);
 
 // create a mock store for redux testing
 const mockStore = configureMockStore([thunk]);
 
 describe('User actions', () => {
-
-  beforeEach(function () {
+  beforeEach(() => {
     moxios.install();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     moxios.uninstall();
   });
 
@@ -65,17 +64,17 @@ describe('User actions', () => {
         { type: GET_USERCHARTS, data: charts },
       ];
 
-      const store = mockStore({ charts: [] })
+      const store = mockStore({ charts: [] });
 
       // use "fake" userID 1
       return store.dispatch(actions.getUserCharts(1)).then(() => {
         // return of async actions
 
-        // TODO: why can't I test whole action, like 
+        // TODO: why can't I test whole action, like
         // https://github.com/reactjs/redux/issues/1972
         // https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
         // https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md
-        const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }))
+        const firedActions = store.getActions().map(action => ({ type: action.type, data: action.payload.data }));
         expect(firedActions).toEqual(expectedActions);
       });
     });
