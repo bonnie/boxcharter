@@ -24,7 +24,7 @@
  * chartReducer-spec
  */
 
-import chartReducer from './chartReducer';
+// import chartReducer from './chartReducer';
 
 describe('chartReducer', () => {
   test('', () => {

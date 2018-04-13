@@ -46,7 +46,6 @@ describe('authReducer', () => {
     },
 
   };
-  const authErrorAction =
   test('return the initial state', () => {
     expect(authReducer(undefined, {})).toEqual({});
   });

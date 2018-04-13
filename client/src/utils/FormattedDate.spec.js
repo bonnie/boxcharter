@@ -48,7 +48,6 @@ describe('FormattedDate', () => {
     test('renders the default date format without the year for the current year', () => {
       const dateJSX = <FormattedDate date={new Date(`${currentYear}-${givenDateMinusYear}`)} />;
       const renderedDate = shallow(dateJSX);
-      const formattedDate = 'Jan 7, 9:14 pm';
       expect(renderedDate.text()).toEqual(currentYearMatch);
     });
     test('renders the default date format with the year for a previous year', () => {

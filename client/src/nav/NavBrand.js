@@ -30,10 +30,10 @@ import NavLink from './NavLink';
 
 
 // brand is just a NavLink with some hard coded properties
-export default (props) => {
+export default () => {
   const linkDisplay = (
     <span>
-      <img src="/public/images/boxcharter-48.png" />
+      <img alt="BoxCharter" src="/public/images/boxcharter-48.png" />
       <span className="title">BoxCharter</span>
     </span>
   );

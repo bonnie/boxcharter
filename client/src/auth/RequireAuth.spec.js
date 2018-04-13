@@ -24,9 +24,9 @@
  * RequireAuth-spec
  */
 
-import React from 'react';
-import { shallow } from 'enzyme';
-import RequireAuth from './RequireAuth';
+// import React from 'react';
+// import { shallow } from 'enzyme';
+// import RequireAuth from './RequireAuth';
 
 // TODO: testing higher order components...?
 

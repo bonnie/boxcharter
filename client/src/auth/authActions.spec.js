@@ -96,7 +96,8 @@ describe('authActions', () => {
           { type: AUTH_USER, payload: { user: userData } },
         ];
         return dispatchPromise.then(() => {
-          const firedActions = store.getActions().map(action => ({ type: action.type, payload: action.payload }));
+          const firedActions = store.getActions()
+            .map(action => ({ type: action.type, payload: action.payload }));
           expect(firedActions).toEqual(expectedActions);
         });
       });
@@ -117,7 +118,6 @@ describe('authActions', () => {
     describe(`unsuccessful ${description}`, () => {
       const failureArgs = { email: userData.email, password: 'bad password' };
       const response = { error: 'nope' };
-      let setAuthError;
 
       beforeEach(() => {
         // set up moxios

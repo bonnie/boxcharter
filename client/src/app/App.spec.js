@@ -26,15 +26,15 @@
  */
 
 
-import React from 'react';
-import { shallow } from 'enzyme';
-import App from './App';
+// import React from 'react';
+// import { shallow } from 'enzyme';
+// import App from './App';
 
 // from https://github.com/jacek-rzrz/react-integration-tests-enzyme/blob/master/src/shopping_list/shoppingListMiddleware.test.js
-import mockStore from 'redux-mock-store';
-import { asyncFlush, mockApi } from '../../jest/testSupport';
-import { push } from 'react-router-redux';
-import { locationChange } from '../../jest/utils/locationChange';
+// import mockStore from 'redux-mock-store';
+// import { asyncFlush, mockApi } from '../../jest/testSupport';
+// import { push } from 'react-router-redux';
+// import { locationChange } from '../../jest/utils/locationChange';
 // end: from
 
 
@@ -44,9 +44,9 @@ describe('App', () => {
 });
 
 describe('App integration', () => {
-  let wrapper;
-  beforeEach(async () => {
-    wrapper = mount(<App />);
+  // let wrapper;
+  beforeEach(() => {
+    // wrapper = mount(<App />);
   });
   describe('store', () => {
 
@@ -195,10 +195,6 @@ describe('App integration', () => {
 
 //       // const inactiveLinkNodeWrapper = wrapper.childAt(0)
 //       const inactiveLinkNodeWrapper = wrapper.find('NavLink')
-//       console.log('**************inactivelink props before', inactiveLinkNodeWrapper.props())
-//       // // console.log('**************inactivelink instance before', inactiveLinkNodeWrapper.instance())
-//       console.log('**************inactivelink activeNavTab before', inactiveLinkNodeWrapper.prop('activeNavTab'))
-
 
 //       // { className: 'nav-link nav-text ',
 //       //   onClick: [Function: bound clickHandler],

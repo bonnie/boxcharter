@@ -24,9 +24,9 @@
  * SplashPage-spec
  */
 
-import React from 'react';
-import { shallow } from 'enzyme';
-import SplashPage from './SplashPage';
+// import React from 'react';
+// import { shallow } from 'enzyme';
+// import SplashPage from './SplashPage';
 
 describe('SplashPage', () => {
   test('renders', () => {

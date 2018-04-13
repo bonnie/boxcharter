@@ -24,17 +24,18 @@
  * ChartDetail
  */
 
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
-class ChartDetail extends Component {
-  render() {
-    return (
-      <div className="chart-detail">
-        <h1>Chart Detail</h1>
-      </div>
-    );
-  }
-}
+/**
+ * @function ChartDetail
+ * @returns {JSX.Element} - Rendered component.
+ */
+export const ChartDetailComponent = () =>
+  (
+    <div className="chart-detail">
+      <h1>Chart Detail</h1>
+    </div>
+  );
 
-export default connect()(ChartDetail);
+export default connect()(ChartDetailComponent);

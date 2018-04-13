@@ -24,7 +24,7 @@
  * chartActions-spec
  */
 
-import * as actions from './chartActions';
+// import * as actions from './chartActions';
 import { } from './chartActionTypes';
 
 describe('chartActions', () => {
