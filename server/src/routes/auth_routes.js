@@ -18,21 +18,21 @@
  *
  */
 
-const express = require('express')
-const passport = require('passport')
-const Authentication = require('../controllers/authentication')
+const express = require('express');
+const passport = require('passport');
+const Authentication = require('../controllers/authentication');
 
 // middleware for before signin route -- don't let them in unless they have
 // a correct email / password
-const requireSignin = passport.authenticate('local', { session: false })
+const requireSignin = passport.authenticate('local', { session: false });
 
 // create the router
-const router = express.Router()
+const router = express.Router();
 
 // routes
-router.post('/sign-in', requireSignin, Authentication.signin)
-router.post('/sign-up', Authentication.signup)
-router.get('/check-email', Authentication.checkUser)
+router.post('/sign-in', requireSignin, Authentication.signin);
+router.post('/sign-up', Authentication.signup);
+router.get('/check-email', Authentication.checkUser);
 
 module.exports = router;
 
@@ -58,7 +58,7 @@ module.exports = router;
 //   userInfo.passwordSalt = passData.salt
 //   delete userInfo.password
 
-  // create user
+// create user
 //   User
 //     .create(userInfo)
 //     .then((newUser) => {

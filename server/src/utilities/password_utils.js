@@ -24,7 +24,7 @@
  *   https://ciphertrick.com/2016/01/18/salt-hash-passwords-using-nodejs-crypto/
  * @module password_utils
  */
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 /**
  * Generate random string of characters i.e salt.
@@ -35,7 +35,7 @@ const crypto = require('crypto')
 const genRandomString = length =>
   crypto.randomBytes(Math.ceil(length / 2))
     .toString('hex') // convert to hexadecimal format
-    .slice(0, length) // return required number of characters
+    .slice(0, length); // return required number of characters
 
 /**
  * Hash password with sha512.
@@ -45,7 +45,7 @@ const genRandomString = length =>
  * @return {object} - Object containing the password salt and hash.
  */
 const sha512 = (password, salt) => {
-  const hash = crypto.createHmac('sha512', salt) // Hashing algorithm sha512
+  const hash = crypto.createHmac('sha512', salt); // Hashing algorithm sha512
   hash.update(password);
   const value = hash.digest('hex');
   return {
@@ -63,7 +63,7 @@ const sha512 = (password, salt) => {
 const saltHashPassword = (userpassword) => {
   const salt = genRandomString(16); // Gives us salt of length 16
   return sha512(userpassword, salt);
-}
+};
 
 /**
  * Determine whether password in db matches entered password.
@@ -74,9 +74,9 @@ const saltHashPassword = (userpassword) => {
  */
 const checkPass = (user, pass) =>
   // TODO: incorporate this as a method on the User object!!
-  sha512(pass, user.salt).hash === user.hash
+  sha512(pass, user.salt).hash === user.hash;
 
 module.exports = {
   saltHashPassword,
   checkPass,
-}
+};

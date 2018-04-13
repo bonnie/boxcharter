@@ -24,22 +24,22 @@
  * passport
  */
 
-const passport = require('passport')
-const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt')
-const LocalStrategy = require('passport-local')
-const User = require('../model/db_user')
-const config = require('../../config')
-const procError = require('../utilities/err')
-const { logger } = require('../utilities/log')
+const passport = require('passport');
+const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
+const LocalStrategy = require('passport-local');
+const User = require('../model/db_user');
+const config = require('../../config');
+const procError = require('../utilities/err');
+const { logger } = require('../utilities/log');
 
 /**
  * Function meant to be used as passport strategy callback for the localStrategy
- * @param {string} email 
- * @param {string} password 
- * @param {function} done 
+ * @param {string} email
+ * @param {string} password
+ * @param {function} done
  * @returns {promise} - Promise whose resolution is unimportant
  */
-const checkPassword = function(email, password, done) {
+const checkPassword = function (email, password, done) {
   return User.getByEmail(email)
     // can't use findByEmail here because we need hash and salt
     .then((foundUser) => {
@@ -49,36 +49,36 @@ const checkPassword = function(email, password, done) {
         // status.text = 'Invalid email and/or password'
 
         // const response = { status }
-        logger.warn(`${email} logged in with invalid password`)
-        return done(null, false)
+        logger.warn(`${email} logged in with invalid password`);
+        return done(null, false);
         // return res.status(200).json(response)
       }
 
       // otherwise, all's rosy
-      const msg = `Successful login for ${email}`
+      const msg = `Successful login for ${email}`;
       // status.alertType = statusStrings.success
       // status.text = msg
-      logger.debug(msg)
+      logger.debug(msg);
 
       // const response = {
       //   status,
       //   user: foundUser,
       // }
-      done(null, foundUser)
+      done(null, foundUser);
       // res.status(200).json(response)
     })
     .catch((error) => {
-      const msg = `Unable to authenticate user ${email}`
-      procError(error, msg)
-      return done(error)
+      const msg = `Unable to authenticate user ${email}`;
+      procError(error, msg);
+      return done(error);
       // const response = procError(error, msg)
       // res.status(200).json(response)
-    })
-}
+    });
+};
 
 // create Local strategy
-const localOptions = { usernameField: 'email' }
-const localLogin = new LocalStrategy(localOptions, checkPassword)
+const localOptions = { usernameField: 'email' };
+const localLogin = new LocalStrategy(localOptions, checkPassword);
 
 // Set up options for JWT Strategy
 const jwtOptions = {
@@ -87,22 +87,22 @@ const jwtOptions = {
 
   // how to decode
   secretOrKey: config.secret,
-}
+};
 
 // Create JWT Strategy
-const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
+const jwtLogin = new JwtStrategy(jwtOptions, ((payload, done) => {
   // payload is the jwt token object, which we defined with 'sub' and 'iat' properties
 
   // see if the userId in the payload exists in db. If it does, call done with that user.
   // otherwise, call done without a user object
   User.getById(payload.sub)
-    .then(user => {
-      user = user || false // translate "null" response into "false"
-      done(null, user)
+    .then((user) => {
+      user = user || false; // translate "null" response into "false"
+      done(null, user);
     })
-    .catch((err) => done(err, false))
-})
+    .catch(err => done(err, false));
+}));
 
 // Tell passport to use strategies
-passport.use(localLogin)
-passport.use(jwtLogin)
+passport.use(localLogin);
+passport.use(jwtLogin);

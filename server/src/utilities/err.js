@@ -18,32 +18,32 @@
  *
  */
 
- /* Handle express errors */
+/* Handle express errors */
 
- const { statusStrings, Status } = require('../../../shared/src/model/status')
- const { logger } = require('../utilities/log')
- 
- const procError = function(error, msg) {
-   let errString = msg
- 
-   if (error) {
-     errString += `: ${error.toString()}`
-     if (error.stack) {
-       const secondLine = error.stack.split('\n')[1]
-       if (error.toString() != error.secondLine) {
-         errString += "\n\t" + error.toString()
-       }
-     }
-   }
- 
-   logger.crit(`${msg}: ${error}`)
-   const response = {
-     status: new Status(
-       statusStrings.danger,
-       `${msg}. ${statusStrings.contactAdmin}`
-     )
-   }
-   return response
- }
- 
- module.exports = procError
+const { statusStrings, Status } = require('../../../shared/src/model/status');
+const { logger } = require('../utilities/log');
+
+const procError = function (error, msg) {
+  let errString = msg;
+
+  if (error) {
+    errString += `: ${error.toString()}`;
+    if (error.stack) {
+      const secondLine = error.stack.split('\n')[1];
+      if (error.toString() != error.secondLine) {
+        errString += `\n\t${error.toString()}`;
+      }
+    }
+  }
+
+  logger.crit(`${msg}: ${error}`);
+  const response = {
+    status: new Status(
+      statusStrings.danger,
+      `${msg}. ${statusStrings.contactAdmin}`
+    ),
+  };
+  return response;
+};
+
+module.exports = procError;

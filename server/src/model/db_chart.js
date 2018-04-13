@@ -22,12 +22,12 @@
  * DB methods for the chart model.
  * @module chart_db
  */
-const { db } = require('./utilities/db_connection')
-const { logError } = require('../utilities/log')
-const Chart = require('../../../shared/src/model/chart')
-const Section = require('./db_section')
-const User = require('./db_user')
-const getChildren = require('./utilities/get_children')
+const { db } = require('./utilities/db_connection');
+const { logError } = require('../utilities/log');
+const Chart = require('../../../shared/src/model/chart');
+const Section = require('./db_section');
+const User = require('./db_user');
+const getChildren = require('./utilities/get_children');
 
 /**
  * Add chart object to the db, and set the object's chartId to be the
@@ -67,18 +67,19 @@ Chart.prototype.addToDb = async function () {
         this.pageWidth,
         this.pageHeight,
         this.pageUnits,
-      ])
-    this.chartId = response.chartid
+      ]
+    );
+    this.chartId = response.chartid;
     if (this.sections) {
-      await Promise.all(this.sections.map(section => section.addToDb(this.chartId)))
+      await Promise.all(this.sections.map(section => section.addToDb(this.chartId)));
     }
     // users don't need to be added to the db here
-    return response.chartid
+    return response.chartid;
   } catch (e) {
-    const errMsg = `Failed to add chart "${this.title}"`
-    throw logError(errMsg, e)
+    const errMsg = `Failed to add chart "${this.title}"`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 /**
  * Get a chart by chartId
@@ -87,17 +88,17 @@ Chart.prototype.addToDb = async function () {
  */
 Chart.getById = async function (chartId) {
   try {
-    const chartQuery = 'SELECT * FROM charts WHERE chartID = $1'
-    const chartData = await db.one(chartQuery, chartId)
-    const chart = new Chart(chartData)
-    await chart.getSections()
-    await chart.getUsers()
-    return chart
+    const chartQuery = 'SELECT * FROM charts WHERE chartID = $1';
+    const chartData = await db.one(chartQuery, chartId);
+    const chart = new Chart(chartData);
+    await chart.getSections();
+    await chart.getUsers();
+    return chart;
   } catch (e) {
-    const errMsg = `Could not get chartId ${chartId}`
-    throw logError(errMsg, e)
+    const errMsg = `Could not get chartId ${chartId}`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 /**
  * Get chart's sections from database
@@ -107,10 +108,10 @@ Chart.prototype.getSections = function () {
   return getChildren('section', 'chart', this.chartId, 'index', Section)
     .then(sections => this.sections = sections)
     .catch((e) => {
-      const errMsg = `Failed to get sections for chart id "${this.chartId}"`
-      throw logError(errMsg, e)
-    })
-}
+      const errMsg = `Failed to get sections for chart id "${this.chartId}"`;
+      throw logError(errMsg, e);
+    });
+};
 
 /**
  * Get users associated with chart
@@ -123,17 +124,17 @@ Chart.prototype.getUsers = async function () {
       JOIN users AS u
         ON uc.userid = u.userid
     WHERE uc.chartid = $1
-  `
-    return db.any(userchartsQuery, this.chartId)
-    .then(users => {
-      const userObjects = users.map(data => User.dbDatatoUser(data))
-      this.users = userObjects
+  `;
+  return db.any(userchartsQuery, this.chartId)
+    .then((users) => {
+      const userObjects = users.map(data => User.dbDatatoUser(data));
+      this.users = userObjects;
     })
-     .catch ((e) => {
-        const errMsg = `Failed to get users for chart id "${this.chartId}"`
-        throw logError(errMsg, e)
-      })
-}
+    .catch((e) => {
+      const errMsg = `Failed to get users for chart id "${this.chartId}"`;
+      throw logError(errMsg, e);
+    });
+};
 
 // /**
 //  * Remove all children from the database (in preparation to update chart)
@@ -141,4 +142,4 @@ Chart.prototype.getUsers = async function () {
 //  */
 // Chart.prototype.clear = () => Promise.all(this.sections.map(section => section.clear()))
 
-module.exports = Chart
+module.exports = Chart;

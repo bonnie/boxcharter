@@ -22,11 +22,11 @@
  * DB methods for the section model.
  * @module section_db
  */
-const { db } = require('./utilities/db_connection')
-const { logError } = require('../utilities/log')
-const Section = require('../../../shared/src/model/section')
-const Measure = require('./db_measure')
-const getChildren = require('./utilities/get_children')
+const { db } = require('./utilities/db_connection');
+const { logError } = require('../utilities/log');
+const Section = require('../../../shared/src/model/section');
+const Measure = require('./db_measure');
+const getChildren = require('./utilities/get_children');
 
 /**
  * Add section object to the db, and set the object's sectionId to be the
@@ -36,7 +36,7 @@ const getChildren = require('./utilities/get_children')
  * @returns {Promise} - Promise resolving to sectionId, or throw an error
  */
 Section.prototype.addToDb = async function (chartId) {
-  if (chartId) this.chartId = chartId
+  if (chartId) this.chartId = chartId;
   try {
     const response = await db.one(
       `INSERT INTO sections (
@@ -57,17 +57,18 @@ Section.prototype.addToDb = async function (chartId) {
         this.beatsPerMeasure,
         this.verseCount,
         this.pickupMeasureBeats,
-      ])
-    this.sectionId = response.sectionid
+      ]
+    );
+    this.sectionId = response.sectionid;
     if (this.measures) {
-      await Promise.all(this.measures.map(measure => measure.addToDb(this.sectionId)))
+      await Promise.all(this.measures.map(measure => measure.addToDb(this.sectionId)));
     }
-    return response.sectionid
+    return response.sectionid;
   } catch (e) {
-    const errMsg = `Failed to add section at index ${this.index} of chart ${this.chatId}`
-    throw logError(errMsg, e)
+    const errMsg = `Failed to add section at index ${this.index} of chart ${this.chatId}`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 /**
  * Get section's measures from database and assign to 'measures' property
@@ -75,8 +76,8 @@ Section.prototype.addToDb = async function (chartId) {
  */
 Section.prototype.getMeasures = function () {
   return getChildren('measure', 'section', this.sectionId, 'index', Measure)
-    .then((measures) => { this.measures = measures })
-    .catch((e) => { throw e })
-}
+    .then((measures) => { this.measures = measures; })
+    .catch((e) => { throw e; });
+};
 
-module.exports = Section
+module.exports = Section;

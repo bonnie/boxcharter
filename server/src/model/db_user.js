@@ -22,10 +22,10 @@
  * User model.
  * @module user
  */
-const { db, pgp } = require('./utilities/db_connection')
-const { logError } = require('../utilities/log')
-const { checkPass } = require('../utilities/password_utils')
-const { User } = require('../../../shared/src/model/user')
+const { db, pgp } = require('./utilities/db_connection');
+const { logError } = require('../utilities/log');
+const { checkPass } = require('../utilities/password_utils');
+const { User } = require('../../../shared/src/model/user');
 
 /**
  * Make a user object from database data
@@ -41,8 +41,9 @@ User.dbDatatoUser = function (dbUserData) {
     dbUserData.firstname,
     dbUserData.lastname,
     dbUserData.passwordsalt,
-    dbUserData.passwordhash)
-}
+    dbUserData.passwordhash
+  );
+};
 
 /**
  * Return a User object for the given criteria.
@@ -53,21 +54,21 @@ User.dbDatatoUser = function (dbUserData) {
  *                     no user found.
  */
 User.getUser = async function (lookupColumn, userData) {
-  const query = `SELECT * FROM users WHERE ${lookupColumn}=$1`
+  const query = `SELECT * FROM users WHERE ${lookupColumn}=$1`;
 
   try {
-    const dbUser = await db.one(query, [userData])
-    const user = User.dbDatatoUser(dbUser)
-    user.charts = await user.getCharts()
-    return user
+    const dbUser = await db.one(query, [userData]);
+    const user = User.dbDatatoUser(dbUser);
+    user.charts = await user.getCharts();
+    return user;
   } catch (e) {
     if (e.code === pgp.errors.queryResultErrorCode.noData) {
-      return null
+      return null;
     }
-    const errMsg = `Failed to get user by ${lookupColumn} for data ${userData}`
-    throw logError(errMsg, e)
+    const errMsg = `Failed to get user by ${lookupColumn} for data ${userData}`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 /**
  * Return a User object for a given email.
@@ -77,8 +78,8 @@ User.getUser = async function (lookupColumn, userData) {
  *                     no user found.
  */
 User.getByEmail = async function (email) {
-  return User.getUser('email', email)
-}
+  return User.getUser('email', email);
+};
 
 
 /**
@@ -89,19 +90,19 @@ User.getByEmail = async function (email) {
  *                     no user found.
  */
 User.getById = function (id) {
-  return User.getUser('userId', id)
-}
+  return User.getUser('userId', id);
+};
 
 /**
- * 
+ *
  * @param {object} where - object with key as column name to match, and value as value to match
  * @returns {promise} - promise that resolves to a boolean, depending on whether user exists
  */
 // TODO: test this method
-User.isInDb = function(lookupColumn, userData) {
+User.isInDb = function (lookupColumn, userData) {
   return User.getUser(lookupColumn, userData)
-    .then(foundUser => foundUser !== null)
-}
+    .then(foundUser => foundUser !== null);
+};
 
 /**
  * Add User to db
@@ -125,14 +126,15 @@ User.prototype.addToDb = async function () {
         this.lastName,
         this.salt,
         this.hash,
-      ])
-    this.userId = response.userid
-    return response.userid
+      ]
+    );
+    this.userId = response.userid;
+    return response.userid;
   } catch (e) {
-    const errMsg = `Failed to add user "${this.email}"`
-    throw logError(errMsg, e)
+    const errMsg = `Failed to add user "${this.email}"`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 /**
  * Update a user's metadata
@@ -144,13 +146,13 @@ User.prototype.addToDb = async function () {
 User.prototype.update = async function (updateColumn, userData) {
   // update the db
   try {
-    await db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId])
-    this[updateColumn] = userData
+    await db.query(`UPDATE users SET ${updateColumn}=$1 WHERE userId=$2`, [userData, this.userId]);
+    this[updateColumn] = userData;
   } catch (e) {
-    const errMsg = `Failed to update column ${updateColumn} for userid ${this.userId}`
-    throw logError(errMsg, e)
+    const errMsg = `Failed to update column ${updateColumn} for userid ${this.userId}`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 /**
  * Populate a user's charts property with an array if chart IDs
@@ -165,21 +167,25 @@ User.prototype.getCharts = async function () {
       JOIN usercharts AS uc
         ON c.chartid = uc.chartid
     WHERE uc.userid = $1
-  `
+  `;
   try {
-    const charts = await db.any(userchartsQuery, this.userId)
+    const charts = await db.any(userchartsQuery, this.userId);
     return charts.map((chart) => {
-      const { chartid: chartId, 
-              title, 
-              permissions, 
-              modifiedat: modifiedAt } = chart
-      return { chartId, title, permissions, modifiedAt }
-    })
+      const {
+        chartid: chartId,
+        title,
+        permissions,
+        modifiedat: modifiedAt,
+      } = chart;
+      return {
+        chartId, title, permissions, modifiedAt,
+      };
+    });
   } catch (e) {
-    const errMsg = `Failed to get charts for userId ${this.userId}`
-    throw logError(errMsg, e)
+    const errMsg = `Failed to get charts for userId ${this.userId}`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 /**
  * Associate chart with user
@@ -189,24 +195,24 @@ User.prototype.getCharts = async function () {
  */
 User.prototype.addChart = async function (chart, permissions) {
   try {
-    const errMsg = 'Chart not added to user.'
-    if (!this.userId) throw new Error(`User has no user id. ${errMsg}`)
-    if (!chart.chartId) throw new Error(`Chart has no chart id. ${errMsg}`)
+    const errMsg = 'Chart not added to user.';
+    if (!this.userId) throw new Error(`User has no user id. ${errMsg}`);
+    if (!chart.chartId) throw new Error(`Chart has no chart id. ${errMsg}`);
     const response = await db.one(
       'INSERT INTO usercharts (chartId, userId, permissions) VALUES ($1, $2, $3) returning userChartId',
       [chart.chartId, this.userId, permissions]
-    )
+    );
     // update object properties
-    this.charts = await this.getCharts()
-    await chart.getUsers()
+    this.charts = await this.getCharts();
+    await chart.getUsers();
 
     // probably never used but seems a decent thing to return
-    return response.userchartid
+    return response.userchartid;
   } catch (e) {
-    const errMsg = `Failed to add chartId ${chart.chartId} to userId ${this.userId}`
-    throw logError(errMsg, e)
+    const errMsg = `Failed to add chartId ${chart.chartId} to userId ${this.userId}`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 
 /**
@@ -216,7 +222,7 @@ User.prototype.addChart = async function (chart, permissions) {
  * @returns {boolean} - Whether or not the password matched.
  */
 User.prototype.checkPassword = function (enteredPass) {
-  return checkPass(this, enteredPass)
-}
+  return checkPass(this, enteredPass);
+};
 
-module.exports = User
+module.exports = User;
