@@ -25,7 +25,7 @@
  */
 
 import axios from 'axios';
-import browserHistory from '../app/history';
+import browserHistory from '../config/history';
 import { ROOT_URL } from '../../config';
 
 import {

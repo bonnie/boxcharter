@@ -27,7 +27,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import browserHistory from '../app/history';
+import browserHistory from '../config/history';
 
 
 // TODO: understand HOC better.

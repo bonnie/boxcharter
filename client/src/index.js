@@ -35,8 +35,8 @@ import { Router } from 'react-router-dom';
 // import { PersistGate } from 'redux-persist/es/integration/react'
 // ^ this one causes "Uncaught SyntaxError: Unexpected identifier"
 
-import browserHistory from './app/history';
-import configureStore from './app/configure_store';
+import browserHistory from './config/history';
+import configureStore from './config/configure_store';
 import App from './app/App';
 
 const { store, persistor } = configureStore();

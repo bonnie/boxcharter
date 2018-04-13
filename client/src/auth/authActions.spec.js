@@ -29,7 +29,7 @@ import thunk from 'redux-thunk';
 import moxios from 'moxios';
 
 import '../../jest/setupTests';
-import browserHistory from '../app/history';
+import browserHistory from '../config/history';
 import * as actions from './authActions';
 import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes';
 import { userData } from '../../../shared/test/utilities/test_data/add_user';
