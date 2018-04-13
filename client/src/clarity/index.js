@@ -24,6 +24,10 @@
  * clarity
  */
 
-export * from './ClarityButton';
-export * from './ClarityField';
+import ClarityButton from './ClarityButton';
+import ClarityField from './ClarityField';
 
+module.exports = {
+  ClarityButton,
+  ClarityField,
+};

@@ -144,7 +144,7 @@ const formOptions = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.auth.error,
-    loading,
+    loading: state.loading,
   };
 }
 

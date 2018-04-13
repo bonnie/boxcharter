@@ -33,6 +33,7 @@ import browserHistory from '../config/history';
 import axiosInstance from '../config/axiosInstance';
 import * as actions from './authActions';
 import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes';
+import { START_FETCHING, END_FETCHING } from '../loading/loadingActionTypes';
 import { userData } from '../../../shared/test/utilities/test_data/add_user';
 
 // for the nearly identical tests that sign-in / sign-up need
@@ -94,6 +95,8 @@ describe('authActions', () => {
 
       test('dispatches AUTH_USER after successful authentication', () => {
         const expectedActions = [
+          { type: START_FETCHING, payload: undefined },
+          { type: END_FETCHING, payload: undefined },
           { type: AUTH_USER, payload: { user: userData } },
         ];
         return dispatchPromise.then(() => {
@@ -136,6 +139,8 @@ describe('authActions', () => {
 
       test('dispatches AUTH_ERROR after successful authentication', () => {
         const expectedActions = [
+          { type: START_FETCHING },
+          { type: END_FETCHING },
           { type: AUTH_ERROR },
         ];
         return dispatchPromise.then(() => {

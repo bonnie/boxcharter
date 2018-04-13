@@ -28,7 +28,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Note: this needs to be invoked as the component for a redux-form Field component
-export const ClarityField = (props) => {
+const ClarityField = (props) => {
   const {
     input, type, label, required,
   } = props;
@@ -63,3 +63,5 @@ ClarityField.propTypes = {
     error: PropTypes.string.isRequired,
   }).isRequired,
 };
+
+export default ClarityField;

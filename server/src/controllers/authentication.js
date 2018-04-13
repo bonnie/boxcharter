@@ -37,8 +37,9 @@ const { generateToken } = require('../utilities/jwt');
  * @param {object} req - express request object
  * @param {object} res - express response object
  * @param {function} next - next express middleware function
+ * @returns {object} - HTTP response.
  */
-const signup = function (req, res, next) {
+const signup = (req, res, next) => {
   const userInfo = req.body;
 
   /* { email: 'bonnie@bonnie',

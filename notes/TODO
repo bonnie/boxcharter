@@ -9,6 +9,7 @@ to do before forging on:
 * error boundaries / error handling
 * data-test => test-id
 * terminology: wrapper? dom? other??
+* sass up the css, or other distributed css system
 * call setup.js automatically before every test (or just once before all tests...?)
 * signin and signup have identical tests. Should they be the same component...?
 * circleCI continuous integration

@@ -27,7 +27,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export const ClarityButton = (props) => {
+const ClarityButton = (props) => {
   const potentialClasses = [
     'primary',
     'sm',
@@ -41,12 +41,15 @@ export const ClarityButton = (props) => {
     .filter(className => props[className])
     .map(className => `btn-${className}`);
 
+  // every button needs 'btn'
+  classes.push('btn');
+
   const attributes = {};
   if (props.reduxFormSubmit) attributes.action = 'submit';
   if (props.disabled || props.loading) attributes.disabled = 'true';
 
   const loading = props.loading
-    ? <span data-test="clarity-button-loading" className="spinner spinner-inline" />
+    ? <span data-test="clarity-button-loading" className="spinner-spacer spinner spinner-inline" />
     : undefined;
 
   return (
@@ -87,3 +90,5 @@ ClarityButton.propTypes = {
   flat: PropTypes.bool,
   loading: PropTypes.bool,
 };
+
+export default ClarityButton;

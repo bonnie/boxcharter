@@ -94,14 +94,15 @@ export class SignInComponent extends Component {
    * @returns {JSX.Element} - Rendered component.
   */
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, loading } = this.props;
+    const buttonLoading = loading ? { loading: true } : {};
 
     return (
       <div>
         <form data-test="signin-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           <Field name="email" type="text" label="Email" required component={ClarityField} />
           <Field name="password" type="password" label="Password" required component={ClarityField} />
-          <ClarityButton ReduxFormSubmit primary dataTest="signin-submit" buttonText="Sign In" />
+          <ClarityButton ReduxFormSubmit primary {...buttonLoading} dataTest="signin-submit" buttonText="Sign In" />
         </form>
         {this.renderAlert()}
       </div>
@@ -119,6 +120,7 @@ SignInComponent.propTypes = {
   signInUser: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
+  loading: PropTypes.bool.isRequired,
 };
 
 const formOptions = {
@@ -132,7 +134,10 @@ const formOptions = {
  * @returns {object} - Object containing errorMessage from state.
  */
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.error };
+  return {
+    errorMessage: state.auth.error,
+    loading: state.loading,
+  };
 }
 
 const actions = {
