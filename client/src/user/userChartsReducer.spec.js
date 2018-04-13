@@ -24,30 +24,30 @@
  * userChartsReducer-spec
  */
 
-import '../../jest/setupTests'
-import userChartsReducer from './userChartsReducer'
-import { GET_USERCHARTS } from './userActionTypes'
-import { chartData } from '../../../shared/test/utilities/test_data/add_chart'
- 
+import '../../jest/setupTests';
+import userChartsReducer from './userChartsReducer';
+import { GET_USERCHARTS } from './userActionTypes';
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
+
 // massage charts data into format that would be received from server for user charts query
-const charts = chartData.map(chart => chart.chartMetaData)
+const charts = chartData.map(chart => chart.chartMetaData);
 
 describe('userChartsReducer', () => {
   const userChartsAction = {
     type: GET_USERCHARTS,
     payload: { data: { charts } },
-  }
+  };
   test('return the initial state', () => {
-    expect(userChartsReducer(undefined, {})).toEqual([])
-  })
- 
+    expect(userChartsReducer(undefined, {})).toEqual([]);
+  });
+
   test('handle GET_USERCHARTS when state is empty', () => {
-    const reducerOutput = userChartsReducer([], userChartsAction)
-    expect(reducerOutput).toEqual(charts)
-   })
+    const reducerOutput = userChartsReducer([], userChartsAction);
+    expect(reducerOutput).toEqual(charts);
+  });
 
   test('handle GET_USERCHARTS when state is not empty', () => {
-    const reducerOutput = userChartsReducer(['before'], userChartsAction)
-    expect(reducerOutput).toEqual(charts)
-  })
-})
+    const reducerOutput = userChartsReducer(['before'], userChartsAction);
+    expect(reducerOutput).toEqual(charts);
+  });
+});

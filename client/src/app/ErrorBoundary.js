@@ -24,32 +24,60 @@
  * ErrorBoundary
  */
 
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
+/**
+ * @class ErrorBoundary
+*/
 export default class ErrorBoundary extends Component {
+  /**
+   * Constructor method to initialize hasError component state.
+   * @method constructor
+   * @param {object} props - Props.
+   */
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = ({
       hasError: false,
-    })
+    });
   }
 
+  /**
+   * @method componentDidCatch
+   * @param {Error} error - Caught error.
+   * @param {any} info - Additional information.
+   * @returns {undefined}
+   */
   componentDidCatch(error, info) {
     this.setState({
       hasError: true,
-    })
+    });
 
-    console.error(error, info)
+    // TODO: send error back to server
+    console.error(error, info);
   }
 
+  /**
+   * @method render
+   * @returns {any} - Array of children components, or error component
+  */
   render() {
     if (this.state.hasError) {
       return (
-        <img src="https://c1.staticflickr.com/8/7001/6509400855_aaaf915871_b.jpg" />
-      )
+        <img alt="error" src="https://c1.staticflickr.com/8/7001/6509400855_aaaf915871_b.jpg" />
+      );
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }
+
+ErrorBoundary.defaultProps = {
+  children: [],
+};
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.element),
+};

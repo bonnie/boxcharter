@@ -24,37 +24,36 @@
  * NavLink-spec
  */
 
-import React from 'react'
-import { shallow, mount } from 'enzyme'
-import '../../jest/setupTests'
-import { NO_TAB, SIGN_UP } from './tabNames'
-import { NAV_TAB } from './navActionTypes'
-import NavBrand from './NavBrand'
+import React from 'react';
+import { shallow } from 'enzyme';
+
+import '../../jest/setupTests';
+import NavBrand from './NavBrand';
 
 describe('NavBrand', () => {
-  describe('renders correctly', () => {      
-    const renderedNav = shallow(<NavBrand />)
+  describe('renders correctly', () => {
+    const renderedNav = shallow(<NavBrand />);
     test('component includes a div with class "branding"', () => {
-      expect(renderedNav.find('.branding').length).toBe(1)
-    })
+      expect(renderedNav.find('.branding').length).toBe(1);
+    });
     describe('brand NavLink', () => {
-      const navLink = renderedNav.childAt(0)
+      const navLink = renderedNav.childAt(0);
       test('has the correct link', () => {
-        expect(navLink.prop('linkRoute')).toBe('/')
-      })
+        expect(navLink.prop('linkRoute')).toBe('/');
+      });
       test('sets "brand" to true', () => {
-        expect(navLink.prop('brand')).toBe(true)
-      })
+        expect(navLink.prop('brand')).toBe(true);
+      });
       describe('link display', () => {
         // linkDisplay is raw jsx; need to render it in order to test
-        const linkDisplay = shallow(navLink.prop('linkDisplay'))
+        const linkDisplay = shallow(navLink.prop('linkDisplay'));
         test('has image', () => {
-          expect(linkDisplay.find('img').length).toBe(1)
-        })
+          expect(linkDisplay.find('img').length).toBe(1);
+        });
         test('has brand name', () => {
-          expect(linkDisplay.find('span.title').text()).toBe('BoxCharter')
-        })
-      })
-    })
-  })
-})
+          expect(linkDisplay.find('span.title').text()).toBe('BoxCharter');
+        });
+      });
+    });
+  });
+});

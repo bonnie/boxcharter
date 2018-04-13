@@ -24,71 +24,100 @@
  * authActions
  */
 
-import axios from 'axios'
-import browserHistory from '../app/history'
-import { ROOT_URL } from '../../config'
+import axios from 'axios';
+import browserHistory from '../app/history';
+import { ROOT_URL } from '../../config';
 
-import { 
+import {
   AUTH_ERROR,
   AUTH_USER,
   UNAUTH_USER,
-} from './authActionTypes'
+} from './authActionTypes';
 
+/**
+ * Return an action representing an authentication error.
+ * @function setAuthError
+ * @param {string} error - Authentication error.
+ * @returns {object} - Action representing authentication error.
+ */
+const setAuthError = error => ({
+  type: AUTH_ERROR,
+  payload: error,
+});
+
+/**
+ * Handler to authenticate a user based on axios response
+ *    - dispatch action
+ *    - add token to localStorage
+ *    - redirect user to profile page
+ * @function authHandler
+ * @param {object} response - Response object from axios.
+ * @param {object} dispatch - Redux dispatch object.
+ * @returns {undefined}
+ */
 const authHandler = (response, dispatch) => {
   // if request is good...
   // - update state to indicate user is authenticated
-  dispatch({ type: AUTH_USER, payload: { user: response.data.user } })
+  dispatch({ type: AUTH_USER, payload: { user: response.data.user } });
 
-  // - save the JWT in browser "local storage" 
+  // - save the JWT in browser "local storage"
   // (available even after navigating away and coming back)
-  localStorage.setItem('token', response.data.token)
+  localStorage.setItem('token', response.data.token);
 
   // - redirect to the route "/user-profile" (programmatic navigation)
-  browserHistory.push(`/user-profile`)
-}
-
-const signInUser = ({ email, password }) => {
-  // because we have redux-thunk middleware, 
-  // instead of returning an object, we can return a function
-  // redux-thunk gives arbitrary access to dispatch method
-  return function(dispatch) {
-    // submit email/password to api server
-    return axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
-      .then((response) => authHandler(response, dispatch))
-      .catch((error) => {
-        // if request is bad...
-        // - Show an error to the user
-        dispatch(setAuthError('Bad login info'))
-      })
-  }
-}
-
-const signUpUser = ({ email, password }) => {
-  return function(dispatch) {
-    return axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
-      .then((response) => authHandler(response, dispatch))
-      .catch((error) => dispatch(setAuthError(error.response.data.error)))
-  }
-}
+  browserHistory.push('/user-profile');
+};
 
 /**
- * 
+ * Action creator to sign in a user
+ * @function signInUser
+ * @param {object} formValues - Values from form.
+ * @param {string} formValues.email - Value for email input.
+ * @param {string} formValues.password - Value for password input.
+ * @returns {function} - Function that takes dispatch, contacts the server,
+ *                        and dispatches actions depending on response
+ */
+const signInUser = ({ email, password }) =>
+  // because we have redux-thunk middleware,
+  // instead of returning an object, we can return a function
+  // redux-thunk gives arbitrary access to dispatch method
+  dispatch =>
+    // submit email/password to api server
+    axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
+      .then(response => authHandler(response, dispatch))
+      .catch(() => {
+        // if request is bad...
+        // - Show an error to the user
+        dispatch(setAuthError('Bad login info'));
+      });
+
+/**
+ * Action creator to sign up a user
+ * @function signUpUser
+ * @param {object} formValues - Values from form.
+ * @param {string} formValues.email - Value for email input.
+ * @param {string} formValues.password - Value for password input.
+ * @returns {function} - Function that takes dispatch, contacts the server,
+ *                        and dispatches actions depending on response
+ */
+const signUpUser = ({ email, password }) => dispatch =>
+  axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
+    .then(response => authHandler(response, dispatch))
+    .catch(error => dispatch(setAuthError(error.response.data.error)));
+
+/**
+ * Action creator to sign out a user.
+ * @function signOutUser
+ * @returns {object} - Action representing user logout.
  */
 const signOutUser = () => {
-  localStorage.removeItem('token')
-  return { type: UNAUTH_USER }
-}
-
-const setAuthError = (error) => {
-  return {
-    type: AUTH_ERROR,
-    payload: error,
-  }
-} 
+  localStorage.removeItem('token');
+  return { type: UNAUTH_USER };
+};
 
 module.exports = {
   signInUser,
   signUpUser,
   signOutUser,
   setAuthError,
-}
+};

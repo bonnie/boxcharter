@@ -5,4 +5,4 @@ module.exports = {
   SIGN_OUT: 'Sign Out',
   USER_PROFILE: 'User Profile',
   NO_TAB: '',
-}
+};

@@ -24,30 +24,60 @@
  * UserDetail
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import UserCharts from './UserCharts'
-import { tabNames } from '../nav'
-import { setActiveNavTab } from '../nav/navActions'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import UserCharts from './UserCharts';
+import { tabNames } from '../nav';
+import { setActiveNavTab } from '../nav/navActions';
 
 // TODO: bindActionCreators from react-redux
 
-export class UserProfile extends Component {
+/**
+ * @class UserProfileComponent
+ */
+export class UserProfileComponent extends Component {
+  /**
+   * @method componentDidMount
+   * @returns {undefined}
+  */
   componentDidMount() {
-    this.props.setActiveNavTab(tabNames.USER_PROFILE)
+    this.props.setActiveNavTab(tabNames.USER_PROFILE);
   }
+
+  /**
+   * @method render
+   * @returns {JSX.Element} - Rendered component.
+   */
   render() {
     return (
       <div className="user-page">
         <h3 data-test="user-charts-section">Charts</h3>
         <UserCharts />
       </div>
-    )
+    );
   }
 }
 
+UserProfileComponent.propTypes = {
+  // auth: PropTypes.shape({
+  //   authenticated: PropTypes.bool,
+  //   user: PropTypes.shape({
+  //     userId: PropTypes.number,
+  //   }),
+  // }).isRequired,
+
+  setActiveNavTab: PropTypes.func.isRequired,
+};
+
+/**
+ * @function mapStateToProps
+ * @param {object} state - State.
+ * @param {object} state.auth - auth piece of state.
+ * @returns {object} - auth piece of state.
+ */
 function mapStateToProps({ auth }) {
-  return { auth }
+  return { auth };
 }
 
-export default connect(mapStateToProps, { setActiveNavTab })(UserProfile)
+export default connect(mapStateToProps, { setActiveNavTab })(UserProfileComponent);

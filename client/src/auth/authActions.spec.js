@@ -44,14 +44,13 @@ const signInUpTests = [
 const mockStore = configureMockStore([thunk]);
 
 describe('authActions', () => {
-
   // common for all tests
   const initialStore = { authenticated: {}, error: null, user: null };
   const token = 'this is a token';
   let store;
   let dispatchPromise;
-  
-  beforeEach(function () {
+
+  beforeEach(() => {
     // clear token from localStorage
     localStorage.removeItem('token');
 
@@ -62,21 +61,21 @@ describe('authActions', () => {
     moxios.install();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     moxios.uninstall();
   });
 
   signInUpTests.forEach(({ description, actionFunc }) => {
-    /****************************************/
+    /** ************************************* */
     // START: successsful signIn / signUp
-    /****************************************/
+    /** ************************************* */
     describe(`successful ${description}`, () => {
       const successArgs = { email: userData.email, password: userData.password };
-      
+
       beforeEach(() => {
         // mock browserHistory.push to test routing and avoid errors due to lack of router
         // Do this before every test for a clean mock function for each test
-        browserHistory.push = jest.fn()
+        browserHistory.push = jest.fn();
 
         // set up moxios
         moxios.wait(() => {
@@ -87,43 +86,38 @@ describe('authActions', () => {
             response: { token, user: userData },
           });
         });
-        
+
         // store the call as a promise
-        dispatchPromise = store.dispatch(actionFunc(successArgs))
+        dispatchPromise = store.dispatch(actionFunc(successArgs));
       });
 
       test('dispatches AUTH_USER after successful authentication', () => {
         const expectedActions = [
-          { type: AUTH_USER, payload: { user: userData }}
-        ]
+          { type: AUTH_USER, payload: { user: userData } },
+        ];
         return dispatchPromise.then(() => {
-          const firedActions = store.getActions().map(action => ({ type: action.type, payload: action.payload }))
+          const firedActions = store.getActions()
+            .map(action => ({ type: action.type, payload: action.payload }));
           expect(firedActions).toEqual(expectedActions);
         });
       });
-      test('updates localStorage after successful authentication', () => {
-        return dispatchPromise.then(() => {
-          expect(localStorage.getItem('token')).toBe(token);
-        });
-      });
-      test('redirects to `/user-profile` after successful authentication', () => {
-        return dispatchPromise.then(() => {
-          expect(browserHistory.push).toBeCalledWith('/user-profile')
-        });
-      });
+      test('updates localStorage after successful authentication', () => dispatchPromise.then(() => {
+        expect(localStorage.getItem('token')).toBe(token);
+      }));
+      test('redirects to `/user-profile` after successful authentication', () => dispatchPromise.then(() => {
+        expect(browserHistory.push).toBeCalledWith('/user-profile');
+      }));
     });
-    /****************************************/
+    /** ************************************* */
     // END: successsful signIn / signUp
-    /****************************************/
+    /** ************************************* */
 
-    /****************************************/
+    /** ************************************* */
     // START: unsuccesssful signIn / signUp
-    /****************************************/
+    /** ************************************* */
     describe(`unsuccessful ${description}`, () => {
-    
-      const failureArgs = { email: userData.email, password: 'bad password' }
-      const response = { error: 'nope' }
-      let setAuthError
+      const failureArgs = { email: userData.email, password: 'bad password' };
+      const response = { error: 'nope' };
 
       beforeEach(() => {
         // set up moxios
@@ -136,12 +130,12 @@ describe('authActions', () => {
         });
 
         // store the call as a promise
-        dispatchPromise = store.dispatch(actionFunc(failureArgs))
+        dispatchPromise = store.dispatch(actionFunc(failureArgs));
       });
 
       test('dispatches AUTH_ERROR after successful authentication', () => {
         const expectedActions = [
-          { type: AUTH_ERROR }
+          { type: AUTH_ERROR },
         ];
         return dispatchPromise.then(() => {
           const firedActions = store.getActions().map(action => ({ type: action.type }));
@@ -150,21 +144,21 @@ describe('authActions', () => {
       });
     });
   });
-  /****************************************/
+  /** ************************************* */
   // END: unsuccesssful signIn / signUp
-  /****************************************/
+  /** ************************************* */
 
-  /****************************************/
+  /** ************************************* */
   // START: signOutUser
-  /****************************************/
+  /** ************************************* */
   describe('sign out user', () => {
-    let signOutAction
+    let signOutAction;
     beforeEach(() => {
       // add a token to localstorage
-      localStorage.setItem('token', token)
+      localStorage.setItem('token', token);
 
       // no async here, so no need to use store.dispatch
-      signOutAction = actions.signOutUser()
+      signOutAction = actions.signOutUser();
     });
     test('dispatches UNAUTH_USER action', () => {
       expect(signOutAction).toMatchObject({ type: UNAUTH_USER });
@@ -173,8 +167,7 @@ describe('authActions', () => {
       expect(localStorage.getItem('token')).toBeFalsy();
     });
   });
-  /****************************************/
+  /** ************************************* */
   // END: signOutUser
-  /****************************************/
-
+  /** ************************************* */
 });

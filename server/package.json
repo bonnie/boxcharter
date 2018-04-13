@@ -5,7 +5,6 @@
   "scripts": {
     "start": "node src/app.js",
     "setup": "npm install && npm run test:db:init && npm run dev:db:init",
-    "lint": "eslint . --fix",
     "test": "source env/test.sh && npm run test:server",
     "test:server": "mocha --reporter dot --recursive test --exit",
     "test:db:drop": "source env/test.sh && dropdb --if-exists $DB_NAME",

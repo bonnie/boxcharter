@@ -4,40 +4,30 @@
     "browser": true,
     "node": true,
     "es6": true,
-    "mocha": true
+    "jest": true
   },
   "rules": {
-    semi: 0,
-    no-console: 0,
-    prefer-arrow-callback: 0,
-    func-names: 0,
-    no-await-in-loop: 0,
-    no-unused-expressions: 0,
-    no-restricted-syntax: [
-      "error",
-      "LabeledStatement",
-      "WithStatement"
-    ],
-    comma-dangle: ["error", {
-        arrays: "always-multiline",
-        objects: "always-multiline",
-        imports: "always-multiline",
-        exports: "always-multiline",
-        functions: "ignore"
+    "react/jsx-filename-extension": 0,
+    "jsx-a11y/anchor-is-valid": 0,
+   "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "ignore"
     }],
-    import/no-extraneous-dependencies: [2, { devDependencies: true }],
-      "valid-jsdoc": ["error", {
+    "valid-jsdoc": ["error", {
       "requireReturn": true,
       "requireReturnType": true,
       "requireParamDescription": true,
       "requireReturnDescription": true
     }],
     "require-jsdoc": ["error", {
-        "require": {
-            "FunctionDeclaration": true,
-            "MethodDefinition": true,
-            "ClassDeclaration": true
-        }
+      "require": {
+        "FunctionDeclaration": true,
+        "MethodDefinition": true,
+        "ClassDeclaration": true
+      }
     }]
   }
 }

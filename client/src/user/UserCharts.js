@@ -24,32 +24,41 @@
  * UserCharts
  */
 
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import ChartRow from './ChartRow'
-import { getUserCharts } from './userActions'
+import ChartRow from './ChartRow';
+import { getUserCharts } from './userActions';
 
-export class UserCharts extends Component {
-  constructor(props) {
-    super(props)
-  }
+/**
+ * @class UserChartsComponent
+*/
+export class UserChartsComponent extends Component {
+  /**
+   * @method componentDidMount
+   * @returns {undefined}
+  */
   componentDidMount() {
     // TODO: put loading message until this is finished
     if (this.props.auth && this.props.auth.user && this.props.auth.user.userId) {
-      this.props.getUserCharts(this.props.auth.user.userId)
+      this.props.getUserCharts(this.props.auth.user.userId);
     }
   }
+
+  /**
+   * @method render
+   * @returns {JSX.Element} - Rendered component.
+  */
   render() {
     if (this.props.charts.length === 0) {
       return (
         <div data-test="no-charts-message">No charts saved</div>
-      )
+      );
     }
 
-    const chartRows = this.props.charts.map((chart) => {
-      return (<ChartRow key={chart.chartId} chart={chart} />)
-    })
+    const chartRows = this.props.charts.map(chart =>
+      (<ChartRow key={chart.chartId} chart={chart} />));
 
     return (
       <div className="user-charts" data-test="user-charts-table">
@@ -60,17 +69,36 @@ export class UserCharts extends Component {
               <th>Last Updated</th>
             </tr>
           </thead>
-          <tbody data-test='charts-container'>
+          <tbody data-test="charts-container">
             {chartRows}
           </tbody>
         </table>
       </div>
-    )
+    );
   }
 }
 
+UserChartsComponent.propTypes = {
+  auth: PropTypes.shape({
+    authenticated: PropTypes.bool,
+    user: PropTypes.shape({
+      userId: PropTypes.number,
+    }),
+  }).isRequired,
+  charts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getUserCharts: PropTypes.func.isRequired,
+};
+
+/**
+ * @function mapStateToProps
+ *
+ * @param {object} state - Redux state.
+ * @param {object} state.auth - Authentication state.
+ * @param {object} state.charts - Metadata for charts for current user.
+ * @returns {object} - auth and charts properties of state.
+ */
 function mapStateToProps({ auth, charts }) {
-  return { auth, charts }
+  return { auth, charts };
 }
 
-export default connect(mapStateToProps, { getUserCharts })(UserCharts);
+export default connect(mapStateToProps, { getUserCharts })(UserChartsComponent);

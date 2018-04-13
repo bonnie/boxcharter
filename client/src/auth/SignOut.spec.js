@@ -24,27 +24,38 @@
  * SignOut-spec
  */
 
-import React from 'react'
-import { shallow } from 'enzyme'
+import React from 'react';
+import { shallow } from 'enzyme';
 
 import '../../jest/setupTests';
+import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
-import { SignOut } from './SignOut'
+import { SignOutComponent } from './SignOut';
+
+const defaultProps = {
+  signOutUser: () => {},
+};
 
 describe('SignOut', () => {
-  const signOutUserMock = jest.fn()
-  let wrapper
+  const signOutUserMock = jest.fn();
+  let wrapper;
   beforeEach(() => {
-    signOutUserMock.mockClear()
+    signOutUserMock.mockClear();
     const props = {
       signOutUser: signOutUserMock,
     };
-    wrapper = shallow(<SignOut {...props} />);
-  })
+    wrapper = shallow(<SignOutComponent {...props} />);
+  });
   test('renders', () => {
     expect(findWrapperNodeByTestId(wrapper, 'signout-component').length).toBe(1);
-  })
+  });
   test('signs user out', () => {
-    expect(signOutUserMock).toHaveBeenCalledTimes(1)
-  })
-})
+    expect(signOutUserMock).toHaveBeenCalledTimes(1);
+  });
+  describe('prop-types', () => {
+    test('no error with correct props', () => {
+      const propError = checkProps(SignOutComponent, defaultProps);
+      expect(propError).toBeUndefined();
+    });
+  });
+});

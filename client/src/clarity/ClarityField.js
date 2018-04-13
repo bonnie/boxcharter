@@ -29,31 +29,39 @@ import PropTypes from 'prop-types';
 
 // Note: this needs to be invoked as the component for a redux-form Field component
 const ClarityField = (props) => {
-  const { input, type, label, required }  = props
-  const { touched, error, warning } = props.meta
+  const {
+    input, type, label, required,
+  } = props;
+  const { touched, error } = props.meta;
 
-  const requiredClass = required ? 'required' : ''
-  const invalidClass = touched && error ? 'invalid' : ''
+  const requiredClass = required ? 'required' : '';
+  const invalidClass = touched && error ? 'invalid' : '';
   return (
     <fieldset key={input.name} className="form-group">
-        <label className={requiredClass} data-test="field-label">{label}</label>
-        <label className={`tooltip tooltip-validation ${invalidClass}`} data-test="tooltip-label">
-          <input className="form-control" type={type} {...input} />
-          <span className="tooltip-content">{error}</span>
-        </label>
+      <label className={requiredClass} htmlFor={input.name} data-test="field-label">{label}</label>
+      <label className={`tooltip tooltip-validation ${invalidClass}`} htmlFor={input.name} data-test="tooltip-label">
+        <input className="form-control" type={type} id={input.name} {...input} />
+        <span className="tooltip-content">{error}</span>
+      </label>
     </fieldset>
-  )
-}
+  );
+};
+
+ClarityField.defaultProps = {
+  required: false,
+};
 
 ClarityField.propTypes = {
-  input: PropTypes.object.isRequired,
+  input: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
   type: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   required: PropTypes.bool,
   meta: PropTypes.shape({
     touched: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
-  }),
+  }).isRequired,
 };
 
-export default ClarityField
+export default ClarityField;

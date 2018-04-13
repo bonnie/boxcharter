@@ -1,6 +1,5 @@
 to do before forging on: 
 
-* proptypes
 * eslint 
   * semicolons!!
   * make sure all functions have jsdoc
@@ -15,3 +14,7 @@ to do before forging on:
 * circleCI continuous integration
 * send errors back to the server to log (middleware to do this...?)
 * clarity alert component (tdd!)
+  * move navlink into clarity directory
+
+Done!
+* proptypes

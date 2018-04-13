@@ -24,11 +24,11 @@
  * chartReducer
  */
 
-import {  } from './chartActionTypes'
+import { } from './chartActionTypes';
 
 export default (state = {}, action) => {
-  switch(action.type) {
+  switch (action.type) {
     default:
-      return { ...state }
+      return { ...state };
   }
-}
+};

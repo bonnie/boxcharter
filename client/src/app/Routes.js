@@ -24,30 +24,32 @@
  * Routes
  */
 
-import React, { Component } from 'react'
-import { Route, Switch } from "react-router-dom";
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import UserProfile from '../user/UserProfile'
-import ChartDetail from '../chart/ChartDetail'
-import SplashPage from '../app/SplashPage'
-import SignIn from '../auth/SignIn'
-import SignOut from '../auth/SignOut'
-import SignUp from '../auth/SignUp'
-import RequireAuth from '../auth/RequireAuth'
+import UserProfile from '../user/UserProfile';
+import ChartDetail from '../chart/ChartDetail';
+import SplashPage from '../app/SplashPage';
+import SignIn from '../auth/SignIn';
+import SignOut from '../auth/SignOut';
+import SignUp from '../auth/SignUp';
+import RequireAuth from '../auth/RequireAuth';
 
-export default class App extends Component {
-  render() {
-    return (
-      <div className="content-container">
-        <Switch>
-          <Route path="/user-profile" component={RequireAuth(UserProfile)} />
-          <Route path="/charts/:id" component={RequireAuth(ChartDetail)} />
-          <Route path="/sign-in" component={SignIn} />
-          <Route path="/sign-up" component={SignUp} />
-          <Route path="/sign-out" component={SignOut} />
-          <Route path="/" component={SplashPage} />
-        </Switch> 
-      </div>
-    )
-  }
-}
+/**
+ * @function App
+ * @returns {JSX.Element} - Rendered component.
+*/
+const App = () => (
+  <div className="content-container">
+    <Switch>
+      <Route path="/user-profile" component={RequireAuth(UserProfile)} />
+      <Route path="/charts/:id" component={RequireAuth(ChartDetail)} />
+      <Route path="/sign-in" component={SignIn} />
+      <Route path="/sign-up" component={SignUp} />
+      <Route path="/sign-out" component={SignOut} />
+      <Route path="/" component={SplashPage} />
+    </Switch>
+  </div>
+);
+
+export default App;
