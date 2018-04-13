@@ -158,3 +158,15 @@ https://medium.freecodecamp.org/10-points-to-remember-thatll-help-you-master-cod
 
 **** error boundaries
 https://reactjs.org/blog/2017/07/26/error-handling-in-react-16.html#where-to-place-error-boundaries
+
+
+***** loading
+https://stackoverflow.com/a/40989121
+https://medium.com/front-end-hacking/loading-components-asynchronously-in-react-app-with-an-hoc-61ca27c4fda7
+https://alexanderpaterson.com/posts/adding-a-reusable-loading-indicator-to-react-components
+https://vmware.github.io/clarity/documentation/v0.11/buttons (search for "loading")
+https://stackoverflow.com/questions/35456935/how-to-show-a-loading-indicator-in-react-redux-app-while-fetching-the-data/35643128#35643128
+https://blog.stvmlbrn.com/2017/10/14/display-loading-indicator-in-react-during-ajax-requests.html
+http://codetunnel.io/how-to-create-versatile-loading-spinner-management-in-react/
+
+/**********************************/
