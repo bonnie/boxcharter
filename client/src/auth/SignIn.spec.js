@@ -34,6 +34,7 @@ import '../../jest/setupTests';
 import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { SignInComponent } from './SignIn';
+import { ClarityButton } from '../clarity';
 
 // for prop types requirements
 const defaultProps = {
@@ -86,7 +87,8 @@ describe('SignIn', () => {
         handleSubmit: handleSubmitMock,
       };
       const wrapper = shallow(<SignInComponent {...props} />);
-      const submitButton = findWrapperNodeByTestId(wrapper, 'signin-submit');
+      const clarityButtonNode = wrapper.find(ClarityButton).dive();
+      const submitButton = findWrapperNodeByTestId(clarityButtonNode, 'signin-submit');
 
       submitButton.simulate('click');
       expect(handleSubmitMock.mock.calls.length).toBe(1);

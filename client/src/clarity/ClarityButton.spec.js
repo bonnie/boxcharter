@@ -31,7 +31,7 @@ import { shallow } from 'enzyme';
 import '../../jest/setupTests';
 import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
-import ClarityButton from './ClarityButton';
+import { ClarityButton } from './ClarityButton';
 
 const buttonText = 'button text';
 
@@ -80,6 +80,14 @@ describe('ClarityButton', () => {
       };
       const wrapper = shallow(<ClarityButton {...props} />);
       expect(wrapper.find('button[disabled]').length).toBe(1);
+    });
+    test('renders submit button', () => {
+      const props = {
+        buttonText,
+        reduxFormSubmit: true,
+      };
+      const wrapper = shallow(<ClarityButton {...props} />);
+      expect(wrapper.find('button[action="submit"]').length).toBe(1);
     });
   });
   describe('renders loading button', () => {

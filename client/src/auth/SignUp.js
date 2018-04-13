@@ -31,7 +31,7 @@ import { Field, reduxForm } from 'redux-form';
 
 import { signUpUser, setAuthError } from './authActions';
 import { navActions, tabNames } from '../nav';
-import ClarityField from '../clarity/ClarityField';
+import { ClarityField, ClarityButton } from '../clarity';
 
 const fields = ['email', 'password', 'passwordConfirm'];
 
@@ -87,7 +87,7 @@ export class SignUpComponent extends Component {
         <Field name="email" type="text" label="Email" required component={ClarityField} />
         <Field name="password" type="password" label="Password" required component={ClarityField} />
         <Field name="passwordConfirm" type="password" label="Confirm Password" required component={ClarityField} />
-        <button data-test="signup-submit" action="submit" className="btn btn-primary">Sign up</button>
+        <ClarityButton reduxFormSubmit primary dataTest="signup-submit" buttonText="Sign up" />
         { this.renderAlert() }
       </form>
     );

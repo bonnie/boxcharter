@@ -27,7 +27,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ClarityButton = (props) => {
+export const ClarityButton = (props) => {
   const potentialClasses = [
     'primary',
     'sm',
@@ -41,9 +41,9 @@ const ClarityButton = (props) => {
     .filter(className => props[className])
     .map(className => `btn-${className}`);
 
-  const disabled = props.disabled || props.loading
-    ? { disabled: true }
-    : {};
+  const attributes = {};
+  if (props.reduxFormSubmit) attributes.action = 'submit';
+  if (props.disabled || props.loading) attributes.disabled = 'true';
 
   const loading = props.loading
     ? <span data-test="clarity-button-loading" className="spinner spinner-inline" />
@@ -51,9 +51,9 @@ const ClarityButton = (props) => {
 
   return (
     <button
-      data-test="clarity-button"
+      data-test={props.dataTest}
       className={classes.join(' ')}
-      {...disabled}
+      {...attributes}
     >
       {loading}
       {props.buttonText}
@@ -62,6 +62,8 @@ const ClarityButton = (props) => {
 };
 
 ClarityButton.defaultProps = {
+  dataTest: 'clarity-button',
+  reduxFormSubmit: false,
   primary: false,
   success: false,
   danger: false,
@@ -74,6 +76,8 @@ ClarityButton.defaultProps = {
 
 ClarityButton.propTypes = {
   buttonText: PropTypes.string.isRequired,
+  dataTest: PropTypes.string,
+  reduxFormSubmit: PropTypes.bool,
   primary: PropTypes.bool,
   success: PropTypes.bool,
   danger: PropTypes.bool,
@@ -83,5 +87,3 @@ ClarityButton.propTypes = {
   flat: PropTypes.bool,
   loading: PropTypes.bool,
 };
-
-export default ClarityButton;
