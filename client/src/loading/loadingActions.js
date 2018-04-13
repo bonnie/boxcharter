@@ -24,16 +24,16 @@
  * loadingActions
  */
 
-import { INITIATE_LOADING, COMPLETE_LOADING } from './loadingActionTypes';
+import { START_FETCHING, END_FETCHING } from './loadingActionTypes';
 
 /**
- * @function initiateLoading
- * @returns {object} - Action with type INITIATE_LOADING.
+ * @function startFetching
+ * @returns {object} - Action with type START_FETCHING.
 */
-export const initiateLoading = () => ({ type: INITIATE_LOADING });
+export const startFetching = () => ({ type: START_FETCHING });
 
 /**
- * @function completeLoading
- * @returns {object} - Action with type COMPLETE_LOADING.
+ * @function endFetching
+ * @returns {object} - Action with type END_FETCHING.
 */
-export const completeLoading = () => ({ type: COMPLETE_LOADING });
+export const endFetching = () => ({ type: END_FETCHING });

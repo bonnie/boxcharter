@@ -24,13 +24,13 @@
  * loadingReducer
  */
 
-import { INITIATE_LOADING, COMPLETE_LOADING } from './loadingActionTypes';
+import { START_FETCHING, END_FETCHING } from './loadingActionTypes';
 
 export default (state = false, action) => {
   switch (action.type) {
-    case INITIATE_LOADING:
+    case START_FETCHING:
       return true;
-    case COMPLETE_LOADING:
+    case END_FETCHING:
       return false;
     default:
       return state;

@@ -24,7 +24,7 @@
  * loadingReducer.spec
  */
 
-import { INITIATE_LOADING, COMPLETE_LOADING } from './loadingActionTypes';
+import { START_FETCHING, END_FETCHING } from './loadingActionTypes';
 import loadingReducer from './loadingReducer';
 
 describe('loading reducer', () => {
@@ -32,12 +32,12 @@ describe('loading reducer', () => {
     const loading = loadingReducer(undefined, {});
     expect(loading).toBe(false);
   });
-  test('set loading to true upon INITIATE_LOADING action', () => {
-    const loading = loadingReducer(false, { type: INITIATE_LOADING });
+  test('set loading to true upon START_FETCHING action', () => {
+    const loading = loadingReducer(false, { type: START_FETCHING });
     expect(loading).toBe(true);
   });
-  test('set loading to true upon COMPLETE_LOADING action', () => {
-    const loading = loadingReducer(true, { type: COMPLETE_LOADING });
+  test('set loading to true upon END_FETCHING action', () => {
+    const loading = loadingReducer(true, { type: END_FETCHING });
     expect(loading).toBe(false);
   });
 });

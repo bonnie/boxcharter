@@ -25,7 +25,7 @@
  */
 
 module.exports = {
-  INITIATE_LOADING: 'initiate loading',
-  COMPLETE_LOADING: 'complete loading',
-}
-;
+  START_FETCHING: 'initiate loading',
+  END_FETCHING: 'complete loading',
+};
+

@@ -24,17 +24,17 @@
  * loadingActions.spec
  */
 
-import { initiateLoading, completeLoading } from './loadingActions';
-import { INITIATE_LOADING, COMPLETE_LOADING } from './loadingActionTypes';
+import { startFetching, endFetching } from './loadingActions';
+import { START_FETCHING, END_FETCHING } from './loadingActionTypes';
 
 describe('loading actions', () => {
   test('initiate loading', () => {
-    const action = initiateLoading();
-    expect(action.type).toBe(INITIATE_LOADING);
+    const action = startFetching();
+    expect(action.type).toBe(START_FETCHING);
   });
   test('complete loading', () => {
-    const action = completeLoading();
-    expect(action.type).toBe(COMPLETE_LOADING);
+    const action = endFetching();
+    expect(action.type).toBe(END_FETCHING);
   });
 });
 

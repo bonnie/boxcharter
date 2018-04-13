@@ -166,7 +166,7 @@ https://medium.com/front-end-hacking/loading-components-asynchronously-in-react-
 https://alexanderpaterson.com/posts/adding-a-reusable-loading-indicator-to-react-components
 https://vmware.github.io/clarity/documentation/v0.11/buttons (search for "loading")
 https://stackoverflow.com/questions/35456935/how-to-show-a-loading-indicator-in-react-redux-app-while-fetching-the-data/35643128#35643128
-https://blog.stvmlbrn.com/2017/10/14/display-loading-indicator-in-react-during-ajax-requests.html
+-> not redux https://blog.stvmlbrn.com/2017/10/14/display-loading-indicator-in-react-during-ajax-requests.html
 http://codetunnel.io/how-to-create-versatile-loading-spinner-management-in-react/
 
 /**********************************/
