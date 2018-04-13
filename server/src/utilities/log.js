@@ -20,13 +20,13 @@
 
 /* adapted from https://gist.github.com/vikas5914/cf568748ac89446e19ecd5e2e6900443 */
 
-const winston = require('winston')
+const winston = require('winston');
 
 // set default log level.
-const logLevel = process.env.NODE_ENV === 'dev' ? 'debug' : 'warn'
+const logLevel = process.env.NODE_ENV === 'dev' ? 'debug' : 'warn';
 
 // these constants exportable for use in other logging files
-const logRoot = '/var/log/boxcharter/'
+const logRoot = '/var/log/boxcharter/';
 const errorLogTransport = new winston.transports.File({
   filename: `${logRoot}/error_log`,
   colorize: false,
@@ -36,7 +36,7 @@ const errorLogTransport = new winston.transports.File({
   maxFiles: 10,
   tailable: true,
   zippedArchive: true,
-})
+});
 
 // Set up logger
 const customColors = {
@@ -46,16 +46,16 @@ const customColors = {
   warn: 'yellow',
   crit: 'red',
   fatal: 'red',
-}
+};
 
-const transports = [errorLogTransport]
+const transports = [errorLogTransport];
 
 // only log to the console in dev mode
 if (process.env.NODE_ENV === 'dev') {
   transports.push(new (winston.transports.Console)({
     colorize: true,
     timestamp: true,
-  }))
+  }));
 }
 
 const logger = new (winston.Logger)({
@@ -70,9 +70,9 @@ const logger = new (winston.Logger)({
     trace: 5,
   },
   transports,
-})
+});
 
-winston.addColors(customColors)
+winston.addColors(customColors);
 
 /* LOGGER EXAMPLES
   var log = require('./log.js')
@@ -91,10 +91,10 @@ winston.addColors(customColors)
   * @return {Error}     Error with revised message
   */
 const logError = function (msg, e) {
-  logger.crit(msg)
-  logger.log('crit', e.stack)
-  return new Error(`${msg}: ${e.toString()}`)
-}
+  logger.crit(msg);
+  logger.log('crit', e.stack);
+  return new Error(`${msg}: ${e.toString()}`);
+};
 
 
 module.exports = {
@@ -102,4 +102,4 @@ module.exports = {
   logError,
   logRoot,
   errorLogTransport,
-}
+};

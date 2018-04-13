@@ -22,12 +22,12 @@
  * DB methods for the measure model.
  * @module db_measure
  */
-const { db } = require('./utilities/db_connection')
-const { logError } = require('../utilities/log')
-const Measure = require('../../../shared/src/model/measure')
-const Chord = require('./db_chord')
-const Lyric = require('./db_lyric')
-const getChildren = require('./utilities/get_children')
+const { db } = require('./utilities/db_connection');
+const { logError } = require('../utilities/log');
+const Measure = require('../../../shared/src/model/measure');
+const Chord = require('./db_chord');
+const Lyric = require('./db_lyric');
+const getChildren = require('./utilities/get_children');
 
 /**
  * Add measure object to the db, and set the object's measureId to be the
@@ -36,26 +36,27 @@ const getChildren = require('./utilities/get_children')
  * @returns {Promise} - Promise resolving to measureId, or throw an error
  */
 Measure.prototype.addToDb = async function (sectionId) {
-  if (sectionId) this.sectionId = sectionId
+  if (sectionId) this.sectionId = sectionId;
   try {
     const response = await db.one(
       `INSERT INTO measures (sectionId, index, beatsPerMeasure)
         VALUES ($1, $2, $3)
         RETURNING measureId`,
-      [this.sectionId, this.index, this.beatsPerMeasure])
-    this.measureId = response.measureid
+      [this.sectionId, this.index, this.beatsPerMeasure]
+    );
+    this.measureId = response.measureid;
     if (this.chords) {
-      await Promise.all(this.chords.map(chord => chord.addToDb(this.measureId)))
+      await Promise.all(this.chords.map(chord => chord.addToDb(this.measureId)));
     }
     if (this.lyrics) {
-      await Promise.all(this.lyrics.map(lyric => lyric.addToDb(this.measureId)))
+      await Promise.all(this.lyrics.map(lyric => lyric.addToDb(this.measureId)));
     }
-    return response.measureid
+    return response.measureid;
   } catch (e) {
-    const errMsg = `Failed to add measure at index ${this.index} of section ${this.sectionId}`
-    throw logError(errMsg, e)
+    const errMsg = `Failed to add measure at index ${this.index} of section ${this.sectionId}`;
+    throw logError(errMsg, e);
   }
-}
+};
 
 /**
  * Get measure's chords from database and assign to 'chords' property
@@ -63,9 +64,9 @@ Measure.prototype.addToDb = async function (sectionId) {
  */
 Measure.prototype.getChords = function () {
   return getChildren('chord', 'measure', this.measureId, 'beatIndex', Chord)
-    .then((chords) => { this.chords = chords })
-    .catch((e) => { throw e })
-}
+    .then((chords) => { this.chords = chords; })
+    .catch((e) => { throw e; });
+};
 
 /**
  * Get measure's lyrics from database and assign to 'lyrics' property
@@ -73,8 +74,8 @@ Measure.prototype.getChords = function () {
  */
 Measure.prototype.getLyrics = function () {
   return getChildren('lyric', 'measure', this.measureId, 'verseIndex', Lyric)
-    .then((lyrics) => { this.lyrics = lyrics })
-    .catch((e) => { throw e })
-}
+    .then((lyrics) => { this.lyrics = lyrics; })
+    .catch((e) => { throw e; });
+};
 
-module.exports = Measure
+module.exports = Measure;

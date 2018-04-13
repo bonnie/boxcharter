@@ -24,22 +24,22 @@
  * authentication
  */
 
-const passUtils = require('../utilities/password_utils')
-const User = require('../model/db_user')
-const { statusStrings, Status } = require('../../../shared/src/model/status')
-const { logger } = require('../utilities/log')
-const procError = require('../utilities/err')
-const { generateToken } = require('../utilities/jwt')
+const passUtils = require('../utilities/password_utils');
+const User = require('../model/db_user');
+const { statusStrings, Status } = require('../../../shared/src/model/status');
+const { logger } = require('../utilities/log');
+const procError = require('../utilities/err');
+const { generateToken } = require('../utilities/jwt');
 
 /**
  * Callback to an express route to sign a user up
  * @function
  * @param {object} req - express request object
  * @param {object} res - express response object
- * @param {function} next - next express middleware function 
+ * @param {function} next - next express middleware function
  */
-const signup = function(req, res, next) {
-  const userInfo = req.body
+const signup = function (req, res, next) {
+  const userInfo = req.body;
 
   /* { email: 'bonnie@bonnie',
   fname: 'bonnie',
@@ -47,84 +47,86 @@ const signup = function(req, res, next) {
   password: 'bonnie' } */
 
   // handle error cases
-  if (!userInfo.email || !userInfo.password ) {
-    return res.status(422).send({ error: 'Email and password cannot be blank'})
+  if (!userInfo.email || !userInfo.password) {
+    return res.status(422).send({ error: 'Email and password cannot be blank' });
   }
 
   User.isInDb('email', userInfo.email)
-    .then(inDB => { 
-      if (inDB) return res.status(422).send({ error: 'Email is in use' })
-    }) 
-    .catch(next)
+    .then((inDB) => {
+      if (inDB) return res.status(422).send({ error: 'Email is in use' });
+    })
+    .catch(next);
 
   // create salted password hash
   // general web consensus seems to be: hash on server side, and use
   // https to protect password in transit
-  const passData = passUtils.saltHashPassword(userInfo.password)
+  const passData = passUtils.saltHashPassword(userInfo.password);
 
   // massage userInfo obj to contain salted pass hash
-  userInfo.passwordHash = passData.hash
-  userInfo.passwordSalt = passData.salt
-  delete userInfo.password
+  userInfo.passwordHash = passData.hash;
+  userInfo.passwordSalt = passData.salt;
+  delete userInfo.password;
 
   // create user
-  const { userid, email, firstName, lastName, passwordSalt, passwordHash } = userInfo
-  const user = new User(userid, email, firstName, lastName, passwordSalt, passwordHash)
+  const {
+    userid, email, firstName, lastName, passwordSalt, passwordHash,
+  } = userInfo;
+  const user = new User(userid, email, firstName, lastName, passwordSalt, passwordHash);
   user.addToDb()
     .then((userId) => {
-      const email = userInfo.email
-      const msg = `New user ${email} successfully added.`
-      logger.info(msg)
-      const token = generateToken(user)
+      const email = userInfo.email;
+      const msg = `New user ${email} successfully added.`;
+      logger.info(msg);
+      const token = generateToken(user);
 
-      const response = { token, user }
+      const response = { token, user };
       return res.status(200).json(response);
     })
     .catch((error) => {
-      const response = { error: 'Email is in use' }
-      return res.status(422).json(response)
-    })
-}
+      const response = { error: 'Email is in use' };
+      return res.status(422).json(response);
+    });
+};
 
 /**
  * Callback to an express route to authorize a user
  * @function
  * @param {object} req - express request object
  * @param {object} res - express response object
- * @param {function} next - next express middleware function 
+ * @param {function} next - next express middleware function
  */
 const signin = (req, res, next) => {
   // user has already been authorized -- just need to give them a token
-  res.send({ 
+  res.send({
     token: generateToken(req.user),
     user: req.user,
-  })
-}
+  });
+};
 
 /**
  * Callback to an express route to check if a user's email is in the db
  * @function
  * @param {object} req - express request object
  * @param {object} res - express response object
- * @param {function} next - next express middleware function 
+ * @param {function} next - next express middleware function
  */
 const checkUser = (req, res, next) => {
-  const email = req.query.email
+  const email = req.query.email;
 
   User.isInDb('email', email)
     .then((inDB) => {
-      const result = { status: { type: statusStrings.success }, inDB }
-      res.status(200).json(result)
+      const result = { status: { type: statusStrings.success }, inDB };
+      res.status(200).json(result);
     })
     .catch((error) => {
-      const msg = `Unable to check user ${email}`
-      const response = procError(error, msg)
-      res.status(200).json(response)
-    })
-}
+      const msg = `Unable to check user ${email}`;
+      const response = procError(error, msg);
+      res.status(200).json(response);
+    });
+};
 
 module.exports = {
   signup,
   signin,
   checkUser,
-}
+};

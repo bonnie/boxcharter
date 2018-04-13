@@ -18,47 +18,46 @@
  *
  */
 
-const express = require('express')
-const passUtils = require('../utilities/password_utils')
-const User = require('../model/db_user')
-const { statusStrings, Status } = require('../../../shared/src/model/status')
-const { logger } = require('../utilities/log')
-const procError = require('../utilities/err')
-const { checkPass } = require('../utilities/password_utils')
+const express = require('express');
+const passUtils = require('../utilities/password_utils');
+const User = require('../model/db_user');
+const { statusStrings, Status } = require('../../../shared/src/model/status');
+const { logger } = require('../utilities/log');
+const procError = require('../utilities/err');
+const { checkPass } = require('../utilities/password_utils');
 
 // create the router
-const router = express.Router()
+const router = express.Router();
 
 /** *************** */
 /* GET user details */
 /* **************** */
 router.get('/:user_id', (req, res) => {
-  res.status(200).send('I am a happy user')
-})
+  res.status(200).send('I am a happy user');
+});
 
 /** *************** */
 /* PUT user details */
 /* **************** */
 router.put('/:user_id', (req, res) => {
 
-})
+});
 
 /** ************** */
 /* GET user charts */
 /* *************** */
 router.get('/:userId/charts', async (req, res) => {
-  const userId = req.params.userId
+  const userId = req.params.userId;
   try {
-    const user = await User.getById(userId)
-    const msg = `Charts retrieved for ${user.email}`
-    const response = { charts: user.charts, status: new Status(statusStrings.success, msg) }
-    res.status(200).json(response)
-
+    const user = await User.getById(userId);
+    const msg = `Charts retrieved for ${user.email}`;
+    const response = { charts: user.charts, status: new Status(statusStrings.success, msg) };
+    res.status(200).json(response);
   } catch (error) {
-    const msg = `Unable to get charts for userId [${userId}]`
-    const response = procError(error, msg)
-    res.status(400).json(response)
+    const msg = `Unable to get charts for userId [${userId}]`;
+    const response = procError(error, msg);
+    res.status(400).json(response);
   }
-})
+});
 
 module.exports = router;

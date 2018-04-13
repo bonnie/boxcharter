@@ -18,11 +18,11 @@
  *
  */
 
-const express = require('express')
-const { statusStrings, Status } = require('../../../shared/src/model/status')
-const Chart = require('../model/db_chart')
-const { logger } = require('../utilities/log')
-const procError = require('../utilities/err')
+const express = require('express');
+const { statusStrings, Status } = require('../../../shared/src/model/status');
+const Chart = require('../model/db_chart');
+const { logger } = require('../utilities/log');
+const procError = require('../utilities/err');
 
 // create the router
 const router = express.Router();
@@ -30,29 +30,29 @@ const router = express.Router();
 /** ****************** */
 /* GET chart */
 /** ****************** */
-router.get('/:chartId', function(req, res, next) {
-  const chartId = req.params.chartId
+router.get('/:chartId', (req, res, next) => {
+  const chartId = req.params.chartId;
   Chart.getById(chartId)
     .then((chart) => {
-      res.json(chart)
+      res.json(chart);
     })
     .catch((err) => {
-      res.status(400).json(`Could not get chart id ${chartId}`)
-    })
-})
+      res.status(400).json(`Could not get chart id ${chartId}`);
+    });
+});
 
 /** ****************** */
 /* POST create chart */
 /** ****************** */
-router.put('/create', function (req, res, next) {
-  const chartData = req.body.chartData
-  const userId = req.body.userId
+router.put('/create', (req, res, next) => {
+  const chartData = req.body.chartData;
+  const userId = req.body.userId;
 
   Chart.createChart(userId, chartData).then((response) => {
-    console.log('response', response)
-    res.status(200).json(response)
-  })
-})
+    console.log('response', response);
+    res.status(200).json(response);
+  });
+});
 
 
 module.exports = router;

@@ -25,16 +25,16 @@
  *     https://github.com/bithavoc/express-winston
  */
 
-const winston = require('winston')
-const expressWinston = require('express-winston')
-const log = require('./log.js')
+const winston = require('winston');
+const expressWinston = require('express-winston');
+const log = require('./log.js');
 
 // express errors
 const errorLogger = expressWinston.errorLogger({
   transports: [
     log.errorLogTransport,
   ],
-})
+});
 
 // express access
 const accessLogger = expressWinston.logger({
@@ -50,9 +50,9 @@ const accessLogger = expressWinston.logger({
       zippedArchive: true,
     }),
   ],
-})
+});
 
 module.exports = {
   errorLogger,
   accessLogger,
-}
+};
