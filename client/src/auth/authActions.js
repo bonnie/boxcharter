@@ -24,9 +24,8 @@
  * authActions
  */
 
-import axios from 'axios';
+import axiosInstance from '../config/axiosInstance';
 import browserHistory from '../config/history';
-import { ROOT_URL } from '../../config';
 
 import {
   AUTH_ERROR,
@@ -64,6 +63,9 @@ const authHandler = (response, dispatch) => {
   // (available even after navigating away and coming back)
   localStorage.setItem('token', response.data.token);
 
+  // add the response token to the authorization headers for the axios instance
+  axiosInstance.defaults.headers.common.authorization = response.data.token;
+
   // - redirect to the route "/user-profile" (programmatic navigation)
   browserHistory.push('/user-profile');
 };
@@ -83,7 +85,7 @@ const signInUser = ({ email, password }) =>
   // redux-thunk gives arbitrary access to dispatch method
   dispatch =>
     // submit email/password to api server
-    axios.post(`${ROOT_URL}/auth/sign-in`, { email, password })
+    axiosInstance.post('/auth/sign-in', { email, password })
       .then(response => authHandler(response, dispatch))
       .catch(() => {
         // if request is bad...
@@ -101,7 +103,7 @@ const signInUser = ({ email, password }) =>
  *                        and dispatches actions depending on response
  */
 const signUpUser = ({ email, password }) => dispatch =>
-  axios.post(`${ROOT_URL}/auth/sign-up`, { email, password })
+  axiosInstance.post('/auth/sign-up', { email, password })
     .then(response => authHandler(response, dispatch))
     .catch(error => dispatch(setAuthError(error.response.data.error)));
 
@@ -111,7 +113,10 @@ const signUpUser = ({ email, password }) => dispatch =>
  * @returns {object} - Action representing user logout.
  */
 const signOutUser = () => {
+  // remove token from localStorage and instance headers
   localStorage.removeItem('token');
+  delete axiosInstance.defaults.headers.common.authorization;
+
   return { type: UNAUTH_USER };
 };
 

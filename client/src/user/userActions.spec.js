@@ -30,6 +30,7 @@ import thunk from 'redux-thunk';
 import moxios from 'moxios';
 
 import '../../jest/setupTests';
+import axiosInstance from '../config/axiosInstance';
 import * as actions from './userActions';
 import { GET_USERCHARTS } from './userActionTypes';
 import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
@@ -42,11 +43,11 @@ const mockStore = configureMockStore([thunk]);
 
 describe('User actions', () => {
   beforeEach(() => {
-    moxios.install();
+    moxios.install(axiosInstance);
   });
 
   afterEach(() => {
-    moxios.uninstall();
+    moxios.uninstall(axiosInstance);
   });
 
   describe('getUserCharts', () => {

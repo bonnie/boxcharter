@@ -36,7 +36,7 @@ import { Router } from 'react-router-dom';
 // ^ this one causes "Uncaught SyntaxError: Unexpected identifier"
 
 import browserHistory from './config/history';
-import configureStore from './config/configure_store';
+import configureStore from './config/configureStore';
 import App from './app/App';
 
 const { store, persistor } = configureStore();

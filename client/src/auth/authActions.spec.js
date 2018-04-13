@@ -30,6 +30,7 @@ import moxios from 'moxios';
 
 import '../../jest/setupTests';
 import browserHistory from '../config/history';
+import axiosInstance from '../config/axiosInstance';
 import * as actions from './authActions';
 import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes';
 import { userData } from '../../../shared/test/utilities/test_data/add_user';
@@ -58,11 +59,11 @@ describe('authActions', () => {
     store = mockStore(initialStore);
 
     // mock axios
-    moxios.install();
+    moxios.install(axiosInstance);
   });
 
   afterEach(() => {
-    moxios.uninstall();
+    moxios.uninstall(axiosInstance);
   });
 
   signInUpTests.forEach(({ description, actionFunc }) => {
@@ -164,7 +165,7 @@ describe('authActions', () => {
       expect(signOutAction).toMatchObject({ type: UNAUTH_USER });
     });
     test('removes token from localStorage', () => {
-      expect(localStorage.getItem('token')).toBeFalsy();
+      expect(localStorage.getItem('token')).toBeUndefined();
     });
   });
   /** ************************************* */

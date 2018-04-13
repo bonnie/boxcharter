@@ -3,6 +3,7 @@ to do before forging on:
 * axios instance / token header
 * component loading states
 * persist login on refresh
+  * be sure to persist axios instance header as well, using token
 * error boundaries / error handling
 * data-test => test-id
 * terminology: wrapper? dom? other??
