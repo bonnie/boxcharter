@@ -81,13 +81,14 @@ export class SignUpComponent extends Component {
    * @returns {JSX.Element} - Rendered component.
   */
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, loading } = this.props;
+    const buttonLoading = loading ? { loading: true } : {};
     return (
       <form data-test="signup-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
         <Field name="email" type="text" label="Email" required component={ClarityField} />
         <Field name="password" type="password" label="Password" required component={ClarityField} />
         <Field name="passwordConfirm" type="password" label="Confirm Password" required component={ClarityField} />
-        <ClarityButton reduxFormSubmit primary dataTest="signup-submit" buttonText="Sign up" />
+        <ClarityButton reduxFormSubmit primary {...buttonLoading} dataTest="signup-submit" buttonText="Sign up" />
         { this.renderAlert() }
       </form>
     );
@@ -101,6 +102,7 @@ SignUpComponent.defaultProps = {
 SignUpComponent.propTypes = {
   setAuthError: PropTypes.func.isRequired,
   setActiveNavTab: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
   signUpUser: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
@@ -140,7 +142,10 @@ const formOptions = {
  * @returns {object} - Object containing errorMessage from state.
  */
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.error };
+  return {
+    errorMessage: state.auth.error,
+    loading,
+  };
 }
 
 const actions = {

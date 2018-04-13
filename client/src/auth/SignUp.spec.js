@@ -42,6 +42,7 @@ import { SignUpComponent } from './SignUp';
 import { ClarityButton } from '../clarity';
 
 const defaultProps = {
+  loading: false,
   setAuthError: () => {},
   setActiveNavTab: () => {},
   signUpUser: () => {},
