@@ -1,11 +1,9 @@
 to do before forging on: 
 
-* eslint 
-  * semicolons!!
-  * make sure all functions have jsdoc
 * axios instance / token header
 * component loading states
 * persist login on refresh
+  * be sure to persist axios instance header as well, using token
 * error boundaries / error handling
 * data-test => test-id
 * terminology: wrapper? dom? other??
@@ -15,6 +13,10 @@ to do before forging on:
 * send errors back to the server to log (middleware to do this...?)
 * clarity alert component (tdd!)
   * move navlink into clarity directory
+* server eslint
 
 Done!
+* eslint 
+  * semicolons!!
+  * make sure all functions have jsdoc
 * proptypes

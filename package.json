@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "npm run lint:client && npm run lint:server",
     "lint:client": "eslint client/src/**/*.js --fix",
-    "lint:server": "eslint client/src/**/*.js --fix",
+    "lint:server": "eslint server/src/**/*.js --fix",
     "setup": "npm run setup:client && npm run setup:server",
     "setup:client": "cd client && npm run setup && cd ..",
     "setup:server": "cd server && npm run setup && cd ..",

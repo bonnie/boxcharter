@@ -26,28 +26,27 @@
 
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import moxios from 'moxios'
+import moxios from 'moxios';
 
-import '../../jest/setupTests'
-import browserHistory from '../app/history'
+import '../../jest/setupTests';
+import browserHistory from '../config/history';
 // import { authHandler, setAuthError, signInUser, signUpUser } from './authActions'
 // import { signInUser, signUpUser } from './authActions'
 // import * as actions from './authActions'
 // const actions = require('./authActions');
-import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes'
-import { userData } from '../../../shared/test/utilities/test_data/add_user'
+import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes';
+import { userData } from '../../../shared/test/utilities/test_data/add_user';
 
 function mockFunctions() {
   const original = require.requireActual('./authActions');
   return {
-    ...original, //Pass down all the exported objects
-    authHandler: jest.fn(() => {console.log('I didnt call the original')}),
-    signInUser: () => {console.log('I will curry the original'); return jest.fn((...args) => original.signInUser(...args))},
-  }
+    ...original, // Pass down all the exported objects
+    authHandler: jest.fn(() => { console.log('I didnt call the original'); }),
+    signInUser: () => { console.log('I will curry the original'); return jest.fn((...args) => original.signInUser(...args)); },
+  };
 }
 jest.mock('./authActions', () => mockFunctions());
 const storage = require.requireMock('./authActions');
-
 
 
 // create a mock store for redux testing
@@ -57,31 +56,30 @@ const mockStore = configureMockStore([thunk]);
 const signInUpTests = [
   { description: 'sign-in', actionFunc: storage.signInUser },
   // { description: 'sign-up', actionFunc: actions.signUpUser },
-] 
+];
 
 describe('authActions', () => {
-
   // common to all tests
-  const initialStore = { authenticated: false, error: null, user: null }
-  const token = 'this is a token'
-  let store
-  let dispatchPromise
+  const initialStore = { authenticated: false, error: null, user: null };
+  const token = 'this is a token';
+  let store;
+  let dispatchPromise;
 
-  beforeEach(function () {
+  beforeEach(() => {
     localStorage.removeItem('token');
     moxios.install();
   });
 
-  afterEach(function () {
+  afterEach(() => {
     moxios.uninstall();
   });
   // end: common to all tests
 
-  /***************************************/
+  /** *************************************/
   // START: authHandler
-  /***************************************/
+  /** *************************************/
   // describe('authHandler', () => {
-    
+
   //   beforeEach(() => {
 
   //   });
@@ -106,17 +104,17 @@ describe('authActions', () => {
   //     });
   //   });
   // });
-  /***************************************/
+  /** *************************************/
   // END: authHandler
-  /***************************************/
+  /************************************** */
 
-  /***************************************/
+  /************************************** */
   // START: setAuthError
-  /***************************************/
+  /************************************** */
   // describe('unsuccessful login', () => {
   //   const message = 'bad login'
   //   const failureArgs = { email: userData.email, password: 'bad password' }
-    
+
   //   beforeEach(() => {
   //     // set up moxios
   //     moxios.wait(() => {
@@ -140,23 +138,23 @@ describe('authActions', () => {
   //     }]
   //   });
   // });
-  /***************************************/
+  /** *************************************/
   // END: setAuthError
-  /***************************************/
+  /** *************************************/
 
-  /****************************************/
+  /*************************************** */
   // START: successsful signIn / signUp
-  /****************************************/
+  /** **************************************/
   describe('successful sign-in / sign-up', () => {
-    const successArgs = { email: userData.email, password: userData.password }
-    const response = { token, user: userData }
-    let authHandlerSpy
+    const successArgs = { email: userData.email, password: userData.password };
+    const response = { token, user: userData };
+    let authHandlerSpy;
     beforeEach(() => {
       // mock the authHandler
       // actions.authHandler = jest.fn();
       // authHandlerSpy = jest.spyOn(actions, 'authHandler');
 
-      browserHistory.push = jest.fn()
+      browserHistory.push = jest.fn();
 
       // spy on the authHandler
       // mockAuthHandler = jest.spyOn(actions.authHandler)
@@ -176,23 +174,21 @@ describe('authActions', () => {
     });
 
     // run pretty much identical tests for sign-in and sign-up
-    signInUpTests.forEach(testSpec => {
+    signInUpTests.forEach((testSpec) => {
       // console.log('************ testSpec:::', testSpec)
 
       const { description, actionFunc } = testSpec;
       // console.log('************ actionFunc:::', actionFunc)
       describe(`successful ${description}`, () => {
         beforeEach(() => {
-          dispatchPromise = store.dispatch(actionFunc(successArgs))
+          dispatchPromise = store.dispatch(actionFunc(successArgs));
           // console.log('************ dispatchPromise:::', dispatchPromise)
         });
-        test('calls mock authHandler once', () => {
-          return dispatchPromise.then(() => {
+        test('calls mock authHandler once', () => dispatchPromise.then(() => {
             // console.log(moxios)
             // expect(actions.authHandler).toHaveBeenCalledTimes(1);
             expect(storage.authHandler).toHaveBeenCalledTimes(1);
-          });
-        });
+          }));
         // test('calls mock authHandler with the correct first argument', () => {
         //   return dispatchPromise.then(() => {
         //     expect(authHandler.mock.calls[0][0]).toBe(response);
@@ -201,20 +197,20 @@ describe('authActions', () => {
       });
     });
   });
-  /****************************************/
+  /** **************************************/
   // END: successsful signIn / signUp
-  /****************************************/
+  /** **************************************/
 
-  /****************************************/
+  /*************************************** */
   // START: unsuccesssful signIn / signUp
-  /****************************************/
+  /*************************************** */
   describe('unsuccessful sign-in / sign-up', () => {
-    const failureArgs = { email: userData.email, password: 'bad password' }
-    const response = { message: 'nope' }
-    let setAuthError
+    const failureArgs = { email: userData.email, password: 'bad password' };
+    const response = { message: 'nope' };
+    let setAuthError;
     beforeEach(() => {
       // mock setAuthError
-      setAuthError = jest.fn()
+      setAuthError = jest.fn();
 
       // set up moxios
       moxios.wait(() => {
@@ -233,7 +229,7 @@ describe('authActions', () => {
     signInUpTests.forEach(({ description, actionFunc }) => {
       describe(`failure ${description}`, () => {
         beforeEach(() => {
-          dispatchPromise = store.dispatch(actionFunc(failureArgs))
+          dispatchPromise = store.dispatch(actionFunc(failureArgs));
         });
         test('calls mock setAuthError once', () => {
           // return dispatchPromise.then(() => {
@@ -248,17 +244,16 @@ describe('authActions', () => {
       });
     });
   });
-  /****************************************/
+  /** **************************************/
   // END: unsuccesssful signIn / signUp
-  /****************************************/
+  /*************************************** */
 
 
-  /****************************************/
+  /*************************************** */
   // START: signOutUser
-  /****************************************/
+  /*************************************** */
 
-  /****************************************/
+  /** **************************************/
   // END: signOutUser
-  /****************************************/
-
+  /*************************************** */
 });

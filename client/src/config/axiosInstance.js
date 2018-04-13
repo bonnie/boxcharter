@@ -19,32 +19,17 @@
  */
 
 /**
- * Actions for the user feature
+ * Configure an axios instance to be used across all action creators.
  * @module
- * userActions
+ * axiosInstance
  */
 
-import axiosInstance from '../config/axiosInstance';
-import { GET_USERCHARTS } from './userActionTypes';
+import axios from 'axios';
+import { ROOT_URL } from '../../config';
 
-/**
- * Get charts for user
- * @param {number} userId - user ID for which to retrieve charts
- * @returns {function} - function that processes axios and dispatches an action
- */
-const getUserCharts = userId =>
-  dispatch =>
-    axiosInstance.get(`/users/${userId}/charts`)
-      .then((response) => {
-        dispatch({
-          type: GET_USERCHARTS,
-          payload: response,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+const instance = axios.create({
+  baseURL: ROOT_URL,
+  timeout: 1000,
+});
 
-module.exports = {
-  getUserCharts,
-};
+export default instance;
