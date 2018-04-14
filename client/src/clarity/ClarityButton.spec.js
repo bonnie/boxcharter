@@ -19,9 +19,9 @@
  */
 
 /**
- * Tests for the ClarityField component
+ * Tests for the ClarityButton component
  * @module
- * ClarityField-spec
+ * ClarityButton-spec
  */
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,17 +19,25 @@
  */
 
 /**
- * Exports for clarity components
+ * Clarity loading component
  * @module
- * clarity
+ * ClarityLoading
  */
 
-import ClarityButton from './ClarityButton';
-import ClarityField from './ClarityField';
-import ClarityLoading from './ClarityLoading';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-module.exports = {
-  ClarityButton,
-  ClarityField,
-  ClarityLoading,
+const ClarityLoading = props =>
+  (
+    <div data-test="clarity-loading">
+      <span data-test="loading-graphic" className="spinner-spacer spinner spinner-inline" />
+      Loading {props.loadingTarget}...
+    </div>
+  );
+
+ClarityLoading.propTypes = {
+  loadingTarget: PropTypes.string.isRequired,
 };
+
+export default ClarityLoading;
+

@@ -71,8 +71,12 @@ export default function (ComposedComponent) {
     }
   }
 
+  Authentication.defaultProps = {
+    authenticated: false,
+  };
+
   Authentication.propTypes = {
-    authenticated: PropTypes.bool.isRequired,
+    authenticated: PropTypes.bool,
   };
 
   Authentication.contextTypes = {
