@@ -31,7 +31,7 @@ import { shallow } from 'enzyme';
 import '../../jest/setupTests';
 import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
-import { ClarityField } from './ClarityField';
+import { ClarityField } from './';
 
 const label = 'Test';
 const name = 'test';

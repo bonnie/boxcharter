@@ -111,7 +111,7 @@ export class SignInComponent extends Component {
 }
 
 SignInComponent.defaultProps = {
-  errorMessage: undefined,
+  errorMessage: '',
 };
 
 SignInComponent.propTypes = {
