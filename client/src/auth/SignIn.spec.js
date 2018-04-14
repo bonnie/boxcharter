@@ -38,7 +38,7 @@ import { ClarityButton } from '../clarity';
 
 // for prop types requirements
 const defaultProps = {
-  loading: false,
+  loading: {},
   setAuthError: () => {},
   setActiveNavTab: () => {},
   signInUser: () => {},

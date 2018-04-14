@@ -95,8 +95,8 @@ describe('authActions', () => {
 
       test('dispatches AUTH_USER after successful authentication', () => {
         const expectedActions = [
-          { type: START_FETCHING, payload: undefined },
-          { type: END_FETCHING, payload: undefined },
+          { type: START_FETCHING, payload: { fetchId: description } },
+          { type: END_FETCHING, payload: { fetchId: description } },
           { type: AUTH_USER, payload: { user: userData } },
         ];
         return dispatchPromise.then(() => {

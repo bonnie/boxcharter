@@ -112,6 +112,7 @@ export class SignInComponent extends Component {
 
 SignInComponent.defaultProps = {
   errorMessage: '',
+  loading: {},
 };
 
 SignInComponent.propTypes = {
@@ -120,7 +121,10 @@ SignInComponent.propTypes = {
   signInUser: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.shape({
+    loading: PropTypes.bool,
+    error: PropTypes.string,
+  }),
 };
 
 const formOptions = {
@@ -136,7 +140,7 @@ const formOptions = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.auth.error,
-    loading: state.loading.signIn,
+    loading: state.loading['sign-in'],
   };
 }
 

@@ -51,7 +51,7 @@ describe('User actions', () => {
   });
 
   describe('getUserCharts', () => {
-    test('creates GET_USERCHARTS after successfuly fetching charts', () => {
+    test('dispatches GET_USERCHARTS after successfuly fetching charts', () => {
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
@@ -62,6 +62,8 @@ describe('User actions', () => {
 
       const expectedActions = [
         // { type: actions.GET_POSTS_START }, // TODO: loading!!
+        { type: 'start fetching', data: undefined },
+        { type: 'end fetching', data: undefined },
         { type: GET_USERCHARTS, data: charts },
       ];
 

@@ -91,18 +91,18 @@ const signInUser = ({ email, password }) =>
   // instead of returning an object, we can return a function
   // redux-thunk gives arbitrary access to dispatch method
   (dispatch) => {
-    // indicate loading start
-    dispatch({ type: START_FETCHING });
+    const fetchId = 'sign-in';
+    dispatch({ type: START_FETCHING, payload: { fetchId } });
 
     // submit email/password to api server
     return axiosInstance.post('/auth/sign-in', { email, password })
       .then((response) => {
-        dispatch({ type: END_FETCHING });
+        dispatch({ type: END_FETCHING, payload: { fetchId } });
         authHandler(response, dispatch);
       })
       .catch(() => {
       // if request is bad...
-        dispatch({ type: FETCH_ERROR, payload: 'Could not sign in user.' });
+        dispatch({ type: FETCH_ERROR, payload: { fetchId, error: 'Could not sign in user.' } });
 
         // - Show an error to the user
         dispatch(setAuthError('Bad login info'));
@@ -119,16 +119,16 @@ const signInUser = ({ email, password }) =>
  *                        and dispatches actions depending on response
  */
 const signUpUser = ({ email, password }) => (dispatch) => {
-  // indicate loading start
-  dispatch({ type: START_FETCHING });
+  const fetchId = 'sign-up';
+  dispatch({ type: START_FETCHING, payload: { fetchId } });
 
   return axiosInstance.post('/auth/sign-up', { email, password })
     .then((response) => {
-      dispatch({ type: END_FETCHING });
+      dispatch({ type: END_FETCHING, payload: { fetchId } });
       authHandler(response, dispatch);
     })
     .catch((error) => {
-      dispatch({ type: FETCH_ERROR, payload: 'Could not sign up user.' });
+      dispatch({ type: FETCH_ERROR, payload: { fetchId, error: 'Could not sign up user.' } });
       dispatch(setAuthError(error.response.data.error));
     });
 };

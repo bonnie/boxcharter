@@ -97,12 +97,16 @@ export class SignUpComponent extends Component {
 
 SignUpComponent.defaultProps = {
   errorMessage: '',
+  loading: {},
 };
 
 SignUpComponent.propTypes = {
   setAuthError: PropTypes.func.isRequired,
   setActiveNavTab: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
+  loading: PropTypes.shape({
+    loading: PropTypes.bool,
+    error: PropTypes.string,
+  }),
   signUpUser: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
@@ -144,7 +148,7 @@ const formOptions = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.auth.error,
-    loading: state.loading.signUp,
+    loading: state.loading['sign-up'],
   };
 }
 

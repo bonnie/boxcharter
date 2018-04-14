@@ -34,17 +34,18 @@ import { START_FETCHING, END_FETCHING, FETCH_ERROR } from '../loading/loadingAct
  * @returns {function} - function that processes axios and dispatches an action
  */
 const getUserCharts = userId => (dispatch) => {
-  dispatch({ type: START_FETCHING });
-  axiosInstance.get(`/users/${userId}/charts`)
+  const fetchId = 'userCharts';
+  dispatch({ type: START_FETCHING, payload: { fetchId } });
+  return axiosInstance.get(`/users/${userId}/charts`)
     .then((response) => {
-      dispatch({ type: END_FETCHING });
+      dispatch({ type: END_FETCHING, payload: { fetchId } });
       dispatch({
         type: GET_USERCHARTS,
         payload: response,
       });
     })
     .catch((error) => {
-      dispatch({ type: FETCH_ERROR, payload: 'Could not retrieve charts for this user.' });
+      dispatch({ type: FETCH_ERROR, payload: { fetchId, error: 'Could not retrieve charts for this user.' } });
       console.error(error);
     });
 };
