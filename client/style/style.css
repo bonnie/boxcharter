@@ -17,7 +17,7 @@ html, body, .full-page {
 
 /* belongs in splash page css */
 .splash-page {
-  background-image: url('/public/images/guitar5-bw.jpg');
+  background-image: url('/public/images/guitar5.jpg');
   background-position: center;
   background-repeat: no-repeat;
   margin: 0 -12px; /* to counteract the general margin for content-container */
