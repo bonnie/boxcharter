@@ -121,7 +121,7 @@ const signUpUser = ({ email, password }) => (dispatch) => {
   // indicate loading start
   dispatch({ type: START_FETCHING });
 
-  axiosInstance.post('/auth/sign-up', { email, password })
+  return axiosInstance.post('/auth/sign-up', { email, password })
     .then((response) => {
       dispatch({ type: END_FETCHING });
       authHandler(response, dispatch);
