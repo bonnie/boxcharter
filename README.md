@@ -31,7 +31,7 @@ To run this project, you'll need
 
 ### Installation
 
-  See [INSTALLING.md](https://github.com/flyrightsister/boxcharter/blob/master/INSTALLING.md for details.
+  See [INSTALLING.md](https://github.com/flyrightsister/boxcharter/blob/master/INSTALLING.md) for details.
 
 ### Accessing the application
 
