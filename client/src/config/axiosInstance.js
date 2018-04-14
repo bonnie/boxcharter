@@ -27,9 +27,28 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../config';
 
-const instance = axios.create({
+export default axios.create({
   baseURL: ROOT_URL,
   timeout: 1000,
 });
 
-export default instance;
+/**
+ * Set authentication header for given Axios instance.
+ * @function setAuthHeader
+ * @param {object} instance - Axios instance.
+ * @param {string} token - Authentication token.
+ * @returns {undefined}
+ */
+export const setAuthHeader = (instance, token) => {
+  // instance.defaults.headers.common.authorization = token;
+};
+
+/**
+ * Remove authentication header for given Axios instance.
+ * @function removeAuthHeader
+ * @param {object} instance - Axios instance.
+ * @returns {undefined}
+ */
+export const removeAuthHeader = (instance) => {
+  // delete instance.defaults.headers.common.authorization;
+};

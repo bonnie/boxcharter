@@ -36,10 +36,10 @@ import SignUp from '../auth/SignUp';
 import RequireAuth from '../auth/RequireAuth';
 
 /**
- * @function App
+ * @function Routes
  * @returns {JSX.Element} - Rendered component.
 */
-const App = () => (
+const Routes = () => (
   <div className="content-container">
     <Switch>
       <Route path="/user-profile" component={RequireAuth(UserProfile)} />
@@ -52,4 +52,4 @@ const App = () => (
   </div>
 );
 
-export default App;
+export default Routes;

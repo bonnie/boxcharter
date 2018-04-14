@@ -28,5 +28,6 @@ module.exports = {
   START_FETCHING: 'start fetching',
   END_FETCHING: 'end fetching',
   FETCH_ERROR: 'fetch error',
+  CANCEL_ALL_LOADING: 'cancel all loading',
 };
 

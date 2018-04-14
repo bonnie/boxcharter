@@ -19,32 +19,18 @@
  */
 
 /**
- * React client for BoxCharter
+ * Tests for action creators for loading state.
  * @module
- * client
+ * loadingActions.spec
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router-dom';
-import { PersistGate } from 'redux-persist/integration/react';
+import { clearLoadingEvents } from './loadingActions';
+import { CANCEL_ALL_LOADING } from './loadingActionTypes';
 
-import browserHistory from './config/history';
-import configureStore from './config/configureStore';
-import App from './app/App';
-import { ClarityLoading } from './clarity';
-
-const { store, persistor } = configureStore();
-
-ReactDOM.render(
-  <Provider store={store}>
-    <PersistGate loading={<ClarityLoading loadingTarget="data" />} persistor={persistor}>
-      <Router history={browserHistory}>
-        <App />
-      </Router>
-    </PersistGate>
-  </Provider>
-  , document.querySelector('.main-container')
-);
+describe('loading actions', () => {
+  test('clearLoadingEvents', () => {
+    const action = clearLoadingEvents();
+    expect(action.type).toBe(CANCEL_ALL_LOADING);
+  });
+});
 

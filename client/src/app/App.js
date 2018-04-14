@@ -24,24 +24,45 @@
  * App
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 
 import Header from '../nav/Header';
 import Routes from './Routes';
 import ErrorBoundary from './ErrorBoundary';
+import axiosInstance from '../config/axiosInstance';
+// import { clearLoadingEvents } from '../loading/loadingActions';
 
 /**
- * Application component
- * @returns {JSX.Element} - JSX for App component
+ * @class AppComponent
  */
-export default () =>
-  (
-    <div className="full-page">
-      <ErrorBoundary>
+export default class App extends Component {
+  /**
+   * Initialize axios auth header and reset loading states.
+   * @method constructor
+   * @param {object} props - Props.
+   * @returns {undefined}
+  */
+  constructor(props) {
+    super(props);
+
+    // restore axios header if token exists
+    const token = localStorage.getItem('token');
+    if (token) {
+      axiosInstance.defaults.headers.common.authorization = token;
+    }
+  }
+
+  /**
+   * @method render
+   * @returns {JSX.Element} - Rendered component.
+  */
+  render() {
+    return (
+      <div className="full-page">
         <Header />
-      </ErrorBoundary>
-      <ErrorBoundary>
         <Routes />
-      </ErrorBoundary>
-    </div>
-  );
+      </div>
+    );
+  }
+}
+

@@ -24,12 +24,19 @@
  * loadingReducer
  */
 
-import { START_FETCHING, END_FETCHING, FETCH_ERROR } from './loadingActionTypes';
+import { START_FETCHING, END_FETCHING, FETCH_ERROR, CANCEL_ALL_LOADING } from './loadingActionTypes';
 
 export default (state = {}, action) => {
+  // check for CANCEL_ALL_LOADING before checking for fetchId
+  if (action.type === CANCEL_ALL_LOADING) {
+    return {};
+  }
+
+  // if there's no payload (and it's not CANCEL_ALL_LOADING), just return state
   if (!action.payload || !action.payload.fetchId) {
     return state;
   }
+
   const id = action.payload.fetchId;
   switch (action.type) {
     case START_FETCHING:
