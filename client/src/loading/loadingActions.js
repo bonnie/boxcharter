@@ -26,6 +26,9 @@
 
 import { CANCEL_ALL_LOADING } from './loadingActionTypes';
 
+// TODO: call this upon page refresh
+// (where? get funny routing errors if I make App a connected component...)
+
 /**
  * Return CANCEL_ALL_LOADING action.
  * @function clearLoadingEvents
