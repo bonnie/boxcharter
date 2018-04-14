@@ -30,7 +30,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { signInUser, setAuthError } from './authActions';
 import { navActions, tabNames } from '../nav';
-import ClarityField from '../clarity/ClarityField';
+import { ClarityField, ClarityButton } from '../clarity';
 
 const fields = ['email', 'password'];
 
@@ -94,16 +94,15 @@ export class SignInComponent extends Component {
    * @returns {JSX.Element} - Rendered component.
   */
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, loading } = this.props;
+    const buttonLoading = loading.isLoading ? { loading: true } : {};
 
     return (
       <div>
         <form data-test="signin-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           <Field name="email" type="text" label="Email" required component={ClarityField} />
           <Field name="password" type="password" label="Password" required component={ClarityField} />
-          <button data-test="signin-submit" action="submit" className="btn btn-primary">
-            Sign in
-          </button>
+          <ClarityButton ReduxFormSubmit primary {...buttonLoading} dataTest="signin-submit" buttonText="Sign In" />
         </form>
         {this.renderAlert()}
       </div>
@@ -112,7 +111,8 @@ export class SignInComponent extends Component {
 }
 
 SignInComponent.defaultProps = {
-  errorMessage: undefined,
+  errorMessage: '',
+  loading: {},
 };
 
 SignInComponent.propTypes = {
@@ -121,6 +121,10 @@ SignInComponent.propTypes = {
   signInUser: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
+  loading: PropTypes.shape({
+    loading: PropTypes.bool,
+    error: PropTypes.string,
+  }),
 };
 
 const formOptions = {
@@ -134,7 +138,10 @@ const formOptions = {
  * @returns {object} - Object containing errorMessage from state.
  */
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.error };
+  return {
+    errorMessage: state.auth.error,
+    loading: state.loading['sign-in'],
+  };
 }
 
 const actions = {

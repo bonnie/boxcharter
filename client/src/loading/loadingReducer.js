@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,24 +19,27 @@
  */
 
 /**
- * Reducers for the app
+ * Reducer for loading state.
  * @module
- * reducers
+ * loadingReducer
  */
 
-import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
-import authReducer from '../auth/authReducer';
-import userChartsReducer from '../user/userChartsReducer';
-import navReducer from '../nav/navReducer';
-import loadingReducer from '../loading/loadingReducer';
+import { START_FETCHING, END_FETCHING, FETCH_ERROR } from './loadingActionTypes';
 
-const rootReducer = combineReducers({
-  form: formReducer,
-  auth: authReducer,
-  charts: userChartsReducer,
-  nav: navReducer,
-  loading: loadingReducer,
-});
+export default (state = {}, action) => {
+  if (!action.payload || !action.payload.fetchId) {
+    return state;
+  }
+  const id = action.payload.fetchId;
+  switch (action.type) {
+    case START_FETCHING:
+      return { ...state, [id]: { isLoading: true, error: null } };
+    case END_FETCHING:
+      return { ...state, [id]: { isLoading: false, error: null } };
+    case FETCH_ERROR:
+      return { ...state, [id]: { isLoading: false, error: action.payload.error } };
+    default:
+      return state;
+  }
+};
 
-export default rootReducer;

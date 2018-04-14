@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Bonnie Schulkin. All Rights Reserved.
+ * Copyright (c) 2017 Bonnie Schulkin. All Rights Reserved.
  *
  * This file is part of BoxCharter.
  *
@@ -19,24 +19,25 @@
  */
 
 /**
- * Reducers for the app
+ * Clarity loading component
  * @module
- * reducers
+ * ClarityLoading
  */
 
-import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
-import authReducer from '../auth/authReducer';
-import userChartsReducer from '../user/userChartsReducer';
-import navReducer from '../nav/navReducer';
-import loadingReducer from '../loading/loadingReducer';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const rootReducer = combineReducers({
-  form: formReducer,
-  auth: authReducer,
-  charts: userChartsReducer,
-  nav: navReducer,
-  loading: loadingReducer,
-});
+const ClarityLoading = props =>
+  (
+    <div data-test="clarity-loading">
+      <span data-test="loading-graphic" className="spinner-spacer spinner spinner-inline" />
+      Loading {props.loadingTarget}...
+    </div>
+  );
 
-export default rootReducer;
+ClarityLoading.propTypes = {
+  loadingTarget: PropTypes.string.isRequired,
+};
+
+export default ClarityLoading;
+

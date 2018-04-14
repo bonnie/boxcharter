@@ -32,10 +32,54 @@ import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { UserChartsComponent } from './UserCharts';
 import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
+import { ClarityLoading } from '../clarity';
+
+const defaultProps = {
+  charts: [],
+  auth: { authenticated: true, user: { userId: 1 } },
+  getUserCharts: () => {},
+};
 
 describe('UserCharts', () => {
   // make three charts for the user; these would ordinarily be stored in state
-  const chart = chartData[0].chartMetaData;
+  const chart = { ...chartData[0].chartMetaData, chartId: 1 };
+  describe('loading', () => {
+    const loading = {
+      isLoading: true,
+      error: null,
+    };
+    describe('nonzero charts in state', () => {
+      const props = {
+        ...defaultProps,
+        charts: [chart],
+        loading,
+      };
+      const wrapper = shallow(<UserChartsComponent {...props} />);
+      test('do not display loading when there are charts to show', () => {
+        const loadingNode = wrapper.find(ClarityLoading);
+        expect(loadingNode.length).toBe(0);
+      });
+      test('display charts while loading', () => {
+        const chartsContainer = findWrapperNodeByTestId(wrapper, 'charts-container');
+        expect(chartsContainer.length).toBe(1);
+      });
+    });
+    describe('zero charts in state', () => {
+      const props = {
+        ...defaultProps,
+        loading,
+      };
+      const wrapper = shallow(<UserChartsComponent {...props} />);
+      test('display loading when there are no charts and state indicates', () => {
+        const loadingNode = wrapper.find(ClarityLoading);
+        expect(loadingNode.length).toBe(1);
+      });
+      test('do not display "no charts" text while loading', () => {
+        const noChartsMessage = findWrapperNodeByTestId(wrapper, 'no-charts-message');
+        expect(noChartsMessage.length).toBe(0);
+      });
+    });
+  });
   describe('non-empty charts list', () => {
     test('table should have non-zero rows', () => {
       const chartCount = 3;
@@ -46,11 +90,10 @@ describe('UserCharts', () => {
         newChart.chartId = i;
         charts.push(newChart);
       }
+      const props = { ...defaultProps, charts };
       const component =
         (<UserChartsComponent
-          charts={charts}
-          auth={{}}
-          getUserCharts={() => {}}
+          {...props}
         />);
       const wrapper = shallow(component);
       const tbody = findWrapperNodeByTestId(wrapper, 'charts-container');
@@ -59,12 +102,9 @@ describe('UserCharts', () => {
   });
 
   describe('empty charts list', () => {
-    const charts = [];
     const component =
     (<UserChartsComponent
-      charts={charts}
-      auth={{}}
-      getUserCharts={() => {}}
+      {...defaultProps}
     />);
     const wrapper = shallow(component);
     const tbody = findWrapperNodeByTestId(wrapper, 'user-charts-table');
@@ -78,17 +118,7 @@ describe('UserCharts', () => {
   });
   describe('prop-types', () => {
     test('no error with correct props', () => {
-      const props = {
-        auth: {
-          authenticated: true,
-          user: {
-            userId: 1,
-          },
-        },
-        charts: [],
-        getUserCharts: () => {},
-      };
-      const propTypesError = checkProps(UserChartsComponent, props);
+      const propTypesError = checkProps(UserChartsComponent, defaultProps);
       expect(propTypesError).toBeUndefined();
     });
   });

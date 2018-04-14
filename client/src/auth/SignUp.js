@@ -31,7 +31,7 @@ import { Field, reduxForm } from 'redux-form';
 
 import { signUpUser, setAuthError } from './authActions';
 import { navActions, tabNames } from '../nav';
-import ClarityField from '../clarity/ClarityField';
+import { ClarityField, ClarityButton } from '../clarity';
 
 const fields = ['email', 'password', 'passwordConfirm'];
 
@@ -81,13 +81,14 @@ export class SignUpComponent extends Component {
    * @returns {JSX.Element} - Rendered component.
   */
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, loading } = this.props;
+    const buttonLoading = loading.isLoading ? { loading: true } : {};
     return (
       <form data-test="signup-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
         <Field name="email" type="text" label="Email" required component={ClarityField} />
         <Field name="password" type="password" label="Password" required component={ClarityField} />
         <Field name="passwordConfirm" type="password" label="Confirm Password" required component={ClarityField} />
-        <button data-test="signup-submit" action="submit" className="btn btn-primary">Sign up</button>
+        <ClarityButton reduxFormSubmit primary {...buttonLoading} dataTest="signup-submit" buttonText="Sign up" />
         { this.renderAlert() }
       </form>
     );
@@ -95,12 +96,17 @@ export class SignUpComponent extends Component {
 }
 
 SignUpComponent.defaultProps = {
-  errorMessage: undefined,
+  errorMessage: '',
+  loading: {},
 };
 
 SignUpComponent.propTypes = {
   setAuthError: PropTypes.func.isRequired,
   setActiveNavTab: PropTypes.func.isRequired,
+  loading: PropTypes.shape({
+    loading: PropTypes.bool,
+    error: PropTypes.string,
+  }),
   signUpUser: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   errorMessage: PropTypes.string,
@@ -140,7 +146,10 @@ const formOptions = {
  * @returns {object} - Object containing errorMessage from state.
  */
 function mapStateToProps(state) {
-  return { errorMessage: state.auth.error };
+  return {
+    errorMessage: state.auth.error,
+    loading: state.loading['sign-up'],
+  };
 }
 
 const actions = {

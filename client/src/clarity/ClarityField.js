@@ -60,7 +60,7 @@ ClarityField.propTypes = {
   required: PropTypes.bool,
   meta: PropTypes.shape({
     touched: PropTypes.bool.isRequired,
-    error: PropTypes.string.isRequired,
+    error: PropTypes.string,
   }).isRequired,
 };
 

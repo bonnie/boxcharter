@@ -30,6 +30,7 @@ import { connect } from 'react-redux';
 
 import ChartRow from './ChartRow';
 import { getUserCharts } from './userActions';
+import { ClarityLoading } from '../clarity';
 
 /**
  * @class UserChartsComponent
@@ -51,6 +52,12 @@ export class UserChartsComponent extends Component {
    * @returns {JSX.Element} - Rendered component.
   */
   render() {
+    if (this.props.loading.isLoading && this.props.charts.length === 0) {
+      return (
+        <ClarityLoading loadingTarget="charts" />
+      );
+    }
+
     if (this.props.charts.length === 0) {
       return (
         <div data-test="no-charts-message">No charts saved</div>
@@ -78,6 +85,10 @@ export class UserChartsComponent extends Component {
   }
 }
 
+UserChartsComponent.defaultProps = {
+  loading: {},
+};
+
 UserChartsComponent.propTypes = {
   auth: PropTypes.shape({
     authenticated: PropTypes.bool,
@@ -87,6 +98,10 @@ UserChartsComponent.propTypes = {
   }).isRequired,
   charts: PropTypes.arrayOf(PropTypes.object).isRequired,
   getUserCharts: PropTypes.func.isRequired,
+  loading: PropTypes.shape({
+    isLoading: PropTypes.bool,
+    error: PropTypes.string,
+  }),
 };
 
 /**
@@ -97,8 +112,8 @@ UserChartsComponent.propTypes = {
  * @param {object} state.charts - Metadata for charts for current user.
  * @returns {object} - auth and charts properties of state.
  */
-function mapStateToProps({ auth, charts }) {
-  return { auth, charts };
+function mapStateToProps({ auth, charts, loading }) {
+  return { auth, charts, loading: loading['user-charts'] };
 }
 
 export default connect(mapStateToProps, { getUserCharts })(UserChartsComponent);

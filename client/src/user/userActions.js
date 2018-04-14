@@ -26,24 +26,29 @@
 
 import axiosInstance from '../config/axiosInstance';
 import { GET_USERCHARTS } from './userActionTypes';
+import { START_FETCHING, END_FETCHING, FETCH_ERROR } from '../loading/loadingActionTypes';
 
 /**
  * Get charts for user
  * @param {number} userId - user ID for which to retrieve charts
  * @returns {function} - function that processes axios and dispatches an action
  */
-const getUserCharts = userId =>
-  dispatch =>
-    axiosInstance.get(`/users/${userId}/charts`)
-      .then((response) => {
-        dispatch({
-          type: GET_USERCHARTS,
-          payload: response,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
+const getUserCharts = userId => (dispatch) => {
+  const fetchId = 'userCharts';
+  dispatch({ type: START_FETCHING, payload: { fetchId } });
+  return axiosInstance.get(`/users/${userId}/charts`)
+    .then((response) => {
+      dispatch({ type: END_FETCHING, payload: { fetchId } });
+      dispatch({
+        type: GET_USERCHARTS,
+        payload: response,
       });
+    })
+    .catch((error) => {
+      dispatch({ type: FETCH_ERROR, payload: { fetchId, error: 'Could not retrieve charts for this user.' } });
+      console.error(error);
+    });
+};
 
 module.exports = {
   getUserCharts,

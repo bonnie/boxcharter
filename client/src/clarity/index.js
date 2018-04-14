@@ -19,24 +19,17 @@
  */
 
 /**
- * Reducers for the app
+ * Exports for clarity components
  * @module
- * reducers
+ * clarity
  */
 
-import { combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
-import authReducer from '../auth/authReducer';
-import userChartsReducer from '../user/userChartsReducer';
-import navReducer from '../nav/navReducer';
-import loadingReducer from '../loading/loadingReducer';
+import ClarityButton from './ClarityButton';
+import ClarityField from './ClarityField';
+import ClarityLoading from './ClarityLoading';
 
-const rootReducer = combineReducers({
-  form: formReducer,
-  auth: authReducer,
-  charts: userChartsReducer,
-  nav: navReducer,
-  loading: loadingReducer,
-});
-
-export default rootReducer;
+module.exports = {
+  ClarityButton,
+  ClarityField,
+  ClarityLoading,
+};

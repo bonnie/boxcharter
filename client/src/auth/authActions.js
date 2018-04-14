@@ -33,6 +33,13 @@ import {
   UNAUTH_USER,
 } from './authActionTypes';
 
+import {
+  START_FETCHING,
+  END_FETCHING,
+  FETCH_ERROR,
+} from '../loading/loadingActionTypes';
+
+
 /**
  * Return an action representing an authentication error.
  * @function setAuthError
@@ -83,15 +90,24 @@ const signInUser = ({ email, password }) =>
   // because we have redux-thunk middleware,
   // instead of returning an object, we can return a function
   // redux-thunk gives arbitrary access to dispatch method
-  dispatch =>
+  (dispatch) => {
+    const fetchId = 'sign-in';
+    dispatch({ type: START_FETCHING, payload: { fetchId } });
+
     // submit email/password to api server
-    axiosInstance.post('/auth/sign-in', { email, password })
-      .then(response => authHandler(response, dispatch))
+    return axiosInstance.post('/auth/sign-in', { email, password })
+      .then((response) => {
+        dispatch({ type: END_FETCHING, payload: { fetchId } });
+        authHandler(response, dispatch);
+      })
       .catch(() => {
-        // if request is bad...
+      // if request is bad...
+        dispatch({ type: FETCH_ERROR, payload: { fetchId, error: 'Could not sign in user.' } });
+
         // - Show an error to the user
         dispatch(setAuthError('Bad login info'));
       });
+  };
 
 /**
  * Action creator to sign up a user
@@ -102,10 +118,20 @@ const signInUser = ({ email, password }) =>
  * @returns {function} - Function that takes dispatch, contacts the server,
  *                        and dispatches actions depending on response
  */
-const signUpUser = ({ email, password }) => dispatch =>
-  axiosInstance.post('/auth/sign-up', { email, password })
-    .then(response => authHandler(response, dispatch))
-    .catch(error => dispatch(setAuthError(error.response.data.error)));
+const signUpUser = ({ email, password }) => (dispatch) => {
+  const fetchId = 'sign-up';
+  dispatch({ type: START_FETCHING, payload: { fetchId } });
+
+  return axiosInstance.post('/auth/sign-up', { email, password })
+    .then((response) => {
+      dispatch({ type: END_FETCHING, payload: { fetchId } });
+      authHandler(response, dispatch);
+    })
+    .catch((error) => {
+      dispatch({ type: FETCH_ERROR, payload: { fetchId, error: 'Could not sign up user.' } });
+      dispatch(setAuthError(error.response.data.error));
+    });
+};
 
 /**
  * Action creator to sign out a user.
