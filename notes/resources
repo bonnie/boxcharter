@@ -34,6 +34,7 @@ https://btholt.github.io/complete-intro-to-react/
 
 ***** general
 https://medium.com/@netxm/how-to-get-started-with-software-testing-9fa1ce4f2a64
+https://medium.com/stashaway-engineering/how-to-go-from-good-to-great-948bb31c3363
 
 ***** React / Redux integration testing
 https://hackernoon.com/low-effort-high-value-integration-tests-in-redux-apps-d3a590bd9fd5
@@ -152,6 +153,11 @@ https://medium.freecodecamp.org/evolving-patterns-in-react-116140e5fe8f
 ******* readable react code
 https://medium.freecodecamp.org/10-points-to-remember-thatll-help-you-master-coding-in-reactjs-library-d0520d8c73d8
 
+******* redux ducks
+https://github.com/erikras/ducks-modular-redux
+
+
+
 /*******************************/
 /* End: Best practices */
 /*******************************/
@@ -168,5 +174,9 @@ https://vmware.github.io/clarity/documentation/v0.11/buttons (search for "loadin
 https://stackoverflow.com/questions/35456935/how-to-show-a-loading-indicator-in-react-redux-app-while-fetching-the-data/35643128#35643128
 -> not redux https://blog.stvmlbrn.com/2017/10/14/display-loading-indicator-in-react-during-ajax-requests.html
 http://codetunnel.io/how-to-create-versatile-loading-spinner-management-in-react/
+
+***** loading, redux
+http://gavinschulz.com/posts/2017-03-22-4-techniques-for-loading-states-in-redux.html
+fave -----> https://medium.com/stashaway-engineering/react-redux-tips-better-way-to-handle-loading-flags-in-your-reducers-afda42a804c6
 
 /**********************************/

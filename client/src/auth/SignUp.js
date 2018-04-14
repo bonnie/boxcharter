@@ -82,7 +82,7 @@ export class SignUpComponent extends Component {
   */
   render() {
     const { handleSubmit, loading } = this.props;
-    const buttonLoading = loading ? { loading: true } : {};
+    const buttonLoading = loading.isLoading ? { loading: true } : {};
     return (
       <form data-test="signup-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
         <Field name="email" type="text" label="Email" required component={ClarityField} />
@@ -144,7 +144,7 @@ const formOptions = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.auth.error,
-    loading: state.loading,
+    loading: state.loading.signUp,
   };
 }
 

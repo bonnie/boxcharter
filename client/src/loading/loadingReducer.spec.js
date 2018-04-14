@@ -24,21 +24,34 @@
  * loadingReducer.spec
  */
 
-import { START_FETCHING, END_FETCHING } from './loadingActionTypes';
+import { START_FETCHING, END_FETCHING, FETCH_ERROR } from './loadingActionTypes';
 import loadingReducer from './loadingReducer';
 
+const fetchId = 'signIn';
+const error = 'not good';
+const loadingState = { [fetchId]: { isLoading: true, error: null } };
+const endState = { [fetchId]: { isLoading: false, error: null } };
+const errorState = { [fetchId]: { isLoading: false, error } };
+
 describe('loading reducer', () => {
-  test('return false when no action or state provided', () => {
+  test('return empty object when no action or state provided', () => {
     const loading = loadingReducer(undefined, {});
-    expect(loading).toBe(false);
+    expect(loading).toMatchObject({});
   });
   test('set loading to true upon START_FETCHING action', () => {
-    const loading = loadingReducer(false, { type: START_FETCHING });
-    expect(loading).toBe(true);
+    const payload = { fetchId };
+    const loading = loadingReducer({}, { type: START_FETCHING, payload });
+    expect(loading).toMatchObject(loadingState);
   });
-  test('set loading to true upon END_FETCHING action', () => {
-    const loading = loadingReducer(true, { type: END_FETCHING });
-    expect(loading).toBe(false);
+  test('set loading to false upon END_FETCHING action', () => {
+    const payload = { fetchId };
+    const loading = loadingReducer(loadingState, { type: END_FETCHING, payload });
+    expect(loading).toMatchObject(endState);
+  });
+  test('set loading to false and set error upon FETCH_ERROR action', () => {
+    const payload = { fetchId, error };
+    const loading = loadingReducer(loadingState, { type: FETCH_ERROR, payload });
+    expect(loading).toMatchObject(errorState);
   });
 });
 

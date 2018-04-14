@@ -36,6 +36,7 @@ import {
 import {
   START_FETCHING,
   END_FETCHING,
+  FETCH_ERROR,
 } from '../loading/loadingActionTypes';
 
 
@@ -101,7 +102,7 @@ const signInUser = ({ email, password }) =>
       })
       .catch(() => {
       // if request is bad...
-        dispatch({ type: END_FETCHING });
+        dispatch({ type: FETCH_ERROR, payload: 'Could not sign in user.' });
 
         // - Show an error to the user
         dispatch(setAuthError('Bad login info'));
@@ -127,7 +128,7 @@ const signUpUser = ({ email, password }) => (dispatch) => {
       authHandler(response, dispatch);
     })
     .catch((error) => {
-      dispatch({ type: END_FETCHING });
+      dispatch({ type: FETCH_ERROR, payload: 'Could not sign up user.' });
       dispatch(setAuthError(error.response.data.error));
     });
 };

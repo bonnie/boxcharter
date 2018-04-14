@@ -24,14 +24,20 @@
  * loadingReducer
  */
 
-import { START_FETCHING, END_FETCHING } from './loadingActionTypes';
+import { START_FETCHING, END_FETCHING, FETCH_ERROR } from './loadingActionTypes';
 
-export default (state = false, action) => {
+export default (state = {}, action) => {
+  if (!action.payload || !action.payload.fetchId) {
+    return state;
+  }
+  const id = action.payload.fetchId;
   switch (action.type) {
     case START_FETCHING:
-      return true;
+      return { ...state, [id]: { isLoading: true, error: null } };
     case END_FETCHING:
-      return false;
+      return { ...state, [id]: { isLoading: false, error: null } };
+    case FETCH_ERROR:
+      return { ...state, [id]: { isLoading: false, error: action.payload.error } };
     default:
       return state;
   }

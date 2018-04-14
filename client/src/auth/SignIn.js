@@ -95,7 +95,7 @@ export class SignInComponent extends Component {
   */
   render() {
     const { handleSubmit, loading } = this.props;
-    const buttonLoading = loading ? { loading: true } : {};
+    const buttonLoading = loading.isLoading ? { loading: true } : {};
 
     return (
       <div>
@@ -136,7 +136,7 @@ const formOptions = {
 function mapStateToProps(state) {
   return {
     errorMessage: state.auth.error,
-    loading: state.loading,
+    loading: state.loading.signIn,
   };
 }
 
