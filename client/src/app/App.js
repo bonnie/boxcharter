@@ -36,7 +36,7 @@ import ErrorBoundary from './ErrorBoundary';
  */
 export default () =>
   (
-    <div>
+    <div className="full-page">
       <ErrorBoundary>
         <Header />
       </ErrorBoundary>

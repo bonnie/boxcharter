@@ -1,8 +1,42 @@
+html, body, .full-page {
+  height: 100%;
+  width: 100%;
+}
+
 .content-container {
-  margin: 0 10px;
+  position: absolute;
+  margin: 0 12px;
+  height: 100%;
+  width: 100%;
 }
 
 /* belongs in clarity css */
 .spinner-spacer {
   margin-right: 0.5em;
 }
+
+/* belongs in splash page css */
+.splash-page {
+  background-image: url('/public/images/guitar5.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 -12px; /* to counteract the general margin for content-container */
+  height: 100%;
+  width: 100%;
+}
+
+.splash-blurb {
+  border-radius: 12px;
+  background-color: white;
+  opacity: 0.85;
+  margin-left: 24px;
+  margin-top: 24px;
+  padding: 18px;
+  width: 45%;
+}
+
+.boxcharter-splash {
+  margin-right: 12px;
+}
+
+/* end: splash-page css */

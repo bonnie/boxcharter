@@ -33,7 +33,7 @@ import NavLink from './NavLink';
 export default () => {
   const linkDisplay = (
     <span>
-      <img alt="BoxCharter" src="/public/images/boxcharter-48.png" />
+      <img alt="BoxCharter" src="/public/images/logos/boxcharter-48.png" />
       <span className="title">BoxCharter</span>
     </span>
   );

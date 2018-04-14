@@ -24,17 +24,18 @@
  * SplashPage
  */
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-const SplashPage = props => (
+const SplashPage = () => (
   <div className="splash-page">
-    <h1>Splash Page!</h1>
+    <div className="splash-blurb">
+      <h1>
+        <img className="boxcharter-splash" alt="boxcharter-logo" src="/public/images/logos/boxcharter-75.png" />
+          BoxCharter
+      </h1>
+      <h4>Create box charts. Download PDFs. Make music with friends.</h4>
+    </div>
   </div>
 );
 
-function mapStateToProps({ user }) {
-  return { user };
-}
-
-export default connect(mapStateToProps)(SplashPage);
+export default SplashPage;
