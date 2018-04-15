@@ -28,7 +28,7 @@ import React, { Component } from 'react';
 
 import Header from '../nav/Header';
 import Routes from './Routes';
-import ErrorBoundary from './ErrorBoundary';
+import ErrorBoundary from '../error/ErrorBoundary';
 import axiosInstance from '../config/axiosInstance';
 // import { clearLoadingEvents } from '../loading/loadingActions';
 
@@ -59,7 +59,9 @@ export default class App extends Component {
   render() {
     return (
       <div className="full-page">
-        <Header />
+        <ErrorBoundary>
+          <Header />
+        </ErrorBoundary>
         <Routes />
       </div>
     );

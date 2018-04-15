@@ -1,7 +1,5 @@
 to do before forging on: 
 
-* persist login on refresh
-  * be sure to persist axios instance header as well, using token
   * loading state: 
     * I explicitly blacklist all of my isFetching properties from whatever redux persistence I'm using.
     * Or you can have a 'cancel all network events' action that you dispatch straight after createStore, (which will also fire if you pick up your store from localstorage) which resets all isFetching flags
@@ -25,3 +23,5 @@ Done!
   * make sure all functions have jsdoc
 * axios instance / token header
 * component loading states
+* persist login on refresh
+  * be sure to persist axios instance header as well, using token

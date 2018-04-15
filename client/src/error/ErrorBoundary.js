@@ -19,13 +19,14 @@
  */
 
 /**
- * adapted from https://github.com/LearnersGuild/talent/blob/master/src/client/components/errorBoundary/index.jsx
- * @module
- * ErrorBoundary
+ * Error boundary component for error handling.
+ * @module ErrorBoundary
  */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import BoxCharterError from '../error/Error';
 
 /**
  * @class ErrorBoundary
@@ -47,16 +48,19 @@ export default class ErrorBoundary extends Component {
   /**
    * @method componentDidCatch
    * @param {Error} error - Caught error.
-   * @param {any} info - Additional information.
+   * @param {array} errorInfo - Additional information.
    * @returns {undefined}
    */
-  componentDidCatch(error, info) {
+  componentDidCatch(error, errorInfo) {
+    console.log('We found ourselves an error!!!!!!!!!!', error.toString());
     this.setState({
       hasError: true,
+      error,
+      errorInfo,
     });
 
     // TODO: send error back to server
-    console.error(error, info);
+    // console.error(error, info);
   }
 
   /**
@@ -64,10 +68,9 @@ export default class ErrorBoundary extends Component {
    * @returns {any} - Array of children components, or error component
   */
   render() {
+    console.log('do we have an error folks???????????', this.state.hasError);
     if (this.state.hasError) {
-      return (
-        <img alt="error" src="https://c1.staticflickr.com/8/7001/6509400855_aaaf915871_b.jpg" />
-      );
+      return <BoxCharterError error={this.state.error} errorInfo={this.state.errorInfo} />;
     }
 
     return this.props.children;
@@ -79,5 +82,8 @@ ErrorBoundary.defaultProps = {
 };
 
 ErrorBoundary.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
