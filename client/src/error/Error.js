@@ -33,10 +33,11 @@ const Error = props => (
     <details>
       {props.error && props.error.toString()}
       <br />
+      <h5>Component Stack</h5>
       <pre>{props.errorInfo.componentStack}</pre>
     </details>
-    <h4>The site administrator has been alerted. In the meantime, enjoy this picture of a kitten.</h4>
-    <img alt="kitten" src="/public/images/kitten.jpg" />
+    <h4>The site administrator has been alerted. This cat regrets the error.</h4>
+    <img alt="regret cat" src="/public/images/regret-cat.jpg" />
   </div>
 );
 
@@ -47,7 +48,14 @@ Error.defaultProps = {
 };
 
 Error.propTypes = {
-  error: PropTypes.instanceOf(Error),
+  error: PropTypes.oneOfType([
+    PropTypes.instanceOf(Error),
+    PropTypes.instanceOf(TypeError),
+    PropTypes.instanceOf(SyntaxError),
+    PropTypes.instanceOf(EvalError),
+    PropTypes.instanceOf(ReferenceError),
+    PropTypes.instanceOf(RangeError),
+  ]),
   errorInfo: PropTypes.shape({
     componentStack: PropTypes.string,
   }),

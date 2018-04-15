@@ -24,11 +24,45 @@
  * ErrorBoundary-spec
  */
 
-// import React from 'react';
-// import { shallow } from 'enzyme';
-// import ErrorBoundary from './ErrorBoundary';
+import React from 'react';
+import { shallow } from 'enzyme';
+
+import '../../jest/setupTests';
+import { checkProps } from '../../jest/utils';
+import ErrorBoundary from './ErrorBoundary';
+import SplashPage from '../app/SplashPage'; // for a child component
+import Error from './Error';
+
 
 describe('ErrorBoundary', () => {
-  test('renders', () => {
+  describe('no error thrown', () => {
+    test('display children', () => {
+      const wrapper = shallow(<ErrorBoundary children={<SplashPage />} route="/" />);
+      expect(wrapper.find(SplashPage)).toBeTruthy();
+    });
+  });
+  describe('error thrown', () => {
+    const wrapper = shallow(<ErrorBoundary routeName="/bad" />);
+    wrapper.setState({ hasError: true });
+    test('display Error component', () => {
+      expect(wrapper.find(Error)).toBeTruthy();
+    });
+    test('send error to server', () => {
+      // TODO: set up mock to check that function is called
+    });
+    test('error clears when switching routes', () => {
+      wrapper.setProps({ routeName: '/good' });
+      expect(wrapper.state('hasError')).toBe(false);
+    });
+  });
+  describe('prop-types', () => {
+    test('no error with correct prop-types', () => {
+      const props = {
+        routeName: 'route',
+        children: <SplashPage />,
+      };
+      const propsError = checkProps(ErrorBoundary, props);
+      expect(propsError).toBe(undefined);
+    });
   });
 });

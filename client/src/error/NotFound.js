@@ -29,7 +29,7 @@ export default () => (
   <div data-test="not-found-component">
     <h3><clr-icon shape="error-standard" size="36" /> Page not found.</h3>
     <br />
-    <h4>Enjoy this happy puppy.</h4>
+    <h4>Here's a puppy.</h4>
     <img alt="puppy" src="/public/images/puppy.jpg" />
   </div>
 );

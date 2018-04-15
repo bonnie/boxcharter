@@ -26,7 +26,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import BoxCharterError from '../error/Error';
+import Error from '../error/Error';
 
 /**
  * @class ErrorBoundary
@@ -46,13 +46,27 @@ export default class ErrorBoundary extends Component {
   }
 
   /**
+   * Reset error state if route has changed.
+   * NOTE: I suspect this is not the "right" way to do this, but I can't figure out another way.
+   * @method componentWillReceiveProps
+   * @param {object} nextProps - New props being received.
+   * @returns {undefined}
+   */
+  componentWillReceiveProps(nextProps) {
+    if (this.props.routeName !== nextProps.routeName) {
+      this.setState({
+        hasError: false,
+      });
+    }
+  }
+
+  /**
    * @method componentDidCatch
    * @param {Error} error - Caught error.
-   * @param {array} errorInfo - Additional information.
+   * @param {object} errorInfo - Additional information.
    * @returns {undefined}
    */
   componentDidCatch(error, errorInfo) {
-    console.log('We found ourselves an error!!!!!!!!!!', error.toString());
     this.setState({
       hasError: true,
       error,
@@ -63,14 +77,14 @@ export default class ErrorBoundary extends Component {
     // console.error(error, info);
   }
 
+
   /**
    * @method render
    * @returns {any} - Array of children components, or error component
   */
   render() {
-    console.log('do we have an error folks???????????', this.state.hasError);
     if (this.state.hasError) {
-      return <BoxCharterError error={this.state.error} errorInfo={this.state.errorInfo} />;
+      return <Error error={this.state.error} errorInfo={this.state.errorInfo} />;
     }
 
     return this.props.children;
@@ -79,9 +93,11 @@ export default class ErrorBoundary extends Component {
 
 ErrorBoundary.defaultProps = {
   children: [],
+  routeName: '',
 };
 
 ErrorBoundary.propTypes = {
+  routeName: PropTypes.string,
   children: PropTypes.oneOfType([
     PropTypes.element,
     PropTypes.arrayOf(PropTypes.element),

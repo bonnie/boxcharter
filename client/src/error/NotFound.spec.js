@@ -23,8 +23,17 @@
  * @module NotFound.spec
  */
 
+import React from 'react';
+import { shallow } from 'enzyme';
+
+import '../../jest/setupTests';
+import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
+import NotFound from './NotFound';
+
 describe('NotFound component', () => {
   test('renders', () => {
-    // TODO: add tests
+    const wrapper = shallow(<NotFound />);
+    const componentNode = findWrapperNodeByTestId(wrapper, 'not-found-component');
+    expect(componentNode.length).toBe(1);
   });
 });
