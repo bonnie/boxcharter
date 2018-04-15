@@ -25,6 +25,7 @@
 
 describe('Error component', () => {
   test('renders', () => {
+    // TODO: add tests
 
   });
 });

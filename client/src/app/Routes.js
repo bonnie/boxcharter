@@ -37,6 +37,9 @@ import RequireAuth from '../auth/RequireAuth';
 import ErrorBoundary from '../error/ErrorBoundary';
 import NotFound from '../error/NotFound';
 
+// TODO: jsdoc
+// TODO: isolate error to the component / route / tab that threw the error
+// (as it is, error persists when switching tabs)
 const addErrorBoundary = Component => () => (
   <ErrorBoundary>
     <Component />

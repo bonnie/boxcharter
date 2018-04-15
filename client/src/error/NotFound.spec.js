@@ -25,6 +25,6 @@
 
 describe('NotFound component', () => {
   test('renders', () => {
-
+    // TODO: add tests
   });
 });
