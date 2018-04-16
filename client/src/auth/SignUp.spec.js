@@ -39,7 +39,7 @@ import '../../jest/setupTests';
 import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { SignUpComponent } from './SignUp';
-import { ClarityButton } from '../clarity';
+import { ClarityButton, ClarityAlert } from '../clarity';
 
 const defaultProps = {
   loading: {},
@@ -69,7 +69,7 @@ describe('SignUp', () => {
       expect(renderedFields).toEqual(['email', 'password', 'passwordConfirm']);
     });
     test('displays no error if there is no error', () => {
-      expect(findWrapperNodeByTestId(wrapper, 'alert')).toHaveLength(0);
+      expect(wrapper.find(ClarityAlert)).toHaveLength(0);
     });
   });
   describe('SignUp Component error rendering', () => {
@@ -81,7 +81,7 @@ describe('SignUp', () => {
         errorMessage: 'not good',
       };
       const wrapper = shallow(<SignUpComponent {...props} />);
-      expect(findWrapperNodeByTestId(wrapper, 'alert')).toHaveLength(1);
+      expect(wrapper.find(ClarityAlert)).toHaveLength(1);
     });
   });
   describe('SignUp component functionality', () => {

@@ -65,7 +65,7 @@ describe('SignIn', () => {
       expect(renderedFields).toEqual(['email', 'password']);
     });
     test('displays no error if there is no error', () => {
-      expect(findWrapperNodeByTestId(wrapper, 'alert')).toHaveLength(0);
+      expect(wrapper.find(ClarityAlert)).toHaveLength(0);
     });
   });
   describe('SignIn Component error rendering', () => {

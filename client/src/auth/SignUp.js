@@ -31,7 +31,7 @@ import { Field, reduxForm } from 'redux-form';
 
 import { signUpUser, setAuthError } from './authActions';
 import { navActions, tabNames } from '../nav';
-import { ClarityField, ClarityButton } from '../clarity';
+import { ClarityField, ClarityButton, ClarityAlert } from '../clarity';
 
 const fields = ['email', 'password', 'passwordConfirm'];
 
@@ -69,9 +69,11 @@ export class SignUpComponent extends Component {
   renderAlert() {
     if (this.props.errorMessage) {
       return (
-        <div data-test="alert" className="alert alert-danger">
-          <strong>Oops!</strong> {this.props.errorMessage}
-        </div>
+        <ClarityAlert
+          alertText={this.props.errorMessage}
+          alertType="danger"
+          communicateCloseToParent={() => this.props.setAuthError(null)}
+        />
       );
     }
   }
