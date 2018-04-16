@@ -31,7 +31,7 @@ jobs:
       - run: sudo apt install postgresql-client
 
       - run:
-          name: Database Setup
+          name: Client / Server Setup
           command:
             npm run setup 
 
