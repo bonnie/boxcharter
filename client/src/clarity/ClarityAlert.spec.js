@@ -40,7 +40,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import '../../jest/setupTests';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { checkProps } from '../../jest/utils';
 import ClarityAlert from './ClarityAlert';

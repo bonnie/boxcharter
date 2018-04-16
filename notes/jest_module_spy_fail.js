@@ -28,7 +28,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moxios from 'moxios';
 
-import '../../jest/setupTests';
 import browserHistory from '../config/history';
 // import { authHandler, setAuthError, signInUser, signUpUser } from './authActions'
 // import { signInUser, signUpUser } from './authActions'
@@ -75,9 +74,9 @@ describe('authActions', () => {
   });
   // end: common to all tests
 
-  /** *************************************/
+  /** ************************************ */
   // START: authHandler
-  /** *************************************/
+  /** ************************************ */
   // describe('authHandler', () => {
 
   //   beforeEach(() => {
@@ -104,13 +103,13 @@ describe('authActions', () => {
   //     });
   //   });
   // });
-  /** *************************************/
+  /** ************************************ */
   // END: authHandler
-  /************************************** */
+  /** ************************************ */
 
-  /************************************** */
+  /** ************************************ */
   // START: setAuthError
-  /************************************** */
+  /** ************************************ */
   // describe('unsuccessful login', () => {
   //   const message = 'bad login'
   //   const failureArgs = { email: userData.email, password: 'bad password' }
@@ -138,13 +137,13 @@ describe('authActions', () => {
   //     }]
   //   });
   // });
-  /** *************************************/
+  /** ************************************ */
   // END: setAuthError
-  /** *************************************/
+  /** ************************************ */
 
-  /*************************************** */
+  /** ************************************* */
   // START: successsful signIn / signUp
-  /** **************************************/
+  /** ************************************* */
   describe('successful sign-in / sign-up', () => {
     const successArgs = { email: userData.email, password: userData.password };
     const response = { token, user: userData };
@@ -185,10 +184,10 @@ describe('authActions', () => {
           // console.log('************ dispatchPromise:::', dispatchPromise)
         });
         test('calls mock authHandler once', () => dispatchPromise.then(() => {
-            // console.log(moxios)
-            // expect(actions.authHandler).toHaveBeenCalledTimes(1);
-            expect(storage.authHandler).toHaveBeenCalledTimes(1);
-          }));
+          // console.log(moxios)
+          // expect(actions.authHandler).toHaveBeenCalledTimes(1);
+          expect(storage.authHandler).toHaveBeenCalledTimes(1);
+        }));
         // test('calls mock authHandler with the correct first argument', () => {
         //   return dispatchPromise.then(() => {
         //     expect(authHandler.mock.calls[0][0]).toBe(response);
@@ -197,13 +196,13 @@ describe('authActions', () => {
       });
     });
   });
-  /** **************************************/
+  /** ************************************* */
   // END: successsful signIn / signUp
-  /** **************************************/
+  /** ************************************* */
 
-  /*************************************** */
+  /** ************************************* */
   // START: unsuccesssful signIn / signUp
-  /*************************************** */
+  /** ************************************* */
   describe('unsuccessful sign-in / sign-up', () => {
     const failureArgs = { email: userData.email, password: 'bad password' };
     const response = { message: 'nope' };
@@ -244,16 +243,16 @@ describe('authActions', () => {
       });
     });
   });
-  /** **************************************/
+  /** ************************************* */
   // END: unsuccesssful signIn / signUp
-  /*************************************** */
+  /** ************************************* */
 
 
-  /*************************************** */
+  /** ************************************* */
   // START: signOutUser
-  /*************************************** */
+  /** ************************************* */
 
-  /** **************************************/
+  /** ************************************* */
   // END: signOutUser
-  /*************************************** */
+  /** ************************************* */
 });

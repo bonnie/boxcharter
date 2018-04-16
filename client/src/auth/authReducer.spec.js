@@ -24,8 +24,6 @@
  * authReducers-spec
  */
 
-
-import '../../jest/setupTests';
 import authReducer from './authReducer';
 import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from './authActionTypes';
 import { userData } from '../../../shared/test/utilities/test_data/add_user';

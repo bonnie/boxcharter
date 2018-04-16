@@ -26,7 +26,7 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import '../../jest/setupTests';
+
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { HeaderComponent } from './Header';
 

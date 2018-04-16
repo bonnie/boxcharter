@@ -27,7 +27,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import '../../jest/setupTests';
 import { checkProps, generateRequiredError } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import ChartRow from './ChartRow';
