@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:8.1.2
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -27,6 +27,13 @@ jobs:
           - v1-dependencies-
 
       - run: yarn install
+
+      - run: sudo apt install postgresql-client
+
+      - run:
+          name: Database Setup
+          command:
+            npm run setup 
 
       - save_cache:
           paths:
