@@ -38,11 +38,22 @@ jobs:
 
       - run: sudo apt update && sudo apt install postgresql-client
 
-      - run: yarn install
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
 
       - run: 
           name: Create server config file
-          command: "echo \"module.exports = { secret: 'abcdefg' }\" > /server/config.js"
+          command: "echo \"module.exports = { secret: 'abcdefg' }\" > server/config.js"
+
+      - run: yarn install
 
       - save_cache:
           paths:
