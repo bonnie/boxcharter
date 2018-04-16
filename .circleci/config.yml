@@ -40,6 +40,10 @@ jobs:
 
       - run: yarn install
 
+      - run: 
+          name: Create server config file
+          command: "echo \"module.exports = { secret: 'abcdefg' }\" > /server/config.js"
+
       - save_cache:
           paths:
             - node_modules
