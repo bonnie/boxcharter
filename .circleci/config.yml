@@ -63,7 +63,7 @@ jobs:
             #   module.exports = { \
             #     ROOT_URL, \
             #   };\" > client/config.js"
-            "echo fooey > client/config.js"
+            "pwd && ls -a && echo fooey > client/config.js"
 
       - run: yarn install
 
