@@ -55,7 +55,7 @@ jobs:
 
       - run:
           name: Create client config file
-          command: |
+          command: pwd && ls -a
             # "echo \"const serverHost = 'localhost'; \
             #         const serverPort = '3090'; \
             #         const ROOT_URL = \`http://${serverHost}:${serverPort}/api\`; \
@@ -63,7 +63,7 @@ jobs:
             #   module.exports = { \
             #     ROOT_URL, \
             #   };\" > client/config.js"
-            "pwd && ls -a && echo fooey > client/config.js"
+            # "pwd && ls -a && echo fooey > client/config.js"
 
       - run: yarn install
 
