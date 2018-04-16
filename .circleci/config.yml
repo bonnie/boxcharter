@@ -55,7 +55,7 @@ jobs:
 
       - run:
           name: Create client config file
-          command: pwd && ls -a
+          command: touch client/config.js
             # "echo \"const serverHost = 'localhost'; \
             #         const serverPort = '3090'; \
             #         const ROOT_URL = \`http://${serverHost}:${serverPort}/api\`; \
