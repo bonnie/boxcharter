@@ -30,31 +30,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+
+// 7. green tests on everything else.
 /**
  * @function ClarityAlert
  * @param {object} props - React props.
  * @returns {JSX.Element} - Rendered component.
 */
-const ClarityAlert = props => (
-  // standard clarityUI alert HTML
-  <div data-test="clarity-alert-component" className={`alert alert-${props.alertType}`}>
-    <div className="alert-items">
-      <div className="alert-item static">
-        <div className="alert-icon-wrapper">
-          <clr-icon className="alert-icon" shape="exclamation-circle" />
-        </div>
-        <span className="alert-text">
-          {props.alertText}
-        </span>
-      </div>
-    </div>
-    <button data-test="close-button" type="button" className="close" aria-label="Close" onClick={props.communicateCloseToParent()}>
-      <clr-icon aria-hidden="true" shape="close" />
-    </button>
-  </div>
-);
+const ClarityAlert = (props) => {
+  // alert class has different name from icon class for danger/error >.<
+  const iconClass = props.alertType === 'danger' ? 'error' : props.alertType;
 
-// 5. Red test on prop types
+  return (
+  // standard clarityUI alert HTML
+    <div data-test="clarity-alert-component" className={`alert alert-${props.alertType}`}>
+      <div className="alert-items">
+        <div className="alert-item static">
+          <div className="alert-icon-wrapper">
+            <clr-icon
+              class={'alert-icon ${iconClass}'}
+              shape="exclamation-circle"
+            />
+          </div>
+          <span className="alert-text">
+            {props.alertText}
+          </span>
+        </div>
+      </div>
+      <button data-test="close-button" type="button" className="close" aria-label="Close" onClick={props.communicateCloseToParent}>
+        <clr-icon aria-hidden="true" shape="close" />
+      </button>
+    </div>
+  );
+};
+
+// 5. Red test on prop types, then green
 ClarityAlert.propTypes = {
   communicateCloseToParent: PropTypes.func.isRequired,
   alertText: PropTypes.string.isRequired,
