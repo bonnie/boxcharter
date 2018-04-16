@@ -53,6 +53,17 @@ jobs:
           name: Create server config file
           command: "echo \"module.exports = { secret: 'abcdefg' }\" > server/config.js"
 
+      - run:
+          name: Create client config file
+          command: |
+            "echo \"const serverHost = 'localhost'
+                    const serverPort = '3090'
+                    const ROOT_URL = `http://${serverHost}:${serverPort}/api`
+
+              module.exports = {
+                ROOT_URL,
+              }\" > client/config.js"
+
       - run: yarn install
 
       - save_cache:
