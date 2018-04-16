@@ -9,6 +9,9 @@
     "url": "git+https://github.com/flyrightsister/boxcharter.git"
   },
   "scripts": {
+    "postinstall": "npm run install:client && npm run install:server",
+    "install:client": "cd client && npm install",
+    "install:server": "cd server && npm install",
     "lint": "npm run lint:client && npm run lint:server",
     "lint:client": "eslint client/src/**/*.js --fix",
     "lint:server": "eslint server/src/**/*.js --fix",
