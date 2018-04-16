@@ -30,6 +30,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+
+// 7. green tests on everything else.
 /**
  * @function ClarityAlert
  * @param {object} props - React props.
@@ -48,13 +50,13 @@ const ClarityAlert = props => (
         </span>
       </div>
     </div>
-    <button data-test="close-button" type="button" className="close" aria-label="Close" onClick={props.communicateCloseToParent()}>
+    <button data-test="close-button" type="button" className="close" aria-label="Close" onClick={props.communicateCloseToParent}>
       <clr-icon aria-hidden="true" shape="close" />
     </button>
   </div>
 );
 
-// 5. Red test on prop types
+// 5. Red test on prop types, then green
 ClarityAlert.propTypes = {
   communicateCloseToParent: PropTypes.func.isRequired,
   alertText: PropTypes.string.isRequired,

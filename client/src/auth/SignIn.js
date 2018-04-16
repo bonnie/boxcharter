@@ -30,8 +30,7 @@ import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { signInUser, setAuthError } from './authActions';
 import { navActions, tabNames } from '../nav';
-import { ClarityField, ClarityButton } from '../clarity';
-import Error from '../error/Error';
+import { ClarityField, ClarityButton, ClarityAlert } from '../clarity';
 
 const fields = ['email', 'password'];
 
@@ -71,21 +70,11 @@ export class SignInComponent extends Component {
   renderAlert() {
     if (this.props.errorMessage) {
       return (
-        <div data-test="alert" className="alert alert-danger">
-          <div className="alert-items">
-            <div className="alert-item static">
-              <div className="alert-icon-wrapper">
-                <clr-icon className="alert-icon" shape="exclamation-circle" />
-              </div>
-              <span className="alert-text">
-                {this.props.errorMessage}
-              </span>
-            </div>
-          </div>
-          <button type="button" className="close" aria-label="Close">
-            <clr-icon aria-hidden="true" shape="close" />
-          </button>
-        </div>
+        <ClarityAlert
+          alertText={this.props.errorMessage}
+          alertType="danger"
+          communicateCloseToParent={() => this.props.setAuthError(null)}
+        />
       );
     }
   }

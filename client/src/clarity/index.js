@@ -27,9 +27,11 @@
 import ClarityButton from './ClarityButton';
 import ClarityField from './ClarityField';
 import ClarityLoading from './ClarityLoading';
+import ClarityAlert from './ClarityAlert';
 
 module.exports = {
   ClarityButton,
   ClarityField,
   ClarityLoading,
+  ClarityAlert,
 };
