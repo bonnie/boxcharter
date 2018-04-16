@@ -56,12 +56,12 @@ jobs:
       - run:
           name: Create client config file
           command: |
-            "echo \"const serverHost = 'localhost'
-                    const serverPort = '3090'
-                    const ROOT_URL = \`http://${serverHost}:${serverPort}/api\`
-
-              module.exports = {
-                ROOT_URL,
+            "echo \"const serverHost = 'localhost' \
+                    const serverPort = '3090' \
+                    const ROOT_URL = \`http://${serverHost}:${serverPort}/api\` \
+              \
+              module.exports = { \
+                ROOT_URL, \
               }\" > client/config.js"
 
       - run: yarn install
