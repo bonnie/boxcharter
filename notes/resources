@@ -164,7 +164,7 @@ https://github.com/erikras/ducks-modular-redux
 
 **** error boundaries
 https://reactjs.org/blog/2017/07/26/error-handling-in-react-16.html#where-to-place-error-boundaries
-
+https://stackoverflow.com/questions/48353695/create-react-app-not-showing-error-message-with-errorboundary/48354840#48354840
 
 ***** loading
 https://stackoverflow.com/a/40989121
@@ -180,3 +180,6 @@ http://gavinschulz.com/posts/2017-03-22-4-techniques-for-loading-states-in-redux
 fave -----> https://medium.com/stashaway-engineering/react-redux-tips-better-way-to-handle-loading-flags-in-your-reducers-afda42a804c6
 
 /**********************************/
+
+******* getting real line errors instead of babel stuff
+https://www.npmjs.com/package/babel-plugin-transform-react-jsx-source

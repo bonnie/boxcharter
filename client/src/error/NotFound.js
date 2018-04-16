@@ -9,7 +9,7 @@
  * any later version.
  *
  * BoxCharter is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * ANY WARRANTY without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License
  * for more details.
  *
@@ -19,16 +19,17 @@
  */
 
 /**
- * Tests for the ErrorBoundary component
- * @module
- * ErrorBoundary-spec
+ * Component for "not found" URL.
+ * @module NotFound
  */
 
-// import React from 'react';
-// import { shallow } from 'enzyme';
-// import ErrorBoundary from './ErrorBoundary';
+import React from 'react';
 
-describe('ErrorBoundary', () => {
-  test('renders', () => {
-  });
-});
+export default () => (
+  <div data-test="not-found-component">
+    <h3><clr-icon shape="error-standard" size="36" /> Page not found.</h3>
+    <br />
+    <h4>Here's a puppy.</h4>
+    <img alt="puppy" src="/public/images/puppy.jpg" />
+  </div>
+);

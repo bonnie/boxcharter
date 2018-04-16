@@ -34,6 +34,17 @@ import SignIn from '../auth/SignIn';
 import SignOut from '../auth/SignOut';
 import SignUp from '../auth/SignUp';
 import RequireAuth from '../auth/RequireAuth';
+import ErrorBoundary from '../error/ErrorBoundary';
+import NotFound from '../error/NotFound';
+
+// TODO: jsdoc
+// TODO: isolate error to the component / route / tab that threw the error
+// (as it is, error persists when switching tabs)
+const addErrorBoundary = (Component, route) => () => (
+  <ErrorBoundary routeName={route}>
+    <Component />
+  </ErrorBoundary>
+);
 
 /**
  * @function Routes
@@ -42,12 +53,13 @@ import RequireAuth from '../auth/RequireAuth';
 const Routes = () => (
   <div className="content-container">
     <Switch>
-      <Route path="/user-profile" component={RequireAuth(UserProfile)} />
-      <Route path="/charts/:id" component={RequireAuth(ChartDetail)} />
-      <Route path="/sign-in" component={SignIn} />
-      <Route path="/sign-up" component={SignUp} />
-      <Route path="/sign-out" component={SignOut} />
-      <Route path="/" component={SplashPage} />
+      <Route exact path="/user-profile" render={addErrorBoundary(RequireAuth(UserProfile), 'user-profile')} />
+      <Route exact path="/charts/:id" render={addErrorBoundary(RequireAuth(ChartDetail), 'chart-detail')} />
+      <Route exact path="/sign-in" render={addErrorBoundary(SignIn, 'sign-in')} />
+      <Route exact path="/sign-up" render={addErrorBoundary(SignUp, 'sign-up')} />
+      <Route exact path="/sign-out" render={addErrorBoundary(SignOut, 'sign-out')} />
+      <Route exact path="/" render={addErrorBoundary(SplashPage, 'splash-page')} />
+      <Route path="/" render={addErrorBoundary(NotFound, 'not-found')} />
     </Switch>
   </div>
 );

@@ -1,17 +1,15 @@
 to do before forging on: 
 
-* persist login on refresh
-  * be sure to persist axios instance header as well, using token
-  * loading state: 
-    * I explicitly blacklist all of my isFetching properties from whatever redux persistence I'm using.
-    * Or you can have a 'cancel all network events' action that you dispatch straight after createStore, (which will also fire if you pick up your store from localstorage) which resets all isFetching flags
+* loading state (non)persistence: 
+  * I explicitly blacklist all of my isFetching properties from whatever redux persistence I'm using.
+  * Or you can have a 'cancel all network events' action that you dispatch straight after createStore, (which will also fire if you pick up your store from localstorage) which resets all isFetching flags
 * data-test => test-id
 * terminology: wrapper? dom? other??
 * sass up the css, or other distributed css system
 * call setup.js automatically before every test (or just once before all tests...?)
 * signin and signup have identical tests. Should they be the same component...?
-* circleCI continuous integration
-* error boundaries / error handling
+* circleCI continuous integration (tests and linting)
+* error handling
   * send errors back to the server to log (middleware to do this...?)
     * server logging in general...?
 * clarity alert component (tdd!)
@@ -25,3 +23,6 @@ Done!
   * make sure all functions have jsdoc
 * axios instance / token header
 * component loading states
+* persist login on refresh
+  * be sure to persist axios instance header as well, using token
+* error boundaries

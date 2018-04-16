@@ -19,13 +19,14 @@
  */
 
 /**
- * adapted from https://github.com/LearnersGuild/talent/blob/master/src/client/components/errorBoundary/index.jsx
- * @module
- * ErrorBoundary
+ * Error boundary component for error handling.
+ * @module ErrorBoundary
  */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import Error from '../error/Error';
 
 /**
  * @class ErrorBoundary
@@ -45,19 +46,37 @@ export default class ErrorBoundary extends Component {
   }
 
   /**
-   * @method componentDidCatch
-   * @param {Error} error - Caught error.
-   * @param {any} info - Additional information.
+   * Reset error state if route has changed.
+   * NOTE: I suspect this is not the "right" way to do this, but I can't figure out another way.
+   * @method componentWillReceiveProps
+   * @param {object} nextProps - New props being received.
    * @returns {undefined}
    */
-  componentDidCatch(error, info) {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.routeName !== nextProps.routeName) {
+      this.setState({
+        hasError: false,
+      });
+    }
+  }
+
+  /**
+   * @method componentDidCatch
+   * @param {Error} error - Caught error.
+   * @param {object} errorInfo - Additional information.
+   * @returns {undefined}
+   */
+  componentDidCatch(error, errorInfo) {
     this.setState({
       hasError: true,
+      error,
+      errorInfo,
     });
 
     // TODO: send error back to server
-    console.error(error, info);
+    // console.error(error, info);
   }
+
 
   /**
    * @method render
@@ -65,9 +84,7 @@ export default class ErrorBoundary extends Component {
   */
   render() {
     if (this.state.hasError) {
-      return (
-        <img alt="error" src="https://c1.staticflickr.com/8/7001/6509400855_aaaf915871_b.jpg" />
-      );
+      return <Error error={this.state.error} errorInfo={this.state.errorInfo} />;
     }
 
     return this.props.children;
@@ -76,8 +93,13 @@ export default class ErrorBoundary extends Component {
 
 ErrorBoundary.defaultProps = {
   children: [],
+  routeName: '',
 };
 
 ErrorBoundary.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element),
+  routeName: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element),
+  ]),
 };
