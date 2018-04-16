@@ -28,7 +28,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moxios from 'moxios';
 
-import '../../jest/setupTests';
 import browserHistory from '../config/history';
 import axiosInstance from '../config/axiosInstance';
 import * as actions from './authActions';

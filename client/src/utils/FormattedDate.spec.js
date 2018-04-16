@@ -26,7 +26,7 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import '../../jest/setupTests';
+
 import { checkProps, generateRequiredError, generateTypeError } from '../../jest/utils';
 import FormattedDate from './FormattedDate';
 

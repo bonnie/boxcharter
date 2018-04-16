@@ -26,7 +26,7 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import '../../jest/setupTests';
+
 import { checkProps } from '../../jest/utils';
 import { NO_TAB, SIGN_IN, SIGN_UP } from './tabNames';
 import { NavLinkComponent } from './NavLink';

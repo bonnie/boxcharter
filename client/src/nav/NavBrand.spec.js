@@ -27,7 +27,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import '../../jest/setupTests';
 import NavBrand from './NavBrand';
 
 describe('NavBrand', () => {

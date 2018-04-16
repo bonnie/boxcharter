@@ -27,7 +27,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import '../../jest/setupTests';
 import { checkProps } from '../../jest/utils';
 import ErrorBoundary from './ErrorBoundary';
 import SplashPage from '../app/SplashPage'; // for a child component

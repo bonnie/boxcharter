@@ -30,7 +30,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import '../../jest/setupTests';
 import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { SignInComponent } from './SignIn';
