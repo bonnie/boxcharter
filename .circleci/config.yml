@@ -58,7 +58,7 @@ jobs:
           command: |
             "echo \"const serverHost = 'localhost'
                     const serverPort = '3090'
-                    const ROOT_URL = `http://${serverHost}:${serverPort}/api`
+                    const ROOT_URL = \`http://${serverHost}:${serverPort}/api\`
 
               module.exports = {
                 ROOT_URL,
