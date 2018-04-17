@@ -29,6 +29,7 @@ const passportService = require('../services/passport');
 const user = require('./user_routes');
 const auth = require('./auth_routes');
 const chart = require('./chart_routes');
+const error = require('./error_routes');
 
 // passport middleware
 // { session: false } means don't create a session, since we're using jwt, not cookies
@@ -36,6 +37,7 @@ const requireAuth = passport.authenticate('jwt', { session: false });
 
 module.exports = function (app) {
   app.use('/api/auth', auth);
+  app.use('/api/error', error);
   app.use('/api/users', requireAuth, user);
   app.use('/api/charts', requireAuth, chart);
 };

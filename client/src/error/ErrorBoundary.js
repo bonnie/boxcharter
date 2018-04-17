@@ -26,6 +26,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import axiosInstance from '../config/axiosInstance';
 import Error from '../error/Error';
 
 /**
@@ -73,10 +74,13 @@ export default class ErrorBoundary extends Component {
       errorInfo,
     });
 
-    // TODO: send error back to server
-    // console.error(error, info);
+    // send error back to server for posterity
+    const data = {
+      error: error.toString(),
+      componentStack: errorInfo.componentStack,
+    };
+    axiosInstance.post('/error', data);
   }
-
 
   /**
    * @method render
