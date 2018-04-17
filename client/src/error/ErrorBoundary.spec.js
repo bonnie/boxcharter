@@ -25,35 +25,52 @@
  */
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 import { checkProps } from '../../jest/utils';
 import ErrorBoundary from './ErrorBoundary';
 import SplashPage from '../app/SplashPage'; // for a child component
 import Error from './Error';
+import { reportErrorToBugsnag } from './bugsnagClient';
 
+// Mock bugsnagClient.reportErrorToBugsnag
+jest.mock('./bugsnagClient', () => ({
+  reportErrorToBugsnag: jest.fn(),
+}));
 
 describe('ErrorBoundary', () => {
   describe('no error thrown', () => {
     test('display children', () => {
-      const wrapper = shallow(<ErrorBoundary children={<SplashPage />} route="/" />);
+      const wrapper = shallow(<ErrorBoundary children={<SplashPage />} routeName="/" />);
       expect(wrapper.find(SplashPage)).toBeTruthy();
     });
   });
-  describe('error thrown', () => {
+  describe('state with error thrown', () => {
     const wrapper = shallow(<ErrorBoundary routeName="/bad" />);
     wrapper.setState({ hasError: true });
     test('display Error component', () => {
       expect(wrapper.find(Error)).toBeTruthy();
-    });
-    test('send error to server', () => {
-      // TODO: set up mock to check that function is called
     });
     test('error clears when switching routes', () => {
       wrapper.setProps({ routeName: '/good' });
       expect(wrapper.state('hasError')).toBe(false);
     });
   });
+  // TODO: figure out why the following tests pass, but give this error in the virtual console:
+  //     Error: Uncaught [TypeError: Cannot read property 'componentStack' of undefined]
+  // describe('componentDidCatch', () => {
+  //   // here, we need to have a component that actually throws an error
+  //   // so that componentDidCatch will run
+  //   const BadComponent = () => { throw Error('not good'); };
+  //   const BoundedBadComponent = (<ErrorBoundary routeName="/bad" children={<BadComponent />} />);
+  //   const wrapper = mount(BoundedBadComponent);
+  //   test('state.hasError set to true', () => {
+  //     expect(wrapper.state('hasError')).toBe(true);
+  //   });
+  //   test('error reported to bugsnag', () => {
+  //     expect(reportErrorToBugsnag).toBeCalled();
+  //   });
+  // });
   describe('prop-types', () => {
     test('no error with correct prop-types', () => {
       const props = {
