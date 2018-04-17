@@ -22,7 +22,7 @@ JEST CONFIG:
   * warning!!!!! changing jest settings requires "hard restart" of jest test:watch
 
 error boundary: 
-  good shit: component state, mocks, spies
+  good shit: component state, mocks, spies (but must figure out how to spy successfully on bugsnag reporter!!)
 
 To look up: 
-  what's the right verbiage for jest "test"...?
+  what's the right verbiage for jest "test" descriptions...?

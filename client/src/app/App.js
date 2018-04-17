@@ -50,6 +50,8 @@ export default class App extends Component {
     if (token) {
       axiosInstance.defaults.headers.common.authorization = token;
     }
+
+    // TODO: clear any loading state
   }
 
   /**

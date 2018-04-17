@@ -7,11 +7,8 @@ to do before forging on:
 * terminology: wrapper? dom? other??
 * sass up the css, or other distributed css system
 * signin and signup have identical tests. Should they be the same component...?
-* circleCI continuous integration (tests and linting)
-* error handling
-  * send errors back to the server to log (middleware to do this...?)
     * server logging in general...?
-  * move navlink into clarity directory
+* move navlink into clarity directory
 * server eslint
 
 Done!
@@ -27,3 +24,6 @@ Done!
 * clarity alert component (tdd!)
 * call setup.js automatically before every test (or just once before all tests...?)
   * https://github.com/airbnb/enzyme/issues/1265
+* circleCI continuous integration (tests and linting)
+* error handling
+  * send errors back to the server to log (middleware to do this...?)
