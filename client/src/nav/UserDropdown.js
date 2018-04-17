@@ -45,6 +45,7 @@ export default class UserDropdown extends Component {
     };
 
     this.toggleState = this.toggleState.bind(this);
+    this.displayDropdown = this.displayDropdown.bind(this);
   }
 
   /**
@@ -54,10 +55,12 @@ export default class UserDropdown extends Component {
    */
   toggleState() {
     this.setState({
-      open: !open,
+      open: !this.state.open,
     });
   }
 
+
+  // TODO: close dropdown on blur (it's not as easy as you'd think!!)
   /**
    * Conditionally display dropdown depending on state
    * @method displayDropdown
@@ -66,9 +69,9 @@ export default class UserDropdown extends Component {
   displayDropdown() {
     if (this.state.open) {
       return (
-        <clr-dropdown-menu clrPosition="bottom-right">
-          <Link onClick={this.toggleState} to="/user-profile">Profile</Link>
-          <Link onClick={this.toggleState} to="/sign-out">Log out</Link>
+        <clr-dropdown-menu clrPosition="bottom-right" class="dropdown-menu">
+          <Link onClick={this.toggleState} to="/user-profile" className="dropdown-item">Profile</Link>
+          <Link onClick={this.toggleState} to="/sign-out" className="dropdown-item">Log out</Link>
         </clr-dropdown-menu>
       );
     }
@@ -80,11 +83,13 @@ export default class UserDropdown extends Component {
    * @returns {JSX.Element} - Rendered component (or null if username isn't defined).
   */
   render() {
+    const activeClass = this.state.open ? 'active' : '';
+    const openClass = this.state.open ? 'open' : '';
     if (this.props.username) {
       return (
         <div data-test="user-dropdown-component" className="header-actions">
-          <clr-dropdown class="dropdown">
-            <button className="nav-text dropdown-toggle" onClick={this.toggleState}>
+          <clr-dropdown class={`dropdown ${openClass}`}>
+            <button className={`nav-text dropdown-toggle ${activeClass}`} onClick={this.toggleState}>
               { this.props.username }
               <clr-icon shape="caret down" />
             </button>
