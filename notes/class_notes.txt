@@ -20,3 +20,9 @@ JEST CONFIG:
   * enzyme setup
     * setupTestFrameworkScriptFile
   * warning!!!!! changing jest settings requires "hard restart" of jest test:watch
+
+error boundary: 
+  good shit: component state, mocks, spies
+
+To look up: 
+  what's the right verbiage for jest "test"...?

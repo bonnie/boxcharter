@@ -26,8 +26,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import axiosInstance from '../config/axiosInstance';
+import { reportErrorToBugsnag } from './bugsnagClient';
 import Error from '../error/Error';
+
 
 /**
  * @class ErrorBoundary
@@ -64,22 +65,21 @@ export default class ErrorBoundary extends Component {
   /**
    * @method componentDidCatch
    * @param {Error} error - Caught error.
-   * @param {object} errorInfo - Additional information.
+   * @param {object} info - Additional information.
    * @returns {undefined}
    */
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error, info) {
     this.setState({
       hasError: true,
       error,
-      errorInfo,
+      info,
     });
 
-    // send error back to server for posterity
-    const data = {
-      error: error.toString(),
-      componentStack: errorInfo.componentStack,
-    };
-    axiosInstance.post('/error', data);
+    // send error back to bugsnag for posterity
+    reportErrorToBugsnag(error, info);
+
+    // set the state
+    this.setState({ error, info });
   }
 
   /**
@@ -88,7 +88,7 @@ export default class ErrorBoundary extends Component {
   */
   render() {
     if (this.state.hasError) {
-      return <Error error={this.state.error} errorInfo={this.state.errorInfo} />;
+      return <Error error={this.state.error} info={this.state.info} />;
     }
 
     return this.props.children;
