@@ -40,7 +40,7 @@ describe('Header', () => {
     });
     test('renders the tabs', () => {
       const navLinks = findWrapperNodeByTestId(renderedHeader, 'header-nav').children().map(link => link.prop('linkText'));
-      expect(navLinks).toEqual(['User Profile', 'Sign Out']);
+      expect(navLinks).toEqual(['Charts', 'Profile', 'Sign Out']);
     });
   });
   describe('when user is not authenticated', () => {

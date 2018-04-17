@@ -28,6 +28,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import UserProfile from '../user/UserProfile';
+import UserCharts from '../user/UserCharts';
 import ChartDetail from '../chart/ChartDetail';
 import SplashPage from '../app/SplashPage';
 import SignIn from '../auth/SignIn';
@@ -54,6 +55,7 @@ const Routes = () => (
   <div className="content-container">
     <Switch>
       <Route exact path="/user-profile" render={addErrorBoundary(RequireAuth(UserProfile), 'user-profile')} />
+      <Route exact path="/user-charts" render={addErrorBoundary(RequireAuth(UserCharts), 'user-charts')} />
       <Route exact path="/charts/:id" render={addErrorBoundary(RequireAuth(ChartDetail), 'chart-detail')} />
       <Route exact path="/sign-in" render={addErrorBoundary(SignIn, 'sign-in')} />
       <Route exact path="/sign-up" render={addErrorBoundary(SignUp, 'sign-up')} />

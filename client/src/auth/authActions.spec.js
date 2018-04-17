@@ -107,8 +107,8 @@ describe('authActions', () => {
       test('updates localStorage after successful authentication', () => dispatchPromise.then(() => {
         expect(localStorage.getItem('token')).toBe(token);
       }));
-      test('redirects to `/user-profile` after successful authentication', () => dispatchPromise.then(() => {
-        expect(browserHistory.push).toBeCalledWith('/user-profile');
+      test('redirects to `/user-charts` after successful authentication', () => dispatchPromise.then(() => {
+        expect(browserHistory.push).toBeCalledWith('/user-charts');
       }));
     });
     /** ************************************* */
