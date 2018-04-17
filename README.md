@@ -1,4 +1,5 @@
-# BoxCharter
+# BoxCharter <img src="https://circleci.com/gh/flyrightsister/boxcharter.svg?style=shield&circle-token=a190ad14b3b0dbf97981667651b4b8e2cc521378" />
+
 
 ### WIP: An open-source web application that creates chord/lyric "box charts" for songwriting and jamming. 
 
