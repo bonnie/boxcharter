@@ -18,26 +18,19 @@
  *
  */
 
-/**
- * Written with help from Stephen Grider's Advanced React and Redux Udemy Course
- * @module
- * routes
- */
+const express = require('express');
+const { logger } = require('../utilities/log');
 
-const passport = require('passport');
-const passportService = require('../services/passport');
-const user = require('./user_routes');
-const auth = require('./auth_routes');
-const chart = require('./chart_routes');
-const error = require('./error_routes');
+// create the router
+const router = express.Router();
 
-// passport middleware
-// { session: false } means don't create a session, since we're using jwt, not cookies
-const requireAuth = passport.authenticate('jwt', { session: false });
+/** ****************** */
+/* POST error          */
+/** ****************** */
+router.post('/', (req, res, next) => {
+  const { error, componentStack } = req.body;
+  logger.crit(['REACT uncaught error: ', error, componentStack].join('\n'))
+  res.status(200).json({message: 'error logged'})
+});
 
-module.exports = function (app) {
-  app.use('/api/auth', auth);
-  app.use('/api/error', error);
-  app.use('/api/users', requireAuth, user);
-  app.use('/api/charts', requireAuth, chart);
-};
+module.exports = router;
