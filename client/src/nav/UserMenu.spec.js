@@ -43,7 +43,7 @@ describe('UserMenu', () => {
     });
     test('renders menu items', () => {
       const menuItems = wrapper.children(Link).map(link => link.prop('data-test'));
-      expect(menuItems).toEqual(['sign-out-link']);
+      expect(menuItems).toEqual(['profile-link', 'sign-out-link']);
     });
   });
   describe('onClick', () => {

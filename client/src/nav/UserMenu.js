@@ -37,6 +37,7 @@ import { Link } from 'react-router-dom';
  */
 const UserMenu = props => (
   <clr-dropdown-menu data-test="user-menu-component" clrPosition="bottom-right" class="dropdown-menu">
+    <Link data-test="profile-link" onClick={props.toggleState} to="/user-profile" className="dropdown-item">Profile</Link>
     <Link data-test="sign-out-link" onClick={props.toggleState} to="/sign-out" className="dropdown-item">Log out</Link>
   </clr-dropdown-menu>
 );
