@@ -85,25 +85,22 @@ export default class UserDropdown extends Component {
   render() {
     const activeClass = this.state.open ? 'active' : '';
     const openClass = this.state.open ? 'open' : '';
-    if (this.props.username) {
-      return (
-        <div data-test="user-dropdown-component" className="header-actions">
-          <clr-dropdown class={`dropdown ${openClass}`}>
-            <button className={`nav-text dropdown-toggle ${activeClass}`} onClick={this.toggleState}>
-              { this.props.username }
-              <clr-icon shape="caret down" />
-            </button>
-            { this.displayDropdown() }
-          </clr-dropdown>
-        </div>
-      );
-    }
-    return null;
+    return (
+      <div data-test="user-dropdown-component" className="header-actions">
+        <clr-dropdown class={`dropdown ${openClass}`}>
+          <button className={`nav-text dropdown-toggle ${activeClass}`} onClick={this.toggleState}>
+            { this.props.username }
+            <clr-icon shape="caret down" />
+          </button>
+          { this.displayDropdown() }
+        </clr-dropdown>
+      </div>
+    );
   }
 }
 
 UserDropdown.defaultProps = {
-  username: null,
+  username: 'User',
 };
 
 UserDropdown.propTypes = {

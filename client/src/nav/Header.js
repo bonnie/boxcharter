@@ -49,6 +49,7 @@ export class HeaderComponent extends Component {
         <NavLink key="1" linkRoute="/user-charts" linkText={USER_CHARTS} />,
         <NavLink key="2" linkRoute="/user-profile" linkText={USER_PROFILE} />,
         <NavLink key="3" linkRoute="/sign-out" linkText={SIGN_OUT} />,
+        <UserDropdown key="4" username={this.props.auth.user.email} />,
       ];
     }
     return [
@@ -68,16 +69,11 @@ export class HeaderComponent extends Component {
    * @returns {JSX.Element} - JSX for component
    */
   render() {
-    const username = this.props.auth.user
-      ? this.props.auth.user.email
-      : null;
-
     return (
       <header className="header header-5">
         <NavBrand data-test="navbrand-component" />
         <div className="header-nav" data-test="header-nav">
           {this.renderLinks()}
-          <UserDropdown username={username} />
         </div>
       </header>
     );

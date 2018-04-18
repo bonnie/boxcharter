@@ -25,35 +25,55 @@
  */
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { HeaderComponent } from './Header';
+import UserDropdown from './UserDropdown';
+
+/**
+ * Find the navLinks from a shallow wrapper
+ * @function findNavLinks
+ * @param {ShallowWrapper} wrapper - Shallow Enzyme wrapper of a header
+ * @returns {Array} - Array of strings of the navLinks' linkText props
+ */
+const findNavLinks = wrapper =>
+  findWrapperNodeByTestId(wrapper, 'header-nav')
+    .findWhere(link => link.prop('linkText') !== undefined)
+    .map(link => link.prop('linkText'));
 
 describe('Header', () => {
   describe('when user is authenticated', () => {
-    const header = <HeaderComponent auth={{ authenticated: true }} />;
-    const renderedHeader = shallow(header);
+    const header = <HeaderComponent auth={{ authenticated: true, user: { email: 'harry@potter.com' } }} />;
+    const wrapper = shallow(header);
     test('renders the brand', () => {
-      const navBrand = findWrapperNodeByTestId(renderedHeader, 'navbrand-component');
+      const navBrand = findWrapperNodeByTestId(wrapper, 'navbrand-component');
       expect(navBrand.length).toBe(1);
     });
     test('renders the tabs', () => {
-      const navLinks = findWrapperNodeByTestId(renderedHeader, 'header-nav').children().map(link => link.prop('linkText'));
+      const navLinks = findNavLinks(wrapper);
       expect(navLinks).toEqual(['Charts', 'Profile', 'Sign Out']);
+    });
+    test('renders the user menu', () => {
+      const userMenu = wrapper.find(UserDropdown);
+      expect(userMenu.length).toBe(1);
     });
   });
   describe('when user is not authenticated', () => {
     const header = <HeaderComponent auth={{ authenticated: false }} />;
-    const renderedHeader = shallow(header);
+    const wrapper = shallow(header);
     test('renders the brand', () => {
-      const navBrand = findWrapperNodeByTestId(renderedHeader, 'navbrand-component');
+      const navBrand = findWrapperNodeByTestId(wrapper, 'navbrand-component');
       expect(navBrand.length).toBe(1);
     });
     test('renders the tabs', () => {
       // childAt(1) is the div for the navlinks. Its children are the navlink components.
-      const navLinks = findWrapperNodeByTestId(renderedHeader, 'header-nav').children().map(link => link.prop('linkText'));
+      const navLinks = findNavLinks(wrapper);
       expect(navLinks).toEqual(['Sign In', 'Sign Up']);
+    });
+    test('does not render the user menu', () => {
+      const userMenu = wrapper.find(UserDropdown);
+      expect(userMenu.length).toBe(0);
     });
   });
 });
