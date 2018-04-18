@@ -48,7 +48,6 @@ export class HeaderComponent extends Component {
       return [
         <NavLink key="1" linkRoute="/user-charts" linkText={USER_CHARTS} />,
         <NavLink key="2" linkRoute="/edit-chart" linkText={EDIT_CHART} />,
-        <UserDropdown key="3" username={this.props.auth.user.email} />,
       ];
     }
     return [
@@ -74,6 +73,7 @@ export class HeaderComponent extends Component {
         <div className="header-nav" data-test="header-nav">
           {this.renderLinks()}
         </div>
+        { this.props.auth.authenticated ? <UserDropdown key="3" username={this.props.auth.user.email} /> : null }
       </header>
     );
   }
