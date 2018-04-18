@@ -26,3 +26,10 @@ error boundary:
 
 To look up: 
   what's the right verbiage for jest "test" descriptions...?
+
+** to cover
+
+  * when to use shallow, when to use mount
+
+**** simulate (sometimes?) doesn't update state.... :-/ https://github.com/airbnb/enzyme/issues/1229
+  * more reliable to use spies on functions

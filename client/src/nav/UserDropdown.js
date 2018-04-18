@@ -28,6 +28,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import UserMenu from './UserMenu';
+
 /**
  * @class UserDropdown
 */
@@ -45,7 +47,6 @@ export default class UserDropdown extends Component {
     };
 
     this.toggleState = this.toggleState.bind(this);
-    this.displayDropdown = this.displayDropdown.bind(this);
   }
 
   /**
@@ -59,25 +60,6 @@ export default class UserDropdown extends Component {
     });
   }
 
-
-  // TODO: close dropdown on blur (it's not as easy as you'd think!!)
-  /**
-   * Conditionally display dropdown depending on state
-   * @method displayDropdown
-   * @returns {JSX.Element} - Dropdown items (or null), if state is closed)
-  */
-  displayDropdown() {
-    if (this.state.open) {
-      return (
-        <clr-dropdown-menu clrPosition="bottom-right" class="dropdown-menu">
-          <Link onClick={this.toggleState} to="/user-profile" className="dropdown-item">Profile</Link>
-          <Link onClick={this.toggleState} to="/sign-out" className="dropdown-item">Log out</Link>
-        </clr-dropdown-menu>
-      );
-    }
-    return null;
-  }
-
   /**
    * @method render
    * @returns {JSX.Element} - Rendered component (or null if username isn't defined).
@@ -88,11 +70,11 @@ export default class UserDropdown extends Component {
     return (
       <div data-test="user-dropdown-component" className="header-actions">
         <clr-dropdown class={`dropdown ${openClass}`}>
-          <button className={`nav-text dropdown-toggle ${activeClass}`} onClick={this.toggleState}>
+          <button data-test="user-dropdown-button" className={`nav-text dropdown-toggle ${activeClass}`} onClick={this.toggleState}>
             { this.props.username }
             <clr-icon shape="caret down" />
           </button>
-          { this.displayDropdown() }
+          { this.state.open ? <UserMenu open={this.state.open} toggleState={this.toggleState} /> : null }
         </clr-dropdown>
       </div>
     );
