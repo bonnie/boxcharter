@@ -26,6 +26,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 // TODO: close dropdown on blur (it's not as easy as you'd think!!)
 /**
@@ -35,8 +36,8 @@ import PropTypes from 'prop-types';
  * @returns {JSX.Element} - Rendered element.
  */
 const UserMenu = props => (
-  <clr-dropdown-menu clrPosition="bottom-right" class="dropdown-menu">
-    <Link onClick={props.toggleState} to="/sign-out" className="dropdown-item">Log out</Link>
+  <clr-dropdown-menu data-test="user-menu-component" clrPosition="bottom-right" class="dropdown-menu">
+    <Link data-test="sign-out-link" onClick={props.toggleState} to="/sign-out" className="dropdown-item">Log out</Link>
   </clr-dropdown-menu>
 );
 

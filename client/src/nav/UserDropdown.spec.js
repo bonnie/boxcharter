@@ -27,6 +27,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
+import { checkProps } from '../../jest/utils';
 import UserDropdown from './UserDropdown';
 import UserMenu from './UserMenu';
 
@@ -68,6 +69,13 @@ describe('UserDropdown', () => {
         findWrapperNodeByTestId(wrapper, 'user-dropdown-button').simulate('click');
         expect(wrapper.state('open')).toBe(false);
       });
+    });
+  });
+  describe('prop-types', () => {
+    test('no error with correct prop types', () => {
+      const props = { username: 'fred' };
+      const propError = checkProps(UserDropdown, props);
+      expect(propError).toBeUndefined();
     });
   });
 });
