@@ -52,7 +52,7 @@ describe('Header', () => {
     });
     test('renders the tabs', () => {
       const navLinks = findNavLinks(wrapper);
-      expect(navLinks).toEqual(['Charts', 'Profile', 'Sign Out']);
+      expect(navLinks).toEqual(['Charts', 'Profile']);
     });
     test('renders the user menu', () => {
       const userMenu = wrapper.find(UserDropdown);

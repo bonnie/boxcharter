@@ -45,6 +45,7 @@ export class UserChartsComponent extends Component {
   componentDidMount() {
     this.props.setActiveNavTab(tabNames.USER_PROFILE);
     this.props.getUserCharts(this.props.auth.user.userId);
+    this.props.setActiveNavTab(tabNames.USER_CHARTS);
   }
 
   /**
@@ -60,7 +61,7 @@ export class UserChartsComponent extends Component {
 
     if (this.props.charts.length === 0) {
       return (
-        <div data-test="no-charts-message">No charts saved</div>
+        <h1 data-test="no-charts-message">No charts saved</h1>
       );
     }
 
@@ -103,6 +104,7 @@ UserChartsComponent.propTypes = {
     isLoading: PropTypes.bool,
     error: PropTypes.string,
   }),
+  setActiveNavTab: PropTypes.func.isRequired,
 };
 
 /**

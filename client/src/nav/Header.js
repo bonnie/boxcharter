@@ -48,7 +48,6 @@ export class HeaderComponent extends Component {
       return [
         <NavLink key="1" linkRoute="/user-charts" linkText={USER_CHARTS} />,
         <NavLink key="2" linkRoute="/user-profile" linkText={USER_PROFILE} />,
-        <NavLink key="3" linkRoute="/sign-out" linkText={SIGN_OUT} />,
         <UserDropdown key="4" username={this.props.auth.user.email} />,
       ];
     }
