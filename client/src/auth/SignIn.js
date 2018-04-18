@@ -88,7 +88,7 @@ export class SignInComponent extends Component {
     const buttonLoading = loading.isLoading ? { loading: true } : {};
 
     return (
-      <div>
+      <div data-test="sign-in-component">
         <form data-test="signin-form" onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
           <Field name="email" type="text" label="Email" required component={ClarityField} />
           <Field name="password" type="password" label="Password" required component={ClarityField} />

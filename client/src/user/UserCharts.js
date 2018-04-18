@@ -30,6 +30,8 @@ import { connect } from 'react-redux';
 
 import ChartRow from './ChartRow';
 import { getUserCharts } from './userActions';
+import { setActiveNavTab } from '../nav/navActions';
+import { tabNames } from '../nav';
 import { ClarityLoading } from '../clarity';
 
 /**
@@ -41,10 +43,9 @@ export class UserChartsComponent extends Component {
    * @returns {undefined}
   */
   componentDidMount() {
-    // TODO: put loading message until this is finished
-    if (this.props.auth && this.props.auth.user && this.props.auth.user.userId) {
-      this.props.getUserCharts(this.props.auth.user.userId);
-    }
+    this.props.setActiveNavTab(tabNames.USER_PROFILE);
+    this.props.getUserCharts(this.props.auth.user.userId);
+    this.props.setActiveNavTab(tabNames.USER_CHARTS);
   }
 
   /**
@@ -54,13 +55,13 @@ export class UserChartsComponent extends Component {
   render() {
     if (this.props.loading.isLoading && this.props.charts.length === 0) {
       return (
-        <ClarityLoading loadingTarget="charts" />
+        <ClarityLoading loadingTarget="list of charts" />
       );
     }
 
     if (this.props.charts.length === 0) {
       return (
-        <div data-test="no-charts-message">No charts saved</div>
+        <h1 data-test="no-charts-message">No charts saved</h1>
       );
     }
 
@@ -68,7 +69,8 @@ export class UserChartsComponent extends Component {
       (<ChartRow key={chart.chartId} chart={chart} />));
 
     return (
-      <div className="user-charts" data-test="user-charts-table">
+      <div data-test="user-charts-component" className="user-charts">
+        <h1>Saved Charts</h1>
         <table className="table">
           <thead>
             <tr>
@@ -102,6 +104,7 @@ UserChartsComponent.propTypes = {
     isLoading: PropTypes.bool,
     error: PropTypes.string,
   }),
+  setActiveNavTab: PropTypes.func.isRequired,
 };
 
 /**
@@ -116,4 +119,4 @@ function mapStateToProps({ auth, charts, loading }) {
   return { auth, charts, loading: loading['user-charts'] };
 }
 
-export default connect(mapStateToProps, { getUserCharts })(UserChartsComponent);
+export default connect(mapStateToProps, { getUserCharts, setActiveNavTab })(UserChartsComponent);

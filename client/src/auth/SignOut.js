@@ -27,12 +27,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+import { ClarityAlert } from '../clarity';
+import SignIn from './SignIn';
 import * as actions from './authActions';
 
 /**
  * @class SignOut
 */
 export class SignOutComponent extends Component {
+  /**
+   * Set alert state to true by default.
+   * @method constructor
+   * @param {object} props - React props.
+   * @returns {undefined}
+   */
+  constructor(props) {
+    super(props);
+    this.state = {
+      alertOpen: true,
+    };
+
+    this.closeAlert = this.closeAlert.bind(this);
+  }
+
   /**
    * @method componentWillMont
    * @returns {undefined}
@@ -42,11 +60,29 @@ export class SignOutComponent extends Component {
   }
 
   /**
+   * Set alertOpen state to false.
+   * @method closeAlert
+   * @returns {undefined}
+   */
+  closeAlert() {
+    this.setState({ alertOpen: false });
+  }
+
+
+  /**
    * @method render
-   * @returns {JSX.Element} - Rendered component
+   * @returns {JSX.Element} - Rendered component.
   */
   render() {
-    return <div data-test="signout-component">Signed out!</div>;
+    return (
+      <div data-test="sign-out-component">
+        { this.state.alertOpen ? <ClarityAlert
+          communicateCloseToParent={this.closeAlert}
+          alertType="success"
+          alertText="You have been logged out."
+        /> : null }
+        <SignIn />
+      </div>);
   }
 }
 

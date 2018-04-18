@@ -26,3 +26,18 @@ error boundary:
 
 To look up: 
   what's the right verbiage for jest "test" descriptions...?
+
+** to cover
+
+  * when to use shallow, when to use mount
+
+**** simulate (sometimes?) doesn't update state.... :-/ https://github.com/airbnb/enzyme/issues/1229
+  * more reliable to use spies on functions
+
+  >>>>>
+  https://github.com/airbnb/enzyme/issues/1002
+  I'd generally recommend using only shallow as much as possible, and only making assertions on which components your thing renders - in other words, if A renders B which renders C, your A tests shouldn't know anything about C, and should only be asserting that A renders B with the right props. Your B tests should be asserting things about C.
+
+  in the same page, ljharb frowns upon testing unconnected components. he says use dive. but I get errors when using dive. :/
+  @trevorwhealy that's worth exploring - i don't see any .props() calls in that code, nor is dispatchMock used anywhere - but it doesn't change that exporting the "pure" component just for testing isn't a good practice.
+  >>>>>

@@ -30,6 +30,7 @@ import { shallow } from 'enzyme';
 import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { SignOutComponent } from './SignOut';
+import { ClarityAlert } from '../clarity';
 
 const defaultProps = {
   signOutUser: () => {},
@@ -41,12 +42,22 @@ describe('SignOut', () => {
   beforeEach(() => {
     signOutUserMock.mockClear();
     const props = {
+      ...defaultProps,
       signOutUser: signOutUserMock,
     };
     wrapper = shallow(<SignOutComponent {...props} />);
   });
-  test('renders', () => {
-    expect(findWrapperNodeByTestId(wrapper, 'signout-component').length).toBe(1);
+  describe('renders', () => {
+    test('renders component', () => {
+      expect(findWrapperNodeByTestId(wrapper, 'sign-out-component').length).toBe(1);
+    });
+    test('renders sign out alert', () => {
+      expect(wrapper.find(ClarityAlert).length).toBe(1);
+    });
+    test('renders sign in component', () => {
+      // TODO: go down the https://github.com/airbnb/enzyme/issues/1002 rabbit hole with connected components / dive
+      // expect(findWrapperNodeByTestId(wrapper, 'sign-in-component').length).toBe(1);
+    });
   });
   test('signs user out', () => {
     expect(signOutUserMock).toHaveBeenCalledTimes(1);

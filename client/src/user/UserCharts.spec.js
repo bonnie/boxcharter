@@ -37,6 +37,7 @@ const defaultProps = {
   charts: [],
   auth: { authenticated: true, user: { userId: 1 } },
   getUserCharts: () => {},
+  setActiveNavTab: () => {},
 };
 
 describe('UserCharts', () => {

@@ -73,8 +73,8 @@ const authHandler = (response, dispatch) => {
   // add the response token to the authorization headers for the axios instance
   axiosInstance.defaults.headers.common.authorization = response.data.token;
 
-  // - redirect to the route "/user-profile" (programmatic navigation)
-  browserHistory.push('/user-profile');
+  // - redirect to the route "/user-charts" (programmatic navigation)
+  browserHistory.push('/user-charts');
 };
 
 /**

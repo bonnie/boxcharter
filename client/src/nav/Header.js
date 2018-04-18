@@ -27,9 +27,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { SIGN_IN, SIGN_UP, SIGN_OUT, USER_PROFILE } from './tabNames';
+import { SIGN_IN, SIGN_UP, USER_CHARTS, EDIT_CHART } from './tabNames';
 import NavLink from './NavLink';
 import NavBrand from './NavBrand';
+import UserDropdown from './UserDropdown';
 import { setActiveNavTab } from './navActions';
 
 /**
@@ -45,8 +46,8 @@ export class HeaderComponent extends Component {
   renderLinks() {
     if (this.props.auth.authenticated) {
       return [
-        <NavLink key="1" linkRoute="/user-profile" linkText={USER_PROFILE} />,
-        <NavLink key="2" linkRoute="/sign-out" linkText={SIGN_OUT} />,
+        <NavLink key="1" linkRoute="/user-charts" linkText={USER_CHARTS} />,
+        <NavLink key="2" linkRoute="/edit-chart" linkText={EDIT_CHART} />,
       ];
     }
     return [
@@ -72,6 +73,7 @@ export class HeaderComponent extends Component {
         <div className="header-nav" data-test="header-nav">
           {this.renderLinks()}
         </div>
+        { this.props.auth.authenticated ? <UserDropdown key="3" username={this.props.auth.user.email} /> : null }
       </header>
     );
   }
