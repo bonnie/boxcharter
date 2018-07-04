@@ -38,9 +38,11 @@ export class EditChartComponent extends Component {
    * @returns {JSX.Element} - Rendered component
   */
   render() {
-    return (<div>
+    return (
+    <div>
       <h1>Edit Chart</h1>
-    </div>);
+    </div>
+    );
   }
 }
 

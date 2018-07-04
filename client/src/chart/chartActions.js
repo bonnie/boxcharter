@@ -29,6 +29,10 @@ import { ROOT_URL } from '../../config';
 
 import { GET_CHART } from './chartActionTypes';
 
+/**
+ * Get chart from API server
+ * @param {Number} chartId 
+ */
 const getChart = (chartId) => {
   if (!chartId) {
     return { type: GET_CHART };

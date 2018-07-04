@@ -24,7 +24,7 @@
  * chartReducer
  */
 
-import { } from './chartActionTypes';
+import { GET_CHART } from './chartActionTypes';
 
 export default (state = {}, action) => {
   switch (action.type) {

@@ -53,19 +53,19 @@ export class UserChartsComponent extends Component {
    * @returns {JSX.Element} - Rendered component.
   */
   render() {
-    if (this.props.loading.isLoading && this.props.charts.length === 0) {
+    if (this.props.loading.isLoading && this.props.userCharts.length === 0) {
       return (
         <ClarityLoading loadingTarget="list of charts" />
       );
     }
 
-    if (this.props.charts.length === 0) {
+    if (this.props.userCharts.length === 0) {
       return (
         <h1 data-test="no-charts-message">No charts saved</h1>
       );
     }
 
-    const chartRows = this.props.charts.map(chart =>
+    const chartRows = this.props.userCharts.map(chart =>
       (<ChartRow key={chart.chartId} chart={chart} />));
 
     return (
@@ -98,7 +98,7 @@ UserChartsComponent.propTypes = {
       userId: PropTypes.number,
     }),
   }).isRequired,
-  charts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  userCharts: PropTypes.arrayOf(PropTypes.object).isRequired,
   getUserCharts: PropTypes.func.isRequired,
   loading: PropTypes.shape({
     isLoading: PropTypes.bool,
@@ -113,10 +113,11 @@ UserChartsComponent.propTypes = {
  * @param {object} state - Redux state.
  * @param {object} state.auth - Authentication state.
  * @param {object} state.charts - Metadata for charts for current user.
+ * @param {object} state.loading - Whether or not the app is in a loading state.
  * @returns {object} - auth and charts properties of state.
  */
-function mapStateToProps({ auth, charts, loading }) {
-  return { auth, charts, loading: loading['user-charts'] };
+function mapStateToProps({ auth, userCharts, loading }) {
+  return { auth, userCharts, loading: loading['user-charts'] };
 }
 
 export default connect(mapStateToProps, { getUserCharts, setActiveNavTab })(UserChartsComponent);

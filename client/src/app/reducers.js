@@ -34,7 +34,7 @@ import loadingReducer from '../loading/loadingReducer';
 const rootReducer = combineReducers({
   form: formReducer,
   auth: authReducer,
-  charts: userChartsReducer,
+  userCharts: userChartsReducer,
   nav: navReducer,
   loading: loadingReducer,
 });

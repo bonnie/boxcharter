@@ -34,7 +34,7 @@ import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
 import { ClarityLoading } from '../clarity';
 
 const defaultProps = {
-  charts: [],
+  userCharts: [],
   auth: { authenticated: true, user: { userId: 1 } },
   getUserCharts: () => {},
   setActiveNavTab: () => {},
@@ -51,7 +51,7 @@ describe('UserCharts', () => {
     describe('nonzero charts in state', () => {
       const props = {
         ...defaultProps,
-        charts: [chart],
+        userCharts: [chart],
         loading,
       };
       const wrapper = shallow(<UserChartsComponent {...props} />);
@@ -83,14 +83,14 @@ describe('UserCharts', () => {
   describe('non-empty charts list', () => {
     test('table should have non-zero rows', () => {
       const chartCount = 3;
-      const charts = [];
+      const userCharts = [];
       let newChart;
       for (let i = 0; i < chartCount; i += 1) {
         newChart = { ...chart };
         newChart.chartId = i;
-        charts.push(newChart);
+        userCharts.push(newChart);
       }
-      const props = { ...defaultProps, charts };
+      const props = { ...defaultProps, userCharts };
       const component =
         (<UserChartsComponent
           {...props}
