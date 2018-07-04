@@ -10,7 +10,12 @@ So, you should have a "dumb" (aka presentational) React component that is separa
 You should also have a container React component that connects the presentational component to Redux and Redux-Form. To test this, your test becomes an integration test because you're hooking up your presentational component to redux's store. You're integrating them.
 
 To make this separation clear, I named the presentational component ContactFormComponent, and the container ContactFormContainer, in 2 different files, although you could also set it up so they are in one file.
+
+---> this is in direct opposition to jlharb at https://github.com/airbnb/enzyme/issues/1002
 *****
+
+Questions: 
+  create-react-app?  yes.
 
 
 JEST CONFIG:
@@ -27,6 +32,11 @@ error boundary:
 To look up: 
   what's the right verbiage for jest "test" descriptions...?
 
+  from the official docs: 
+test('adds 1 + 2 to equal 3', () => {
+  expect(sum(1, 2)).toBe(3);
+});
+
 ** to cover
 
   * when to use shallow, when to use mount
@@ -41,3 +51,122 @@ To look up:
   in the same page, ljharb frowns upon testing unconnected components. he says use dive. but I get errors when using dive. :/
   @trevorwhealy that's worth exploring - i don't see any .props() calls in that code, nor is dispatchMock used anywhere - but it doesn't change that exporting the "pure" component just for testing isn't a good practice.
   >>>>>
+
+****** Best practices
+
+https://medium.com/selleo/testing-react-components-best-practices-2f77ac302d12
+  put tests close to implementation in __tests__ subfolder
+  always start with simple component rendering test aka smoke testing then test behaviour
+  think of future you getting back to this component or refactoring it
+  use explicit setup() and return common shortcut variables with it
+  use helper functions that generates tests
+
+Try to think of future you getting back to this component or refactoring it — what would your expectations from tests be?
+
+Isolated — all interactions with external services should are mocked
+Specific — if change small functionality you would like to get specific test failure message
+They describe what the system does not how so that you can easily refactor
+
+Explicit setup() instead of beforeEach()
+
+/*******/
+Excellent medium article on testing
+/*********
+https://medium.com/javascript-scene/mocking-is-a-code-smell-944a70c90a6a
+
+**Coverage: 
+Maximizing code coverage brings diminishing returns — the closer you get to 100% coverage, the more you have to complicate your application code to get even closer, which can subvert the important goal of reducing bugs in your application.
+Coverage reports identify code-coverage weaknesses, not case-coverage weaknesses. 
+
+**Unit / Integration / Functional definitions
+Contrast unit tests with integration tests, which test integrations between two or more units, and functional tests, which test the application from the point of view of the user, including complete user interaction workflows from simulated UI manipulation, to data layer updates, and back to the user output (e.g., the on-screen representation of the app). Functional tests are a subset of integration tests, because they test all of the units of an application, integrated in the context of the running application.
+
+**Black box vs. white box (don't test implementation details!)
+In general, units are tested using only the public interface of the unit (aka “public API” or “surface area”). This is referred to as black box testing. Black box testing leads to less brittle tests, because the implementation details of a unit tend to change more over time than the public API of the unit. If you use white box testing, where tests are aware of implementation details, any change to the implementation details could break the test, even if the public API continues to function as expected. In other words, white-box testing leads to wasted rework.
+
+**coupling and mocks
+Tight coupling, or a high degree of coupling, refers to how likely a unit is to break when changes are made to its dependencies. In other words, the tighter the coupling, the harder it is to maintain or extend the application.
+
+Tight coupling makes code more rigid and brittle: more likely to break when changes are required. In general, less coupling is desirable for its own sake because it makes code easier to extend and maintain. The fact that it also makes testing easier by eliminating the need for mocks is just icing on the cake.
+
+From this we can deduce that if we’re mocking something, there may be an opportunity to make our code more flexible by reducing the coupling between units. Once that’s done, you won’t need the mocks anymore.
+
+/******/
+End notes on medium testing article
+/*******/
+
+/*******/
+jest best practices: https://techblog.commercetools.com/testing-in-react-best-practices-tips-and-tricks-577bb98845cd
+/******/
+
+** don't have a global describe
+For example, the main describe “Core::Buttons::LinkButton” might be useful to “uniquely” identify this specific test in the test runner output. Fortunately with Jest (and probably with other test runners as well) this is not necessary anymore. Jest groups all tests by their filenames. If a test fails you will then get the “path” to the failed assertion, as well as a lot of useful information. That’s one of the things I love the most about Jest, they really did an amazing job.
+
+
+
+****** good snapshots pros / cons
+https://benmccormick.org/2016/09/19/testing-with-jest-snapshots-first-impressions/
+
+
+**************** Tradeoffs
+
+* test abstraction with helper functions: good = less repeated code. Bad = trying to figure out what tests are doing.
+
+
+
+/**************************************************************************************/
+Key points: 
+
+1. Testing philosophy
+  * what makes a good test (Aaron Abramov assert(js) 2018 talk)
+    * test should be fast
+    * tests should not break often (survive refactoring)
+    * tests should be easy to read/understand ***
+    * catches bugs
+    * good coverage-to-effort ratio 
+  * test strategy (Aaron Abramov assert(js) 2018 talk)
+    * testing UI is extremely hard (don't test as the first thing -- it's the most time consuming)
+      * take out UI: set up state, dispatch action, expect data to change (to me: testing reducers...)
+    * mocking reduces test quality (diverge from real world scenario)
+    * more isolation = fewer bugs (this is the "do mostly integration tests")
+  
+  * shared test utilities (Aaron Abramov assert(js) 2018 talk)
+    * abstracted mockInitialData() function, share with team
+
+  * Unit / Integration / E2E (Aaron Abramov assert(js) 2018 talk)
+    * Unit / Integration lumped together 
+      * group by functionality (ui component, data mutations, app routing)
+
+
+  * TDD / RDD / BDD
+
+  * Do work up front (jest/enzyme setup, helpers) to make writing tests as painless as possible
+
+2. Test structure (https://techblog.commercetools.com/testing-in-react-best-practices-tips-and-tricks-577bb98845cd)
+  * nesting describes
+  * one assertion per "test"
+    * document via the test description
+    * get an accurate sense of number of things to fix
+  * “describes” are meant to explain conditions, whereas "tests" are meant to explain the expected output.
+  * beforeEach: hooks are async, "bare code" in describes will run before them
+  * use shallow, not mount (shallow + dive...???)
+  * Use a factory function to create default props for your component tests
+
+  ********************
+  part 0: CRA tests
+
+  part 1: Jest and Enzyme
+
+  part 2: jotto
+    * simple, front-end only
+    * no abstractions
+
+  part 3: philosophy / strategies
+
+  part 4 more complicated app that uses redux and back-end API (what...?): 
+    * abstract stuff into helpers
+      * enzyme setup (can just be put straight into src b/c CRA: https://github.com/airbnb/enzyme/issues/1265)
+      * checkProps
+      * find by data-test id
+
+  part 5: even more fun stuff mocks/spies... what else? 

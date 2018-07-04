@@ -183,3 +183,10 @@ fave -----> https://medium.com/stashaway-engineering/react-redux-tips-better-way
 
 ******* getting real line errors instead of babel stuff
 https://www.npmjs.com/package/babel-plugin-transform-react-jsx-source
+
+******** jest best practices
+https://medium.com/selleo/testing-react-components-best-practices-2f77ac302d12
+https://medium.com/@JeffLombardJr/organizing-tests-in-jest-17fc431ff850
+https://techblog.commercetools.com/testing-in-react-best-practices-tips-and-tricks-577bb98845cd
+https://github.com/eventbrite/javascript/blob/master/react/testing.md
+https://www.safaribooksonline.com/library/view/react-design-patterns/9781786464538/ch10s02.html
