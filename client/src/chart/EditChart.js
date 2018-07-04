@@ -41,6 +41,7 @@ export class EditChartComponent extends Component {
     return (
     <div>
       <h1>Edit Chart</h1>
+      <p>chart id: {this.props.urlParams.id}</p>
     </div>
     );
   }
