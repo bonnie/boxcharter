@@ -26,18 +26,29 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
+import { checkProps } from '../../jest/utils';
 import { findWrapperNodeByTestId } from '../../jest/clientTestUtils';
 import { EditChartComponent } from './EditChart';
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
 
 const defaultProps = {
-
+  urlParams: { id: '1' },
+  currentChart: chartData,
+  auth: { authenticated: true, user: { userId: 1 } },
+  getChart: () => {},
 };
 
 describe('EditChart', () => {
   describe('render', () => {
     const wrapper = shallow(<EditChartComponent {...defaultProps} />);
     test('render component', () => {
-      // expect(findWrapperNodeByTestId(wrapper, 'edit-chart-component').length).toBe(1);
+      expect(findWrapperNodeByTestId(wrapper, 'component-edit-chart').length).toBe(1);
+    });
+  });
+  describe('prop-types', () => {
+    test('no error with correct props', () => {
+      const propTypesError = checkProps(EditChartComponent, defaultProps);
+      expect(propTypesError).toBeUndefined();
     });
   });
 });

@@ -66,7 +66,7 @@ describe('User actions', () => {
         { type: GET_USERCHARTS, data: charts },
       ];
 
-      const store = mockStore({ charts: [] });
+      const store = mockStore({ userCharts: [] });
 
       // use "fake" userID 1
       return store.dispatch(actions.getUserCharts(1)).then(() => {

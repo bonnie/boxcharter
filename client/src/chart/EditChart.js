@@ -27,30 +27,53 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import ChartDetail from './ChartDetail';
+// import ChartDetail from './ChartDetail';
+import { getChart } from './chartActions';
 
 /**
  * @class EditChartComponent
 */
 export class EditChartComponent extends Component {
   /**
+   * @method componentDidMount
+   * @returns {undefined}
+   */
+  componentDidMount() {
+    // get component details from API server
+    this.props.getChart(this.props.urlParams.id);
+  }
+
+  /**
    * @method render
    * @returns {JSX.Element} - Rendered component
   */
   render() {
     return (
-    <div>
+    <div data-test='component-edit-chart'>
       <h1>Edit Chart</h1>
-      <p>chart id: {this.props.urlParams.id}</p>
+      <p>chart id: {this.props.currentChart.id}</p>
     </div>
     );
   }
 }
 
 EditChartComponent.propTypes = {
-
+  urlParams: PropTypes.shape({
+    id: PropTypes.string
+  }),
 };
 
-const mapStateToProps = () => ({});
+/**
+ * @function mapStateToProps
+ *
+ * @param {object} state - Redux state.
+ * @param {object} state.auth - Authentication state.
+ * @param {object} state.currentChart - Current working chart.
+ * @param {object} state.loading - Whether or not the app is in a loading state.
+ * @returns {object} - auth and charts properties of state.
+ */
+const mapStateToProps = ({ currentChart, auth, loading }) => {
+  return { currentChart, auth, loading: loading['currentChart'] };
+}
 
-export default connect(mapStateToProps, {})(EditChartComponent);
+export default connect(mapStateToProps, { getChart })(EditChartComponent);

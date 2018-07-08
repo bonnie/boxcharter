@@ -24,9 +24,17 @@
  * chartReducer-spec
  */
 
-// import chartReducer from './chartReducer';
+import chartReducer from './chartReducer';
+import { GET_CHART } from './chartActionTypes';
 
 describe('chartReducer', () => {
-  test('', () => {
+  const chart = { id: 1 };
+  test('returns existing state for no action type', () => {
+    const currentChart = chartReducer(chart, {});
+    expect(currentChart).toEqual(chart);
+  });
+  test('returns chart payload object for GET_CHART action', () => {
+    const currentChart = chartReducer({}, { type: GET_CHART, payload: chart });
+    expect(currentChart).toEqual(chart);
   });
 });

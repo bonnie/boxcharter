@@ -24,24 +24,32 @@
  * chartActions
  */
 
-import axios from 'axios';
-import { ROOT_URL } from '../../config';
+import axiosInstance from '../config/axiosInstance';
 
+import { ROOT_URL } from '../../config';
 import { GET_CHART } from './chartActionTypes';
+import { START_FETCHING, END_FETCHING, FETCH_ERROR } from '../loading/loadingActionTypes';
 
 /**
- * Get chart from API server
- * @param {Number} chartId 
+ * Get chart from chartId
+ * @param {number} chartId - chart ID for which to retrieve details
+ * @returns {function} - function that processes axios and dispatches an action
  */
-const getChart = (chartId) => {
-  if (!chartId) {
-    return { type: GET_CHART };
-  }
-  const request = axios.get(`${ROOT_URL}/charts/${chartId}`);
-  return {
-    type: GET_CHART,
-    payload: request,
-  };
+const getChart = chartId => (dispatch) => {
+  const fetchId = 'currentCharts';
+  dispatch({ type: START_FETCHING, payload: { fetchId } });
+  return axiosInstance.get(`/charts/${chartId}`)
+    .then((response) => {
+      dispatch({ type: END_FETCHING, payload: { fetchId } });
+      dispatch({
+        type: GET_CHART,
+        payload: response,
+      });
+    })
+    .catch((error) => {
+      dispatch({ type: FETCH_ERROR, payload: { fetchId, error: 'Could not retrieve details for this chart.' } });
+      console.error(error);
+    });
 };
 
 module.exports = {

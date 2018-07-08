@@ -24,10 +24,55 @@
  * chartActions-spec
  */
 
-// import * as actions from './chartActions';
-import { } from './chartActionTypes';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+import moxios from 'moxios';
+
+import axiosInstance from '../config/axiosInstance';
+import { getChart } from './chartActions';
+import { GET_CHART } from './chartActionTypes';
+import { chartData } from '../../../shared/test/utilities/test_data/add_chart';
+
+const mockStore = configureMockStore([thunk]);
 
 describe('chartActions', () => {
-  test('', () => {
+  beforeEach(() => {
+    moxios.install(axiosInstance);
+  });
+
+  afterEach(() => {
+    moxios.uninstall(axiosInstance);
+  });
+  test('adds response chart to state', () => {
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 200,
+        response: chartData,
+      });
+    });
+
+    const expectedActions = [
+      // { type: actions.GET_POSTS_START }, // TODO: loading!!
+      { type: 'start fetching', data: undefined },
+      { type: 'end fetching', data: undefined },
+      { type: GET_CHART, data: chartData },
+    ];
+
+    const store = mockStore({ currentChart: {} });
+
+    // use "fake" chartID 1
+    return store.dispatch(getChart(1)).then(() => {
+      // return of async actions
+
+      // TODO: why can't I test whole action, like
+      // https://github.com/reactjs/redux/issues/1972
+      // https://medium.com/@netxm/test-async-redux-actions-jest-e703add2cf91
+      // https://github.com/reactjs/redux/blob/master/docs/recipes/WritingTests.md
+      const firedActions = store.getActions().map(action =>
+        ({ type: action.type, data: action.payload.data }));
+      expect(firedActions).toEqual(expectedActions);
+    });
   });
 });
