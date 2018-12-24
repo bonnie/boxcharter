@@ -169,7 +169,7 @@ describe('authActions', () => {
       expect(signOutAction).toMatchObject({ type: UNAUTH_USER });
     });
     test('removes token from localStorage', () => {
-      expect(localStorage.getItem('token')).toBeUndefined();
+      expect(localStorage.getItem('token')).toBeFalsy();
     });
   });
   /** ************************************* */
