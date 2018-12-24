@@ -43,7 +43,7 @@ import NotFound from '../error/NotFound';
 // (as it is, error persists when switching tabs)
 const addErrorBoundary = (Component, route, match) => () => (
   <ErrorBoundary routeName={route}>
-    <Component urlParams={match.params} />
+    <Component urlParams={match ? match.params : null} />
   </ErrorBoundary>
 );
 

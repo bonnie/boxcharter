@@ -27,12 +27,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedDate } from '../utils';
+import { Link } from 'react-router-dom';
 
 const ChartRow = (props) => {
   const { chart } = props;
   return (
-    <tr className="chart-row">
-      <td data-test="chart-title">{chart.title}</td>
+    <tr className="chart-row" key="{chart.chartId}">
+      <td data-test="chart-title">
+        <Link to={`/charts/${chart.chartId}`}>
+          {chart.title}
+        </Link>
+      </td>
       <td><FormattedDate date={chart.modifiedAt} /></td>
     </tr>
   );

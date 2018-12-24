@@ -28,6 +28,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // import ChartDetail from './ChartDetail';
+import { setActiveNavTab } from '../nav/navActions'
+import { EDIT_CHART } from '../nav/tabNames'
 import ClarityLoading from '../clarity/ClarityLoading';
 import { getChart } from './chartActions';
 
@@ -45,6 +47,8 @@ export class EditChartComponent extends Component {
    * @returns {undefined}
    */
   componentDidMount() {
+    this.props.setActiveNavTab(EDIT_CHART)
+
     // get component details from API server
     this.props.getChart(this.props.urlParams.id);
   }
@@ -86,4 +90,4 @@ const mapStateToProps = ({ currentChart, auth, loading }) => {
   return { currentChart, auth, loading: loading['currentChart'] };
 }
 
-export default connect(mapStateToProps, { getChart })(EditChartComponent);
+export default connect(mapStateToProps, { setActiveNavTab, getChart })(EditChartComponent);
