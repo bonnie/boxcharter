@@ -26,4 +26,5 @@
 
 module.exports = {
   GET_CHART: 'get_chart',
+  SET_ACTIVE_CHART: 'set_active_chart',
 };

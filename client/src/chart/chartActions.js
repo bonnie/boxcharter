@@ -27,8 +27,9 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../config';
 
-import { GET_CHART } from './chartActionTypes';
+import { GET_CHART, SET_ACTIVE_CHART } from './chartActionTypes';
 
+// TODO: jsDoc
 const getChart = (chartId) => {
   if (!chartId) {
     return { type: GET_CHART };

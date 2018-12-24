@@ -27,12 +27,28 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { EDIT_CHART } from '../nav/tabNames'
+import { setActiveNavTab } from '../nav/navActions';
+import { getChart } from './chartActions';
 import ChartDetail from './ChartDetail';
 
 /**
  * @class EditChartComponent
 */
 export class EditChartComponent extends Component {
+
+  /**
+   * @method componentDidMount
+  */
+  componentDidMount() {
+    console.log('props: ', this.props)
+    const { setActiveNavTab, getChart, chartId } = this.props;
+    setActiveNavTab(EDIT_CHART);
+
+    // if we got here in a way that gave a chartId, get the chart
+    if(chartId) getChart(chartId);
+  }
+  
   /**
    * @method render
    * @returns {JSX.Element} - Rendered component
@@ -48,6 +64,15 @@ EditChartComponent.propTypes = {
 
 };
 
-const mapStateToProps = () => ({});
+/**
+ * @function mapStateToProps
+ *
+ * @param {object} state - Redux state.
+ * @param {object} state.chart - Current chart.
+ * @returns {object} - auth and charts properties of state.
+ */
+const mapStateToProps = ({ chart }, { urlParams }) => {
+  return { chart, chartId: urlParams.chartId };
+};
 
-export default connect(mapStateToProps, {})(EditChartComponent);
+export default connect(mapStateToProps, { setActiveNavTab, getChart })(EditChartComponent);

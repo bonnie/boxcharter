@@ -24,10 +24,12 @@
  * chartReducer
  */
 
-import { } from './chartActionTypes';
+import { GET_CHART } from './chartActionTypes';
 
 export default (state = {}, action) => {
   switch (action.type) {
+    case GET_CHART:
+      return { ...state, activeChart: action.payload };
     default:
       return { ...state };
   }

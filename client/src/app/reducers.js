@@ -30,6 +30,7 @@ import authReducer from '../auth/authReducer';
 import userChartsReducer from '../user/userChartsReducer';
 import navReducer from '../nav/navReducer';
 import loadingReducer from '../loading/loadingReducer';
+import chartReducer from '../chart/chartReducer'
 
 const rootReducer = combineReducers({
   form: formReducer,
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   charts: userChartsReducer,
   nav: navReducer,
   loading: loadingReducer,
+  activeChart: chartReducer,
 });
 
 export default rootReducer;

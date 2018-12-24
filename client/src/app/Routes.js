@@ -41,9 +41,9 @@ import NotFound from '../error/NotFound';
 // TODO: jsdoc
 // TODO: isolate error to the component / route / tab that threw the error
 // (as it is, error persists when switching tabs)
-const addErrorBoundary = (Component, route) => () => (
+const addErrorBoundary = (Component, route, match) => () => (
   <ErrorBoundary routeName={route}>
-    <Component />
+    <Component urlParams={match.params} />
   </ErrorBoundary>
 );
 
@@ -56,8 +56,8 @@ const Routes = () => (
     <Switch>
       <Route exact path="/user-profile" render={addErrorBoundary(RequireAuth(UserProfile), 'user-profile')} />
       <Route exact path="/user-charts" render={addErrorBoundary(RequireAuth(UserCharts), 'user-charts')} />
-      <Route exact path="/edit-chart" render={addErrorBoundary(RequireAuth(EditChart), 'edit-chart')} />
-      <Route exact path="/charts/:id" render={addErrorBoundary(RequireAuth(EditChart), 'edit-chart')} />
+      {/* todo: better way to pass url params? this is ugly */}
+      <Route exact path="/charts/:chartId" render={({match}) => addErrorBoundary(RequireAuth(EditChart), 'charts/:id', match)()} />
       <Route exact path="/sign-in" render={addErrorBoundary(SignIn, 'sign-in')} />
       <Route exact path="/sign-up" render={addErrorBoundary(SignUp, 'sign-up')} />
       <Route exact path="/sign-out" render={addErrorBoundary(SignOut, 'sign-out')} />
