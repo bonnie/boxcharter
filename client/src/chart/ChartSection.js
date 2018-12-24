@@ -19,9 +19,9 @@
  */
 
 /**
- * Individual chart component for BoxCharter
+ * Section of a chart for BoxCharter
  * @module
- * ChartDetail
+ * ChartSection
  */
 
 import React from 'react';
@@ -31,11 +31,11 @@ import { connect } from 'react-redux';
  * @function ChartDetail
  * @returns {JSX.Element} - Rendered component.
  */
-export const ChartDetailComponent = () =>
+export const ChartSectionComponent = () =>
   (
-    <div className="chart-detail">
-      <h1>Chart Detail</h1>
+    <div data-test="component-chart-section">
+      <h1>Chart Section</h1>
     </div>
   );
 
-export default connect()(ChartDetailComponent);
+export default connect()(ChartSectionComponent);

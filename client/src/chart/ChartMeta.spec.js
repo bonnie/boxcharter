@@ -19,27 +19,16 @@
  */
 
 /**
- * Tests for the ChartDetail component
+ * Tests for the ChartMeta component
  * @module
- * ChartDetail-spec
+ * ChartMeta-spec
  */
 
 // import React from 'react';
 // import { shallow } from 'enzyme';
 // import { ChartDetailComponent } from './ChartDetail';
 
-describe('ChartDetail', () => {
+describe('ChartMeta', () => {
   test('renders', () => {
   });
 });
-
-// describe('ChartDetail', () => {
-//   let component
-//   beforeEach(() => {
-//     const props = { }
-//     component = renderComponent(ChartDetail, null, props)
-//   })
-
-//   it('has the correct class', () => {
-//     expect(component).to.have.class('chart-detail')
-//   })

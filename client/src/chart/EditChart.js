@@ -28,7 +28,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // import ChartDetail from './ChartDetail';
+import ClarityLoading from '../clarity/ClarityLoading';
 import { getChart } from './chartActions';
+
+// model for how to display / receive data
+// https://redux-form.com/7.4.2/examples/fieldarrays/
+// --> spread across components...?
+
 
 /**
  * @class EditChartComponent
@@ -48,10 +54,14 @@ export class EditChartComponent extends Component {
    * @returns {JSX.Element} - Rendered component
   */
   render() {
+    if(this.props.loading) {
+      return <ClarityLoading loadingTarget="chart" />
+    }
     return (
     <div data-test='component-edit-chart'>
       <h1>Edit Chart</h1>
-      <p>chart id: {this.props.currentChart.id}</p>
+      <h2>{this.props.currentChart.title}</h2>
+      
     </div>
     );
   }

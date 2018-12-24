@@ -43,7 +43,7 @@ const getChart = chartId => (dispatch) => {
       dispatch({ type: END_FETCHING, payload: { fetchId } });
       dispatch({
         type: GET_CHART,
-        payload: response,
+        payload: response.data,
       });
     })
     .catch((error) => {
